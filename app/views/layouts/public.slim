@@ -1,0 +1,12 @@
+doctype 5
+
+html
+  head
+    title Blog
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_pack_tag 'public', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'public', 'data-turbolinks-track': 'reload'
+
+  body
+    = yield

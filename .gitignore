@@ -1,0 +1,36 @@
+# Ignore dependency manager configuration
+/.bundle
+.yarn-integrity
+
+# Ignore installed dependencies
+/node_modules
+/vendor
+
+# Ignore logfiles
+/log/*
+!/log/.keep
+/yarn-error.log
+.byebug_history
+yarn-debug.log*
+
+# Ignore tempfiles
+/tmp/*
+!/tmp/.keep
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+
+# Ignore build artefacts
+/public/assets
+/public/packs
+/public/packs-test
+
+# Ignore encryption secrets
+/config/master.key
+
+# Ignore OS specific files
+.DS_Store
+
+# Ignore editor artefacts and configuration
+*.swap
+/tags

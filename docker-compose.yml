@@ -1,0 +1,30 @@
+version: "3.6"
+services:
+  db:
+    image: "postgres:12-alpine"
+    volumes:
+      - db_store:/var/lib/postgresql/data
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+  redis:
+    image: "redis:5.0-alpine"
+
+  app:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "3000:3000"
+    environment:
+      - LOCAL_USER_ID=${LOCAL_USER_ID}
+    tty: true
+    stdin_open: true
+
+volumes:
+  db_store: {}

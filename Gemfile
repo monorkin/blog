@@ -11,6 +11,7 @@ gem 'puma', '~> 4.1'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.3'
 gem 'redis', '~> 4.0'
 gem 'slim', '~> 4.1.0'
+gem 'warning', '~> 1.1.0'
 gem 'webpacker', '~> 4.0'
 
 group :development, :test do

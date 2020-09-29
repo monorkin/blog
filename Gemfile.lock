@@ -167,6 +167,7 @@ GEM
     tty-screen (0.8.1)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
+    warning (1.1.0)
     web-console (4.0.4)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -203,6 +204,7 @@ DEPENDENCIES
   selenium-webdriver
   slim (~> 4.1.0)
   tzinfo-data
+  warning (~> 1.1.0)
   web-console (>= 3.3.0)
   webdrivers
   webpacker (~> 4.0)

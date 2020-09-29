@@ -10,10 +10,12 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.3'
 gem 'redis', '~> 4.0'
+gem 'slim', '~> 4.1.0'
 gem 'webpacker', '~> 4.0'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'ruby_jard'
 end
 
 group :development do

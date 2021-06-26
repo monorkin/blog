@@ -5,12 +5,31 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.1'
 
+gem 'active_link_to'
+gem 'async-http'
+gem 'aws-sdk-s3', '~> 1.14'
 gem 'bcrypt', '~> 3.1.7'
+gem 'fastimage'
+gem 'image_processing', '~> 1.8'
+gem 'inline_svg', '~> 1.7.1'
+gem 'marcel', '~> 0.3'
+gem 'nexter'
 gem 'pg', '>= 0.18', '< 2.0'
-gem 'puma', '~> 4.1'
+gem 'puma', '~> 5.0.2'
+gem 'pundit', '~> 2.1.0'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.3'
+gem 'ransack'
+gem 'redcarpet', '~> 3.5.0'
 gem 'redis', '~> 4.0'
+gem 'rotp'
+gem 'rouge', '~> 3.23.0'
+gem 'rqrcode'
+gem 'rubyzip'
+gem 'shrine', '~> 3.0'
+gem 'simple_form'
 gem 'slim', '~> 4.1.0'
+gem 'toml'
+gem 'turbo-rails'
 gem 'warning', '~> 1.1.0'
 gem 'webpacker', '~> 4.0'
 
@@ -20,6 +39,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'annotate'
   gem 'listen', '~> 3.2'
   gem 'web-console', '>= 3.3.0'
 end
@@ -30,5 +50,4 @@ group :test do
   gem 'webdrivers'
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

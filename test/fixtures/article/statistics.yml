@@ -1,0 +1,28 @@
+# == Schema Information
+# Schema version: 20210125065024
+#
+# Table name: article_statistics
+#
+#  id                     :uuid             not null, primary key
+#  referrer_visit_counts  :jsonb            not null
+#  view_count             :bigint           default(0), not null
+#  visit_counts_per_month :jsonb            not null
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  article_id             :string
+#
+# Indexes
+#
+#  index_article_statistics_on_article_id  (article_id)
+#
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  article: 
+  view_count: 
+  referrer_visit_counts_per_month: 
+
+two:
+  article: 
+  view_count: 
+  referrer_visit_counts_per_month: 

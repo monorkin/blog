@@ -1,0 +1,113 @@
+.popup {
+  color: $primary_text_color;
+  font-weight: normal;
+
+  &--within_content {
+    max-width: #{$content_width / 2};
+  }
+
+  &__container {
+    background: $background;
+    border: 1px solid rgba(black, 0.15);
+    border-radius: 0.2rem;
+    box-shadow: 0 0.3rem 1rem 0.1rem rgba(black, 0.2);
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+
+    &__content {
+    }
+  }
+
+  &__arrow {
+    visibility: hidden;
+
+    &, &:before {
+      background: $background;
+      height: 0.65rem;
+      position: absolute;
+      width: 0.65rem;
+      z-index: 20;
+    }
+
+    &:before {
+      visibility: visible;
+      content: '';
+      border-left: 1px solid rgba(black, 0.15);
+      border-bottom: 1px solid rgba(black, 0.15);
+      transform: rotate(45deg);
+    }
+  }
+
+  &[data-popper-placement^='top'] {
+    .popup__container {
+      margin-bottom: calc(0.325rem - 1px);
+    }
+
+    .popup__arrow {
+      bottom: 0;
+    }
+
+    .popup__arrow:before {
+      transform: rotate(315deg);
+    }
+  }
+
+  &[data-popper-placement^='bottom'] {
+    .popup__container {
+      margin-top: calc(0.325rem - 1px);
+    }
+
+    .popup__arrow {
+      top: 0;
+    }
+
+    .popup__arrow:before {
+      transform: rotate(135deg);
+    }
+  }
+
+  &[data-popper-placement^='left'] {
+    .popup__container {
+      margin-right: calc(0.325rem - 1px);
+    }
+
+    .popup__arrow {
+      right: 0;
+    }
+
+    .popup__arrow:before {
+      transform: rotate(225deg);
+    }
+  }
+
+  &[data-popper-placement^='right'] {
+    .popup__container {
+      margin-left: calc(0.325rem - 1px);
+    }
+
+    .popup__arrow {
+      left: 0;
+    }
+
+    .popup__arrow:before {
+      transform: rotate(45deg);
+    }
+  }
+
+  &--dark_color_scheme {
+    color: $darkmode_primary_text_color;
+
+    .popup__container {
+      background: $darkmode_background;
+      border: 1px solid rgba(white, 0.15);
+      box-shadow: 0 0.3rem 1rem 0.1rem rgba(white, 0.2);
+    }
+
+    .popup__arrow, .popup__arrow:before {
+      background: $darkmode_background;
+      border-left: 1px solid rgba(white, 0.15);
+      border-bottom: 1px solid rgba(white, 0.15);
+    }
+  }
+}

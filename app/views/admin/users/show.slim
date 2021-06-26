@@ -1,0 +1,43 @@
+.row.mt-3
+  .col
+    h2 = @user.username
+
+.row.mt-3
+  .col
+    = link_to :back, class: 'btn btn-lg btn-secondary'
+      i.fas.fa-chevron-left
+      '
+      | Back
+    = link_to [:edit, :admin, @user], class: 'btn btn-lg btn-primary'
+      i.fas.fa-edit
+      '
+      | Edit
+    = link_to [:admin, @user], \
+    class: 'btn btn-lg btn-danger', \
+    method: :delete,
+    data: { confirm: 'Are you sure you want to delete this user?' }
+      i.fas.fa-trash
+      '
+      | Delete
+
+
+
+.row.mt-3
+  .col
+    .table-responsive
+      table.table
+        tbody
+          tr
+            td Last TOTP used at
+            td
+              - if @user.last_otp_used_at
+                | #{@user.last_otp_used_at} (#{time_ago_in_words(@user.last_otp_used_at)} ago)
+              - else
+                | -
+          tr
+            td Last login at
+            td
+              - if @user.last_login_at
+                | #{@user.last_login_at} (#{time_ago_in_words(@user.last_login_at)} ago)
+              - else
+                | -

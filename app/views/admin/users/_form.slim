@@ -1,0 +1,16 @@
+= simple_form_for [:admin, user] do |f|
+  .row
+    .col
+      = f.input :username, as: :string
+  .row
+    .col
+      = f.input :password, as: :password
+      = f.input :password_confirmation, as: :password
+
+  .row.mt-3
+    .col
+      = link_to :back, class: 'btn btn-secondary'
+        i.fas.fa-chevron-left
+        '
+        | Back
+      = f.submit 'Create', class: 'btn btn-primary'

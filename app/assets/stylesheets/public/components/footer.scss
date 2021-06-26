@@ -1,0 +1,25 @@
+.footer {
+  &__links {
+    margin: 2.5rem 0;
+    text-align: center;
+
+    a {
+      font-size: 1.25rem;
+      margin: auto .5rem;
+    }
+  }
+
+  &__copyright {
+    margin: .5rem 0;
+    text-align: center;
+
+    * {
+      color: inherit;
+      font-weight: normal;
+    }
+
+    a {
+      color: inherit;
+    }
+  }
+}

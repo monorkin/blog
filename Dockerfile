@@ -22,6 +22,10 @@ RUN apk update \
       tzdata \
       postgresql-client \
       postgresql-dev \
+      glib \
+      glib-dev \
+      vips \
+      vips-dev \
     && apk -v --purge del build-base
 
 RUN apk add --no-cache --force \
@@ -83,7 +87,8 @@ RUN apk update \
       git \
       nodejs \
       yarn \
-      python3
+      python3 \
+      vim
 RUN yarn global add node-gyp
 
 # Do nothing forever

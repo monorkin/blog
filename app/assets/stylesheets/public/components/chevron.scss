@@ -1,0 +1,40 @@
+.chevron {
+  border-bottom: 3px solid currentColor;
+  border-left: 3px solid currentColor;
+  border-color: currentColor;
+  display: inline-block;
+  height: 0.7rem;
+  width: 0.7rem;
+
+  &--very-thin {
+    border-width: 1px;
+  }
+
+  &--thin {
+    border-width: 2px;
+  }
+
+  &--normal {
+    border-width: 3px;
+  }
+
+  &--thick {
+    border-width: 4px;
+  }
+
+  &--left {
+    transform: rotate(45deg);
+  }
+
+  &--top {
+    transform: rotate(135deg);
+  }
+
+  &--right {
+    transform: rotate(225deg);
+  }
+
+  &--bottom {
+    transform: rotate(315deg);
+  }
+}

@@ -1,0 +1,29 @@
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
+
+.spinner {
+  animation-name: spin;
+  animation-duration: 500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  border-radius: 50%;
+  border-top: 0.1rem solid $primary_text_color;
+  border-right: 0.1rem solid $primary_text_color;
+
+  display: inline-block;
+
+  height: 1rem;
+  width: 1rem;
+
+  &--dark_color_scheme {
+    border-top: 0.1rem solid $darkmode_primary_text_color;
+    border-right: 0.1rem solid $darkmode_primary_text_color;
+  }
+}

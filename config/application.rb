@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
 require "rails"
@@ -28,5 +30,14 @@ module Blog
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # Allowed application hosts
+    config.hosts << 'stanko.io'
+    config.hosts << 'blog.stanko.io'
+    config.hosts << 'stanko.test'
+    config.hosts << 'blog.stanko.test'
+
+    # Use custom error pages
+    config.exceptions_app = self.routes
   end
 end

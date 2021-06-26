@@ -1,0 +1,85 @@
+= content_for :head
+  title Hey 👋, I'm, Stanko
+  meta name="description" content="A software developer focused on the Web and hardware. I'm a Ruby Zagreb user-group co-organizer..."
+  meta rel="canonical" href=public_root_url
+  meta name="twitter:card" content="summary"
+  meta name="twitter:creator" content="@monorkin"
+  meta property="og:title" content="Hey 👋, I'm, Stanko"
+  meta property="og:description" content="A software developer focused on the Web and hardware. I'm a Ruby Zagreb user-group co-organizer..."
+  meta property="og:type" content="website"
+  meta property="og:url" content=public_root_url
+  meta property="og:image" content=asset_pack_url('media/images/public/portrait.jpg')
+  meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."
+
+.about
+  .about__header
+    .about__header__bio
+      h1
+        |Hey 👋, I'm
+        '
+        u Stanko
+      p
+        |A software developer focused on the Web and hardware.
+      p
+        |I'm a Ruby Zagreb user-group co-organizer.
+      p
+        | I prefere to work with
+        '
+        a href="https://www.ruby-lang.org/en/" target="_blank" Ruby
+        |,
+        '
+        a href="https://elixir-lang.org/" target="_blank" Elixir
+        '
+        |&
+        '
+        a href="https://www.rust-lang.org/" target="_blank" Rust
+    .about__header__picture
+      = image_pack_tag 'media/images/public/portrait.jpg', \
+        alt: "Portrait photograph of Stanko K.R."
+  .about__info
+    .about__info__description
+      h3 About this site
+      |This is a place where I voice my thoughts about various subjects in the
+      '
+      |form of
+      '
+      = link_to 'articles on my blog "Not again"', public_articles_url
+      |.
+    .about__info__shortlist
+      h3 Around the Web
+      .about__info__shortlist__item
+        = inline_svg_pack_tag 'media/images/public/icons/mail.svg', \
+          alt: 'Envelope', \
+          class: 'about__info__shortlist__item__icon', \
+          title: "Contact e-mail address"
+        a href="mailto:hey@stanko.io" hey@stanko.io
+      .about__info__shortlist__item title="PGP key"
+        = inline_svg_pack_tag 'media/images/public/icons/key.svg', \
+          alt: 'Key', \
+          class: 'about__info__shortlist__item__icon', \
+          title: "PGP key"
+        a href="https://keys.openpgp.org/vks/v1/by-fingerprint/1693BE29F22D9DC4ADBA6627152AE7E1127A1EEE" target="_blank" 152A E7E1 127A 1EEE
+      .about__info__shortlist__item title="Twitter profile"
+        = inline_svg_pack_tag 'media/images/public/icons/twitter.svg', \
+          alt: 'Twitter logo', \
+          class: 'about__info__shortlist__item__icon', \
+          title: "Twitter handle"
+        a href="https://twitter.com/monorkin" target="_blank" @monorkin
+      .about__info__shortlist__item title="Mastodon profile"
+        = inline_svg_pack_tag 'media/images/public/icons/send.svg', \
+          alt: 'Paper plane', \
+          class: 'about__info__shortlist__item__icon', \
+          title: "Mastodon handle"
+        a href="https://mastodon.social/web/accounts/152166" target="_blank" @monorkin@mastodon.social
+      .about__info__shortlist__item title="GitHub profile"
+        = inline_svg_pack_tag 'media/images/public/icons/github.svg', \
+          alt: 'GitHub logo', \
+          class: 'about__info__shortlist__item__icon', \
+          title: "GitHub profile"
+        a href="https://github.com/monorkin" target="_blank" github.com/monorkin
+      .about__info__shortlist__item title="LinkedIn profile"
+        = inline_svg_pack_tag 'media/images/public/icons/linkedin.svg', \
+          alt: 'LinkedIn logo', \
+          class: 'about__info__shortlist__item__icon', \
+          title: "LinkedIn profile"
+        a href="https://www.linkedin.com/in/stanko-krtalic" target="_blank" linkedin.com/in/stanko-krtalic

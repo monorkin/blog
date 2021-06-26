@@ -20,7 +20,6 @@ server:
 
 ## Starts a development server
 dev-server:
-	@./bin/webpack-dev-server &
 	@rails s -b 0.0.0.0 -p 3000
 
 ## Stops all containers
@@ -82,16 +81,29 @@ test: bundle
 ##                                  DATABASE                                  ##
 ################################################################################
 
-## Runs pending migrations and annotates models with the current DB state
-migrate:
-	@bundle exec rake db:migrate && \
-		bundle exec annotate \
-			--models --show-migration --show-foreign-keys --show-indexes \
-			--classified-sort --with-comment
+## Runs pending migrations and annotates models with the current DB schema
+migrate: run_migrations annotate
+
+## Undoes the previous migration, if possible, and annotates models with the current DB schema
+rollback: rollback_migration annotate
+
+## Runs the migrations
+run_migrations:
+	@bundle exec rake db:migrate
+
+## Undo the previous migration, if possible
+rollback_migration:
+	@bundle exec rake db:rollback
+
+## Adds annotation comments to the top of each model describing their DB schema
+annotate:
+	@bundle exec annotate \
+		--models --show-migration --show-foreign-keys --show-indexes \
+		--classified-sort --with-comment
 
 ## Starts a MySQL session
 psql:
-	@docker-compose exec $(DB_SERVICE) psql -u postgres -d postgres
+	@docker-compose exec $(DB_SERVICE) psql -U postgres -d postgres
 
 ################################################################################
 ##                                 DEPLOYMENT                                 ##

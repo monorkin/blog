@@ -14,6 +14,8 @@
 yarn-debug.log*
 
 # Ignore tempfiles
+/public/uploads/*
+!/public/uploads/.keep
 /tmp/*
 !/tmp/.keep
 /tmp/pids/*
@@ -27,6 +29,7 @@ yarn-debug.log*
 
 # Ignore encryption secrets
 /config/master.key
+/config/credentials/*.key
 
 # Ignore OS specific files
 .DS_Store
@@ -34,3 +37,5 @@ yarn-debug.log*
 # Ignore editor artefacts and configuration
 *.swap
 /tags
+
+/config/credentials/development.key

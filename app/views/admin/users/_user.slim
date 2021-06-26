@@ -1,0 +1,3 @@
+tr
+  td = link_to user.username, [:admin, user]
+  td = "#{user.last_login_at} (#{time_ago_in_words(user.last_login_at)} ago)"

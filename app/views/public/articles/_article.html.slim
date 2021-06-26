@@ -1,0 +1,25 @@
+article.articles_list__article
+  .articles_list__article__meta
+    .articles_list__article__meta__group.articles_list__article__meta__group--large
+      - if article.published?
+        time.articles_list__article__meta__group__timestamp datetime=article.published_at.iso8601
+          = article.published_at.strftime("%B %d, %Y")
+      - else
+        span.articles_list__article__meta__group__timestamp Draft
+      span.articles_list__article__meta__group__reading_time
+        = article.content.reading_time
+        '
+        |min read
+    .articles_list__article__meta__group
+      span.articles_list__article__meta__group__tags
+  .articles_list__article__title
+    h2 = article.title
+  - if article.primary_image.present?
+    .articles_list__article__image
+      a href=public_article_path(article.slug)
+        = article_image_tag(article.primary_image, alt: "Title image for \"#{article.title}\"")
+  .articles_list__article__excerpt
+    p = article.excerpt
+    p
+      = link_to public_article_path(article.slug)
+        | Continue reading ...

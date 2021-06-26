@@ -1,0 +1,58 @@
+= content_for :head
+  - seo_article = Article::SEODecorator.new(@record)
+  title = seo_article.title
+  meta name="description" content=seo_article.excerpt
+  meta rel="canonical" href=public_article_url(@record.slug)
+  meta name="twitter:card" content="summary"
+  meta name="twitter:creator" content="@monorkin"
+  meta property="og:title" content=seo_article.title
+  meta property="og:description" content=seo_article.excerpt
+  meta property="og:type" content="article"
+  meta property="og:url" content=public_article_url(@record.slug)
+  - if @record.primary_image.present?
+    meta property="og:image" content=@record.primary_image.image_url(:large)
+
+article.article
+  = @record.content.to_html.html_safe
+
+  hr
+
+  / .article__links
+    = link_to public_article_analytics_path(article_slug: @record.slug), class: 'article__links__link'
+      = inline_svg_pack_tag('media/images/public/icons/activity.svg', class: 'article__links__link__icon')
+      span Analytics
+    = link_to public_article_analytics_path(article_slug: @record.slug), class: 'article__links__link'
+      = inline_svg_pack_tag('media/images/public/icons/share-2.svg', class: 'article__links__link__icon')
+      span Shared
+
+  - if @record.tags.any?
+    .article__tags
+      h6.article__suggestions__title Tags
+      - @record.tags.order(name: :asc).each do |tag|
+        = link_to tag.name, public_articles_url(search: { tags: { in: [tag.name] } }), class: 'tag'
+
+  - if @record.simmilar_articles.any?
+    .article__suggestions
+      h6.article__suggestions__title Other articles
+      - @record.simmilar_articles.each do |article|
+        = article.title
+  hr
+
+  .subscribe.subscribe--rss
+    = inline_svg_pack_tag 'media/images/public/icons/rss.svg', title: 'RSS logo', class: 'subscribe__icon'
+    .subscribe__info
+      span
+        |Consider subscribing to the
+        '
+        = link_to 'RSS feed', rss_public_articles_url
+        '
+        |or
+        '
+        = link_to 'Atom feed', atom_public_articles_url
+  /.subscribe.subscribe--mail
+    .subscribe__icon
+      i.fas.fa-paper-plane
+    .subscribe__info
+      span
+        |Consider subscribing to the mailing list
+

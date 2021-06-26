@@ -1,0 +1,38 @@
+.content
+  .analytics
+    .analytics__title
+      h1 Analytics for "#{@record.article.title}"
+    .analytics__links
+      = link_to articles_path(@record.article.slug)
+        i.fas.fa-chevron-left
+        '
+        | Back to article
+
+    h3 Counts & rankings
+    table.analytics__overview
+      tbody
+        tr
+          td Total number of views
+          td = @record.view_count
+        tr
+          td Rank by views
+          td
+            |#
+            / = Blog.articles.Ranking.by_views(@record)
+        tr
+          td Rank by popularity
+          td
+            |#
+            / = Blog.articles.Ranking.by_popularity(@record)
+
+    h3 Where did people find this article?
+    table.analytics__referrers
+      thead
+        tr
+          th Referrer
+          th Count
+      tbody
+        / = Enum.sort(@acalytic.referrers, fn {_, a}, {_, b} -> a >= b end) |> Enum.take(50) |> Enum.map fn {host, count} ->
+          tr
+            td = link(host, to: "https://duckduckgo.com/?q=blog.stanko.io#{Routes.articles_path(@conn, :show, Blog.article.slug(@record))}%20site%3A#{host}")
+            td = count

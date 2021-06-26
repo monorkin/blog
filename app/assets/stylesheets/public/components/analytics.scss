@@ -1,0 +1,161 @@
+.analytics {
+  &__links {
+    margin: .3rem 0;
+
+    a * {
+      color: inherit;
+    }
+  }
+
+  &__overview {
+    border-collapse: collapse;
+    margin: 1rem 0;
+    table-layout: auto;
+    width: 100%;
+
+    tbody tr:first-child {
+      td:first-child {
+        border-radius: .25rem 0 0 0;
+      }
+
+      td:last-child {
+        border-radius: 0 .25rem 0 0;
+      }
+    }
+
+    tbody tr:last-child {
+      td {
+        border-bottom: 0;
+      }
+
+      td:first-child {
+        border-radius: 0 0 0 .25rem;
+      }
+
+      td:last-child {
+        border-radius: 0 0 .25rem 0;
+      }
+    }
+
+    td, th {
+      background: $analytic_tables_background_color;
+      padding: .5rem;
+    }
+
+    td {
+      border-bottom: 1px solid $analytic_tables_border_color;
+
+      &:first-child {
+        font-weight: bold;
+      }
+    }
+
+    th {
+      background: $analytic_tables_header_background_color;
+    }
+  }
+
+  &__referrers {
+    border-collapse: collapse;
+    margin: 1rem 0;
+    table-layout: auto;
+    width: 100%;
+
+    thead tr th {
+      text-align: left;
+    }
+
+    thead tr:first-child {
+      th:first-child {
+        border-radius: .25rem 0 0 0;
+      }
+
+      th:last-child {
+        border-radius: 0 .25rem 0 0;
+      }
+    }
+
+    tbody tr:last-child {
+      td {
+        border-bottom: 0;
+      }
+
+      td:first-child {
+        border-radius: 0 0 0 .25rem;
+      }
+
+      td:last-child {
+        border-radius: 0 0 .25rem 0;
+      }
+    }
+
+    td, th {
+      background: $analytic_tables_background_color;
+      padding: .5rem;
+    }
+
+    td {
+      border-bottom: 1px solid $analytic_tables_border_color;
+    }
+
+    td a, td a:visited {
+      color: $analytic_tables_link_color;
+    }
+
+    td:first-child {
+      font-weight: bold;
+    }
+
+    th {
+      background: $analytic_tables_header_background_color;
+    }
+  }
+}
+
+// @media (prefers-color-scheme: dark) {
+//   .analytics {
+//     &__links {
+//       margin: .3rem 0;
+
+//       a * {
+//         color: inherit;
+//       }
+//     }
+
+//     &__overview {
+//       td, th {
+//         background: $darkmode_analytic_tables_background_color;
+//       }
+
+//       th {
+//         background: $darkmode_analytic_tables_header_background_color;
+//       }
+
+//       tbody {
+//         td {
+//           border-color: $darkmode_analytic_tables_border_color;
+//         }
+//       }
+//     }
+
+//     &__referrers {
+//       td, th {
+//         background: $darkmode_analytic_tables_background_color;
+//       }
+
+//       td a, td a:visited {
+//         color: $darkmode_analytic_tables_link_color;
+//       }
+
+//       th {
+//         background: $darkmode_analytic_tables_header_background_color;
+//       }
+
+//       tbody {
+//         td {
+//           border-color: $darkmode_analytic_tables_border_color;
+//         }
+//       }
+//     }
+//   }
+// }

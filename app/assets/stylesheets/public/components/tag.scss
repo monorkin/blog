@@ -1,0 +1,14 @@
+.tag {
+  background: #bd335a;
+  border-radius: .35rem;
+  color: #b0dae5;
+  padding: .2rem .4rem;
+  margin-right: .3rem;
+  margin-bottom: .3rem;
+  word-break: break-all;
+  display: inline-block;
+}
+
+.tag:last-child {
+  margin-right: 0;
+}

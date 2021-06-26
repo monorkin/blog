@@ -1,0 +1,70 @@
+.row.mt-3
+  .col
+    h1 = @article.title
+
+.row.mt-3
+  .col
+    = link_to :back, class: 'btn btn-lg btn-secondary'
+      i.fas.fa-chevron-left
+      '
+      | Back
+    = link_to [:edit, :admin, @article], class: 'btn btn-lg btn-primary'
+      i.fas.fa-edit
+      '
+      | Edit
+    = link_to public_article_url(@article.slug), class: 'btn btn-lg btn-info'
+      i.fas.fa-eye
+      '
+      | Dispaly
+    = link_to [:new, :admin, :article_import, article_id: @article], class: 'btn btn-lg btn-warning'
+      i.fas.fa-file-import
+      '
+      | Re-import
+    = link_to [:admin, @article], \
+    class: 'btn btn-lg btn-danger', \
+    method: :delete,
+    data: { confirm: 'Are you sure you want to delete this article?' }
+      i.fas.fa-trash
+      '
+      | Delete
+
+
+- if @article.errors.any?
+  .row
+    .col
+      - @article.errors.each do |error|
+        .alert.alert-danger.mt-2
+          = error
+
+.row.mt-3
+  .col
+    .table-responsive
+      table.table
+        tbody
+          tr
+            td ID
+            td = @article.id
+          tr
+            td Slug
+            td = @article.slug
+          tr
+            td Published
+            td = @article.published
+          tr
+            td Publish at
+            td = "#{@article.publish_at} (#{time_ago_in_words(@article.publish_at)})"
+          tr
+            td Primary image
+            td
+              - if @article.primary_image
+                = image_tag @article.primary_image&.image_url, class: 'img-fluid'
+              - else
+                | -
+          tr
+            td Excerpt
+            td = @article.excerpt
+
+/ .row
+  .col
+    hr
+    iframe src=public_article_url(@article.slug)

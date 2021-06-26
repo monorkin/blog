@@ -1,0 +1,74 @@
+.color_scheme * {
+  transition: background-color 120ms, color 120ms;
+}
+
+.color_scheme_switch_container {
+  display: flex;
+  align-items: center;
+
+  .color_scheme_switch {
+    margin-left: .3rem;
+  }
+}
+
+.color_scheme_switch {
+  background: none;
+  display: inline-block;
+  width: 2rem;
+  height: 1rem;
+  border: 1px solid $secundary_text_color;
+  border-radius: 0.5rem;
+  position: relative;
+  cursor: pointer;
+}
+
+.color_scheme_switch::after {
+  content: '';
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 0.4rem;
+  background: $secundary_text_color;
+  position: absolute;
+  top: calc(0.1rem - 1px);
+  transition: left 120ms;
+  transition-timing-function: ease-out;
+  left: 0.1rem
+}
+
+.color_scheme.color_scheme--dark {
+  background-color: $darkmode_background;
+  color: $darkmode_primary_text_color;
+
+  .main {
+    background-color: $darkmode_background;
+  }
+
+  .article {
+    @extend .article--dark_color_scheme;
+  }
+
+  .article_list {
+    @extend .articles_list--dark_color_scheme;
+  }
+
+  .popup {
+    @extend .popup--dark_color_scheme;
+  }
+
+  .subscribe {
+    @extend .subscribe--dark_color_scheme;
+  }
+
+  .spinner {
+    @extend .spinner--dark_color_scheme;
+  }
+
+  .color_scheme_switch {
+    border-color: $hot_pink;
+  }
+
+  .color_scheme_switch::after {
+    background: $hot_pink;
+    left: calc(2rem - 0.1rem - 0.8rem - 2px);
+  }
+}

@@ -10,21 +10,46 @@ services:
   redis:
     image: "redis:5.0-alpine"
 
+  webpack-dev-server:
+    build:
+      context: .
+      target: development
+    image: 'blog-development'
+    volumes:
+      - "$PWD:/app"
+      - bundle_store:/usr/local/bundle
+    ports:
+      - '3035:3035'
+    environment:
+      - LOCAL_USER_ID=${LOCAL_USER_ID}
+      - NODE_ENV=development
+      - RAILS_ENV=development
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+      - DATABASE_URL=postgres://postgres:postgres@db/blog
+    command: ./bin/webpack-dev-server
+    restart: unless-stopped
+
   app:
     build:
       context: .
       target: development
+    image: 'blog-development'
     volumes:
       - .:/app
+      - bundle_store:/usr/local/bundle
     depends_on:
       - db
       - redis
+      - webpack-dev-server
     ports:
       - "3000:3000"
     environment:
       - LOCAL_USER_ID=${LOCAL_USER_ID}
+      - WEBPACKER_DEV_SERVER_HOST=webpack-dev-server
+      - DATABASE_URL=postgres://postgres:postgres@db/blog
     tty: true
     stdin_open: true
 
 volumes:
   db_store: {}
+  bundle_store: {}

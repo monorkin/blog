@@ -1,0 +1,30 @@
+.row.mt-3
+  .col
+    = search_form_for @q, url: admin_root_path do |f|
+      .input-group
+        = f.search_field :content_or_title_or_slug_cont, \
+        class: 'form-control', \
+        placeholder: 'Search'
+        = f.submit 'Search', class: 'btn btn-outline-secondary'
+  .col
+    .d-flex.justify-content-end
+      = link_to new_admin_article_path, class: 'btn btn-primary'
+        i.fas.fa-plus
+        '
+        | New article
+      = link_to new_admin_import_path, class: 'btn btn-warning'
+        i.fas.fa-file-import
+        '
+        | Import article
+
+.row.mt-3
+  .col
+    .table-responsive
+      table.table
+        thead
+          tr
+            th = sort_link(@q, :title)
+            th = sort_link(@q, :published)
+            th = sort_link(@q, :publish_at)
+        tbody
+          = render partial: 'article', collection: @articles

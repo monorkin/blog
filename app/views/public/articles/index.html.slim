@@ -1,0 +1,32 @@
+= content_for :head
+  title Blog | Not again | Stanko K.R.
+  meta name="description" content="List of articles in Not again"
+  meta rel="canonical" href=public_articles_url
+  meta name="twitter:card" content="summary"
+  meta name="twitter:creator" content="@monorkin"
+  meta property="og:title" content="Blog | Not again | Stanko K.R."
+  meta property="og:description" content="List of articles in Not again"
+  meta property="og:type" content="blog"
+  meta property="og:url" content=public_articles_url
+  meta property="og:image" content=asset_pack_url('media/images/public/not_again_blog.jpg')
+
+.hidden
+  h1 Blog | Not again | Stanko K.R.
+
+.content
+  section.articles_search
+  section.articles_list
+    = render collection: @records, partial: :article
+  section.pagination
+    .pagination__button
+      - if @paginator.previous?
+        = link_to url_for(before: @paginator.previous)
+          span.chevron.chevron--left
+          '
+          | Newer articles
+    .pagination__button
+      - if @paginator.next?
+        = link_to url_for(after: @paginator.next)
+          | Older articles
+          '
+          span.chevron.chevron--right

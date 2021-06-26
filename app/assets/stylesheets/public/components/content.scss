@@ -1,0 +1,16 @@
+.content {
+  max-width: $content_width;
+  margin: auto;
+
+  @include media('<phone') {
+    padding: 0 .6rem;
+  }
+
+  @include media('>=phone', '<tablet') {
+    padding: 0 .6rem;
+  }
+
+  @include media('>=tablet', '<desktop') {
+    padding: 0 .6rem;
+  }
+}

@@ -1,16 +1,16 @@
 .link_preview {
   display: flex;
   flex-direction: column;
+  font-size: 0.85rem;
+  max-width: #{$content_width / 2};
+  // max-height: 50vh;
+  // overflow-y: scroll;
+  // overflow-x: hidden;
 
   &__image {
     order: 1;
     max-height: 10rem;
-
-    img {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
+    object-fit: cover;
   }
 
   &__text {

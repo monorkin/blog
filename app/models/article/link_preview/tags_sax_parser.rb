@@ -67,19 +67,19 @@ class Article
       def parse_open_graph_title_tag(attrs)
         return if attrs['content'].blank?
 
-        link_preview.title ||= attrs['content']
+        link_preview.title = attrs['content']
       end
 
       def parse_open_graph_description_tag(attrs)
         return if attrs['content'].blank?
 
-        link_preview.description ||= attrs['content']
+        link_preview.description = attrs['content']
       end
 
       def parse_open_graph_image_tag(attrs)
         return if attrs['content'].blank?
 
-        link_preview.image_url ||= attrs['content']
+        link_preview.image_url = attrs['content']
       end
 
       def parse_twitter_meta_tag(attrs)

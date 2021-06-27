@@ -49,11 +49,11 @@ export default class extends Controller {
     popupContent.dataset.linkPreviewTarget = 'popup'
     popupContent.innerHTML = `
       <div class="popup__container">
+        <div data-popper-arrow class="popup__container__arrow"></div>
         <turbo-frame id="link_preview-${this.idValue}" class="popup__container__content" src="${this.previewUrl}">
           <span class="spinner"></span> Loading preview...
         </turbo-frame>
       </div>
-      <div data-popper-arrow class="popup__arrow"></div>
     `
     this.element.appendChild(popupContent)
 
@@ -95,6 +95,6 @@ export default class extends Controller {
   }
 
   get previewUrl() {
-    return `${this.baseUrlValue}/${encodeURI(this.idValue)}?url=${encodeURI(this.urlValue)}`
+    return `${this.baseUrlValue}/${encodeURI(this.idValue)}?url=${btoa(this.urlValue)}`
   }
 }

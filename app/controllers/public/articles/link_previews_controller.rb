@@ -11,7 +11,7 @@ module Public
       def show
         @record = Article.from_slug!(params[:article_slug])
 
-        return(head status: :not_found) unless @record.content.valid_link?(url, id)
+        return(head :not_found) unless @record.content.valid_link?(url, id)
 
         @link_preview = Rails.cache.fetch(link_preview_cache_key) do
           Article::LinkPreview.new(url: url)
@@ -34,7 +34,9 @@ module Public
       end
 
       def url
-        params[:url]
+        return if params[:url].blank?
+
+        Base64.decode64(params[:url])
       end
     end
   end

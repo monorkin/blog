@@ -89,7 +89,7 @@ class Article < ApplicationRecord
     content
   end
 
-  def simmilar_articles
-    Article.published.where.not(id: self).order(published_at: :desc).limit(2)
+  def simmilar_articles(count = 2)
+    Article.published.where.not(id: self).order(published_at: :desc).limit(count)
   end
 end

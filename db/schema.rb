@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_25_065024) do
+ActiveRecord::Schema.define(version: 2021_06_27_083831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -58,7 +58,9 @@ ActiveRecord::Schema.define(version: 2021_01_25_065024) do
     t.datetime "publish_at"
     t.boolean "published", default: false, null: false
     t.datetime "published_at", precision: 6, default: -> { "COALESCE(publish_at, created_at)" }
+    t.string "thread"
     t.index ["published_at"], name: "index_articles_on_published_at"
+    t.index ["thread"], name: "index_articles_on_thread"
   end
 
   create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

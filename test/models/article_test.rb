@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20210125065024
+# Schema version: 20210627083831
 #
 # Table name: articles
 #
@@ -9,6 +9,7 @@
 #  published    :boolean          default(FALSE), not null
 #  published_at :datetime
 #  slug         :text             default(""), not null
+#  thread       :string
 #  title        :text             default(""), not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
@@ -16,6 +17,7 @@
 # Indexes
 #
 #  index_articles_on_published_at  (published_at)
+#  index_articles_on_thread        (thread)
 #
 require 'test_helper'
 

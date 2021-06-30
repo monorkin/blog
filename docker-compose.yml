@@ -47,6 +47,7 @@ services:
       - LOCAL_USER_ID=${LOCAL_USER_ID}
       - WEBPACKER_DEV_SERVER_HOST=webpack-dev-server
       - DATABASE_URL=postgres://postgres:postgres@db/blog
+      - REDIS_URL=redis://redis:6379/0
     tty: true
     stdin_open: true
 

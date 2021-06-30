@@ -11,19 +11,23 @@ export default class extends Controller {
   HIDDEN_CLASS = 'hidden'
 
   connect() {
+    this.shown = false
     if (!this.baseUrlValue) this.baseUrlValue = `${window.location.pathname}/link_previews`
     if (!this.hasUrlValue) this.urlValue = this.element.href
   }
 
   disconnect() {
+    this.shown = false
     if (this.popup) this.popup.destroy()
   }
 
   show() {
+    this.shown = true
     this.showPopupIfContentExists()
   }
 
   hide() {
+    this.shown = false
     if (this.hasPopupTarget) this.popupTarget.classList.add(this.HIDDEN_CLASS)
     if (this.popup) this.popup.update()
   }
@@ -31,7 +35,7 @@ export default class extends Controller {
   async showPopupIfContentExists() {
     const contentExists = await this.cachedContentExists()
 
-    if (!contentExists) return
+    if (!contentExists || !this.shown) return
     this.showPopup()
   }
 

@@ -41,8 +41,10 @@ class Article
       super(content)
     end
 
-    def to_html
+    def to_html(raw: false)
       @html_content ||= Nokogiri::HTML(render_to(:html)).tap do |document|
+        next if raw
+
         add_publication_date_to_html_document(document)
         change_attachemnt_urls_in_html_document(document)
         add_link_preview_attributes_to_html_document(document)
@@ -50,7 +52,7 @@ class Article
     end
 
     def to_text
-      @text_content ||= Nokogiri::HTML(to_html).text.strip
+      @text_content ||= Nokogiri::HTML(to_html(raw: true)).text.strip
     end
 
     def to_s

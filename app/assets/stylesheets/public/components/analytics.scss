@@ -7,6 +7,64 @@
     }
   }
 
+  &__monthly_views {
+    direction: rtl;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 20rem;
+
+    &__month {
+      direction: ltr;
+      border-left: 1px solid lighten($analytic_tables_header_background_color, 10%);
+      height: 100%;
+      padding: 0.25rem;
+      position: relative;
+      width: 2rem;
+
+      &__count {
+        height: 77%;
+        position: relative;
+
+        &__label {
+          bottom: 0.5rem;
+          left: 0.25rem;
+          position: absolute;
+          right: 0.25rem;
+          transform: rotate(-90deg);
+          white-space: nowrap;
+        }
+
+        &__bar {
+          background: $analytic_tables_header_background_color;
+          bottom: 0;
+          border: 1px solid darken($analytic_tables_border_color, 10%);
+          border-radius: 0.3rem;
+          left: 0;
+          position: absolute;
+          right: 0;
+        }
+      }
+
+      &__name {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        height: 5rem;
+        justify-content: center;
+        position: relative;
+
+        &__label {
+          align-items: center;
+          display: flex;
+          justify-content: center;
+          transform: rotate(-90deg);
+        }
+      }
+    }
+  }
+
   &__overview {
     border-collapse: collapse;
     margin: 1rem 0;
@@ -111,51 +169,3 @@
     }
   }
 }
-
-// @media (prefers-color-scheme: dark) {
-//   .analytics {
-//     &__links {
-//       margin: .3rem 0;
-
-//       a * {
-//         color: inherit;
-//       }
-//     }
-
-//     &__overview {
-//       td, th {
-//         background: $darkmode_analytic_tables_background_color;
-//       }
-
-//       th {
-//         background: $darkmode_analytic_tables_header_background_color;
-//       }
-
-//       tbody {
-//         td {
-//           border-color: $darkmode_analytic_tables_border_color;
-//         }
-//       }
-//     }
-
-//     &__referrers {
-//       td, th {
-//         background: $darkmode_analytic_tables_background_color;
-//       }
-
-//       td a, td a:visited {
-//         color: $darkmode_analytic_tables_link_color;
-//       }
-
-//       th {
-//         background: $darkmode_analytic_tables_header_background_color;
-//       }
-
-//       tbody {
-//         td {
-//           border-color: $darkmode_analytic_tables_border_color;
-//         }
-//       }
-//     }
-//   }
-// }

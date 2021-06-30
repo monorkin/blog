@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # == Schema Information
-# Schema version: 20210125065024
+# Schema version: 20210627083831
 #
 # Table name: articles
 #
@@ -11,6 +11,7 @@
 #  published    :boolean          default(FALSE), not null
 #  published_at :datetime
 #  slug         :text             default(""), not null
+#  thread       :string
 #  title        :text             default(""), not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
@@ -18,9 +19,25 @@
 # Indexes
 #
 #  index_articles_on_published_at  (published_at)
+#  index_articles_on_thread        (thread)
 #
 class Article < ApplicationRecord
   include ActionView::Helpers::TextHelper
+
+  POPULARITY_SQL = <<~SQL.squish
+    ROUND(
+      CAST(
+        (
+          (article_statistics.view_count + 1) /
+          POWER(
+            (EXTRACT(EPOCH FROM current_timestamp-articles.published_at) / 3600),
+            1.8
+          )
+        ) AS numeric
+      ),
+      6
+    )
+  SQL
 
   has_one :statistic,
           class_name: 'Article::Statistic',
@@ -35,19 +52,34 @@ class Article < ApplicationRecord
   has_many :taggings,
            class_name: 'Article::Tagging',
            dependent: :destroy
-  has_many :tags, through: :taggings
+  has_many :tags,
+           through: :taggings
+
+  # validates :id, short_id: true
+  validates :title,
+            presence: true
+  validates :content,
+            presence: true
+  validates :statistic,
+            presence: true
+
+  after_validation do
+    build_statistic if statistic.blank?
+  end
 
   default_scope do
     order(published: :desc, published_at: :desc, title: :asc)
   end
 
   scope(:published, lambda do
-    where(published: true).where('published_at <= NOW()')
+    where(published: true).where.not(published_at: (Time.current..))
   end)
 
-  # validates :id, short_id: true
-  validates :title, presence: true
-  validates :content, presence: true
+  scope(:sorted_by_popularity, lambda do
+    joins(:statistic)
+    .references(:statistic)
+    .order("#{POPULARITY_SQL} ASC", published_at: :desc)
+  end)
 
   def self.from_slug(slug)
     from_slug!(slug)
@@ -62,6 +94,10 @@ class Article < ApplicationRecord
     raise(ActiveRecord::RecordNotFound, nil, id, self, :id) unless id
 
     find(id)
+  end
+
+  def to_param
+    slug
   end
 
   def slug
@@ -89,7 +125,15 @@ class Article < ApplicationRecord
     content
   end
 
-  def simmilar_articles(count = 2)
-    Article.published.where.not(id: self).order(published_at: :desc).limit(count)
+  def popularity
+    ((statistic.view_count + 1) / (hours_since_publication**1.8)).round(6)
+  end
+
+  def hours_since_publication
+    (Time.current - published_at) / 1.hour
+  end
+
+  def suggested_articles
+    Article.all.published.sorted_by_popularity.where.not(id: self)
   end
 end

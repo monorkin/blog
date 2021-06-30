@@ -25,10 +25,15 @@ html
     meta name="msapplication-TileColor" content="#2d89ef"
     meta name="msapplication-TileImage" content="/mstile-144x144.png"
     meta name="theme-color" content="#fff8f0"
-    = stylesheet_pack_tag 'public', media: 'all', 'data-turbolinks-track': 'reload'
-    = javascript_pack_tag 'public', 'data-turbolinks-track': 'reload'
+    = stylesheet_pack_tag 'public', media: 'all', 'data-turbo-track': 'reload'
+    = javascript_pack_tag 'public', 'data-turbo-track': 'reload'
 
-  body.color_scheme.color_scheme--automatic data-controller="color-scheme" data-color-scheme-light-class="color_scheme--light" data-color-scheme-dark-class="color_scheme--dark" data-color-scheme-auto-class="color_scheme--automatic"
+  body.color_scheme.color_scheme--automatic[
+  data-controller="color-scheme"
+  data-color-scheme-light-class="color_scheme--light"
+  data-color-scheme-dark-class="color_scheme--dark"
+  data-color-scheme-auto-class="color_scheme--automatic"
+  ]
     - if display_header
       = render 'public/shared/header'
 

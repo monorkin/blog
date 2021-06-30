@@ -21,9 +21,8 @@ module Public
       @nexter = Nexter.wrap(scope, @record)
 
       authorize(@record)
-      log_visit(@record)
-
       fresh_when(@record)
+      @record.statistic.log_visit!(request)
     end
 
     def atom
@@ -39,7 +38,9 @@ module Public
     private
 
     def scope
-      policy_scope(Article.published).order(published_at: :desc)
+      policy_scope(Article.published)
+        .order(published_at: :desc)
+        .preload(:statistic, :primary_image)
     end
 
     def atom_feed
@@ -74,12 +75,6 @@ module Public
           item.updated = article.updated_at.to_time.w3cdtf
         end
       end
-    end
-
-    def log_visit(article)
-      Article::VisitAnalysisEnqueuer.call(article: article, request: request)
-    rescue => e
-      nil
     end
   end
 end

@@ -4,7 +4,6 @@
 // that code so it'll be compiled.
 
 require('@rails/ujs').start()
-require('turbolinks').start()
 import 'bootstrap'
 
 // const channels = require.context('./channels', true, /_channel\.js$/)

@@ -1,0 +1,25 @@
+.article_suggestion {
+  display: flex;
+  flex-direction: row;
+
+  & &__image {
+    max-width: 25%;
+
+    img {
+      height: auto;
+      width: 100%;
+    }
+  }
+
+  & &__content {
+    padding: 0 0.5rem;
+
+    &__title {
+      margin: 0 0 1rem;
+    }
+
+    &__info {
+      color: $secundary_text_color;
+    }
+  }
+}

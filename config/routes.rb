@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
+require 'resque'
+require 'resque/server'
+
 Rails.application.routes.draw do
   namespace :admin do
+    mount Resque::Server.new, at: '/jobs'
+
     root to: 'articles#index'
 
     resource :sessions, only: %i[new create destroy]

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20210125065024
+# Schema version: 20210627083831
 #
 # Table name: article_taggings
 #
@@ -20,7 +20,6 @@
 #  fk_rails_...  (article_id => articles.id)
 #  fk_rails_...  (tag_id => tags.id)
 #
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
   article: one

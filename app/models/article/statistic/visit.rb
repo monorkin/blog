@@ -14,7 +14,8 @@ class Article
         HTTP_DNT
       ].freeze
 
-      attr_accessor :request,
+      attr_accessor :article,
+                    :request,
                     :fingerprint,
                     :referrer_host,
                     :do_not_track
@@ -32,13 +33,33 @@ class Article
         self.request = nil
       end
 
+      def self.storage
+        Statistic::Storage.find(config[:provider])
+      end
+
+      def self.config
+        Rails.application.config.analytics
+      end
+
       def seen?
-        # TODO: Check if the fingerprint was seen before
-        false
+        storage.remembers?(fingerprint)
       end
 
       def processed!
-        # TODO: Mark the fingerpritn as seen
+        storage.remember!(fingerprint)
+      end
+
+      protected
+
+      def storage
+        @storage ||= self.class.storage.new(article: article,
+                                            expected_size: config[:expected_size],
+                                            error_rate: config[:error_rate],
+                                            options: config[:provider_config])
+      end
+
+      def config
+        self.class.config
       end
 
       private

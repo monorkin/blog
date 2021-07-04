@@ -39,6 +39,10 @@
   background-color: $darkmode_background;
   color: $darkmode_primary_text_color;
 
+  h1, h2, h3, h4, h5, h6 {
+    color: $darkmode_heading_text_color;
+  }
+
   .main {
     background-color: $darkmode_background;
   }
@@ -63,12 +67,32 @@
     @extend .spinner--dark_color_scheme;
   }
 
+  .analytics {
+    @extend .analytics--dark_color_scheme;
+  }
+
+  .table {
+    @extend .table--dark_color_scheme;
+  }
+
+  .header {
+    @extend .header--dark_color_scheme !optional;
+  }
+
+  .article_suggestion {
+    @extend .article_suggestion--dark_color_scheme;
+  }
+
+  .icon {
+    @extend .icon--dark_color_scheme;
+  }
+
   .color_scheme_switch {
-    border-color: $hot_pink;
+    border-color: $darkmode_link_color;
   }
 
   .color_scheme_switch::after {
-    background: $hot_pink;
+    background: $darkmode_link_color;
     left: calc(2rem - 0.1rem - 0.8rem - 2px);
   }
 }

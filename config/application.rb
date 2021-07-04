@@ -2,24 +2,26 @@
 
 require_relative 'boot'
 
-require "rails"
+require 'rails'
 # Pick the frameworks you want:
-require "active_model/railtie"
-require "active_job/railtie"
-require "active_record/railtie"
+require 'active_model/railtie'
+require 'active_job/railtie'
+require 'active_record/railtie'
 # require "active_storage/engine"
-require "action_controller/railtie"
+require 'action_controller/railtie'
 # require "action_mailer/railtie"
 # require "action_mailbox/engine"
 # require "action_text/engine"
-require "action_view/railtie"
-require "action_cable/engine"
+require 'action_view/railtie'
+require 'action_cable/engine'
 # require "sprockets/railtie"
-require "rails/test_unit/railtie"
+require 'rails/test_unit/railtie'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+
+require_relative './version'
 
 module Blog
   class Application < Rails::Application
@@ -31,13 +33,19 @@ module Blog
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    # Store analytics configuration
+    config.analytics = config_for(:analytics)
+
+    # Store Resque configuration
+    config.resque = config_for(:resque)
+
+    # Store security configurations
+    config.security = config_for(:security)
+
     # Allowed application hosts
-    config.hosts << 'stanko.io'
-    config.hosts << 'blog.stanko.io'
-    config.hosts << 'stanko.test'
-    config.hosts << 'blog.stanko.test'
+    config.hosts.push(*config.security[:allowed_hosts])
 
     # Use custom error pages
-    config.exceptions_app = self.routes
+    config.exceptions_app = routes
   end
 end

@@ -112,11 +112,11 @@ class Article < ApplicationRecord
   end
 
   def excerpt(length: 300)
-    truncate(content.to_text, length: length)
+    truncate(content.to_text.sub(title, ''), length: length)
   end
 
   def content
-    @_content ||= ContentDecorator.new(super, self)
+    @_content ||= Content.new(content: super, article: self)
   end
 
   def content=(new_value)

@@ -98,6 +98,7 @@ body > footer {
 }
 
 h1, h2, h3, h4, h5, h6 {
+  color: $heading_text_color;
   font-family: $sans_serif_fonts;
 }
 
@@ -111,37 +112,34 @@ h1, h2, h3, h4, h5, h6 {
 //   }
 // }
 
-// $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
-// @import '~@fortawesome/fontawesome-free/scss/fontawesome';
-// @import '~@fortawesome/fontawesome-free/scss/solid';
-// @import '~@fortawesome/fontawesome-free/scss/regular';
-// @import '~@fortawesome/fontawesome-free/scss/brands';
-
-@import './color_scheme';
-
 /******************************************************************************
  **                                COMPONENTS                                **
  ******************************************************************************/
-@import './components/emphesis';
-@import './components/hidden';
-@import './components/links';
-@import './components/header';
-@import './components/footer';
-@import './components/content';
-@import './components/subscribe';
+@import './components/article_suggestion';
 @import './components/articles_list';
-@import './components/article';
-@import './components/tag';
-@import './components/link_preview';
-@import './components/pagination';
 @import './components/chevron';
+@import './components/content';
+@import './components/emphesis';
+@import './components/footer';
+@import './components/header';
+@import './components/hidden';
+@import './components/icons';
+@import './components/link_preview';
+@import './components/links';
+@import './components/pagination';
 @import './components/popup';
 @import './components/spinner';
-@import './components/article_suggestion';
-@import './components/analytics';
-// @import './components/analytics';
+@import './components/subscribe';
+@import './components/table';
 
 /******************************************************************************
  **                                  PAGES                                   **
  ******************************************************************************/
 @import './pages/about';
+@import './pages/analytics';
+@import './pages/article';
+
+/******************************************************************************
+ **                            COLOR SCHEME SELECTION                        **
+ ******************************************************************************/
+@import './color_scheme';

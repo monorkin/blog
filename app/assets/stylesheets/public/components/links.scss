@@ -10,3 +10,52 @@ a {
     color: $link_visited_color;
   }
 }
+
+.pill_link {
+  border: 1px solid $link_color;
+  border-radius: 1.5rem;
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  // white-space: nowrap;
+
+  &:hover {
+    background: $link_color;
+    color: $background;
+  }
+
+  &.pill_link--grow {
+    transition: background-color 120ms, color 120ms, transform 120ms;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &--spaced {
+    margin: auto 0.3rem 0.5rem 0;
+  }
+}
+
+.color_scheme.color_scheme--dark {
+  a {
+    color: $darkmode_link_color;
+
+    &:visited {
+      color: $darkmode_link_visited_color;
+    }
+
+    &:hover {
+      color: $darkmode_link_visited_color;
+    }
+  }
+
+  .pill_link {
+    border-color: $darkmode_link_color;
+
+    &:hover {
+      background: $darkmode_link_color;
+      color: $darkmode_background;
+    }
+  }
+}
+

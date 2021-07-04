@@ -1,7 +1,10 @@
 .content
   .analytics
     .analytics__title
-      h1 Analytics for "#{@record.article.title}"
+      h1
+        = @record.article.title
+        br
+        |Article analytics
     .analytics__links
       = link_to public_article_url(@record.article.slug)
         i.fas.fa-chevron-left
@@ -9,7 +12,7 @@
         | Back to article
 
     h3 Counts & rankings
-    table.analytics__overview
+    table.table.analytics__overview
       tbody
         tr
           td Total number of views
@@ -18,11 +21,14 @@
           td Popularity score
           td = @record.article.popularity
 
-    - if @record.visit_counts_per_month.any?
+    - if @record.article.published? && @record.visit_counts_per_month.any?
       h3 View count by month
       - max = @record.visit_counts_per_month.values.max.to_f
       .analytics__monthly_views
-        - @record.visit_counts_per_month.to_a.sort_by(&:first).each do |month, count|
+        - year_range = (@record.article.published_at.year..Time.current.year)
+        - months = year_range.flat_map { |year| (1..12).map { |month| "#{year}-#{format('%02d', month)}" } }
+        - months.reverse.each do |month|
+          - count = @record.visit_counts_per_month[month] || 0
           .analytics__monthly_views__month
             .analytics__monthly_views__month__count
               .analytics__monthly_views__month__count__bar style="height: #{(count / max * 100).round(2)}%"
@@ -31,8 +37,8 @@
               .analytics__monthly_views__month__name__label = month
 
     - if @record.referrer_visit_counts.any?
-      h3 Where did people find this article?
-      table.analytics__referrers
+      h3 Backlinks
+      table.table.analytics__referrers
         thead
           tr
             th Referrer

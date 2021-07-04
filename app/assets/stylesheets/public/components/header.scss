@@ -1,4 +1,5 @@
 .header {
+  font-family: $sans_serif_fonts;
   height: 2rem;
   margin-bottom: 3rem;
 
@@ -10,32 +11,23 @@
     align-items: center;
     align-content: stretch;
 
-    &__logo_container {
-      width: 20%;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: flex-start;
-      align-items: center;
-      align-content: stretch;
-
-      &__logo {
-        text-align: center;
-      }
-    }
-
     &__links {
-      width: 60%;
+      width: 80%;
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
-      justify-content: center;
+      justify-content: left;
       align-items: center;
       align-content: stretch;
 
       a {
-        font-size: 1.25rem;
+        @extend .pill_link, .pill_link--grow;
+        font-size: 1rem;
         margin: auto .5rem;
+
+        &:after {
+          content: '';
+        }
       }
     }
 
@@ -49,4 +41,7 @@
       width: 20%;
     }
   }
+}
+
+.header--dark_color_scheme {
 }

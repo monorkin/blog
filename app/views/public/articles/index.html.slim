@@ -20,13 +20,13 @@
   section.pagination
     .pagination__button
       - if @paginator.previous?
-        = link_to url_for(before: @paginator.previous)
+        = link_to url_for(before: @paginator.previous), class: 'pill_link pill_link--grow'
           span.chevron.chevron--left
           '
           | Newer articles
     .pagination__button
       - if @paginator.next?
-        = link_to url_for(after: @paginator.next)
+        = link_to url_for(after: @paginator.next), class: 'pill_link pill_link--grow'
           | Older articles
           '
           span.chevron.chevron--right

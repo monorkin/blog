@@ -32,12 +32,20 @@ class Article
       self.visit_counts_per_month.default = 0
     end
 
-    def log_visit_later(request)
-      visit = Visit.new(request: request)
+    def process_request_later(request)
+      visit = Visit.new(article: article, request: request)
+      return if visit.seen?
+
+      process_visit!(visit)
     end
 
-    def log_visit!(request)
-      visit = Visit.new(request: request)
+    def process_visit!(visit)
+      process_visit(visit)
+      visit.processed!
+      save!
+    end
+
+    def process_visit(visit)
       return if visit.seen?
 
       self.view_count += 1
@@ -49,8 +57,6 @@ class Article
       return unless visit.referrer_host.present?
 
       referrer_visit_counts[visit.referrer_host] += 1
-    ensure
-      save!
     end
   end
 end

@@ -18,12 +18,19 @@ article.article
   hr
 
   .article__links
-    = link_to public_article_analytics_path(article_slug: @record), class: 'article__links__link'
-      = inline_svg_pack_tag('media/images/public/icons/activity.svg', class: 'article__links__link__icon')
-      span Analytics
-    / = link_to public_article_analytics_path(article_slug: @record), class: 'article__links__link'
-      = inline_svg_pack_tag('media/images/public/icons/share-2.svg', class: 'article__links__link__icon')
-      span Shared
+    - if @record.tags.any?
+      .article__links__tags
+        h6.article__links__title Tags
+        - @record.tags.sort_by(&:name).each do |tag|
+          = link_to tag.name, public_articles_url(search: { tags: { in: [tag.name] } }), class: 'pill_link pill_link--spaced'
+
+    .article__links__analytics
+      = link_to public_article_analytics_path(article_slug: @record), class: 'article__links__link'
+        = inline_svg_pack_tag('media/images/public/icons/activity.svg', \
+        class: 'article__links__link__icon', \
+        alt: 'Analytics & backlinks', \
+        title: 'Analytics & backlinks')
+        span Analytics & backlinks
 
   .subscribe.subscribe--rss
     = inline_svg_pack_tag 'media/images/public/icons/rss.svg', title: 'RSS logo', class: 'subscribe__icon'
@@ -39,15 +46,18 @@ article.article
 
   hr
 
-  - if @record.tags.any?
-    .article__tags
-      h6.article__suggestions__title Tags
-      - @record.tags.order(name: :asc).each do |tag|
-        = link_to tag.name, public_articles_url(search: { tags: { in: [tag.name] } }), class: 'tag'
+  / - if @record.threaded_articles.except(@record).any?
+    .article__suggestions
+      h6.article__suggestions__title Other popular articles
+      .article__suggestions__articles
+        = render partial: 'public/articles/article_suggestion', \
+                 collection: suggested_articles, as: :article
 
   - suggested_articles = @record.suggested_articles.limit(2)
   - if suggested_articles.any?
     .article__suggestions
-      h6.article__suggestions__title Other articles you might find interesting
-      = render partial: :article, collection: suggested_articles
+      h6.article__suggestions__title Other popular articles
+      .article__suggestions__articles
+        = render partial: 'public/articles/article_suggestion', \
+                 collection: suggested_articles, as: :article
 

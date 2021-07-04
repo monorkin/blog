@@ -2,9 +2,6 @@
 
 module Public
   class AboutController < PublicController
-    display_header false
-    display_footer false
-
     def show
       template = 'public/about/show.html.slim'
       file_last_modified = File.mtime(Rails.root.join("app/views/#{template}"))

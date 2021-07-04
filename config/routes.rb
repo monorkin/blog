@@ -4,6 +4,7 @@ require 'resque'
 require 'resque/server'
 
 Rails.application.routes.draw do
+
   namespace :admin do
     mount Resque::Server.new, at: '/jobs'
 
@@ -21,30 +22,26 @@ Rails.application.routes.draw do
   end
 
   namespace :public, path: '/' do
+    root to: 'about#show'
+
     get '404', to: 'errors#not_found'
     get '418', to: 'errors#im_a_teapot'
     get '422', to: 'errors#unprocessable_entity'
     get '451', to: 'errors#unavailable_for_legal_reasons'
     get '500', to: 'errors#internal_server_error'
 
-    constraints subdomain: 'blog' do
-      resources :articles, path: '/', only: %i[index] do
-        collection do
-          get :rss
-          get :atom
-        end
-      end
-
-      resources :articles, param: :slug, path: '', only: %i[show] do
-        scope module: :articles do
-          resource :analytics, only: :show
-          resources :link_previews, only: :show
-        end
+    resources :articles, only: %i[index] do
+      collection do
+        get :rss
+        get :atom
       end
     end
 
-    constraints subdomain: '' do
-      root to: 'about#show'
+    resources :articles, param: :slug, path: '', only: %i[show] do
+      scope module: :articles do
+        resource :analytics, only: :show
+        resources :link_previews, only: :show
+      end
     end
   end
 end

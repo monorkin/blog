@@ -48,8 +48,8 @@
 }
 
 .about__info__shortlist__item__icon {
-  color: $link_color;
   height: 1.5rem;
+  margin-right: 0.3rem;
 }
 
 @include media('<tablet') {

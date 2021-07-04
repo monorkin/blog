@@ -5,7 +5,7 @@ require 'redcarpet'
 require 'redcarpet/render_strip'
 
 class Article
-  class ContentDecorator < ApplicationDecorator
+  class Content < ApplicationModel
     RENDERERS = {
       html: HtmlRenderer
     }.freeze
@@ -24,7 +24,8 @@ class Article
     MARKDOWN_ATTACHMENT_URLS_REGEX = /!\[[^\]]*\]\((.+)\)/.freeze
     MARKDOWN_LINK_URLS_REGEX = /\[[^\]]*\]\((.+)\)/.freeze
 
-    attr_reader :article
+    attr_accessor :content,
+                  :article
 
     def self.markdown_renderer(format)
       return unless RENDERERS.key?(format)
@@ -36,13 +37,9 @@ class Article
       )
     end
 
-    def initialize(content, article)
-      @article = article
-      super(content)
-    end
-
     def to_html(raw: false)
-      @html_content ||= Nokogiri::HTML(render_to(:html)).tap do |document|
+      @html_content ||= {}
+      @html_content[raw] ||= Nokogiri::HTML(render_to(:html)).tap do |document|
         next if raw
 
         add_publication_date_to_html_document(document)
@@ -56,7 +53,7 @@ class Article
     end
 
     def to_s
-      object.to_s
+      content
     end
 
     def word_count
@@ -70,15 +67,15 @@ class Article
     end
 
     def render_to(format)
-      self.class.markdown_renderer(format)&.render(object)
+      self.class.markdown_renderer(format)&.render(content)
     end
 
     def attachment_urls
-      object.scan(MARKDOWN_ATTACHMENT_URLS_REGEX).flatten
+      content.scan(MARKDOWN_ATTACHMENT_URLS_REGEX).flatten
     end
 
     def link_urls
-      object.scan(MARKDOWN_LINK_URLS_REGEX).flatten
+      content.scan(MARKDOWN_LINK_URLS_REGEX).flatten
     end
 
     def valid_link?(href, hmac)
@@ -127,7 +124,7 @@ class Article
     end
 
     def md5_digest
-      @md5_digest ||= Digest::MD5.hexdigest(object)
+      @md5_digest ||= Digest::MD5.hexdigest(content)
     end
   end
 end

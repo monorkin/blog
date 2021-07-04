@@ -1,11 +1,7 @@
 header.header
   .header__container
-    = link_to public_articles_path, aria: { label: 'Stanko K.R. logo' }, class: 'header__container__logo_container'
-      = inline_svg_pack_tag 'media/images/public/logo.svg', \
-        title: 'Stanko K.R. logo', \
-        class: 'header__container__logo_container__logo'
     .header__container__links
-      = link_to 'about', public_root_url
+      = link_to 'info', public_root_url
       = link_to 'articles', public_articles_url
     .header__container__actions
       label.color_scheme_switch_container.hidden data-color-scheme-target="switch"

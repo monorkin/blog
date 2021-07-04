@@ -1,0 +1,15 @@
+default: &default
+  allowed_hosts:
+    - stanko.io
+    - blog.stanko.io
+    - stanko.test
+    - blog.stanko.test
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

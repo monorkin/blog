@@ -1,0 +1,11 @@
+.icon {
+  color: $link_color;
+
+  &--thin {
+    stroke-width: 1px !important;
+  }
+}
+
+.icon--dark_color_scheme {
+  color: $darkmode_link_color;
+}

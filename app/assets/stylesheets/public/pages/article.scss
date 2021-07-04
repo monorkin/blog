@@ -6,21 +6,14 @@
   word-wrap: break-word;
   line-height: 1.7rem;
 
-  &__title {
-    margin-bottom: .5rem;
-  }
-
-  &__title + &__subtitle_content {
-    margin-bottom: 2.075rem;
-  }
-
-  &__subtitle_content__timestamp {
+  &__publishing_date {
     color: $secundary_text_color;
     display: block;
+    font-size: 1rem;
     font-style: italic;
   }
 
-  &__subtitle_content__estimated_reading_time {
+  &__estimated_reading_time {
     color: $secundary_text_color;
     display: block;
     font-style: italic;
@@ -69,13 +62,15 @@
   }
 
   table {
+    @extend .table;
+
     border-collapse: collapse;
     table-layout: auto;
     width: 100%;
   }
 
   table > thead > tr > th, table > tbody > tr > td {
-    border: 1px solid $ternary_text_color;
+    // border: 1px solid $ternary_text_color;
     padding: .3rem;
   }
 
@@ -85,10 +80,12 @@
 
     figcaption {
       color: $secundary_text_color;
+      font-size: 1rem;
     }
   }
 
   p img, figure img, picture img  {
+    border-radius: 0.15rem;
     max-width: 100%;
     height: auto;
   }
@@ -154,8 +151,23 @@
   }
 
   &__links {
-    text-align: right;
+    display: flex;
+    flex-direction: row;
     margin-bottom: 1rem;
+
+    & &__title {
+      margin: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    & &__tags {
+      width: 70%;
+    }
+
+    & &__analytics {
+      text-align: right;
+      width: 30%;
+    }
 
     &__link {
       margin-right: .5rem;
@@ -171,19 +183,20 @@
     }
   }
 
-  &__tags {
-    margin-bottom: 1rem;
-
-    &__title {
-      margin: 1rem 0 .5rem;
-    }
-  }
-
   &__suggestions {
     margin-bottom: 1rem;
 
     &__title {
       margin: 1rem 0 .5rem;
+    }
+
+    &__articles {
+      display: flex;
+      flex-direction: column;
+
+      .article_suggestion + .article_suggestion {
+        margin-top: 2rem;
+      }
     }
   }
 }
@@ -207,8 +220,8 @@
     color: $darkmode_secundary_text_color;
   }
 
-  code {
-    border-color: $code_border_color;
+  code, pre {
+    border-color: $darkmode_code_border_color;
     background-color: $darkmode_inline_code_background;
   }
 
@@ -218,6 +231,10 @@
 
   code.inline {
     background: $darkmode_inline_code_background;
+  }
+
+  figure figcaption {
+    color: $darkmode_secundary_text_color;
   }
 }
 

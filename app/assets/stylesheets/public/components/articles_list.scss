@@ -69,9 +69,15 @@
 }
 
 .articles_list__article__image img {
+  border-radius: 0.15rem;
   display: block;
   max-width: 100%;
   height: auto;
+  transition: transform 120ms;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
 .articles_list__article__image picture > * {

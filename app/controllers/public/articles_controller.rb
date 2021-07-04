@@ -22,7 +22,7 @@ module Public
 
       authorize(@record)
       fresh_when(@record)
-      @record.statistic.log_visit!(request)
+      @record.statistic.process_request_later(request)
     end
 
     def atom

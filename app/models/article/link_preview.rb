@@ -12,8 +12,6 @@ class Article
                   :description,
                   :updated_at
 
-    after_initialize :fetch!
-
     validates :url,
               presence: true,
               url: { loopback: false }
@@ -22,9 +20,10 @@ class Article
               if: -> { updated_at.present? }
 
     def fetch!
-      return unless valid?
+      return self unless valid?
 
       fetcher.fetch!(url)
+      self
     end
 
     def fetcher

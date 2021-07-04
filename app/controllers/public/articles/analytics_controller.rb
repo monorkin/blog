@@ -5,6 +5,7 @@ module Public
     class AnalyticsController < PublicController
       def show
         @record = Article.from_slug!(params[:article_slug]).statistic
+        fresh_when(@record)
       end
     end
   end

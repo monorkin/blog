@@ -13,8 +13,9 @@ module Public
 
         return(head :not_found) unless @record.content.valid_link?(url, id)
 
-        @link_preview = Rails.cache.fetch(link_preview_cache_key) do
-          Article::LinkPreview.new(url: url)
+        @link_preview = Article::LinkPreview.new(url: url)
+        @link_preview = Rails.cache.fetch(@link_preview) do
+          Article::LinkPreview.new(url: url).fetch!
         end
 
         return(head :not_found) unless @link_preview.valid?

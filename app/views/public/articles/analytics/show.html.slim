@@ -6,7 +6,7 @@
         br
         |Article analytics
     .analytics__links
-      = link_to public_article_url(@record.article.slug)
+      = link_to public_article_url(@record.article.slug), class: 'pill_link pill_link--grow'
         i.fas.fa-chevron-left
         '
         | Back to article
@@ -16,13 +16,20 @@
       tbody
         tr
           td Total number of views
-          td title=@record.view_count = number_to_human(@record.view_count)
+          td = short_number(@record.view_count)
         tr
           td Popularity score
           td = @record.article.popularity
 
     - if @record.article.published? && @record.visit_counts_per_month.any?
-      h3 View count by month
+      br
+      h3 Reader count by month
+      p
+        | This graph represents the number of people that have read this article
+        '
+        | from the beginning of the year it was published to the end of the
+        '
+        | current year.
       - max = @record.visit_counts_per_month.values.max.to_f
       .analytics__monthly_views
         - year_range = (@record.article.published_at.year..Time.current.year)
@@ -32,19 +39,24 @@
           .analytics__monthly_views__month
             .analytics__monthly_views__month__count
               .analytics__monthly_views__month__count__bar style="height: #{(count / max * 100).round(2)}%"
-              .analytics__monthly_views__month__count__label = number_to_human(count, units: { thousand: 'k', billion: 'B', trillion: 'T' })
+              .analytics__monthly_views__month__count__label = short_number(count)
             .analytics__monthly_views__month__name
               .analytics__monthly_views__month__name__label = month
 
     - if @record.referrer_visit_counts.any?
+      br
       h3 Backlinks
+      p
+        | Backlinks are links to sites that link back to this article.
+        '
+        | Following these link you can find an join dicussions about this article.
       table.table.analytics__referrers
         thead
           tr
             th Referrer
             th Count
         tbody
-          - @record.referrer_visit_counts.to_a.first(25).each do |host, count|
+          - @record.referrer_visit_counts.to_a.first(300).each do |host, count|
             tr
-              td = link_to host, "https://duckduckgo.com/?q=#{public_article_url(@record.article)}%20site%3A#{host}"
-              td = count
+              td = backlink(host, public_article_url(@record.article))
+              td = short_number(count)

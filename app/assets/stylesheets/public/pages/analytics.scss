@@ -23,6 +23,12 @@
       position: relative;
       width: 2rem;
 
+      // The list is reversed so that it's always scrolled to the right when
+      // it's opened, so the last child is actually the firs
+      &:first-child {
+        border-right: 1px solid lighten($tables_header_background_color, 10%);
+      }
+
       &__count {
         height: 77%;
         position: relative;

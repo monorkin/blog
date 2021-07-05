@@ -24,7 +24,7 @@ class Article
 
         if request.is_a?(self.class)
           build_from_visit!
-        else
+        elsif request.present?
           build_from_request!
         end
 

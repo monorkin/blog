@@ -27,7 +27,7 @@ module Admin
     def current_article
       return unless params[:article_id]
 
-      @current_article ||= scope.find(params[:article_id])
+      @current_article ||= scope.from_slug!(params[:article_id])
     end
 
     def scope

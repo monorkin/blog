@@ -8,11 +8,11 @@ module Admin
     end
 
     def show
-      @article = scope.find(params[:id])
+      @article = scope.from_slug!(params[:id])
     end
 
     def destroy
-      article = scope.find(params[:id])
+      article = scope.from_slug!(params[:id])
 
       if article.destroy
         redirect_to action: :index

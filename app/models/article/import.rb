@@ -3,9 +3,7 @@
 require 'zip'
 
 class Article
-  class Import
-    include ActiveModel::Model
-
+  class Import < ApplicationModel
     MANIFEST_FILE_NAME = 'manifest.toml'
     CONTENT_FILE_NAME = 'readme.md'
 
@@ -13,15 +11,22 @@ class Article
                   :article,
                   :manifest
 
-    validates :bundle, presence: true
+    validates :bundle,
+              presence: true
 
     def save
       return false unless valid?
 
       ApplicationRecord.transaction do
-        self.article ||= Article.new
-        parse_bundle!
-        apply_manifest!
+        Zip::File.open(bundle) do |bundle|
+          load_manifest!(bundle)
+          self.article ||= Article.find_by(id: manifest[:id]) || Article.new
+          apply_manifest!
+          load_article_content!(bundle)
+          attach_files!(bundle)
+          create_primary_image!(bundle)
+        end
+
         article.save
       end
     end
@@ -30,17 +35,14 @@ class Article
 
     def parse_bundle!
       Zip::File.open(bundle) do |bundle|
-        load_manifest!(bundle)
-        load_article_content!(bundle)
-        attach_files!(bundle)
-        create_primary_image!(bundle)
       end
     end
 
     def load_manifest!(bundle)
       entry = bundle.entries.find { |e| e.name.downcase == MANIFEST_FILE_NAME }
-      self.manifest =
-        TOML.load(entry.get_input_stream.read).with_indifferent_access
+
+      self.manifest = TOML.load(entry.get_input_stream.read)
+                          .with_indifferent_access
     end
 
     def load_article_content!(bundle)
@@ -66,6 +68,7 @@ class Article
       primary_image = find_primary_image ||
                       upload_primary_image!(bundle) ||
                       article.images.first
+
       return unless primary_image
 
       article.images.each { |i| i.primary = false }
@@ -85,6 +88,7 @@ class Article
                 e.file? &&
                   e.name == manifest[:primary_image].gsub(%r{^\./}, '')
               end
+
       return unless entry
 
       article.images.build(image: entry.get_input_stream,

@@ -13,7 +13,8 @@
     meta property="og:image" content=@record.primary_image.image_url(:large)
 
 article.article
-  = @record.content.to_html.html_safe
+  = cache @record do
+    = @record.content.to_html.html_safe
 
   hr
 

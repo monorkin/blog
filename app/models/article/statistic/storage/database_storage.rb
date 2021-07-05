@@ -5,20 +5,20 @@ require 'bloomer/msgpackable'
 class Article
   class Statistic
     class Storage
-      class DatabaseStorage < MemoryStorage
+      class DatabaseStorage < Storage
         def remembers?(fingerprint)
           with_filter do |filter|
             filter.include?(fingerprint)
           end
         end
 
-        def remember!(fingerprint)
-          with_filter do |filter|
-            filter.add(fingerprint)
+        def remember!(*fingerprints)
+          with_filter(save: true) do |filter|
+            fingerprints.each { |fingerprint| filter.add(fingerprint) }
           end
         end
 
-        def with_filter(&block)
+        def with_filter(save: false, &block)
           statistic = article.statistic
 
           statistic.with_lock do
@@ -28,7 +28,7 @@ class Article
                        Bloomer.from_msgpack(statistic.filter_data)
                      end
             block.call(filter)
-            statistic.update(filter_data: filter.to_msgpack)
+            statistic.update(filter_data: filter.to_msgpack) if save
           end
         end
       end

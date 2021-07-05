@@ -17,10 +17,11 @@ class Article
       attr_accessor :article,
                     :request,
                     :fingerprint,
-                    :referrer_host,
-                    :do_not_track
+                    :referrer_host
 
       after_initialize do
+        self.article = Article.find(article) if article.is_a?(String)
+
         if request.is_a?(self.class)
           build_from_visit!
         else
@@ -31,6 +32,13 @@ class Article
         # Since the request is bigger than the fingerprint and referrer
         # we discard it to save on memory
         self.request = nil
+      end
+
+      def self.storage_for(article)
+        storage.new(article: article,
+                    expected_size: config[:expected_size],
+                    error_rate: config[:error_rate],
+                    options: config[:provider_config])
       end
 
       def self.storage
@@ -45,21 +53,21 @@ class Article
         storage.remembers?(fingerprint)
       end
 
-      def processed!
+      def remember!
         storage.remember!(fingerprint)
       end
 
-      protected
-
-      def storage
-        @storage ||= self.class.storage.new(article: article,
-                                            expected_size: config[:expected_size],
-                                            error_rate: config[:error_rate],
-                                            options: config[:provider_config])
+      def as_json(*args)
+        {
+          article: article.id,
+          request: nil,
+          fingerprint: fingerprint,
+          referrer_host: referrer_host
+        }
       end
 
-      def config
-        self.class.config
+      def storage
+        @storage ||= self.class.storage_for(article)
       end
 
       private

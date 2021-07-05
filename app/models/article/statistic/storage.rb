@@ -16,7 +16,7 @@ class Article
                 numericality: { greater_than: 0, less_than: 1 }
 
       def self.find(provider)
-        class_name = "#{name.deconstantize}::Storage::#{provider.classify}Storage"
+        class_name = "#{name.deconstantize}::Storage::#{provider.camelize}Storage"
         class_name.constantize
       rescue NameError
         raise MissingProviderError.new(provider, class_name)
@@ -26,7 +26,7 @@ class Article
         raise NotImplementedError
       end
 
-      def remember!(fingerprint)
+      def remember!(*fingerprints)
         raise NotImplementedError
       end
     end

@@ -47,5 +47,8 @@ module Blog
 
     # Use custom error pages
     config.exceptions_app = routes
+
+    # Configure ActiveJob queue adapter
+    config.active_job.queue_adapter = :resque
   end
 end

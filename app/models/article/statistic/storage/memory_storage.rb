@@ -23,9 +23,9 @@ class Article
           end
         end
 
-        def remember!(fingerprint)
+        def remember!(*fingerprints)
           with_filter do |filter|
-            filter.add(fingerprint)
+            fingerprints.each { |fingerprint| filter.add(fingerprint) }
           end
         end
 

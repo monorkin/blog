@@ -19,6 +19,11 @@
 #
 class Article
   class Statistic < ApplicationRecord
+    CONNECTION_POOL_OPTIONS = {
+      size: ENV.fetch('RAILS_MAX_THREADS', 15),
+      timeout: 5
+    }.freeze
+
     belongs_to :article
 
     validates :article,
@@ -32,16 +37,21 @@ class Article
       self.visit_counts_per_month.default = 0
     end
 
+    def self.redis_pool
+      @redis_pool ||= ConnectionPool.new(CONNECTION_POOL_OPTIONS) { Redis.new }
+    end
+
     def process_request_later(request)
       visit = Visit.new(article: article, request: request)
       return if visit.seen?
 
-      process_visit!(visit)
+      store_visit!(visit)
+      ProcessArticleVisitsJob.perform_later(self)
+      visit.remember!
     end
 
     def process_visit!(visit)
       process_visit(visit)
-      visit.processed!
       save!
     end
 
@@ -52,11 +62,36 @@ class Article
       date_key = Date.current.strftime('%Y-%m')
       visit_counts_per_month[date_key] += 1
 
-      visit.processed!
-
       return unless visit.referrer_host.present?
 
       referrer_visit_counts[visit.referrer_host] += 1
+    end
+
+    def store_visit!(visit)
+      self.class.redis_pool.with do |redis|
+        redis.hsetnx(storage_key, visit.fingerprint, visit.to_json)
+      end
+
+      true
+    end
+
+    def stored_visits
+      self.class
+          .redis_pool
+          .with { |redis| redis.hvals(storage_key) }
+          .map { |visit_json| Visit.new(JSON.parse(visit_json)) }
+    end
+
+    def clear_stored_visits!
+      self.class.redis_pool.with { |redis| redis.del(storage_key) }
+
+      true
+    end
+
+    private
+
+    def storage_key
+      "article/#{article.id}/statistic/visit_storage"
     end
   end
 end

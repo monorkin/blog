@@ -5,6 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.1'
 
+gem 'activejob-uniqueness'
 gem 'active_link_to'
 gem 'async-http'
 gem 'aws-sdk-s3', '~> 1.14'
@@ -25,6 +26,7 @@ gem 'rails', '~> 6.0.3', '>= 6.0.3.3'
 gem 'ransack'
 gem 'redcarpet', '~> 3.5.0'
 gem 'redis', '~> 4.0'
+gem 'redlock'
 gem 'resque'
 gem 'rotp'
 gem 'rouge', '~> 3.23.0'

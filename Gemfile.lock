@@ -43,6 +43,9 @@ GEM
     activejob (6.0.3.5)
       activesupport (= 6.0.3.5)
       globalid (>= 0.3.6)
+    activejob-uniqueness (0.2.0)
+      activejob (>= 4.2, < 7)
+      redlock (>= 1.2, < 2)
     activemodel (6.0.3.5)
       activesupport (= 6.0.3.5)
     activerecord (6.0.3.5)
@@ -234,6 +237,8 @@ GEM
     redis (4.2.2)
     redis-namespace (1.8.1)
       redis (>= 3.0.4)
+    redlock (1.2.1)
+      redis (>= 3.0.0, < 5.0)
     regexp_parser (1.8.1)
     resque (2.0.0)
       mono_logger (~> 1.0)
@@ -319,6 +324,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_link_to
+  activejob-uniqueness
   annotate
   async-http
   aws-sdk-s3 (~> 1.14)
@@ -342,6 +348,7 @@ DEPENDENCIES
   ransack
   redcarpet (~> 3.5.0)
   redis (~> 4.0)
+  redlock
   resque
   rotp
   rouge (~> 3.23.0)

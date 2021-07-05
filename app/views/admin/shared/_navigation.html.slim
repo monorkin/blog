@@ -13,6 +13,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
         li.nav-item
           = active_link_to 'Articles', admin_root_path, class: 'nav-link', active: [['admin/articles', 'admin/imports'], []]
         li.nav-item
+          = active_link_to 'Jobs', admin_jobs_path, class: 'nav-link'
+        li.nav-item
           = active_link_to 'Users', admin_users_path, class: 'nav-link'
 
       .d-flex

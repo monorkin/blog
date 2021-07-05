@@ -4,13 +4,15 @@ require 'resque'
 require 'resque/server'
 
 Rails.application.routes.draw do
-
   namespace :admin do
-    mount Resque::Server.new, at: '/jobs'
+    constraints(lambda { |request| request.session[Authenticatable::CURRENT_USER_SESSION_KEY].present? }) do
+      mount Resque::Server.new, at: '/resque'
+    end
 
     root to: 'articles#index'
 
     resource :sessions, only: %i[new create destroy]
+    resource :jobs, only: :show
     resources :users
     resources :articles, except: :index do
       collection do

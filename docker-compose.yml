@@ -47,7 +47,7 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@db/blog
       - REDIS_URL=redis://redis:6379/0
       - QUEUE=statistic
-      - INTERVAL=900
+      - INTERVAL=5
     command: rake resque:work
     tty: true
     stdin_open: true

@@ -72,3 +72,11 @@
     }
   }
 }
+
+@include media('<tablet') {
+  .article_search {
+    & &__simple {
+      width: 100%;
+    }
+  }
+}

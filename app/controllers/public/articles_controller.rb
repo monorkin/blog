@@ -16,7 +16,7 @@ module Public
       @records = @paginator.records
 
       # Don't cache search results
-      fresh_when(@records) if @search.unsearchable?
+      fresh_when(@records)
     end
 
     def show
@@ -55,7 +55,7 @@ module Public
     def scope
       policy_scope(Article.published)
         .order(published_at: :desc)
-        .preload(:statistic, :primary_image)
+        .preload(:primary_image)
     end
 
     def feed

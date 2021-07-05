@@ -151,6 +151,7 @@ GEM
       mini_mime (>= 0.1.1)
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
+    memory_profiler (1.0.0)
     method_source (1.0.0)
     mimemagic (0.3.10)
       nokogiri (~> 1)
@@ -193,6 +194,8 @@ GEM
       activesupport (>= 3.0.0)
     racc (1.5.2)
     rack (2.2.3)
+    rack-mini-profiler (2.3.2)
+      rack (>= 1.2.0)
     rack-protection (2.1.0)
       rack
     rack-proxy (0.6.5)
@@ -284,6 +287,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stackprof (0.2.17)
     temple (0.8.2)
     thor (1.1.0)
     thread_safe (0.3.6)
@@ -339,11 +343,13 @@ DEPENDENCIES
   inline_svg (~> 1.7.1)
   listen (~> 3.2)
   marcel (~> 0.3)
+  memory_profiler
   nexter
   pg (>= 0.18, < 2.0)
   pg_search
   puma (~> 5.0.2)
   pundit (~> 2.1.0)
+  rack-mini-profiler
   rails (~> 6.0.3, >= 6.0.3.3)
   ransack
   redcarpet (~> 3.5.0)
@@ -359,6 +365,7 @@ DEPENDENCIES
   shrine (~> 3.0)
   simple_form
   slim (~> 4.1.0)
+  stackprof
   toml
   turbo-rails
   tzinfo-data

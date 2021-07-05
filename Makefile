@@ -7,12 +7,16 @@ DB_SERVICE=db
 REDIS_SERVICE=redis
 
 ################################################################################
-##                                   RUNNING                                  ##
+##                                   DEVELOPMENT                              ##
 ################################################################################
 
 ## Starts all containers in the foreground
 dev:
 	@LOCAL_USER_ID=$(LOCAL_USER_ID) docker-compose up
+
+## Starts all containers in the foreground
+dev-update:
+	@LOCAL_USER_ID=$(LOCAL_USER_ID) docker-compose up -d
 
 ## Starts a server
 server:
@@ -60,13 +64,22 @@ run-command:
 		-it $$(docker-compose ps -q web) \
 		bash -c "reset -w && bash -c '$$COMMAND'"
 
-################################################################################
-##                                   REDIS                                    ##
-################################################################################
+## Reloads the currently running server
+reload:
+	@touch ./tmp/restart.txt
 
-## Opens a redis-cli console
-redis-cli:
-	@docker-compose exec $(REDIS_SERVICE) redis-cli
+## Toggles caching on or off
+toggle-caching:
+	@rails dev:cache
+
+## Disable Rack Mini Profiler ETag stripping
+toggle-rack-mini-profiler-etag-stripping:
+	@if [ -f ./tmp/dev-disable-rack-mini-profiler-etag-stripping.txt ]; then \
+		rm ./tmp/dev-disable-rack-mini-profiler-etag-stripping.txt; \
+	else \
+		touch ./tmp/dev-disable-rack-mini-profiler-etag-stripping.txt; \
+	fi
+	@$(MAKE) reload
 
 ################################################################################
 ##                                  TESTING                                   ##
@@ -76,6 +89,21 @@ redis-cli:
 test: bundle
 	@echo "Check for security vulnerability"
 	@bundle exec brakeman -z
+
+################################################################################
+##                                 DEPLOYMENT                                 ##
+################################################################################
+
+deploy:
+	echo "TODO"
+
+################################################################################
+##                                   REDIS                                    ##
+################################################################################
+
+## Opens a redis-cli console
+redis-cli:
+	@docker-compose exec $(REDIS_SERVICE) redis-cli
 
 ################################################################################
 ##                                  DATABASE                                  ##
@@ -104,13 +132,6 @@ annotate:
 ## Starts a MySQL session
 psql:
 	@docker-compose exec $(DB_SERVICE) psql -U postgres -d postgres
-
-################################################################################
-##                                 DEPLOYMENT                                 ##
-################################################################################
-
-deploy:
-	echo "TODO"
 
 ################################################################################
 ##                                      HELP                                  ##

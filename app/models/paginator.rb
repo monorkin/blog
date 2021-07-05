@@ -73,7 +73,7 @@ class Paginator
       after&.first(page_size) || scope.limit(page_size)
     else
       before&.first(page_size)&.reverse || scope.none
-    end
+    end.to_a
   end
 
   def direction
@@ -99,6 +99,6 @@ class Paginator
   end
 
   def record
-    @record ||= scope.find_by(id: record_id)
+    @record ||= scope.model.find_by(id: record_id)
   end
 end

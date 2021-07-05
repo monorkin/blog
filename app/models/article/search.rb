@@ -7,8 +7,6 @@ class Article
     attr_accessor :term,
                   :scope
 
-    validates :scope,
-              presence: true
     validates :term,
               length: { maximum: 500 }
 

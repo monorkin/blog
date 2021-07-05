@@ -16,4 +16,14 @@
 #
 class Tag < ApplicationRecord
   validates :name, presence: true, uniqueness: true
+
+  has_many :article_taggings,
+           class_name: 'Article::Tagging',
+           dependent: :destroy
+  has_many :articles,
+           through: :article_taggings
+
+  scope(:published, lambda do
+    joins(:articles).where(articles: { id: Article.published })
+  end)
 end

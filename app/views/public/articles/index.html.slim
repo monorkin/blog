@@ -14,9 +14,30 @@
   h1 Blog | Not again | Stanko K.R.
 
 .content
-  section.articles_search
+  section.article_search
+    = form_for @search, method: :get, url: public_articles_url do |search|
+      .article_search__simple
+        = search.text_field :term, placeholder: 'Search', label: false, class: 'article_search__simple__term_input'
+        label.article_search__simple__submit_button
+          = inline_svg_pack_tag 'media/images/public/icons/search.svg', \
+          alt: 'Search', \
+          class: 'icon', \
+          title: "Search"
+          = search.submit :search, class: 'hidden'
+      - if search.object.errors.any?
+        - search.object.errors.full_messages.each do |message|
+          p.article_search__error_message = message
+
   section.articles_list
-    = render collection: @records, partial: :article
+    - if @records.any?
+      = render collection: @records, partial: :article
+    - else
+      .articles_list__no_results No articles were found
+      .articles_list__suggestions
+        h4.articles_list__suggestions__title Popular articles
+        .articles_list__suggestions__container
+          = render collection: Article.sorted_by_popularity.limit(2), \
+                   partial: 'public/articles/article_suggestion', as: :article
   section.pagination
     .pagination__button
       - if @paginator.previous?

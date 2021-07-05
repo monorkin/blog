@@ -1,8 +1,12 @@
 .icon {
-  color: $link_color;
+  color: inherit;
 
   &--thin {
     stroke-width: 1px !important;
+  }
+
+  &--link {
+    color: $link_color;
   }
 }
 

@@ -5,15 +5,18 @@ require 'rss'
 module Public
   class ArticlesController < PublicController
     def index
+      @search = Article::Search.new(search_params)
+
       @paginator = Paginator.decode(
-        scope: scope,
+        scope: @search.resolve,
         direction: params.key?(:before) ? :before : :after,
         cursor: params[:before] || params[:after]
       )
 
       @records = @paginator.records
 
-      fresh_when(@records)
+      # Don't cache search results
+      fresh_when(@records) if @search.unsearchable?
     end
 
     def show
@@ -36,6 +39,12 @@ module Public
     end
 
     private
+
+    def search_params
+      params.fetch(:article_search, {})
+            .permit(:term, tags: [])
+        .merge(scope: scope)
+    end
 
     def scope
       policy_scope(Article.published)

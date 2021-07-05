@@ -87,6 +87,10 @@
     @extend .icon--dark_color_scheme;
   }
 
+  .article_search {
+    @extend .article_search--dark_color_scheme;
+  }
+
   .color_scheme_switch {
     border-color: $darkmode_link_color;
   }

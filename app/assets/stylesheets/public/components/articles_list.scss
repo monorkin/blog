@@ -83,6 +83,28 @@
 .articles_list__article__image picture > * {
 }
 
+.articles_list__no_results {
+  font-family: $sans_serif_fonts;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 4rem;
+  text-align: center;
+}
+
+.articles_list__suggestions {
+  &__title {
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+
+    .article_suggestion + .article_suggestion {
+      margin-top: 1.5rem;
+    }
+  }
+}
+
 .articles_list.articles_list--dark_color_scheme {
   .articles_list__article__meta__group__timestamp {
     color: $darkmode_secundary_text_color;

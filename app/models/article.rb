@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # == Schema Information
-# Schema version: 20210627083831
+# Schema version: 20210704144106
 #
 # Table name: articles
 #
@@ -10,6 +10,7 @@
 #  publish_at   :datetime
 #  published    :boolean          default(FALSE), not null
 #  published_at :datetime
+#  searchable   :tsvector
 #  slug         :text             default(""), not null
 #  thread       :string
 #  title        :text             default(""), not null
@@ -19,10 +20,20 @@
 # Indexes
 #
 #  index_articles_on_published_at  (published_at)
+#  index_articles_on_searchable    (searchable) USING gin
 #  index_articles_on_thread        (thread)
 #
 class Article < ApplicationRecord
   include ActionView::Helpers::TextHelper
+  include PgSearch::Model
+  pg_search_scope :search,
+                  against: { title: 'A', content: 'B' },
+                  using: {
+                    tsearch: {
+                      dictionary: 'english', tsvector_column: 'searchable'
+                    }
+                  }
+
 
   POPULARITY_SQL = <<~SQL.squish
     ROUND(

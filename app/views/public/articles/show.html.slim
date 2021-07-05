@@ -22,7 +22,7 @@ article.article
       .article__links__tags
         h6.article__links__title Tags
         - @record.tags.sort_by(&:name).each do |tag|
-          = link_to tag.name, public_articles_url(search: { tags: { in: [tag.name] } }), class: 'pill_link pill_link--spaced'
+          = search_articles_with_tag_link(tag)
 
     .article__links__analytics
       = link_to public_article_analytics_path(article_slug: @record), class: 'article__links__link'

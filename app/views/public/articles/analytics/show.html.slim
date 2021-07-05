@@ -27,9 +27,9 @@
       p
         | This graph represents the number of people that have read this article
         '
-        | from the beginning of the year it was published to the end of the
+        | from the beginning of the year it was published until to the end of
         '
-        | current year.
+        | the current year.
       - max = @record.visit_counts_per_month.values.max.to_f
       .analytics__monthly_views
         - year_range = (@record.article.published_at.year..Time.current.year)

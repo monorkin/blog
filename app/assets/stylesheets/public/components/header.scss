@@ -23,11 +23,15 @@
       a {
         @extend .pill_link, .pill_link--grow;
         font-size: 1rem;
-        margin: auto .5rem;
+        margin-right: 0.5rem;
 
         &:after {
           content: '';
         }
+      }
+
+      a + a {
+        margin-left: 0.5rem;
       }
     }
 
@@ -38,8 +42,15 @@
       justify-content: flex-end;
       align-items: center;
       align-content: stretch;
+      white-space: nowrap;
       width: 20%;
     }
+  }
+}
+
+@include media('<tablet') {
+  .header .header__container__actions {
+    width: unset;
   }
 }
 

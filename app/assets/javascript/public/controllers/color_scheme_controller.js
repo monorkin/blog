@@ -14,51 +14,42 @@ export default class extends Controller {
       this.switchTarget.classList.remove('hidden')
     }
 
-    const currentMode = localStorage.getItem(this.STORAGE_KEY)
-    const preferredMode = this.browserPreferredColorScheme()
-    this.useMode(currentMode || preferredMode)
+    this.useMode(this.storedMode)
   }
 
   toggleMode(event) {
     event.preventDefault()
 
-    if (this.currentMode() === this.LIGHT) {
-      this.useMode(this.DARK)
+    const newScheme = (this.currentMode === this.LIGHT) ? this.DARK : this.LIGHT
+
+    // Crude way to unset your preference.
+    //
+    // If you set the toggle to you current system's preference then your
+    // system's preference will be used as the preference henceforth.
+    if (newScheme === this.browserPreferredColorScheme) {
+      this.useMode(this.AUTO)
     }
     else {
-      this.useMode(this.LIGHT)
+      this.useMode(newScheme)
     }
-  }
-
-  currentMode() {
-    if (this.element.classList.contains(this.autoClass)) {
-      return this.AUTO
-    }
-    else if (this.element.classList.contains(this.darkClass)) {
-      return this.DARK
-    }
-
-    return this.LIGHT
   }
 
   useMode(mode) {
-    if (!this.colorSchemeClassesPresent) {
-      return
-    }
+    if (!mode) return
+    if (!this.colorSchemeClassesPresent) return
 
-    let klass = this.lightClass
+    let klass = this.autoClass
 
     if (mode === this.DARK) {
       klass = this.darkClass
+    }
+    else if (mode === this.LIGHT) {
+      klass = this.lightClass
     }
 
     localStorage.setItem(this.STORAGE_KEY, mode)
 
     this.activateClass(klass)
-  }
-
-  colorSchemeClassesPresent() {
-    return this.hasLightClass && this.hasDarkClass && this.hasAutoClass
   }
 
   activateClass(klass) {
@@ -68,7 +59,7 @@ export default class extends Controller {
     this.element.classList.add(klass)
   }
 
-  browserPreferredColorScheme() {
+  get browserPreferredColorScheme() {
     if(!window.matchMedia) {
       return this.LIGHT
     }
@@ -80,4 +71,24 @@ export default class extends Controller {
 
     return this.LIGHT
   }
+
+  get colorSchemeClassesPresent() {
+    return this.hasLightClass && this.hasDarkClass && this.hasAutoClass
+  }
+
+  get storedMode() {
+    return localStorage.getItem(this.STORAGE_KEY)
+  }
+
+  get currentMode() {
+    if (this.element.classList.contains(this.lightClass)) {
+      return this.LIGHT
+    }
+    else if (this.element.classList.contains(this.darkClass)) {
+      return this.DARK
+    }
+
+    return this.browserPreferredColorScheme
+  }
+
 }

@@ -64,8 +64,15 @@
   }
 }
 
-.articles_list__article__title h2 {
-  font-size: 2rem;
+.articles_list__article__title {
+  h2 {
+    font-size: 2rem;
+    line-height: 2.3rem;
+
+    a {
+      color: $heading_text_color;
+    }
+  }
 }
 
 .articles_list__article__image img {
@@ -105,7 +112,15 @@
   }
 }
 
-.articles_list.articles_list--dark_color_scheme {
+.articles_list--dark_color_scheme {
+  .articles_list__article__title {
+    h2 {
+      a {
+        color: $darkmode_heading_text_color;
+      }
+    }
+  }
+
   .articles_list__article__meta__group__timestamp {
     color: $darkmode_secundary_text_color;
   }

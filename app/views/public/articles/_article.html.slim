@@ -14,7 +14,7 @@
       .articles_list__article__meta__group
         span.articles_list__article__meta__group__tags
     .articles_list__article__title
-      h2 = article.title
+      h2 = link_to article.title, public_article_path(article)
     - if article.primary_image.present?
       .articles_list__article__image
         a href=public_article_path(article)

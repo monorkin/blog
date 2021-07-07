@@ -103,8 +103,7 @@ COPY Gemfile* $APP_HOME/
 RUN CFLAGS="-Wno-cast-function-type" \
     BUNDLE_FORCE_RUBY_PLATFORM=1 \
     bundle install \
-      --without development:test \
-      --jobs `expr $(nproc) - 1` \
+      --jobs `expr $(nproc)` \
       --retry 3
 
 COPY package.json yarn.lock $APP_HOME/
@@ -112,8 +111,17 @@ RUN yarn install --production
 
 COPY . $APP_HOME
 
-RUN bundle exec rake assets:precompile
-RUN rm -rf ./node_modules ./test ./log ./docker ./.git
+RUN bundle exec rails webpacker:compile
+RUN rm -rf \
+      ./node_modules \
+      ./test \
+      ./log \
+      ./docker \
+      ./tmp/* \
+      ./.git \
+      yarn* \
+      package.json \
+      tags
 
 ################################################################################
 ##                                PRODUCTION                                  ##

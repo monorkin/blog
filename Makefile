@@ -5,6 +5,8 @@ export LOCAL_USER_ID ?= $(shell id -u $$USER)
 WEB_SERVICE=app
 DB_SERVICE=db
 REDIS_SERVICE=redis
+IMAGE_NAME=monorkin/blog
+VERSION ?= $(shell ruby -r './config/version.rb' -e 'puts Blog::VERSION')
 
 ################################################################################
 ##                                   DEVELOPMENT                              ##
@@ -81,6 +83,9 @@ toggle-rack-mini-profiler-etag-stripping:
 	fi
 	@$(MAKE) reload
 
+version:
+	@echo "$(VERSION)"
+
 ################################################################################
 ##                                  TESTING                                   ##
 ################################################################################
@@ -96,6 +101,18 @@ test: bundle
 
 deploy:
 	echo "TODO"
+
+list-images:
+	@docker image ls | grep $(IMAGE_NAME)
+
+build-production-image:
+	@docker build . \
+		-t $(IMAGE_NAME):latest \
+		-t $(IMAGE_NAME):$(VERSION)
+
+push-production-image:
+	@docker push $(IMAGE_NAME):$(VERSION)
+	@docker push $(IMAGE_NAME):latest
 
 ################################################################################
 ##                                   REDIS                                    ##

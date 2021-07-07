@@ -49,7 +49,7 @@ group :development do
   gem 'annotate'
   gem 'listen', '~> 3.2'
   gem 'memory_profiler'
-  gem 'rack-mini-profiler', require: ['enable_rails_patches', 'rack-mini-profiler']
+  gem 'rack-mini-profiler', require: %w[enable_rails_patches rack-mini-profiler]
   gem 'stackprof'
   gem 'web-console', '>= 3.3.0'
 end

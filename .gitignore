@@ -30,6 +30,10 @@ yarn-debug.log*
 # Ignore encryption secrets
 /config/master.key
 /config/credentials/*.key
+# Since this repo is public I don't want peopple to gain access to real
+# production secrets through brute forcing the encryption key. Out of precaution
+# I'll remove this file from Git and add it manually to the server.
+/config/credentials/production.yml.enc
 
 # Ignore OS specific files
 .DS_Store

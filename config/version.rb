@@ -3,6 +3,6 @@
 module Blog
   MAJOR = 1
   PATCH = 0
-  CANDIDATE = :dev
+  CANDIDATE = nil
   VERSION = [MAJOR, PATCH, CANDIDATE].compact.join('.').freeze
 end

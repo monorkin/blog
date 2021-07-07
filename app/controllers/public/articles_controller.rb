@@ -21,7 +21,6 @@ module Public
 
     def show
       @record = Article.from_slug!(params[:slug])
-      @nexter = Nexter.wrap(scope, @record)
 
       authorize(@record)
       fresh_when(@record)

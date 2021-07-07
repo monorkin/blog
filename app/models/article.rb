@@ -74,7 +74,7 @@ class Article < ApplicationRecord
   validates :statistic,
             presence: true
 
-  after_validation do
+  before_validation do
     build_statistic if statistic.blank?
   end
 
@@ -145,6 +145,11 @@ class Article < ApplicationRecord
   end
 
   def suggested_articles
-    Article.all.published.sorted_by_popularity.where.not(id: self)
+    Article
+      .all
+      .published
+      .sorted_by_popularity
+      .where.not(id: self)
+      .preload(:images, :primary_image)
   end
 end

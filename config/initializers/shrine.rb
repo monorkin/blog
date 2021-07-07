@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 require 'shrine'
-require 'shrine/storage/file_system'
-require 'shrine/storage/s3'
+
+def config
+  Rails.application.credentials.fetch(:file_storage)
+end
 
 def storages
   {
@@ -12,29 +14,32 @@ def storages
 end
 
 def build_storage(stage)
-  case Rails.application.credentials.dig(:file_storage, :provider, stage)&.to_sym
+  case config.dig(stage, :provider)&.to_sym
   when :file_system then build_filesystem_storage(stage)
   when :s3 then build_s3_storage(stage)
   end
 end
 
 def build_filesystem_storage(stage)
-  options = Rails.application.credentials.dig(:file_storage,
-                                              :file_system_provider_options,
-                                              stage)
+  require 'shrine/storage/file_system'
 
+  options = config.dig(stage, :options)
   Shrine::Storage::FileSystem.new(options[:directory], prefix: options[:prefix])
 end
 
 def build_s3_storage(stage)
-  options = Rails.application.credentials.dig(:file_storage,
-                                              :s3_provider_options, stage)
+  require 'shrine/storage/s3'
+
+  options = config.dig(stage, :options)
 
   Shrine::Storage::S3.new(
-    bucket: options[:bucker],
-    region: options[:region],
-    access_key_id: options[:access_key_id],
-    secret_access_key: options[:secret_access_key]
+    public: true,
+    bucket: options.fetch(:bucket),
+    region: options.fetch(:region),
+    access_key_id: options.fetch(:access_key_id),
+    secret_access_key: options.fetch(:secret_access_key),
+    endpoint: options.fetch(:endpoint),
+    prefix: options.fetch(:prefix)
   )
 end
 
@@ -48,3 +53,6 @@ Shrine.plugin :add_metadata
 Shrine.plugin :determine_mime_type, analyzer: :marcel
 Shrine.plugin :store_dimensions
 Shrine.plugin :signature
+Shrine.plugin :url_options,
+              cache: config.dig(:cache, :url_options).symbolize_keys,
+              store: config.dig(:cache, :url_options).symbolize_keys

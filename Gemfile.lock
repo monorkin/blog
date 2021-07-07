@@ -126,6 +126,23 @@ GEM
     down (5.2.0)
       addressable (~> 2.5)
     erubi (1.10.0)
+    faraday (1.5.0)
+      faraday-em_http (~> 1.0)
+      faraday-em_synchrony (~> 1.0)
+      faraday-excon (~> 1.1)
+      faraday-httpclient (~> 1.0.1)
+      faraday-net_http (~> 1.0)
+      faraday-net_http_persistent (~> 1.1)
+      faraday-patron (~> 1.0)
+      multipart-post (>= 1.2, < 3)
+      ruby2_keywords (>= 0.0.4)
+    faraday-em_http (1.0.0)
+    faraday-em_synchrony (1.0.0)
+    faraday-excon (1.1.0)
+    faraday-httpclient (1.0.1)
+    faraday-net_http (1.0.1)
+    faraday-net_http_persistent (1.1.0)
+    faraday-patron (1.0.0)
     fastimage (2.2.0)
     ffi (1.13.1)
     fiber-local (1.0.0)
@@ -163,6 +180,7 @@ GEM
     mono_logger (1.1.1)
     msgpack (1.4.2)
     multi_json (1.15.0)
+    multipart-post (2.1.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     nexter (0.2.1)
@@ -266,6 +284,16 @@ GEM
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
+    sentry-rails (4.6.0)
+      railties (>= 5.0)
+      sentry-ruby-core (~> 4.6.0)
+    sentry-ruby (4.6.0)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      faraday (>= 1.0)
+      sentry-ruby-core (= 4.6.0)
+    sentry-ruby-core (4.6.0)
+      concurrent-ruby
+      faraday
     shrine (3.2.2)
       content_disposition (~> 1.0)
       down (~> 5.1)
@@ -362,6 +390,8 @@ DEPENDENCIES
   ruby_jard
   rubyzip
   selenium-webdriver
+  sentry-rails
+  sentry-ruby
   shrine (~> 3.0)
   simple_form
   slim (~> 4.1.0)

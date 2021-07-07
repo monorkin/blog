@@ -113,6 +113,7 @@ RUN yarn install --production
 COPY . $APP_HOME
 
 RUN bundle exec rake assets:precompile
+RUN rm -rf ./node_modules ./test ./log ./docker ./.git
 
 ################################################################################
 ##                                PRODUCTION                                  ##

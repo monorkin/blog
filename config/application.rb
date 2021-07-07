@@ -42,6 +42,9 @@ module Blog
     # Store security configurations
     config.security = config_for(:security)
 
+    # Store file storage configurations
+    config.file_storage = config_for(:file_storage)
+
     # Allowed application hosts
     config.hosts.push(*config.security[:allowed_hosts])
 

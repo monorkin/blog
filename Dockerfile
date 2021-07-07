@@ -26,7 +26,8 @@ RUN apk update \
       glib-dev \
       vips \
       vips-dev \
-    && apk -v --purge del build-base
+    && apk -v --purge del build-base \
+    && rm -rf /var/cache/apk/*
 
 RUN apk add --no-cache --force \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/main/ \
@@ -107,7 +108,7 @@ RUN CFLAGS="-Wno-cast-function-type" \
       --retry 3
 
 COPY package.json yarn.lock $APP_HOME/
-RUN yarn install --production
+RUN rm -rf ./public/packs && yarn install --production
 
 COPY . $APP_HOME
 
@@ -118,6 +119,7 @@ RUN rm -rf \
       ./log \
       ./docker \
       ./tmp/* \
+      ./public/uploads/* \
       ./.git \
       yarn* \
       package.json \

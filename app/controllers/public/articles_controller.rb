@@ -13,6 +13,7 @@ module Public
         cursor: params[:before] || params[:after]
       )
 
+      @popular_articles = Article.sorted_by_popularity.limit(2).preload(:primary_image)
       @records = @paginator.records
 
       # Don't cache search results

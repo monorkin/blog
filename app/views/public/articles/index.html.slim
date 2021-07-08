@@ -35,12 +35,13 @@
       = render collection: @records, partial: :article
     - else
       .articles_list__no_results No articles were found
-      .articles_list__suggestions
-        h4.articles_list__suggestions__title Popular articles
-        .articles_list__suggestions__container
-          = render collection: Article.sorted_by_popularity.limit(2), \
-            partial: 'public/articles/article_suggestion', as: :article, \
-            cached: true
+      - if @popular_articles.any?
+        .articles_list__suggestions
+          h4.articles_list__suggestions__title Popular articles
+          .articles_list__suggestions__container
+            = render collection: @popular_articles, \
+              partial: 'public/articles/article_suggestion', as: :article, \
+              cached: true
   section.pagination
     .pagination__button
       - if @paginator.previous?

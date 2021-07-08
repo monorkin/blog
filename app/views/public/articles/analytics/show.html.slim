@@ -56,7 +56,7 @@
             th Referrer
             th Count
         tbody
-          - @record.referrer_visit_counts.to_a.first(300).each do |host, count|
+          - @record.referrer_visit_counts.to_a.sort_by(&:last).reverse.first(20).each do |host, count|
             tr
               td = backlink(host, public_article_url(@record.article))
               td = short_number(count)

@@ -100,6 +100,8 @@ CMD ["/bin/bash", "-c", "while true; do sleep 10; done;"]
 ################################################################################
 FROM development AS pre_production
 
+ENV RAILS_ENV=production
+
 COPY Gemfile* $APP_HOME/
 RUN CFLAGS="-Wno-cast-function-type" \
     BUNDLE_FORCE_RUBY_PLATFORM=1 \
@@ -107,23 +109,20 @@ RUN CFLAGS="-Wno-cast-function-type" \
       --jobs `expr $(nproc)` \
       --retry 3
 
-COPY package.json yarn.lock $APP_HOME/
-RUN rm -rf ./public/packs && yarn install --production
-
 COPY . $APP_HOME
 
-RUN bundle exec rails webpacker:compile
-RUN rm -rf \
+RUN yarn install
+
+RUN cp ./config/credentials/development.key ./config/credentials/production.key \
+    && cp ./config/credentials/development.yml.enc ./config/credentials/production.yml.enc
+
+RUN bundle exec rails webpacker:compile \
+    && rm -rf \
+      ./config/credentials/production.* \
       ./node_modules \
-      ./test \
-      ./log \
       ./docker \
-      ./tmp/* \
-      ./public/uploads/* \
-      ./.git \
       yarn* \
-      package.json \
-      tags
+      package.json
 
 ################################################################################
 ##                                PRODUCTION                                  ##
@@ -138,4 +137,4 @@ COPY --from=pre_production /app $APP_HOME
 # Copy built gems
 COPY --from=pre_production /usr/local/bundle /usr/local/bundle
 
-CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+CMD ["make", "server"]

@@ -21,8 +21,8 @@ dev-update:
 	@LOCAL_USER_ID=$(LOCAL_USER_ID) docker-compose up -d
 
 ## Starts a server
-server:
-	@rails s
+server: run_migrations
+	@bundle exec puma -C config/puma.rb
 
 ## Starts a development server
 dev-server:

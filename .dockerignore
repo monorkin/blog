@@ -42,3 +42,11 @@ yarn-debug.log*
 # Ignore editor artefacts and configuration
 *.swap
 /tags
+
+# Data not used in the docker image
+Dockerfile
+.gitignore
+.dockerignore
+.ruby-version
+/.git
+/tests

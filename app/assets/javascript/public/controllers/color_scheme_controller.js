@@ -1,8 +1,13 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = [ "switch" ]
+  static targets = [ "switch", "label" ]
   static classes = [ "light", "dark", "auto" ]
+  static values = {
+    autoLabel: String,
+    lightLabel: String,
+    darkLabel: String
+  }
 
   LIGHT = 'light'
   DARK = 'dark'
@@ -17,21 +22,16 @@ export default class extends Controller {
     this.useMode(this.storedMode)
   }
 
-  toggleMode(event) {
+  switchMode(event) {
     event.preventDefault()
 
-    const newScheme = (this.currentMode === this.LIGHT) ? this.DARK : this.LIGHT
+    let newMode = null
 
-    // Crude way to unset your preference.
-    //
-    // If you set the toggle to you current system's preference then your
-    // system's preference will be used as the preference henceforth.
-    if (newScheme === this.browserPreferredColorScheme) {
-      this.useMode(this.AUTO)
-    }
-    else {
-      this.useMode(newScheme)
-    }
+    if (this.currentMode === this.AUTO) newMode = this.LIGHT
+    else if (this.currentMode === this.LIGHT) newMode = this.DARK
+    else if (this.currentMode === this.DARK) newMode = this.AUTO
+
+    this.useMode(newMode)
   }
 
   useMode(mode) {
@@ -50,6 +50,7 @@ export default class extends Controller {
     localStorage.setItem(this.STORAGE_KEY, mode)
 
     this.activateClass(klass)
+    this.changeLabel(mode)
   }
 
   activateClass(klass) {
@@ -57,6 +58,24 @@ export default class extends Controller {
     this.element.classList.remove(this.darkClass)
     this.element.classList.remove(this.autoClass)
     this.element.classList.add(klass)
+  }
+
+  changeLabel(mode) {
+    if (!this.hasLabelTarget) return
+
+    let newLabel = ""
+
+    if (mode === this.AUTO && this.hasAutoLabelValue) {
+      newLabel = this.autoLabelValue
+    }
+    else if (mode === this.LIGHT && this.hasLightLabelValue) {
+      newLabel = this.lightLabelValue
+    }
+    else if (mode === this.DARK && this.hasDarkLabelValue) {
+      newLabel = this.darkLabelValue
+    }
+
+    this.labelTarget.innerText = newLabel
   }
 
   get browserPreferredColorScheme() {
@@ -87,8 +106,11 @@ export default class extends Controller {
     else if (this.element.classList.contains(this.darkClass)) {
       return this.DARK
     }
+    else if (this.element.classList.contains(this.autoClass)) {
+      return this.AUTO
+    }
 
-    return this.browserPreferredColorScheme
+    return null
   }
 
 }

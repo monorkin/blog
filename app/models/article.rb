@@ -99,10 +99,10 @@ class Article < ApplicationRecord
   end
 
   def self.from_slug!(slug)
-    raise(ActiveRecord::RecordNotFound, nil, slug, self, :id) unless slug.present?
+    raise(ActiveRecord::RecordNotFound.new(nil, slug, self, :id)) unless slug.present?
 
     id = slug.scan(/^.*-([^-]+)$/).flatten.first.presence
-    raise(ActiveRecord::RecordNotFound, nil, id, self, :id) unless id
+    raise(ActiveRecord::RecordNotFound.new(nil, id, self, :id)) unless id
 
     find(id)
   end

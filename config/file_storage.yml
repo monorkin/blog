@@ -3,4 +3,3 @@ development:
 test:
 
 production:
-  asset_host: 'assets.stanko.io'

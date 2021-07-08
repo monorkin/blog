@@ -7,7 +7,7 @@ class Article
     end
 
     def excerpt
-      truncate(object.content.to_text, length: 160)
+      object.excerpt(length: 160)
     end
   end
 end

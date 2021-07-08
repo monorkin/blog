@@ -88,8 +88,7 @@ class Article < ApplicationRecord
 
   scope(:sorted_by_popularity, lambda do
     joins(:statistic)
-    .references(:statistic)
-      .order(Arel.sql("#{POPULARITY_SQL} DESC"), published_at: :desc)
+      .reorder(Arel.sql("#{POPULARITY_SQL} DESC"), published_at: :desc)
   end)
 
   def self.from_slug(slug)

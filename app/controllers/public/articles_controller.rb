@@ -32,7 +32,7 @@ module Public
       return(head :internal_server_error) if feed.invalid?
 
       headers['Content-Type'] = 'application/atom+xml'
-      fresh_when(feed.scope)
+
       render xml: feed.to_atom, layout: false
     end
 
@@ -40,7 +40,7 @@ module Public
       return(head :internal_server_error) if feed.invalid?
 
       headers['Content-Type'] = 'application/rss+xml'
-      fresh_when(feed.scope)
+
       render xml: feed.to_rss, layout: false
     end
 

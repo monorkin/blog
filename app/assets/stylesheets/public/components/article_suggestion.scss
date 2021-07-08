@@ -57,7 +57,7 @@
   }
 }
 
-.article_suggestion--dark_color_scheme {
+@mixin article_suggestion_dark_color_scheme {
   background: lighten($darkmode_background, 10%);
   border: 1px solid lighten($darkmode_background, 20%);
 

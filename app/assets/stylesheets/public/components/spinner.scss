@@ -21,9 +21,9 @@
 
   height: 1rem;
   width: 1rem;
+}
 
-  &--dark_color_scheme {
-    border-top: 0.1rem solid $darkmode_primary_text_color;
-    border-right: 0.1rem solid $darkmode_primary_text_color;
-  }
+@mixin spinner_dark_color_scheme {
+  border-top: 0.1rem solid $darkmode_primary_text_color;
+  border-right: 0.1rem solid $darkmode_primary_text_color;
 }

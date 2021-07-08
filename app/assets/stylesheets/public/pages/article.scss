@@ -201,9 +201,7 @@
   }
 }
 
-.article.article--dark_color_scheme {
-  @import "../syntax_hilightinh_themes/dark";
-
+@mixin article_dark_color_scheme {
   div.highlight {
     background: none;
   }

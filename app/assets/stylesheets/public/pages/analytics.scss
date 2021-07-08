@@ -78,7 +78,7 @@
   }
 }
 
-.analytics--dark_color_scheme {
+@mixin analytics_dark_color_scheme {
   .analytics__monthly_views__month {
     border-color: darken($darkmode_tables_header_background_color, 5%);
   }

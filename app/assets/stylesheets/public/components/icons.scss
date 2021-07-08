@@ -10,6 +10,6 @@
   }
 }
 
-.icon--dark_color_scheme {
+@mixin icon_dark_color_scheme {
   color: $darkmode_link_color;
 }

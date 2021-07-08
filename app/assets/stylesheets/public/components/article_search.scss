@@ -64,7 +64,7 @@
   }
 }
 
-.article_search--dark_color_scheme {
+@mixin article_search_dark_color_scheme {
   .article_search__simple {
     & &__submit_button {
       background: $darkmode_link_color;

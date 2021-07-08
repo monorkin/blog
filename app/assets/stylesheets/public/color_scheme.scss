@@ -16,8 +16,6 @@
   background: none;
   border: none;
   display: inline-block;
-  width: 1rem;
-  height: 1rem;
   position: relative;
   cursor: pointer;
 
@@ -33,13 +31,13 @@
   }
 }
 
-.color_scheme.color_scheme--automatic {
+@mixin light_mode {
   .color_scheme_switch__icon {
     &--auto {
+      display: none;
     }
 
     &--light {
-      display: none;
     }
 
     &--dark {
@@ -49,21 +47,10 @@
 }
 
 .color_scheme.color_scheme--light {
-  .color_scheme_switch__icon {
-    &--auto {
-      display: none;
-    }
-
-    &--light {
-    }
-
-    &--dark {
-      display: none;
-    }
-  }
+  @include light_mode;
 }
 
-.color_scheme.color_scheme--dark {
+@mixin dark_mode {
   background-color: $darkmode_background;
   color: $darkmode_primary_text_color;
 
@@ -88,47 +75,89 @@
     background-color: $darkmode_background;
   }
 
+  @include links_dark_color_scheme;
+
   .article {
-    @extend .article--dark_color_scheme;
+    @include article_dark_color_scheme;
   }
 
   .articles_list {
-    @extend .articles_list--dark_color_scheme;
+    @include articles_list_dark_color_scheme;
   }
 
   .popup {
-    @extend .popup--dark_color_scheme;
+    @include popup_dark_color_scheme;
   }
 
   .subscribe {
-    @extend .subscribe--dark_color_scheme;
+    @include subscribe_dark_color_scheme;
   }
 
   .spinner {
-    @extend .spinner--dark_color_scheme;
+    @include spinner_dark_color_scheme;
   }
 
   .analytics {
-    @extend .analytics--dark_color_scheme;
+    @include analytics_dark_color_scheme;
   }
 
   .table {
-    @extend .table--dark_color_scheme;
+    @include table_dark_color_scheme;
   }
 
   .header {
-    @extend .header--dark_color_scheme !optional;
+    @include header_dark_color_scheme;
   }
 
   .article_suggestion {
-    @extend .article_suggestion--dark_color_scheme;
+    @include article_suggestion_dark_color_scheme;
   }
 
   .icon {
-    @extend .icon--dark_color_scheme;
+    @include icon_dark_color_scheme;
   }
 
   .article_search {
-    @extend .article_search--dark_color_scheme;
+    @include article_search_dark_color_scheme;
+  }
+}
+
+.color_scheme.color_scheme--dark {
+  @include dark_mode;
+
+  .article {
+    @import "./syntax_hilightinh_themes/dark";
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .color_scheme--automatic {
+    @include light_mode;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .color_scheme--automatic {
+    @include dark_mode;
+
+    .article {
+      @import "./syntax_hilightinh_themes/dark";
+    }
+  }
+}
+
+.color_scheme.color_scheme--automatic {
+  .color_scheme_switch__icon {
+    &--auto {
+      display: inline-block;
+    }
+
+    &--light {
+      display: none;
+    }
+
+    &--dark {
+      display: none;
+    }
   }
 }

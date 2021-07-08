@@ -49,22 +49,22 @@
   }
 }
 
-.subscribe--dark_color_scheme {
+@mixin subscribe_dark_color_scheme {
   box-shadow: $darkmode_box_shadow_args;
-}
 
-.subscribe--rss.subscribe--dark_color_scheme {
-  background-color: $darkmode_subscribe_rss_background_color;
+  &--rss {
+    background-color: $darkmode_subscribe_rss_background_color;
 
-  .subscribe__icon {
-    stroke: $darkmode_subscribe_rss_icon_color;
-  }
+    .subscribe__icon {
+      stroke: $darkmode_subscribe_rss_icon_color;
+    }
 
-  .subscribe__info {
-    color: $darkmode_subscribe_rss_text_color;
-  }
+    .subscribe__info {
+      color: $darkmode_subscribe_rss_text_color;
+    }
 
-  a {
-    color: $darkmode_subscribe_rss_link_color;
+    a {
+      color: $darkmode_subscribe_rss_link_color;
+    }
   }
 }

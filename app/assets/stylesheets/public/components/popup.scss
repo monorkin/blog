@@ -90,21 +90,21 @@
       transform: rotate(45deg);
     }
   }
+}
 
-  &--dark_color_scheme {
-    color: $darkmode_primary_text_color;
+@mixin  popup_dark_color_scheme {
+  color: $darkmode_primary_text_color;
 
-    .popup__container {
-      background: $darkmode_background;
-      border: 1px solid rgba(white, 0.15);
-      // box-shadow: 0 0.3rem 1rem 0.1rem rgba(white, 0.2);
-      box-shadow: $darkmode_box_shadow_args;
-    }
+  .popup__container {
+    background: $darkmode_background;
+    border: 1px solid rgba(white, 0.15);
+    // box-shadow: 0 0.3rem 1rem 0.1rem rgba(white, 0.2);
+    box-shadow: $darkmode_box_shadow_args;
+  }
 
-    .popup__container__arrow, .popup__container__arrow:before {
-      background: $darkmode_background;
-      border-left: 1px solid rgba(white, 0.15);
-      border-bottom: 1px solid rgba(white, 0.15);
-    }
+  .popup__container__arrow, .popup__container__arrow:before {
+    background: $darkmode_background;
+    border-left: 1px solid rgba(white, 0.15);
+    border-bottom: 1px solid rgba(white, 0.15);
   }
 }

@@ -55,7 +55,7 @@
   }
 }
 
-.table--dark_color_scheme {
+@mixin table_dark_color_scheme {
   thead tr th {
     color: $darkmode_tables_header_text_color;
   }

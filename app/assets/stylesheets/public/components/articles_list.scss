@@ -112,7 +112,7 @@
   }
 }
 
-.articles_list--dark_color_scheme {
+@mixin articles_list_dark_color_scheme {
   .articles_list__article__title {
     h2 {
       a {

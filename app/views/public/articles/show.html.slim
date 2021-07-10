@@ -1,20 +1,21 @@
 = content_for :head
-  - seo_article = Article::SEODecorator.new(@record)
-  title = seo_article.title
-  meta name="description" content=seo_article.excerpt
-  meta rel="canonical" href=public_article_url(@record.slug)
-  meta name="twitter:card" content="summary"
-  meta name="twitter:creator" content="@monorkin"
-  meta property="og:title" content=seo_article.title
-  meta property="og:description" content=seo_article.excerpt
-  meta property="og:locale" content="en_US"
-  meta property="og:type" content="article"
-  meta property="og:url" content=public_article_url(@record.slug)
-  - if @record.primary_image.present?
-    meta property="og:image" content=@record.primary_image.image_url(:large)
-  - else
-    meta property="og:image" content=asset_pack_url('media/images/public/portrait.jpg')
-    meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."
+  = cache [@record, :head] do
+    - seo_article = Article::SEODecorator.new(@record)
+    title = seo_article.title
+    meta name="description" content=seo_article.excerpt
+    meta rel="canonical" href=public_article_url(@record.slug)
+    meta name="twitter:card" content="summary"
+    meta name="twitter:creator" content="@monorkin"
+    meta property="og:title" content=seo_article.title
+    meta property="og:description" content=seo_article.excerpt
+    meta property="og:locale" content="en_US"
+    meta property="og:type" content="article"
+    meta property="og:url" content=public_article_url(@record.slug)
+    - if @record.primary_image.present?
+      meta property="og:image" content=@record.primary_image.image_url(:large)
+    - else
+      meta property="og:image" content=asset_pack_url('media/images/public/portrait.jpg')
+      meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."
 
 article.article
   = cache @record do
@@ -23,11 +24,12 @@ article.article
   hr
 
   .article__links
-    - if @record.tags.any?
-      .article__links__tags
-        h6.article__links__title Tags
-        - @record.tags.sort_by(&:name).each do |tag|
-          = search_articles_with_tag_link(tag)
+    = cache [@record, :tags] do
+      - if @record.tags.any?
+        .article__links__tags
+          h6.article__links__title Tags
+          - @record.tags.sort_by(&:name).each do |tag|
+            = search_articles_with_tag_link(tag)
 
     .article__links__analytics
       = link_to public_article_analytics_path(article_slug: @record), class: 'article__links__link'
@@ -58,11 +60,12 @@ article.article
         = render partial: 'public/articles/article_suggestion', \
                  collection: suggested_articles, as: :article
 
-  - suggested_articles = @record.suggested_articles.limit(2)
+  - suggested_articles = @record.suggested_articles.limit(2).to_a
   - if suggested_articles.any?
     .article__suggestions
       h6.article__suggestions__title Other popular articles
       .article__suggestions__articles
         = render partial: 'public/articles/article_suggestion', \
-                 collection: suggested_articles, as: :article
+          collection: suggested_articles, as: :article, \
+          cached: true
 

@@ -9,7 +9,7 @@ if defined?(Rack::MiniProfiler)
   Rack::MiniProfiler.config.enable_advanced_debugging_tools = Rails.env.development?
   # Rack::MiniProfiler.config.enable_hotwire_turbo_drive_support = true
 
-  # Rack::MiniProfiler.config.assets_url = proc do |name, _version, _env|
-  #   ActionController::Base.helpers.asset_path(name)
-  # end
+  Rack::MiniProfiler.config.skip_paths += [
+    %r{^/?uploads/.*$}i
+  ]
 end

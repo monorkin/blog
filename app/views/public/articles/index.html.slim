@@ -32,7 +32,7 @@
 
   section.articles_list
     - if @records.any?
-      = render collection: @records, partial: :article
+      = render collection: @records, partial: :article, cached: true
     - else
       .articles_list__no_results No articles were found
       - if @popular_articles.any?

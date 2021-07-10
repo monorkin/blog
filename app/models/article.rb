@@ -149,6 +149,5 @@ class Article < ApplicationRecord
       .published
       .sorted_by_popularity
       .where.not(id: self)
-      .preload(:images, :primary_image)
   end
 end

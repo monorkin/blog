@@ -1,7 +1,7 @@
 default: &default
   expected_size: 500_000
   error_rate: 0.05
-  provider: redis
+  provider: rebloom
 
 development:
   <<: *default

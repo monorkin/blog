@@ -87,9 +87,11 @@ class Article
     end
 
     def clear_stored_visits!
-      self.class.redis_pool.with { |redis| redis.del(storage_key) }
+      Apm.new.span(:clear_stored_visits) do
+        self.class.redis_pool.with { |redis| redis.del(storage_key) }
 
-      true
+        true
+      end
     end
 
     private

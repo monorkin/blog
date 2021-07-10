@@ -8,6 +8,9 @@ if credentials.present?
     config.breadcrumbs_logger = %i[active_support_logger http_logger]
     config.enabled_environments = %w[production]
     config.release = Blog::VERSION
+    config.async = lambda do |event, hint|
+      Sentry::SendEventJob.perform_later(event, hint)
+    end
 
     # Set traces_sample_rate to 1.0 to capture 100% of transactions for performance
     # monitoring. We recommend adjusting this value in production

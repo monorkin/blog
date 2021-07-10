@@ -52,6 +52,29 @@ services:
     tty: true
     stdin_open: true
 
+  default-jobs:
+    build:
+      context: .
+      target: development
+    image: 'blog-development'
+    volumes:
+      - .:/app
+      - bundle_store:/usr/local/bundle
+    depends_on:
+      - db
+      - redis
+      - webpack-dev-server
+    environment:
+      - LOCAL_USER_ID=${LOCAL_USER_ID}
+      - WEBPACKER_DEV_SERVER_HOST=webpack-dev-server
+      - DATABASE_URL=postgres://postgres:postgres@db/blog
+      - REDIS_URL=redis://redis:6379/0
+      - QUEUE=default,mailers
+      - INTERVAL=0.2
+    command: rake resque:work
+    tty: true
+    stdin_open: true
+
   app:
     build:
       context: .

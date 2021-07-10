@@ -25,7 +25,10 @@ module Public
 
       authorize(@record)
       fresh_when(@record)
-      @record.statistic.process_request_later(request)
+
+      apm.span(:process_request_statistics) do
+        @record.statistic.process_request_later(request)
+      end
     end
 
     def atom

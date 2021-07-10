@@ -68,18 +68,22 @@ class Article
     end
 
     def store_visit!(visit)
-      self.class.redis_pool.with do |redis|
-        redis.hsetnx(storage_key, visit.fingerprint, visit.to_json)
+      Apm.new.span(:store_visit) do
+        self.class.redis_pool.with do |redis|
+          redis.hsetnx(storage_key, visit.fingerprint, visit.to_json)
+        end
       end
 
       true
     end
 
     def stored_visits
-      self.class
-          .redis_pool
-          .with { |redis| redis.hvals(storage_key) }
-          .map { |visit_json| Visit.new(JSON.parse(visit_json)) }
+      Apm.new.span(:retrieve_stored_visits) do
+        self.class
+            .redis_pool
+            .with { |redis| redis.hvals(storage_key) }
+            .map { |visit_json| Visit.new(JSON.parse(visit_json)) }
+      end
     end
 
     def clear_stored_visits!

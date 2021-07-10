@@ -50,11 +50,15 @@ class Article
       end
 
       def seen?
-        storage.remembers?(fingerprint)
+        Apm.new.span(:visit_seen_check) do
+          storage.remembers?(fingerprint)
+        end
       end
 
       def remember!
-        storage.remember!(fingerprint)
+        Apm.new.span(:remember_visit) do
+          storage.remember!(fingerprint)
+        end
       end
 
       def as_json(*args)

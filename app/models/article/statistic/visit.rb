@@ -62,6 +62,10 @@ class Article
       end
 
       def as_json(*args)
+        to_h
+      end
+
+      def to_h
         {
           article: article.id,
           request: nil,

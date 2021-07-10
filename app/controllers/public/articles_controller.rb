@@ -27,7 +27,8 @@ module Public
       fresh_when(@record)
 
       apm.span(:process_request_statistics) do
-        @record.statistic.process_request_later(request)
+        visit = Article::Statistic::Visit.new(article: @record, request: request)
+        LogArticleVisitJob.perform_later(@record, visit.to_h)
       end
     end
 

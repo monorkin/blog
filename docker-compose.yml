@@ -74,7 +74,7 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@db/blog
       - REDIS_URL=redis://redis:6379/0
       - REBLOOM_URL=redis://rebloom:6379/0
-      - QUEUE=default,mailers
+      - QUEUE=default,mailers,visits
       - INTERVAL=0.2
     command: rake resque:work
     tty: true

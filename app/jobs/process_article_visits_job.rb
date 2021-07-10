@@ -6,15 +6,10 @@ class ProcessArticleVisitsJob < ApplicationJob
 
   def perform(statistic)
     statistic.stored_visits.each do |visit|
-      apm.span(:process_visit) do
-        statistic.process_visit(visit)
-      end
+      statistic.process_visit(visit)
     end
 
     statistic.save!
-
-    apm.span(:clear_stored_visits) do
-      statistic.clear_stored_visits!
-    end
+    statistic.clear_stored_visits!
   end
 end

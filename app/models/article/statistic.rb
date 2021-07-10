@@ -41,30 +41,21 @@ class Article
       @redis_pool ||= ConnectionPool.new(CONNECTION_POOL_OPTIONS) { Redis.new }
     end
 
-    def process_request_later(request)
-      visit = Visit.new(article: article, request: request)
-      return if visit.seen?
-
-      store_visit!(visit)
-      ProcessArticleVisitsJob.perform_later(self)
-      visit.remember!
-    end
-
     def process_visit!(visit)
       process_visit(visit)
       save!
     end
 
     def process_visit(visit)
-      return if visit.seen?
+      Apm.new.span(:process_visit) do
+        self.view_count += 1
+        date_key = Date.current.strftime('%Y-%m')
+        visit_counts_per_month[date_key] += 1
 
-      self.view_count += 1
-      date_key = Date.current.strftime('%Y-%m')
-      visit_counts_per_month[date_key] += 1
+        return unless visit.referrer_host.present?
 
-      return unless visit.referrer_host.present?
-
-      referrer_visit_counts[visit.referrer_host] += 1
+        referrer_visit_counts[visit.referrer_host] += 1
+      end
     end
 
     def store_visit!(visit)

@@ -89,8 +89,17 @@ RUN apk update \
       nodejs \
       yarn \
       python3 \
-      vim
+      vim \
+      inotify-tools \
+      dbus \
+      ttf-freefont \
+      xvfb \
+      firefox-esr \
+    && rm -rf /var/cache/apk/* \
+    && dbus-uuidgen --ensure=/etc/machine-id
+
 RUN yarn global add node-gyp
+ENV PATH="$PATH:$(yarn global bin)"
 
 # Do nothing forever
 CMD ["/bin/bash", "-c", "while true; do sleep 10; done;"]

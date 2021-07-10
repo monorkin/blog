@@ -4,6 +4,7 @@ default: &default
     - blog.stanko.io
     - stanko.test
     - blog.stanko.test
+    - 127.0.0.1
 
 development:
   <<: *default

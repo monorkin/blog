@@ -55,4 +55,4 @@ Shrine.plugin :store_dimensions
 Shrine.plugin :signature
 Shrine.plugin :url_options,
               cache: config.dig(:cache, :url_options).symbolize_keys,
-              store: config.dig(:cache, :url_options).symbolize_keys
+              store: config.dig(:store, :url_options).symbolize_keys

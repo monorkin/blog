@@ -32,6 +32,8 @@ Rails.application.routes.draw do
     get '451', to: 'errors#unavailable_for_legal_reasons'
     get '500', to: 'errors#internal_server_error'
 
+    get 'sitemap', to: 'sitemap#index'
+
     resources :articles, only: %i[index] do
       collection do
         get :rss

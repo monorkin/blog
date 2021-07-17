@@ -2,7 +2,7 @@
 
 module Blog
   MAJOR = 1
-  PATCH = 13
+  PATCH = 14
   CANDIDATE = nil
   VERSION = [MAJOR, PATCH, CANDIDATE].compact.join('.').freeze
 end

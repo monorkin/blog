@@ -1,9 +1,8 @@
 default: &default
+  default_host: 'http://stanko.test'
   allowed_hosts:
     - stanko.io
-    - blog.stanko.io
     - stanko.test
-    - blog.stanko.test
     - 127.0.0.1
 
 development:
@@ -14,3 +13,4 @@ test:
 
 production:
   <<: *default
+  default_host: 'https://stanko.io'

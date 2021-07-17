@@ -56,5 +56,7 @@ module Blog
 
     # Configure ActiveJob queue adapter
     config.active_job.queue_adapter = :resque
+
+    routes.default_url_options[:host] = config.security[:default_host]
   end
 end

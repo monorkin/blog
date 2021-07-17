@@ -17,13 +17,20 @@ class Sitemap < ApplicationModel
   private
 
   def build
-    options = { adapter: adapter, compress: false, verbose: false }
-
-    SitemapGenerator::LinkSet.new(options).tap do |set|
+    SitemapGenerator::LinkSet.new(link_set_options).tap do |set|
       configure_defaults!(set)
       add_static_paths!(set)
       add_article_paths!(set)
     end
+  end
+
+  def link_set_options
+    {
+      adapter: adapter,
+      compress: false,
+      verbose: false,
+      include_root: false
+    }
   end
 
   def adapter
@@ -35,13 +42,22 @@ class Sitemap < ApplicationModel
   end
 
   def add_static_paths!(set)
-    set.add public_root_path, changefreq: 'monthly', priority: 0.5
+    set.add public_root_path,
+            changefreq: 'monthly',
+            priority: 1.0,
+            lastmod: File.mtime(Rails.root.join('app/views/public/about/show.html.slim'))
   end
 
   def add_article_paths!(set)
     scope.find_each do |article|
-      set.add public_article_path(article), changefreq: 'monthly', priority: 0.75
-      set.add public_article_analytics_path(article), changefreq: 'monthly', priority: 0.25
+      set.add public_article_path(article),
+              changefreq: 'monthly',
+              priority: 0.75,
+              lastmod: article.updated_at
+      set.add public_article_analytics_path(article),
+              changefreq: 'monthly',
+              priority: 0.25,
+              lastmod: article.updated_at
     end
   end
 end

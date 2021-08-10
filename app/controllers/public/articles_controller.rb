@@ -26,10 +26,8 @@ module Public
       authorize(@record)
       fresh_when(@record)
 
-      apm.span(:process_request_statistics) do
-        visit = Article::Statistic::Visit.new(article: @record, request: request)
-        LogArticleVisitJob.perform_later(@record, visit.to_h)
-      end
+      visit = Article::Statistic::Visit.new(article: @record, request: request)
+      LogArticleVisitJob.perform_later(@record, visit.to_h)
     end
 
     def atom

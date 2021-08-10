@@ -47,42 +47,34 @@ class Article
     end
 
     def process_visit(visit)
-      Apm.new.span(:process_visit) do
-        self.view_count += 1
-        date_key = Date.current.strftime('%Y-%m')
-        visit_counts_per_month[date_key] += 1
+      self.view_count += 1
+      date_key = Date.current.strftime('%Y-%m')
+      visit_counts_per_month[date_key] += 1
 
-        return unless visit.referrer_host.present?
+      return unless visit.referrer_host.present?
 
-        referrer_visit_counts[visit.referrer_host] += 1
-      end
+      referrer_visit_counts[visit.referrer_host] += 1
     end
 
     def store_visit!(visit)
-      Apm.new.span(:store_visit) do
-        self.class.redis_pool.with do |redis|
-          redis.hsetnx(storage_key, visit.fingerprint, visit.to_json)
-        end
+      self.class.redis_pool.with do |redis|
+        redis.hsetnx(storage_key, visit.fingerprint, visit.to_json)
       end
 
       true
     end
 
     def stored_visits
-      Apm.new.span(:retrieve_stored_visits) do
-        self.class
-            .redis_pool
-            .with { |redis| redis.hvals(storage_key) }
-            .map { |visit_json| Visit.new(JSON.parse(visit_json)) }
-      end
+      self.class
+          .redis_pool
+          .with { |redis| redis.hvals(storage_key) }
+          .map { |visit_json| Visit.new(JSON.parse(visit_json)) }
     end
 
     def clear_stored_visits!
-      Apm.new.span(:clear_stored_visits) do
-        self.class.redis_pool.with { |redis| redis.del(storage_key) }
+      self.class.redis_pool.with { |redis| redis.del(storage_key) }
 
-        true
-      end
+      true
     end
 
     private

@@ -35,8 +35,4 @@ class PublicController < ApplicationController
   def current_user
     nil
   end
-
-  def apm
-    @apm ||= ::Apm.new
-  end
 end

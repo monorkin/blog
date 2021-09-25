@@ -6,10 +6,14 @@
   top: 0;
   left: 0;
   right: 0;
-  transition: top 200ms, background-color 120ms, color 120ms !important;
+  transition: top 200ms, box-shadow 300ms, background-color 120ms, color 120ms !important;
 
   & + .main {
     margin-top: calc(2.8rem + 3rem);
+  }
+
+  &--floating {
+    box-shadow: $box_shadow_args;
   }
 
   &__container {
@@ -64,4 +68,9 @@
 }
 
 @mixin header_dark_color_scheme {
+  background: $darkmode_background;
+
+  &--floating {
+    box-shadow: $darkmode_box_shadow_args;
+  }
 }

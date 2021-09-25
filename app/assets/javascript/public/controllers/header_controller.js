@@ -38,9 +38,17 @@ export default class extends Controller {
 
   show() {
     this.element.style.top = 0
+
+    if (window.scrollY > 0) {
+      this.element.classList.add("header--floating")
+    }
+    else {
+      this.element.classList.remove("header--floating")
+    }
   }
 
   hide() {
+    this.element.classList.remove("header--floating")
     this.element.style.top = `${-1 * this.element.offsetHeight}px`
   }
 

@@ -101,6 +101,7 @@ class Article
         img['src'] = image&.image_url || img['src']
         img['loading'] = :lazy
         img['srcset'] = image&.srcset&.join(', ')
+        img['style'] = "--image-aspect-ratio: #{image.aspect_ratio}" if image
 
         _figure = img.wrap('<figure></figure>').parent
 

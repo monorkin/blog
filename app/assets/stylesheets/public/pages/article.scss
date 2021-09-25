@@ -85,6 +85,7 @@
   }
 
   p img, figure img, picture img  {
+    aspect-ratio: var(--image-aspect-ratio, unset);
     border-radius: 0.15rem;
     max-width: 100%;
     height: auto;

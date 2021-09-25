@@ -50,5 +50,13 @@ class Article
     def derivatives
       image_data['derivatives']
     end
+
+    def aspect_ratio
+      derivatives
+        .map { |_, data| data['metadata'].slice('width', 'height').values.map(&:to_f) }
+        .map { |(w, h)| w / h }
+        .max
+        .round(2)
+    end
   end
 end

@@ -1,7 +1,16 @@
 .header {
+  background: $background;
   font-family: $sans_serif_fonts;
-  height: 2rem;
-  margin-bottom: 3rem;
+  min-height: 2.8rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  transition: top 200ms, background-color 120ms, color 120ms !important;
+
+  & + .main {
+    margin-top: calc(2.8rem + 3rem);
+  }
 
   &__container {
     padding: .5rem 1rem;

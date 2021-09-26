@@ -163,12 +163,11 @@
     }
 
     & &__tags {
-      width: 70%;
+      flex-grow: 1;
     }
 
     & &__analytics {
       text-align: right;
-      width: 30%;
     }
 
     &__link {

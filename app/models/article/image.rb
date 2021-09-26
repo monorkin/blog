@@ -52,6 +52,8 @@ class Article
     end
 
     def aspect_ratio
+      return if derivatives.blank?
+
       derivatives
         .map { |_, data| data['metadata'].slice('width', 'height').values.map(&:to_f) }
         .map { |(w, h)| w / h }

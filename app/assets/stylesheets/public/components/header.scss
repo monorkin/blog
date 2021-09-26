@@ -57,6 +57,52 @@
       align-content: stretch;
       white-space: nowrap;
       width: 20%;
+
+      &__dropdown {
+        @extend .pill_link;
+
+        display: inline-block;
+        position: relative;
+        z-index: 2;
+
+        &__content {
+          background-color: $link_color;
+          border: 1px solid $link_color;
+          border-radius: 0.75rem;
+          border-top-right-radius: 0;
+          box-shadow: $box_shadow_args;
+          display: none;
+          list-style: none;
+          margin: 0;
+          position: absolute;
+          padding: 1rem 1.2rem;
+          right: -1px;
+          z-index: 1;
+
+          &__item {
+            &__label {
+              margin-right: 0.5rem;
+            }
+          }
+
+          .icon {
+            color: $background;
+          }
+        }
+
+        &:hover {
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        &:hover &__content {
+           display: block;
+        }
+
+        &:focus &__content {
+           display: block;
+        }
+      }
     }
   }
 }
@@ -72,5 +118,14 @@
 
   &--floating {
     box-shadow: $darkmode_box_shadow_args;
+  }
+
+  &__container__actions__dropdown__content {
+    background: $darkmode_link_color;
+    border: none;
+
+    .icon {
+      color: $darkmode_background;
+    }
   }
 }

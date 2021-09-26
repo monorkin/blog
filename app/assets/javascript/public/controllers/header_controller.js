@@ -37,6 +37,7 @@ export default class extends Controller {
   }
 
   show() {
+    this.element.querySelectorAll(".header__container__actions__dropdown__content").forEach((e) => e.classList.remove("hidden"))
     this.element.style.top = 0
 
     if (window.scrollY > 0) {
@@ -48,6 +49,7 @@ export default class extends Controller {
   }
 
   hide() {
+    this.element.querySelectorAll(".header__container__actions__dropdown__content").forEach((e) => e.classList.add("hidden"))
     this.element.classList.remove("header--floating")
     this.element.style.top = `${-1 * this.element.offsetHeight}px`
   }

@@ -15,11 +15,11 @@ VERSION ?= $(shell ruby -r './config/version.rb' -e 'puts Blog::VERSION')
 
 ## Starts all containers in the foreground
 dev:
-	@LOCAL_USER_ID=$(LOCAL_USER_ID) docker-compose up
+	@LOCAL_USER_ID=$(LOCAL_USER_ID) docker compose up
 
 ## Starts all containers in the foreground
 dev-update:
-	@LOCAL_USER_ID=$(LOCAL_USER_ID) docker-compose up -d
+	@LOCAL_USER_ID=$(LOCAL_USER_ID) docker compose up -d
 
 ## Starts a server
 server: run_migrations
@@ -31,11 +31,11 @@ dev-server:
 
 ## Stops all containers
 kill:
-	@docker-compose down
+	@docker compose down
 
 ## Builds the development Docker image
 build:
-	@docker-compose build
+	@docker compose build
 
 ## Spawns an interactive Rails console in the web container
 console:
@@ -52,11 +52,11 @@ bash:
 	@if [ -z "$$ROOT" ]; then \
 		docker exec \
 			-u $(LOCAL_USER_ID) \
-			-it $$(docker-compose ps -q $(WEB_SERVICE)) \
+			-it $$(docker compose ps -q $(WEB_SERVICE)) \
 			bash -c "reset -w && bash"; \
 	else \
 		docker exec \
-			-it $$(docker-compose ps -q $(WEB_SERVICE)) \
+			-it $$(docker compose ps -q $(WEB_SERVICE)) \
 			bash; \
 	fi
 
@@ -64,7 +64,7 @@ bash:
 run-command:
 	@docker exec \
 		-u $(LOCAL_USER_ID) \
-		-it $$(docker-compose ps -q web) \
+		-it $$(docker compose ps -q web) \
 		bash -c "reset -w && bash -c '$$COMMAND'"
 
 ## Reloads the currently running server
@@ -121,11 +121,11 @@ push-production-image:
 
 ## Opens a redis-cli console
 redis-cli:
-	@docker-compose exec $(REDIS_SERVICE) redis-cli
+	@docker compose exec $(REDIS_SERVICE) redis-cli
 
 ## Opens a redis-cli console on the Rebloom instance
 rebloom-cli:
-	@docker-compose exec $(REBLOOM_SERVICE) redis-cli
+	@docker compose exec $(REBLOOM_SERVICE) redis-cli
 
 ################################################################################
 ##                                  DATABASE                                  ##
@@ -153,7 +153,7 @@ annotate:
 
 ## Starts a MySQL session
 psql:
-	@docker-compose exec $(DB_SERVICE) psql -U postgres -d postgres
+	@docker compose exec $(DB_SERVICE) psql -U postgres -d postgres
 
 ################################################################################
 ##                                      HELP                                  ##

@@ -25,8 +25,8 @@ html
     meta name="msapplication-TileColor" content="#2d89ef"
     meta name="msapplication-TileImage" content="/mstile-144x144.png"
     meta name="theme-color" content="#fff8f0"
-    = stylesheet_pack_tag 'public', media: 'all', 'data-turbo-track': 'reload'
-    = javascript_pack_tag 'public', 'data-turbo-track': 'reload'
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload'
+    = javascript_importmap_tags
 
   body.color_scheme.color_scheme--automatic[
   data-controller="color-scheme"

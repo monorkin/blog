@@ -10,28 +10,6 @@ services:
   redis:
     image: "redis:5.0-alpine"
 
-  rebloom:
-    image: redislabs/rebloom
-
-  webpack-dev-server:
-    build:
-      context: .
-      target: development
-    image: 'blog-development'
-    volumes:
-      - "$PWD:/app"
-      - bundle_store:/usr/local/bundle
-    ports:
-      - '3035:3035'
-    environment:
-      - LOCAL_USER_ID=${LOCAL_USER_ID}
-      - NODE_ENV=development
-      - RAILS_ENV=development
-      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
-      - DATABASE_URL=postgres://postgres:postgres@db/blog
-    command: ./bin/webpack-dev-server
-    restart: unless-stopped
-
   statistics-jobs:
     build:
       context: .
@@ -43,7 +21,6 @@ services:
     depends_on:
       - db
       - redis
-      - webpack-dev-server
     environment:
       - LOCAL_USER_ID=${LOCAL_USER_ID}
       - WEBPACKER_DEV_SERVER_HOST=webpack-dev-server
@@ -67,7 +44,6 @@ services:
     depends_on:
       - db
       - redis
-      - webpack-dev-server
     environment:
       - LOCAL_USER_ID=${LOCAL_USER_ID}
       - WEBPACKER_DEV_SERVER_HOST=webpack-dev-server
@@ -91,7 +67,6 @@ services:
     depends_on:
       - db
       - redis
-      - webpack-dev-server
     ports:
       - "3000:3000"
     environment:

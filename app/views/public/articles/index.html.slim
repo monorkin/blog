@@ -9,7 +9,7 @@
   meta property="og:locale" content="en_US"
   meta property="og:type" content="blog"
   meta property="og:url" content=public_articles_url
-  meta property="og:image" content=asset_pack_url('media/images/public/portrait.jpg')
+  meta property="og:image" content=asset_url('/images/public/portrait.jpg')
   meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."
 
 .hidden
@@ -21,7 +21,7 @@
       .article_search__simple
         = search.text_field :term, placeholder: 'Search', label: false, class: 'article_search__simple__term_input'
         label.article_search__simple__submit_button
-          = inline_svg_pack_tag 'media/images/public/icons/search.svg', \
+          = inline_svg_tag 'media/images/public/icons/search.svg', \
           alt: 'Search', \
           class: 'icon', \
           title: "Search"

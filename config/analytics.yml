@@ -1,16 +1,16 @@
-default: &default
+base: &base
   expected_size: 500_000
   error_rate: 0.05
   provider: rebloom
 
 development:
-  <<: *default
+  <<: *base
 
 test:
-  storage:
-    expected_size: 500_000
-    error_rate: 0.05
-    provider: memory
+  <<: *base
+  expected_size: 500_000
+  error_rate: 0.05
+  provider: memory
 
 production:
-  <<: *default
+  <<: *base

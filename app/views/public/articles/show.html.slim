@@ -14,7 +14,7 @@
     - if @record.primary_image.present?
       meta property="og:image" content=@record.primary_image.image_url(:large)
     - else
-      meta property="og:image" content=asset_pack_url('media/images/public/portrait.jpg')
+      meta property="og:image" content=asset_url('/images/public/portrait.jpg')
       meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."
 
 article.article
@@ -33,14 +33,14 @@ article.article
 
     .article__links__analytics
       = link_to public_article_analytics_path(article_slug: @record), class: 'article__links__link'
-        = inline_svg_pack_tag('media/images/public/icons/activity.svg', \
+        = inline_svg_tag('public/icons/activity.svg', \
         class: 'article__links__link__icon', \
         alt: 'Analytics & backlinks', \
         title: 'Analytics & backlinks')
         span Analytics & backlinks
 
   .subscribe.subscribe--rss
-    = inline_svg_pack_tag 'media/images/public/icons/rss.svg', title: 'RSS logo', class: 'subscribe__icon'
+    = inline_svg_tag 'public/icons/rss.svg', title: 'RSS logo', class: 'subscribe__icon'
     .subscribe__info
       span
         |Consider subscribing to the

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rss'
-
 module Public
   class ArticlesController < PublicController
     def index

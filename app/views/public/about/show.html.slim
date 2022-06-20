@@ -15,12 +15,12 @@
   meta property="og:locale" content="en_US"
   meta property="og:type" content="website"
   meta property="og:url" content=public_root_url
-  meta property="og:image" content=asset_pack_url('media/images/public/portrait.jpg')
+  meta property="og:image" content=asset_url('/images/public/portrait.jpg')
   meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."
 
-.about
-  .about__header
-    .about__header__bio
+.content.about-page
+  .about-page__header
+    .about-page__header__bio
       h1
         |Hey 👋, I'm
         '
@@ -43,46 +43,46 @@
         '
         |co-organizer.
 
-    .about__header__picture
-      = image_pack_tag 'media/images/public/portrait.jpg', \
+    .about-page__header__picture
+      = image_tag 'public/portrait.jpg', \
         alt: "Portrait photograph of Stanko K.R."
-  .about__info
-    .about__info__description
-    .about__info__shortlist
+  .about-page__info
+    .about-page__info__description
+    .about-page__info__shortlist
       h3 Around the Web
-      .about__info__shortlist__item
-        = inline_svg_pack_tag 'media/images/public/icons/mail.svg', \
+      .about-page__info__shortlist__item
+        = inline_svg_tag 'public/icons/mail.svg', \
           alt: 'Envelope', \
-          class: 'icon icon--thin about__info__shortlist__item__icon', \
+          class: 'icon icon--thin about-page__info__shortlist__item__icon', \
           title: "Contact e-mail address"
         a href="mailto:hey@stanko.io" hey@stanko.io
-      .about__info__shortlist__item title="PGP key"
-        = inline_svg_pack_tag 'media/images/public/icons/key.svg', \
+      .about-page__info__shortlist__item title="PGP key"
+        = inline_svg_tag 'public/icons/key.svg', \
           alt: 'Key', \
-          class: 'icon icon--thin about__info__shortlist__item__icon', \
+          class: 'icon icon--thin about-page__info__shortlist__item__icon', \
           title: "PGP key"
         a href="https://keys.openpgp.org/vks/v1/by-fingerprint/1693BE29F22D9DC4ADBA6627152AE7E1127A1EEE" target="_blank" 152A E7E1 127A 1EEE
-      .about__info__shortlist__item title="Twitter profile"
-        = inline_svg_pack_tag 'media/images/public/icons/twitter.svg', \
+      .about-page__info__shortlist__item title="Twitter profile"
+        = inline_svg_tag 'public/icons/twitter.svg', \
           alt: 'Twitter logo', \
-          class: 'icon icon--thin about__info__shortlist__item__icon', \
+          class: 'icon icon--thin about-page__info__shortlist__item__icon', \
           title: "Twitter handle"
         a href="https://twitter.com/monorkin" target="_blank" @monorkin
-      .about__info__shortlist__item title="Mastodon profile"
-        = inline_svg_pack_tag 'media/images/public/icons/send.svg', \
+      .about-page__info__shortlist__item title="Mastodon profile"
+        = inline_svg_tag 'public/icons/send.svg', \
           alt: 'Paper plane', \
-          class: 'icon icon--thin about__info__shortlist__item__icon', \
+          class: 'icon icon--thin about-page__info__shortlist__item__icon', \
           title: "Mastodon handle"
         a href="https://mastodon.social/web/accounts/152166" target="_blank" @monorkin@mastodon.social
-      .about__info__shortlist__item title="GitHub profile"
-        = inline_svg_pack_tag 'media/images/public/icons/github.svg', \
+      .about-page__info__shortlist__item title="GitHub profile"
+        = inline_svg_tag 'public/icons/github.svg', \
           alt: 'GitHub logo', \
-          class: 'icon icon--thin about__info__shortlist__item__icon', \
+          class: 'icon icon--thin about-page__info__shortlist__item__icon', \
           title: "GitHub profile"
         a href="https://github.com/monorkin" target="_blank" github.com/monorkin
-      .about__info__shortlist__item title="LinkedIn profile"
-        = inline_svg_pack_tag 'media/images/public/icons/linkedin.svg', \
+      .about-page__info__shortlist__item title="LinkedIn profile"
+        = inline_svg_tag 'public/icons/linkedin.svg', \
           alt: 'LinkedIn logo', \
-          class: 'icon icon--thin about__info__shortlist__item__icon', \
+          class: 'icon icon--thin about-page__info__shortlist__item__icon', \
           title: "LinkedIn profile"
         a href="https://www.linkedin.com/in/stanko-krtalic" target="_blank" linkedin.com/in/stanko-krtalic

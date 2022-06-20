@@ -13,15 +13,15 @@ header.header data-controller="header"
               span.header__container__actions__dropdown__content__item__label
                 |color theme:
               button.color_scheme_switch#color_scheme_switch data-action="click->color-scheme#switchMode"
-                = inline_svg_pack_tag 'media/images/public/icons/circle.svg', \
+                = inline_svg_tag 'public/icons/circle.svg', \
                   alt: 'Automatic color scheme switching', \
                   class: 'icon color_scheme_switch__icon color_scheme_switch__icon--auto', \
                   title: 'Automatic color scheme switching'
-                = inline_svg_pack_tag 'media/images/public/icons/sun.svg', \
+                = inline_svg_tag 'public/icons/sun.svg', \
                   alt: 'Light color scheme', \
                   class: 'icon color_scheme_switch__icon color_scheme_switch__icon--light', \
                   title: 'Light color scheme'
-                = inline_svg_pack_tag 'media/images/public/icons/moon.svg', \
+                = inline_svg_tag 'public/icons/moon.svg', \
                   alt: 'Dark color scheme', \
                   class: 'icon color_scheme_switch__icon color_scheme_switch__icon--dark', \
                   title: 'Dark color scheme'

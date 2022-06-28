@@ -28,6 +28,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       libpq-dev \
       imagemagick \
       libjemalloc-dev \
+      libvips-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Disable documentation for Ruby gems

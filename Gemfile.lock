@@ -178,6 +178,9 @@ GEM
       nokogiri (>= 1.6)
     io-event (1.0.9)
     jmespath (1.6.1)
+    kredis (1.2.0)
+      activesupport (>= 6.0.0)
+      redis (~> 4.2)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -193,7 +196,7 @@ GEM
     mini_magick (4.11.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.16.0)
+    minitest (5.16.1)
     mono_logger (1.1.1)
     msgpack (1.5.2)
     multi_json (1.15.0)
@@ -251,8 +254,8 @@ GEM
       rack (>= 1.2.0)
     rack-protection (2.2.0)
       rack
-    rack-test (1.1.0)
-      rack (>= 1.0, < 3)
+    rack-test (2.0.1)
+      rack (>= 1.3)
     rails (7.0.3)
       actioncable (= 7.0.3)
       actionmailbox (= 7.0.3)
@@ -404,6 +407,7 @@ DEPENDENCIES
   image_processing (~> 1.8)
   importmap-rails
   inline_svg
+  kredis (~> 1.2)
   listen
   marcel (~> 1)
   memory_profiler

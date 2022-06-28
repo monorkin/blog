@@ -1,0 +1,54 @@
+.content
+  .analytics
+    section.analytics__title
+      h1 = t '.analytics_for', article: @record.article.title
+
+    section.analytics__section
+      = link_to t('.back_to_article'), article_url(@record.article.slug)
+
+    section.analytics__section
+      .card.card--full-width
+        h3 = t '.stats_for_nerds'
+        .table-responsive
+          table.table
+            tbody
+              tr
+                td.table__col.table__col--head = t '.number_of_views'
+                td = short_number(@record.view_count)
+              tr
+                td.table__col.table__col--head = t '.popularity_score'
+                td = format("%1.12f", @record.article.popularity)
+
+    section.analytics__section
+      .card.card--full-width
+        h3 = t '.reader_count'
+        p = t '.reader_count_explanation'
+
+        - max = @record.visit_counts_per_month.values.max.to_f
+        .analytics__chart
+          - year_range = (@record.article.published_at.year..Time.current.year)
+          - months = year_range.flat_map { |year| (1..12).map { |month| "#{year}-#{format('%02d', month)}" } }
+          - months.reverse.each do |month|
+            - count = @record.visit_counts_per_month[month] || 0
+            .analytics__chart__bar
+              .analytics__chart__bar__content
+                .analytics__chart__bar__content__bar style="height: #{(count / max * 100).round(2)}%"
+                .analytics__chart__bar__content__label = short_number(count)
+              .analytics__chart__bar__label
+                span = month
+
+    section.analytics__section
+      .card.card--full-width
+        h3 = t '.backlinks'
+        p = t '.backlinks_explanation'
+        .table-responsive
+          table
+            thead
+              tr
+                th = t '.referrer'
+                th = t '.visitor_count'
+            tbody
+              - @record.referrer_visit_counts.to_a.sort_by(&:last).reverse.first(20).each do |host, count|
+                tr
+                  td = backlink(host, article_url(@record.article))
+                  td = short_number(count)

@@ -1,0 +1,51 @@
+.analytics {
+}
+
+.analytics__section {
+  @apply leading-snug;
+}
+
+.analytics__section p {
+  @apply mb-4;
+}
+
+.analytics__chart {
+  @apply flex flex-row
+  w-full h-80
+  overflow-x-auto;
+  direction: rtl;
+}
+
+.analytics__chart__bar {
+  @apply flex flex-col p-2 w-12;
+}
+
+.analytics__chart__bar__content {
+  @apply relative h-full;
+}
+
+.analytics__chart__bar__content__bar {
+  @apply inline-block
+  absolute bottom-0 left-0 right-0 z-10
+  rounded-lg
+  bg-sky-200 dark:bg-sky-600
+  border border-sky-500 dark:border-sky-600
+  shadow;
+}
+
+.analytics__chart__bar__content__label {
+  @apply font-semibold text-left
+  inline-block
+  absolute bottom-4 left-0 right-0 z-20
+  -rotate-90;
+}
+
+.analytics__chart__bar__label {
+  @apply h-24
+  flex flex-col
+  items-center justify-center;
+}
+
+.analytics__chart__bar__label > * {
+  @apply inline-block -rotate-90;
+}

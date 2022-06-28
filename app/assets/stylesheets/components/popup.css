@@ -1,0 +1,53 @@
+.popup {
+}
+
+.popup__container {
+  @apply relative
+  m-4
+  w-96
+  rounded-lg
+  bg-white dark:bg-gray-800
+  shadow-lg;
+}
+
+.popup__container__content {
+  @apply inline-block
+  w-full h-full
+  bg-white dark:bg-gray-800
+  relative z-20
+  rounded-lg;
+}
+
+.popup__container__content__loading-indicator {
+  @apply text-stone-600 dark:text-slate-200 p-4;
+}
+
+.popup__container__arrow {
+  @apply absolute z-10 w-4 h-4;
+}
+
+.popup__container__arrow::after {
+  @apply inline-block
+  w-4 h-4
+  bg-white dark:bg-gray-800
+  rotate-45
+  rounded
+  shadow-lg;
+  content: " ";
+}
+
+.popup[data-popper-placement="right"] .popup__container__arrow {
+  @apply -left-2;
+}
+
+.popup[data-popper-placement="bottom"] .popup__container__arrow {
+  @apply -top-2;
+}
+
+.popup[data-popper-placement="left"] .popup__container__arrow {
+  @apply -right-2;
+}
+
+.popup[data-popper-placement="top"] .popup__container__arrow {
+  @apply -bottom-2;
+}

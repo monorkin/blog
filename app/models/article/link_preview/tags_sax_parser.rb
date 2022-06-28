@@ -105,7 +105,7 @@ class Article
       def parse_twitter_image_tag(attrs)
         return if attrs['content'].blank?
 
-        link_preview.image ||= attrs['content']
+        link_preview.image_url ||= attrs['content']
       end
     end
   end

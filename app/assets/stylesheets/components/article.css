@@ -1,0 +1,125 @@
+.article {
+  @apply leading-relaxed md:leading-normal;
+}
+
+.article p {
+  @apply mb-3;
+}
+
+.article pre {
+  @apply p-4 overflow-x-auto;
+}
+
+.article .highlight {
+  @apply rounded-lg shadow my-2;
+}
+
+.article h1, .article h2, .article h3, .article h4, .article h5 {
+  @apply mt-8 mb-3;
+}
+
+.article figure figcaption {
+  @apply text-gray-500 dark:text-gray-400 text-center;
+}
+
+.article > code, .article p > code {
+  @apply bg-gray-800 dark:bg-gray-200
+  text-white dark:text-black
+  rounded
+  shadow
+  px-1;
+}
+
+.article blockquote {
+  @apply my-2 py-3 px-6 rounded-lg
+  shadow
+  bg-white dark:bg-gray-800
+  border-l-8 border-sky-500 dark:border-gray-500;
+}
+
+.article blockquote p {
+  @apply mb-1;
+}
+
+.article hr {
+  @apply my-4;
+}
+
+.article__links {
+  @apply mt-2;
+}
+
+.article__suggestions {
+}
+
+.article__suggestions h4 {
+  @apply mt-2;
+}
+
+.article__suggestions .article.article--list-item h2 {
+  @apply text-xl;
+}
+
+.article__suggestions .article.article--list-item + .article.article--list-item {
+  @apply mt-4;
+}
+
+.article__links.article__links--right-aligned {
+  @apply text-end;
+}
+
+.article__meta {
+  @apply mb-2 text-gray-500 dark:text-gray-400;
+}
+
+.article__excerpt {
+  @apply leading-tight;
+}
+
+.article__excerpt__continue-reading {
+  @apply mt-2;
+}
+
+.article__meta__item + .article__meta__item::before {
+  @apply mx-2;
+  content: "·";
+}
+
+.article.article--compact {
+}
+
+.article.article--compact .article__title * {
+  @apply text-lg;
+}
+
+.article.article--compact .article__meta {
+  @apply mb-0 text-sm;
+}
+
+.article.article--compact .article__meta .article__meta__item + .article__meta__item::before {
+  @apply mx-1;
+}
+
+.article.article--list-item {
+  @apply flex flex-row;
+}
+
+.article.article--list-item + .article.article--list-item {
+  @apply mt-8;
+}
+
+.article.article--compact.article--list-item + .article.article--compact.article--list-item {
+  @apply mt-4;
+}
+
+.article.article--list-item .article__meta {
+  @apply flex flex-row;
+}
+
+.article.article--list-item .article__title > * {
+  @apply m-0;
+}
+
+.article.article--list-item .article__content {
+  @apply flex flex-col;
+}

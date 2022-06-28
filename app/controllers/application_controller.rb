@@ -3,5 +3,9 @@
 class ApplicationController < ActionController::Base
   include Pundit
 
-  layout 'public'
+  after_action -> { request.session_options[:skip] = true }
+
+  def current_user
+    nil
+  end
 end

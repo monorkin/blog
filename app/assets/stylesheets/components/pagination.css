@@ -1,0 +1,17 @@
+.pagination {
+  @apply flex flex-row justify-center my-4;
+}
+
+.pagination__button {
+  @apply mx-4;
+}
+
+.pagination__button--next-page::after {
+  @apply ml-2;
+  content: "→";
+}
+
+.pagination__button--previous-page::before {
+  @apply mr-2;
+  content: "←";
+}

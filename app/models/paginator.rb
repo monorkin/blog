@@ -4,7 +4,7 @@ class Paginator
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  DEFAULT_PAGE_SIZES = [4, 8, 8, 16].freeze
+  DEFAULT_PAGE_SIZES = [6, 12, 20, 32].freeze
   MAX_PAGE_SIZE = DEFAULT_PAGE_SIZES.last
 
   attr_accessor :scope,

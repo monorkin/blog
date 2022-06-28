@@ -1,0 +1,7 @@
+.icon {
+  @apply text-inherit inline-block;
+}
+
+.icon--thin {
+  @apply stroke-1;
+}

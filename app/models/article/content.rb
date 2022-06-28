@@ -42,7 +42,6 @@ class Article
       @html_content[raw] ||= Nokogiri::HTML(render_to(:html)).tap do |document|
         next if raw
 
-        add_publication_date_to_html_document(document)
         change_attachemnt_urls_in_html_document(document)
         add_link_preview_attributes_to_html_document(document)
       end.to_s
@@ -83,15 +82,6 @@ class Article
     end
 
     private
-
-    def add_publication_date_to_html_document(document)
-      document.css('body').first.add_previous_sibling(
-        '<time class="article__publishing_date" '\
-              "datetime=\"#{article.published_at.iso8601}\">"\
-          "#{article.published_at.strftime('%B %d, %Y')}"\
-        '</time>'
-      )
-    end
 
     def change_attachemnt_urls_in_html_document(document)
       image_map = article.images.map { |i| [i.original_path, i] }.to_h

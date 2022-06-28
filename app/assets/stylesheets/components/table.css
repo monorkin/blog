@@ -1,0 +1,9 @@
+.table {
+}
+
+.table__col {
+}
+
+.table__col.table__col--head {
+  @apply text-right font-semibold border-r-2 bg-stone-100;
+}

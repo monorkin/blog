@@ -1,0 +1,8 @@
+a, a:visited {
+  @apply text-sky-600 dark:text-sky-500
+  transition-colors;
+}
+
+a:hover, a:active, a:focus {
+  @apply text-sky-500 dark:text-sky-400;
+}

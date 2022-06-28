@@ -3,6 +3,7 @@ default: &default
   allowed_hosts:
     - stanko.io
     - stanko.test
+    - cintra.local
     - 127.0.0.1
 
 development:

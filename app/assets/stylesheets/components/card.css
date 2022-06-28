@@ -1,0 +1,10 @@
+.card {
+  @apply bg-white dark:bg-gray-800
+  rounded-2xl
+  shadow-lg
+  m-4 p-4;
+}
+
+.card--full-width {
+  @apply mx-0;
+}

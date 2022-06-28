@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Stanko K.R.",
+    "short_name": "Stanko",
     "icons": [
         {
             "src": "/android-chrome-36x36.png",
@@ -47,7 +47,5 @@
             "sizes": "512x512",
             "type": "image/png"
         }
-    ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff"
+    ]
 }

@@ -3,6 +3,11 @@
 class Article
   class LinkPreview
     class WikipediaFetcher < GenericFetcher
+      WIKIPEDIA_LINK_REGEX = /^(.*\.)?wikipedia\.org(\/.*)?$/i.freeze
+
+      def self.resolves?(url)
+        url&.match?(WIKIPEDIA_LINK_REGEX)
+      end
 
       private
 
@@ -24,7 +29,8 @@ class Article
 
         link_preview.title ||= data.dig('titles', 'display')
         link_preview.image_url ||= data.dig('thumbnail', 'source')
-        link_preview.description ||= data.dig('extract')
+        link_preview.description ||= data['extract']
+        link_preview.updated_at = Time.current
       end
     end
   end

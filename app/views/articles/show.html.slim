@@ -1,0 +1,55 @@
+= content_for :head
+  = cache [@record, :head] do
+    - seo_article = Article::SEODecorator.new(@record)
+    title = seo_article.title
+    meta name="description" content=seo_article.excerpt
+    meta rel="canonical" href=article_url(@record.slug)
+    meta name="twitter:card" content="summary"
+    meta name="twitter:creator" content="@monorkin"
+    meta property="og:title" content=seo_article.title
+    meta property="og:description" content=seo_article.excerpt
+    meta property="og:locale" content="en_US"
+    meta property="og:type" content="article"
+    meta property="og:url" content=article_url(@record.slug)
+    - if @record.primary_image.present?
+      meta property="og:image" content=@record.primary_image.image_url(:large)
+    - else
+      meta property="og:image" content=asset_url('/images/public/portrait.jpg')
+      meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."
+
+.content
+  article.article
+    = cache @record do
+      div
+        = link_to t('.back'), articles_path
+      div.article__meta
+        time datetime=@record.published_at.iso8601
+          = t '.published_on', date: l(@record.published_at.to_date)
+      div
+        = @record.content.to_html.html_safe
+
+    hr
+
+    .article__links
+      = link_to article_analytics_path(article_slug: @record)
+        = inline_svg_tag('public/icons/activity.svg', \
+        class: 'icon', \
+        alt: t('.analytics_and_backlinks'), \
+        title: t('.analytics_and_backlinks'))
+        = t('.analytics_and_backlinks')
+
+    .subscribe-box.subscribe-box--rss
+      .subscribe-box__icon
+        = inline_svg_tag 'public/icons/rss.svg', title: t('.rss'), class: 'icon'
+      .subscribe-box__content
+        = t '.subscribe_html', rss_link: link_to(t('.rss'), atom_articles_url)
+
+    hr
+
+    .article__suggestions
+      .card.card--full-width
+        h4 = t '.suggested_Articles'
+        - suggested_articles = @record.suggested_articles.limit(3).to_a
+        - if suggested_articles.any?
+          = render collection: suggested_articles, partial: :article, cached: true, locals: { excerpt: false }
+

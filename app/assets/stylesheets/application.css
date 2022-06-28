@@ -1,0 +1,43 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/******************************************************************************
+ **                                COMPONENTS                                **
+ ******************************************************************************/
+@import "./elements/a.css";
+@import "./elements/body.css";
+@import "./elements/h.css";
+@import "./elements/html.css";
+@import "./elements/table.css";
+
+/******************************************************************************
+ **                                COMPONENTS                                **
+ ******************************************************************************/
+@import './components/analytics.css';
+@import './components/article.css';
+@import './components/btn.css';
+@import './components/btn_group.css';
+@import './components/card.css';
+@import './components/color_scheme.css';
+@import './components/content.css';
+@import './components/footer.css';
+@import './components/header.css';
+@import './components/icon.css';
+@import './components/link_preview.css';
+@import './components/pagination.css';
+@import './components/popup.css';
+@import './components/subscribe_box.css';
+@import './components/table.css';
+@import './components/table_responsive.css';
+
+/******************************************************************************
+ **                                  PAGES                                   **
+ ******************************************************************************/
+@import './pages/about.css';
+
+/******************************************************************************
+ **                             SYNTAX HILIGHTING                            **
+ ******************************************************************************/
+@import './syntax_hilighting_themes/light.css';
+@import './syntax_hilighting_themes/dark.css';

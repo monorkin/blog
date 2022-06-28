@@ -1,0 +1,45 @@
+.about-page {
+  @apply flex flex-col justify-center;
+}
+
+.about-page__header {
+  @apply mt-8 mb-12
+  flex flex-col-reverse
+  justify-center items-center;
+}
+
+.about-page__header__picture {
+  @apply w-1/2 sm:w-1/3;
+}
+
+.about-page__header__picture img {
+  @apply rounded-full aspect-square object-cover drop-shadow-md;
+}
+
+.about-page__header__bio {
+  @apply text-xl pr-4;
+}
+
+.about-page__header__info {
+}
+
+.about-page__navigation {
+  @apply flex justify-center pt-6;
+}
+
+.about-page__section {
+}
+
+.about-page__section__footer {
+  @apply flex flex-row justify-center
+  mt-4;
+}
+
+.about-page__contact-list > li > a {
+  @apply flex mb-2 text-xl items-center;
+}
+
+.about-page__contact-list > li > a .icon {
+  @apply h-6 mr-2;
+}
+

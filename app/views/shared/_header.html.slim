@@ -1,0 +1,49 @@
+header.header data-controller="header"
+  .header__container
+    .header__links
+      details.btn.btn--dropdown.btn--left-anchored-dropdown
+        summary
+          = inline_svg_tag 'public/icons/menu.svg', \
+            alt: t('.menu'), \
+            title: t('.menu'), \
+            class: 'icon'
+          = t '.menu'
+        ul.btn__menu.btn__menu--wide
+          li.btn__menu__item.btn__menu__item--header = t '.menu'
+          li.btn__menu__item = link_to t('.info'), root_url, class: 'btn btn--inverted btn--block'
+          li.btn__menu__item = link_to t('.articles'), articles_url, class: 'btn btn--inverted btn--block'
+    .header__actions
+      details.btn.btn--dropdown.btn--right-anchored-dropdown
+        summary
+          = inline_svg_tag 'public/icons/settings.svg', \
+            alt: t('.preferences'), \
+            title: t('.preferences'), \
+            class: 'icon'
+          = t '.preferences'
+        ul.btn__menu
+          li.btn__menu__item.btn__menu__item--header = t '.preferences'
+          li.btn__menu__item
+            .btn__menu__item__title = t '.color_theme'
+            .btn__menu__item__content
+              .btn-group.btn-group--radio
+                input.btn-group__input type='radio' id='light_color_scheme' name='color_scheme' value='light' data-color-scheme-target='lightColorSchemeInput'
+                label.btn.btn--inverted.btn--radio for='light_color_scheme' data-action='click->color-scheme#useLightColorScheme'
+                  = inline_svg_tag 'public/icons/sun.svg', \
+                    alt: t('.light_theme'), \
+                    title: t('.light_theme'), \
+                    class: 'icon icon--thin'
+                  = t '.light_theme'
+                input.btn-group__input type='radio' id='system_color_scheme' name='color_scheme' value='system' data-color-scheme-target='systemColorSchemeInput'
+                label.btn.btn--inverted.btn--radio for='system_color_scheme' data-action='click->color-scheme#useSystemColorScheme'
+                  = inline_svg_tag 'public/icons/monitor.svg', \
+                    alt: t('.system_theme'), \
+                    title: t('.system_theme'), \
+                    class: 'icon icon--thin'
+                  = t '.system_theme'
+                input.btn-group__input type='radio' id='dark_color_scheme' name='color_scheme' value='dark' data-color-scheme-target='darkColorSchemeInput'
+                label.btn.btn--inverted.btn--radio for='dark_color_scheme' data-action='click->color-scheme#useDarkColorScheme'
+                  = inline_svg_tag 'public/icons/moon.svg', \
+                    alt: t('.dark_theme'), \
+                    title: t('.dark_theme'), \
+                    class: 'icon icon--thin'
+                  = t '.dark_theme'

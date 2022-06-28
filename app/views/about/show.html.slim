@@ -1,0 +1,89 @@
+= content_for :head
+  title Hey 👋, I'm Stanko
+  meta name="description" content=("A Web developer focused on making big and "\
+                                   "small products with Ruby on Rails and "\
+                                   "Hotwired. And I'm a Ruby Zagreb "\
+                                   "user-group co-organizer...")
+  meta rel="canonical" href=root_url
+  meta name="twitter:card" content="summary"
+  meta name="twitter:creator" content="@monorkin"
+  meta property="og:title" content="Hey 👋, I'm, Stanko"
+  meta property="og:description" content=("A Web developer focused on making big and "\
+                                          "small products with Ruby on Rails and "\
+                                          "Hotwired. And I'm a Ruby Zagreb "\
+                                          "user-group co-organizer...")
+  meta property="og:locale" content="en_US"
+  meta property="og:type" content="website"
+  meta property="og:url" content=root_url
+  meta property="og:image" content=asset_url('/images/public/portrait.jpg')
+  meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."
+
+.content.about-page
+  section.about-page__header
+    .about-page__header__bio
+      h1 = t '.intro_html', name: 'Stanko'
+      = t '.about_html'
+    .about-page__header__picture
+      = image_tag 'public/portrait.jpg', \
+        alt: "Portrait photograph of Stanko K.R."
+
+  section.about-page__section
+    .card.card--full-width
+      .about-page__section__title
+        h3 = t '.latest_articles'
+      .about-page__section__content
+        = render collection: Article.published.limit(3), \
+        partial: :article, \
+        cached: true, \
+        locals: { excerpt: false, class: 'article--compact' }
+      .about-page__section__footer
+        = link_to t('.view_all_articles'), articles_path, class: 'btn'
+
+  section.about-page__section
+    .card.card--full-width
+      .about-page__section__title
+        h3 = t '.around_the_web'
+      .about-page__section__content
+        ul.list.about-page__contact-list
+          li
+            = link_to 'mailto:hey@stanko.io', target: :_blank, title: t('.email_title')
+              = inline_svg_tag 'public/icons/mail.svg', \
+                alt: t('.email_title'), \
+                title: t('.email_title'), \
+                class: 'icon icon--thin'
+              = t '.email'
+          li
+            = link_to 'https://keys.openpgp.org/vks/v1/by-fingerprint/1693BE29F22D9DC4ADBA6627152AE7E1127A1EEE', target: :_blank, title: t('.pgp_title')
+              = inline_svg_tag 'public/icons/key.svg', \
+                alt: t('.pgp_title'), \
+                title: t('.pgp_title'), \
+                class: 'icon icon--thin'
+              = t '.pgp'
+          li
+            = link_to 'https://twitter.com/monorkin', target: :_blank, title: t('.twitter_title')
+              = inline_svg_tag 'public/icons/twitter.svg', \
+                alt: t('.twitter_title'), \
+                title: t('.twitter_title'), \
+                class: 'icon icon--thin'
+              = t '.twitter'
+          li
+            = link_to 'https://mastodon.social/web/accounts/152166', target: :_blank, title: t('.mastodon_title')
+              = inline_svg_tag 'public/icons/send.svg', \
+                alt: t('.mastodon_title'), \
+                title: t('.mastodon_title'), \
+                class: 'icon icon--thin'
+              = t '.mastodon'
+          li
+            = link_to 'https://github.com/monorkin', target: :_blank, title: t('.github_title')
+              = inline_svg_tag 'public/icons/github.svg', \
+                alt: t('.github_title'), \
+                title: t('.github_title'), \
+                class: 'icon icon--thin'
+              = t '.github'
+          li
+            = link_to 'https://www.linkedin.com/in/stanko-krtalic', target: :_blank, title: t('.linkedin_title')
+              = inline_svg_tag 'public/icons/linkedin.svg', \
+                alt: t('.linkedin_title'), \
+                title: t('.linkedin_title'), \
+                class: 'icon icon--thin'
+              = t '.linkedin'

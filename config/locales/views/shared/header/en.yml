@@ -1,0 +1,12 @@
+en:
+  shared:
+    header:
+      info: 'About'
+      articles: 'Articles'
+      color_theme: "Color theme"
+      light_theme: "Light"
+      dark_theme: "Dark"
+      system_theme: "System"
+      larger_font: "+"
+      smaller_font: "-"
+

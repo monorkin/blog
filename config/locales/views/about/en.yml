@@ -1,0 +1,29 @@
+en:
+  about:
+    show:
+      intro_html: "Hey, I am %{name}"
+      about_html: >
+        <p>
+          I am a Web developer making products with
+          <a href="https://rubyonrails.org/" target="_blank">Ruby on Rails</a>,
+          <a href="https://hotwired.dev/" target="_blank">Hotwire</a> and
+          <a href="https://tailwindcss.com/" target="_blank">Tailwind</a>.
+        </p>
+        <p>
+          Welcome to my neck of the woods, this is where I post my musing and writings.
+        </p>
+      latest_articles: "Latest Articles"
+      view_all_articles: "View all"
+      around_the_web: "Around the Web"
+      email: "hey@stanko.io"
+      email_title: "Contact e-mail address"
+      pgp: "152A E7E1 127A 1EEE"
+      pgp_title: "PGP key"
+      twitter: "@monorkin"
+      twitter_title: "Twitter profile"
+      mastodon: "@monorkin@mastodon.social"
+      mastodon_title: "Mastodon profile"
+      github: 'github.com/monorkin'
+      github_title: 'GitHub profile'
+      linkedin: 'linkedin.com/in/stanko-krtalic'
+      linkedin_title: 'LinkedIn profile'

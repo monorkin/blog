@@ -1,0 +1,9 @@
+= turbo_frame_tag "link_preview-#{id}"
+  - if @link_preview.present?
+    = cache(@link_preview)
+      .link-preview
+        .link-preview__text
+          h6 = @link_preview.title
+          p = @link_preview.description
+        - if @link_preview.image?
+          = image_tag(@link_preview.image_url, class: 'link-preview__image')

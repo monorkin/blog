@@ -1,0 +1,23 @@
+.header {
+  @apply backdrop-blur bg-orange-50/90 dark:bg-slate-900/90
+  mb-8
+  sticky top-0 z-50
+  z-10;
+  transition: top 120ms ease-out;
+}
+
+.header__container {
+  @apply flex flex-row py-1;
+}
+
+.header__links {
+  @apply flex flex-row justify-start w-9/12 px-1 md:px-2;
+}
+
+.header__actions {
+  @apply flex flex-row justify-end w-3/12 px-1 md:px-2;
+}
+
+.header--floating {
+  @apply shadow-lg;
+}

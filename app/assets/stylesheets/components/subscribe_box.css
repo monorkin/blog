@@ -1,0 +1,14 @@
+.subscribe-box {
+  @apply my-4 p-3
+  rounded-lg shadow-lg
+  font-semibold
+  flex flex-row;
+}
+
+.subscribe-box.subscribe-box--rss {
+  @apply bg-white dark:bg-gray-800;
+}
+
+.subscribe-box.subscribe-box--rss .icon {
+  @apply text-orange-500 mr-2;
+}

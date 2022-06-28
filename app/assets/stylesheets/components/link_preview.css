@@ -1,0 +1,15 @@
+.link-preview {
+  @apply flex flex-col;
+}
+
+.link-preview__text {
+  @apply text-stone-600 dark:text-slate-200 p-4 text-sm;
+}
+
+.link-preview__text h6 {
+  @apply text-lg mt-0;
+}
+
+.link-preview__image {
+  @apply max-w-full max-h-52 object-contain rounded-b-lg;
+}

@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'async'
+require 'async/http/internet'
+require 'async/http/body/pipe'
+
 class Article
   class LinkPreview
     class GenericFetcher < ApplicationModel
@@ -8,6 +12,10 @@ class Article
       MAX_REDIRECT = 10
 
       attr_accessor :link_preview
+
+      def self.resolves?(_url)
+        true
+      end
 
       def fetch!(url)
         Async do |task|

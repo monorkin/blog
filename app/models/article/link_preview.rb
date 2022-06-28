@@ -1,43 +1,82 @@
 # frozen_string_literal: true
 
-require 'async'
-require 'async/http/internet'
-require 'async/http/body/pipe'
-
 class Article
   class LinkPreview < ApplicationModel
-    attr_accessor :url,
+    FETCHERS = [
+      WikipediaFetcher,
+      GenericFetcher
+    ].freeze
+
+    attr_accessor :id,
+                  :url,
                   :image_url,
                   :title,
                   :description,
-                  :updated_at
+                  :fetched
+
+    kredis_datetime :updated_at
+
+    after_initialize do
+      self.id ||= Digest::MD5.hexdigest(url&.to_s || '')
+    end
 
     validates :url,
               presence: true,
               url: { loopback: false }
     validates :title,
               presence: true,
-              if: -> { updated_at.present? }
+              if: :fetched?
 
-    def fetch!
-      return self unless valid?
-
-      fetcher.fetch!(url)
-      self
+    def unfetched?
+      !fetched?
     end
 
-    def fetcher
-      @fetcher ||=
-        case url
-        when /^(.*\.)?wikipedia\.org(\/.*)?$/i
-          WikipediaFetcher.new(link_preview: self)
-        else
-          GenericFetcher.new(link_preview: self)
-        end
+    def fetched?
+      !!fetched
     end
 
     def image?
       image_url.present?
+    end
+
+    def image_url
+      fetch! if unfetched?
+      @image_url
+    end
+
+    def title
+      fetch! if unfetched?
+      @title
+    end
+
+    def description
+      fetch! if unfetched?
+      @description
+    end
+
+    alias _update_at updated_at
+
+    def updated_at
+      fetch! if unfetched?
+      _update_at.value
+    end
+
+    def updated_at=(value)
+      Kredis.datetime(kredis_key_for_attribute(:updated_at)).value = value
+    end
+
+    def fetch!
+      return self if invalid?
+
+      fetcher.fetch!(url)
+      self.fetched = true
+      self
+    end
+
+    def fetcher
+      @fetcher ||= FETCHERS
+                   .find { |fetcher| fetcher.resolves?(url) }
+                   &.new(link_preview: self)
     end
   end
 end

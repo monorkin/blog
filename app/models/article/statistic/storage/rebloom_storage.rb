@@ -19,16 +19,16 @@ class Article
 
         def remembers?(fingerprint)
           with_filter do |redis|
-            redis.synchronize do |client|
-              client.call(['BF.EXISTS', filter_key, fingerprint]) == 1
+            sync(redis) do |client|
+              Array(client.call(['BF.EXISTS', filter_key, fingerprint])).first == 1
             end
           end
         end
 
         def remember!(*fingerprints)
           with_filter do |redis|
-            redis.synchronize do |client|
-              client.call(['BF.MADD', filter_key, *fingerprints]) == 1
+            sync(redis) do |client|
+              Array(client.call(['BF.MADD', filter_key, *fingerprints])).first == 1
             end
           end
         end
@@ -44,7 +44,7 @@ class Article
         end
 
         def create_filter!(redis)
-          redis.synchronize do |client|
+          sync(redis) do |client|
             client.call ['BF.RESERVE', filter_key, error_rate, expected_size, 'EXPANSION', 2]
           end
         rescue Redis::CommandError => e
@@ -71,6 +71,10 @@ class Article
           result
         ensure
           lock_manager&.unlock(lock_info) if lock_info
+        end
+
+        def sync(redis, &block)
+          redis.send :synchronize, &block
         end
 
         def lock_key

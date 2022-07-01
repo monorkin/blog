@@ -7,6 +7,9 @@ services:
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
 
+  rebloom:
+    image: redislabs/rebloom
+
   redis:
     image: "redis:5.0-alpine"
 

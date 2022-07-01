@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Blog
-  MAJOR = 1
-  PATCH = 16
+  MAJOR = 2
+  PATCH = 0
   CANDIDATE = nil
   VERSION = [MAJOR, PATCH, CANDIDATE].compact.join('.').freeze
 end

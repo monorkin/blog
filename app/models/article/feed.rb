@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "rss"
+
 class Article
   class Feed < ApplicationModel
     DEFAULT_TITLE = "Stanko's blog"
@@ -34,7 +36,7 @@ class Article
     end
 
     def rss
-      build_feed('2.0', url_helpers.rss_public_articles_url(host: host))
+      build_feed('2.0', url_helpers.rss_articles_url(host: host))
     end
 
     def to_atom
@@ -42,13 +44,13 @@ class Article
     end
 
     def atom
-      build_feed('atom', url_helpers.atom_public_articles_url(host: host))
+      build_feed('atom', url_helpers.atom_articles_url(host: host))
     end
 
     private
 
     def build_feed(type, url)
-      RSS::Maker.make(type) do |maker|
+      ::RSS::Maker.make(type) do |maker|
         maker.channel.id = host
         maker.channel.title = title
         maker.channel.description = description
@@ -64,7 +66,7 @@ class Article
       scope.find_each do |article|
         maker.items.new_item do |item|
           item.title = article.title
-          item.link = url_helpers.public_article_url(article, host: host)
+          item.link = url_helpers.article_url(article, host: host)
           item.summary = article.excerpt
           item.updated = article.updated_at.to_time.w3cdtf
         end

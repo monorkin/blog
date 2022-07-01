@@ -11,7 +11,7 @@ module ArticleHelper
 
   def search_articles_with_tag_link(tag_record, options = {})
     link_to(tag_record.name,
-            public_articles_url(article_search: { term: "tag:\"#{tag_record.name}\"" }),
+            articles_url(article_search: { term: "tag:\"#{tag_record.name}\"" }),
             { class: 'pill_link pill_link--spaced' }.merge(options))
   end
 end

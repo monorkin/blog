@@ -27,6 +27,10 @@ class Article
               presence: true,
               if: :fetched?
 
+    def cache_key
+      [self.class.name.underscore, id || :new].join('/')
+    end
+
     def unfetched?
       !fetched?
     end

@@ -1,4 +1,4 @@
-= turbo_frame_tag "link_preview-#{id}"
+= turbo_frame_tag "link_preview-#{@link_preview.id}"
   - if @link_preview.present?
     = cache(@link_preview)
       .link-preview

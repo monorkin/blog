@@ -100,9 +100,12 @@ test: bundle
 ##                                 DEPLOYMENT                                 ##
 ################################################################################
 
+logs:
+	ssh root@deploy.stanko.io "docker-compose logs --tail 100 -f stanko-io"
+
 deploy:
 	$(MAKE) push-production-image \
-		&& ssh root@deploy.stanko.io -c "docker-compose pull stanko-io && docker-compose up -d"
+		&& ssh root@deploy.stanko.io "docker-compose pull stanko-io && docker-compose up -d"
 
 list-images:
 	@docker image ls | grep $(IMAGE_NAME)

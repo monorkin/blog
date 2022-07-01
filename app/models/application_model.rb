@@ -2,6 +2,7 @@
 
 class ApplicationModel
   include ActiveModel::Model
+  include Kredis::Attributes
 
   define_model_callbacks :initialize
 

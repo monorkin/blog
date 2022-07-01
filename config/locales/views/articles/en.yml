@@ -5,6 +5,11 @@ en:
       reading_time: "%{duration} min read"
       continue_reading: "Continue reading ..."
 
+    short_article:
+      published: "Published on %{date}"
+      reading_time: "%{duration} min read"
+      continue_reading: "Continue reading ..."
+
     show:
       back: "← Back"
       published_on: "Published on %{date}"

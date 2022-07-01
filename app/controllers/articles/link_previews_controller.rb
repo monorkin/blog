@@ -13,7 +13,7 @@ module Articles
       return(head :not_found) unless @record.content.valid_link?(url, id)
       return(head :ok) if request.head?
 
-      @link_preview = Article::LinkPreview.new(url: url)
+      @link_preview = Article::LinkPreview.new(id: id, url: url)
 
       fresh_when(@link_preview)
     end

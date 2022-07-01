@@ -1,0 +1,14 @@
+- article ||= local_assigns[:short_article]
+= cache article do
+  article.article.article--list-item.article--compact
+    .article__content
+      .article__title
+        h2 = link_to article.title, article_path(article)
+      .article__meta
+        - if article.published?
+          time.article__meta__item datetime=article.published_at.iso8601
+            = t '.published', date: l(article.published_at.to_date)
+        - else
+          span.article__meta__item = t '.draft'
+        span.article__meta__item
+          = t '.reading_time', duration: article.content.reading_time

@@ -51,5 +51,5 @@
         h4 = t '.suggested_Articles'
         - suggested_articles = @record.suggested_articles.limit(3).to_a
         - if suggested_articles.any?
-          = render collection: suggested_articles, partial: :article, cached: true, locals: { excerpt: false }
+          = render collection: suggested_articles, partial: 'articles/short_article', cached: true
 

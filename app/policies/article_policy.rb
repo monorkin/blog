@@ -6,9 +6,7 @@ class ArticlePolicy < ApplicationPolicy
   end
 
   def show?
-    return true if admin?
-
-    record.published?
+    true
   end
 
   class Scope < Scope

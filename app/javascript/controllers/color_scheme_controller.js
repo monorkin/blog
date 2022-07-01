@@ -19,6 +19,24 @@ export default class extends ApplicationController {
     window.matchMedia("(prefers-color-scheme: dark)").removeEventListener("change", this.autoSwitchColorScheme.bind(this))
   }
 
+  lightColorSchemeInputTargetConnected(element) {
+    if (this.currentColorScheme !== this.LIGHT) return
+
+    element.checked = true
+  }
+
+  darkColorSchemeInputTargetConnected(element) {
+    if (this.currentColorScheme !== this.DARK) return
+
+    element.checked = true
+  }
+
+  systemColorSchemeInputTargetConnected(element) {
+    if (this.currentColorScheme !== this.AUTO) return
+
+    element.checked = true
+  }
+
   autoSwitchColorScheme(event) {
     if (this.currentColorScheme !== this.AUTO) return
 

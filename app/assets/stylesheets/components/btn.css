@@ -2,7 +2,7 @@
   @apply inline-block
   m-1 px-4 py-3 md:px-2 md:py-1
   bg-transparent hover:bg-sky-600
-  text-sky-600 hover:text-white text-center
+  text-sky-600 hover:text-white hover:dark:text-white text-center
   md:hover:drop-shadow md:hover:scale-110
   border border-sky-600
   rounded-full

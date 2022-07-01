@@ -53,9 +53,10 @@ COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint
 RUN chmod +x /usr/local/bin/entrypoint
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
 
-################################################################################
-############################## DEVELOPMENT #####################################
-################################################################################
+###################
+### DEVELOPMENT ###
+###################
+
 FROM base AS development
 RUN export DEBIAN_FRONTEND=noninteractive \
     && dpkg --configure -a \
@@ -90,3 +91,39 @@ RUN yarn global add node-gyp
 ENV PATH="$PATH:$(yarn global bin)"
 
 CMD /bin/bash -c "while true; do sleep 10; done;"
+
+############################
+### PRE-PRODUCTION IMAGE ###
+############################
+
+FROM development AS pre_production
+
+COPY Gemfile* $APP_HOME/
+RUN bundle install --jobs `expr $$(nproc) - 1` --retry 3
+
+COPY package.json yarn.lock $APP_HOME/
+RUN yarn install --production
+
+COPY . $APP_HOME
+
+RUN bundle exec rake assets:precompile
+
+RUN rm -rf $APP_HOME/node_modules
+
+########################
+### PRODUCTION IMAGE ###
+########################
+
+FROM base AS production
+
+ARG APP_HOME=/app
+WORKDIR $APP_HOME
+
+# Copy built project
+COPY --from=pre_production /app $APP_HOME
+
+# Copy built gems
+COPY --from=pre_production /usr/local/bundle /usr/local/bundle
+
+EXPOSE 3000
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]

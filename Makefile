@@ -101,17 +101,19 @@ test: bundle
 ################################################################################
 
 deploy:
-	echo "TODO"
+	$(MAKE) push-production-image \
+		&& ssh root@deploy.stanko.io -c "docker-compose pull stanko-io && docker-compose up -d"
 
 list-images:
 	@docker image ls | grep $(IMAGE_NAME)
 
 build-production-image:
 	@docker build . \
+		--target production \
 		-t $(IMAGE_NAME):latest \
 		-t $(IMAGE_NAME):$(VERSION)
 
-push-production-image:
+push-production-image: build-production-image
 	@docker push $(IMAGE_NAME):$(VERSION)
 	@docker push $(IMAGE_NAME):latest
 

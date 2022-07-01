@@ -18,6 +18,10 @@
   @apply mt-8 mb-3;
 }
 
+.article figure > * {
+  @apply mx-auto;
+}
+
 .article figure figcaption {
   @apply text-gray-500 dark:text-gray-400 text-center;
 }

@@ -19,16 +19,16 @@ class Article
 
         def remembers?(fingerprint)
           with_filter do |redis|
-            redis.synchronize do
-              redis.call(['BF.EXISTS', filter_key, fingerprint]) == 1
+            redis.synchronize do |client|
+              client.call(['BF.EXISTS', filter_key, fingerprint]) == 1
             end
           end
         end
 
         def remember!(*fingerprints)
           with_filter do |redis|
-            redis.synchronize do
-              redis.call(['BF.MADD', filter_key, *fingerprints]) == 1
+            redis.synchronize do |client|
+              client.call(['BF.MADD', filter_key, *fingerprints]) == 1
             end
           end
         end
@@ -44,8 +44,8 @@ class Article
         end
 
         def create_filter!(redis)
-          redis.synchronize do
-            redis.call ['BF.RESERVE', filter_key, error_rate, expected_size, 'EXPANSION', 2]
+          redis.synchronize do |client|
+            client.call ['BF.RESERVE', filter_key, error_rate, expected_size, 'EXPANSION', 2]
           end
         rescue Redis::CommandError => e
           return true if e.message == 'ERR item exists'

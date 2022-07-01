@@ -11,11 +11,9 @@ module Articles
       @record = Article.from_slug!(params[:article_slug])
 
       return(head :not_found) unless @record.content.valid_link?(url, id)
+      return(head :ok) if request.head?
 
       @link_preview = Article::LinkPreview.new(url: url)
-
-      return(head :not_found) unless @link_preview.valid?
-      return(head :ok) if request.head?
 
       fresh_when(@link_preview)
     end

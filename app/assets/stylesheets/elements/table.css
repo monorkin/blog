@@ -1,17 +1,26 @@
 table {
-  @apply w-full shadow bg-white;
+  @apply w-full
+  shadow
+  bg-white dark:bg-gray-700;
 }
 
 table tr + tr {
   @apply border-t;
 }
 
+table tr {
+  @apply border-stone-200 dark:border-gray-400;
+}
+
 table tr td, table tr th {
-  @apply border-stone-200 p-2;
+  @apply border-stone-200 dark:border-gray-400
+  p-2;
 }
 
 table tr th {
-  @apply text-left font-semibold border-b bg-stone-100;
+  @apply text-left font-semibold
+  border-b
+  bg-stone-100 dark:bg-gray-500;
 }
 
 table tr:first-child th:first-child {
@@ -23,7 +32,8 @@ table tr:first-child th:last-child {
 }
 
 table thead {
-  @apply border-b-2;
+  @apply border-b-2
+  border-stone-200 dark:border-gray-400;
 }
 
 table tr:first-child td:first-child {

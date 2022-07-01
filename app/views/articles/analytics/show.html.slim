@@ -1,3 +1,9 @@
+= content_for :head
+  meta name="robots" content="noindex,nofollow"
+  = cache [@record.article, :analytics_head] do
+    - seo_article = Article::SEODecorator.new(@record.article)
+    title = [seo_article.title, 'Analytics'].join(' | ')
+
 .content
   .analytics
     section.analytics__title

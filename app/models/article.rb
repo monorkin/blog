@@ -140,6 +140,8 @@ class Article < ApplicationRecord
   end
 
   def hours_since_publication
+    return 0 if Time.current < published_at
+
     (Time.current - published_at) / 1.hour
   end
 

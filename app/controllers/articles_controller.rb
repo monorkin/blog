@@ -18,7 +18,6 @@ class ArticlesController < ApplicationController
   def show
     @record = Article.from_slug!(params[:slug])
 
-    authorize(@record)
     fresh_when(@record)
 
     visit = Article::Statistic::Visit.new(article: @record, request: request)
@@ -36,9 +35,7 @@ class ArticlesController < ApplicationController
   private
 
   def scope
-    policy_scope(Article.all)
-      .order(published_at: :desc)
-      .preload(:primary_image)
+    Article.all.order(published_at: :desc).preload(:primary_image)
   end
 
   def feed

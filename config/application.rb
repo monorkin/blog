@@ -26,7 +26,7 @@ require_relative './version'
 module Blog
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 7.0
 
     # Store the schema as SQL
     config.active_record.schema_format = :sql

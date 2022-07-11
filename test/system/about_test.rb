@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'application_system_test_case'
 
-class Public::AboutTest < ApplicationSystemTestCase
+class AboutTest < ApplicationSystemTestCase
   test 'should pass all accessibility criteria' do
-    visit public_root_url
+    visit root_url
 
     assert_accessible(page)
   end

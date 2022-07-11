@@ -82,6 +82,8 @@ class Article
     end
 
     def upload_primary_image!(bundle)
+      return if manifest[:primary_image].blank?
+
       entry = bundle
               .entries
               .find do |e|

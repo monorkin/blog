@@ -14,28 +14,28 @@ VERSION ?= $(shell ruby -r './config/version.rb' -e 'puts Blog::VERSION')
 ################################################################################
 
 ## Starts all containers in the foreground
-dev:
+env:
 	@LOCAL_USER_ID=$(LOCAL_USER_ID) docker compose up
 
 ## Starts all containers in the foreground
-dev-update:
+update-env:
 	@LOCAL_USER_ID=$(LOCAL_USER_ID) docker compose up -d
+
+## Stops all containers
+kill-env:
+	@docker compose down
+
+## Builds the development Docker image
+build-env:
+	@docker compose build
 
 ## Starts a server
 server: run_migrations
 	@bundle exec puma -C config/puma.rb
 
 ## Starts a development server
-dev-server:
-	@rails s -b 0.0.0.0 -p 3000
-
-## Stops all containers
-kill:
-	@docker compose down
-
-## Builds the development Docker image
-build:
-	@docker compose build
+dev:
+	@./bin/dev
 
 ## Spawns an interactive Rails console in the web container
 console:
@@ -43,9 +43,7 @@ console:
 
 ## Installs all required dependencies
 bundle:
-	@CFLAGS="-Wno-cast-function-type" \
-		BUNDLE_FORCE_RUBY_PLATFORM=1 \
-		bundle install --jobs `expr $$(nproc) - 1` --retry 3
+	@bundle install --jobs `expr $$(nproc) - 1` --retry 3
 
 ## Spawns an interactive Bash shell in the web container
 bash:
@@ -95,12 +93,14 @@ version:
 test: bundle
 	@echo "Check for security vulnerability"
 	@bundle exec brakeman -z
+	@echo "Running tests"
+	@bundle exec rails test:all
 
 ################################################################################
 ##                                 DEPLOYMENT                                 ##
 ################################################################################
 
-logs:
+server-logs:
 	ssh root@deploy.stanko.io "docker-compose logs --tail 100 -f stanko-io"
 
 deploy:
@@ -155,10 +155,6 @@ annotate:
 	@bundle exec annotate \
 		--models --show-migration --show-foreign-keys --show-indexes \
 		--classified-sort --with-comment
-
-## Starts a MySQL session
-psql:
-	@docker compose exec $(DB_SERVICE) psql -U postgres -d postgres
 
 ################################################################################
 ##                                      HELP                                  ##

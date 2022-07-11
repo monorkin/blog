@@ -2,7 +2,7 @@ en:
   articles:
     analytics:
       show:
-        analytics_for: "Analytics for '%{article}'"
+        analytics_for: "Analytics for:"
         back_to_article: "← Back to the article"
         stats_for_nerds: "Stats for Nerds"
         number_of_views: "View count"

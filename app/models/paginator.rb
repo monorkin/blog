@@ -35,22 +35,22 @@ class Paginator
   end
 
   def next
-    return unless next?
+    return unless next_page_exists?
 
     "#{page + 1}-#{records.last&.id}"
   end
 
-  def next?
+  def next_page_exists?
     records.count == page_size
   end
 
   def previous
-    return unless previous?
+    return unless previous_page_exists?
 
     "#{page - 1}-#{(records.first || record)&.id}"
   end
 
-  def previous?
+  def previous_page_exists?
     page > 1
   end
 

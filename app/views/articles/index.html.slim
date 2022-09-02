@@ -31,8 +31,8 @@
           p.article_search__error_message = message
 
   section.articles-list
-    - if @records.any?
-      = render collection: @records, partial: :article, cached: true
+    - if @articles.any?
+      = render collection: @articles, partial: :article, cached: true
     - else
       .articles_list__no_results No articles were found
       - if @popular_articles.any?
@@ -43,7 +43,7 @@
               partial: 'articles/article_suggestion', as: :article, \
               cached: true
   section.pagination
-    - if @paginator.previous?
+    - if @paginator.previous_page_exists?
       = link_to t('.previous_page'), url_for(before: @paginator.previous), class: 'pagination__button pagination__button--previous-page btn'
-    - if @paginator.next?
+    - if @paginator.next_page_exists?
       = link_to t('.next_page'), url_for(after: @paginator.next), class: 'pagination__button pagination__button--next-page btn'

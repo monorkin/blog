@@ -9,19 +9,18 @@ class ArticlesController < ApplicationController
     )
 
     @popular_articles = Article.sorted_by_popularity.limit(2)
-    @records = @paginator.records
+    @articles = @paginator.records
 
-    # Don't cache search results
-    fresh_when(@records)
+    fresh_when(@articles)
   end
 
   def show
-    @record = Article.from_slug!(params[:slug])
+    @article = Article.from_slug!(params[:slug])
 
-    fresh_when(@record)
+    fresh_when(@article)
 
-    visit = Article::Statistic::Visit.new(article: @record, request: request)
-    LogArticleVisitJob.perform_later(@record, visit.to_h)
+    visit = Article::Statistic::Visit.new(article: @article, request: request)
+    LogArticleVisitJob.perform_later(@article, visit.to_h)
   end
 
   def atom

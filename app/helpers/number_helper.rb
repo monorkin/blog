@@ -10,7 +10,7 @@ module NumberHelper
 
   def short_number(value)
     tag.span title: value do
-      number_to_human(value, units: SHORT_NUMBER_UNITS)
+      number_to_human(value, units: SHORT_NUMBER_UNITS, format: '%n%u')
     end
   end
 end

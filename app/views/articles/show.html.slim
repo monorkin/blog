@@ -38,17 +38,15 @@
         title: t('.analytics_and_backlinks'))
         = t('.analytics_and_backlinks')
 
-    .subscribe-box.subscribe-box--rss
+    .subscribe-box.subscribe-box--rss.subscribe-box--unhinged
       .subscribe-box__icon
         = inline_svg_tag 'public/icons/rss.svg', title: t('.rss'), class: 'icon'
       .subscribe-box__content
         = t '.subscribe_html', rss_link: link_to(t('.rss'), atom_articles_url)
 
-    hr
-
     .article__suggestions
       .card.card--full-width
-        h4 = t '.suggested_Articles'
+        h4 = t '.suggested_articles'
         - suggested_articles = @record.suggested_articles.limit(3).to_a
         - if suggested_articles.any?
           = render collection: suggested_articles, partial: 'articles/short_article', cached: true

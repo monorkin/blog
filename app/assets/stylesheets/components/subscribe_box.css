@@ -1,8 +1,16 @@
 .subscribe-box {
   @apply my-4 p-3
-  rounded-lg shadow-lg
+  rounded-lg shadow-xl
   font-semibold
   flex flex-row;
+}
+
+.subscribe-box__content {
+  @apply leading-9 sm:leading-6;
+}
+
+.subscribe-box.subscribe-box--unhinged {
+  @apply rotate-1;
 }
 
 .subscribe-box.subscribe-box--rss {

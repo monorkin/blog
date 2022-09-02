@@ -3,7 +3,7 @@
 }
 
 .article p {
-  @apply mb-3;
+  @apply mb-6 md:mb-3;
 }
 
 .article pre {
@@ -29,6 +29,7 @@
 .article > code, .article p > code {
   @apply bg-gray-800 dark:bg-gray-200
   text-white dark:text-black
+  break-words
   rounded
   shadow
   px-1;
@@ -54,6 +55,7 @@
 }
 
 .article__suggestions {
+  @apply mt-8;
 }
 
 .article__suggestions h4 {

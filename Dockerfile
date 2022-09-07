@@ -1,7 +1,7 @@
 ################################################################################
 ############################## BASE IMAGE ######################################
 ################################################################################
-FROM ruby:3.1-slim-buster AS base
+FROM ruby:3.1-slim-bullseye AS base
 
 ARG WORKDIR=/app
 ENV WORKDIR=$WORKDIR
@@ -29,6 +29,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       imagemagick \
       libjemalloc-dev \
       libvips-dev \
+      ffmpeg \
+      exiftool \
     && rm -rf /var/lib/apt/lists/*
 
 # Disable documentation for Ruby gems
@@ -77,6 +79,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       firefox-esr \
       chromium \
       xauth \
+      vim \
     && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
     && apt-get install nodejs \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \

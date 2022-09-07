@@ -12,7 +12,7 @@
     meta property="og:type" content="article"
     meta property="og:url" content=article_url(@article.slug)
     - if @article.primary_image.present?
-      meta property="og:image" content=@article.primary_image.image_url(:large)
+      meta property="og:image" content=@article.primary_image.attachment_url(:large)
     - else
       meta property="og:image" content=asset_url('/images/public/portrait.jpg')
       meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."

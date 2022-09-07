@@ -40,6 +40,10 @@ module LinkHelper
     'out.reddit.com' => {
       name: 'out.reddit.com',
       url: 'reddit.com'
+    },
+    'i.reddit.com' => {
+      name: 'out.reddit.com',
+      url: 'reddit.com'
     }
   }.freeze
 

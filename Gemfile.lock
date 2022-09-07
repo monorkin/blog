@@ -156,6 +156,8 @@ GEM
       addressable (~> 2.8)
     dumb_delegator (1.0.0)
     erubi (1.10.0)
+    exiftool (1.2.4)
+      json
     faker (2.21.0)
       i18n (>= 1.8.11, < 2)
     fastimage (2.2.6)
@@ -178,6 +180,7 @@ GEM
       nokogiri (>= 1.6)
     io-event (1.0.9)
     jmespath (1.6.1)
+    json (2.6.2)
     kredis (1.2.0)
       activesupport (>= 6.0.0)
       redis (~> 4.2)
@@ -347,6 +350,8 @@ GEM
     stackprof (0.2.19)
     stimulus-rails (1.0.4)
       railties (>= 6.0.0)
+    streamio-ffmpeg (3.0.2)
+      multi_json (~> 1.8)
     strscan (3.0.3)
     tailwindcss-rails (2.0.10)
       railties (>= 6.0.0)
@@ -403,6 +408,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   connection_pool
   cssbundling-rails
+  exiftool
   faker
   fastimage
   hiredis
@@ -441,6 +447,7 @@ DEPENDENCIES
   slim (~> 4.1.0)
   stackprof
   stimulus-rails
+  streamio-ffmpeg
   tailwindcss-rails
   toml
   turbo-rails

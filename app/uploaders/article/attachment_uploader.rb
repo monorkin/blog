@@ -18,6 +18,8 @@ class Article
       else
         {}
       end
+    rescue Errno::ENOENT
+      {}
     end
 
     add_metadata :md5_digest do |io|
@@ -27,6 +29,8 @@ class Article
     add_metadata :exif do |io, _context|
       Shrine.with_file(io) do |file|
         Exiftool.new(file.path).to_hash
+      rescue Exiftool::NoSuchFile
+        {}
       end
     end
 

@@ -56,7 +56,7 @@ class Article
 
       def change_video_urls_in_html_document(document)
         video_map = attachments.select(&:video?)
-                               .each_with_object({}) { |img, map| map[img.original_path] = img }
+                               .each_with_object({}) { |file, map| map[file.original_path] = file }
 
         return if video_map.blank?
 
@@ -77,12 +77,18 @@ class Article
             img.add_child "<source src='#{video.attachment_url}' type='#{video.mime_type}' />"
           end
           img.delete('src')
+
+          _figure = img.wrap('<figure></figure>').parent
+
+          if img['alt']
+            img.add_next_sibling("<figcaption>#{img['alt']}</figcaption>")
+          end
         end
       end
 
       def change_image_urls_in_html_document(document)
         image_map = attachments.select(&:image?)
-                               .each_with_object({}) { |img, map| map[img.original_path] = img }
+                               .each_with_object({}) { |file, map| map[file.original_path] = file }
 
         document.css('img').each do |img|
           image = image_map[img['src']]

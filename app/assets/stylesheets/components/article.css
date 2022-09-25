@@ -23,6 +23,7 @@
 }
 
 .article figure > img {
+  @apply rounded shadow;
   aspect-ratio: var(--image-aspect-ratio, auto);
 }
 
@@ -52,6 +53,18 @@
 
 .article hr {
   @apply my-4;
+}
+
+.article ul, .article ol {
+  @apply ml-4;
+}
+
+.article ul {
+  @apply list-disc;
+}
+
+.article ol {
+  @apply list-decimal;
 }
 
 .article__links {

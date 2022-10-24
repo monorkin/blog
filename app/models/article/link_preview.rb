@@ -17,7 +17,7 @@ class Article
     kredis_datetime :updated_at
 
     after_initialize do
-      self.id ||= Digest::MD5.hexdigest(url&.to_s || '')
+      self.id ||= self.class.id_from_url(url&.to_s || '')
     end
 
     validates :url,
@@ -26,6 +26,16 @@ class Article
     validates :title,
               presence: true,
               if: :fetched?
+
+    def self.id_from_url(url)
+      OpenSSL::HMAC.hexdigest('SHA256',
+                              Rails.application.credentials.link_preview.secret,
+                              url)
+    end
+
+    def self.id_matches_url?(id:, url:)
+      ActiveSupport::SecurityUtils.secure_compare(id, id_from_url(url))
+    end
 
     def cache_key
       [self.class.name.underscore, id || :new].join('/')

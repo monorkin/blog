@@ -7,7 +7,12 @@ require 'redcarpet/render_strip'
 class Article
   class Content < ApplicationModel
     RENDERERS = {
-      html: HtmlRenderer
+      html: {
+        class: HtmlRenderer,
+        options: {
+          link_attributes: { target: '_blank' }
+        }
+      }.freeze
     }.freeze
     MARKDOWN_CONFIG = {
       no_intra_emphasis: true,
@@ -25,34 +30,34 @@ class Article
     MARKDOWN_LINK_URLS_REGEX = /\[[^\]]*\]\((.+)\)/.freeze
 
     attr_accessor :content,
-                  :article
+                  :attachments
 
-    def self.markdown_renderer(format)
-      return unless RENDERERS.key?(format)
-
-      @markdown_renderer ||= {}
-      @markdown_renderer[format] ||= Redcarpet::Markdown.new(
-        RENDERERS[format],
-        **MARKDOWN_CONFIG
-      )
-    end
-
-    def to_html(raw: false)
-      @html_content ||= {}
-      @html_content[raw] ||= Nokogiri::HTML(render_to(:html)).tap do |document|
-        next if raw
-
-        change_attachemnt_urls_in_html_document(document)
-        add_link_preview_attributes_to_html_document(document)
-      end.to_s
+    def to_html
+      @html_content ||= render_to(:html)
     end
 
     def to_text
-      @text_content ||= Nokogiri::HTML(to_html(raw: true)).text.strip
+      @text_content ||= Nokogiri::HTML(to_html).text.strip
     end
 
     def to_s
       content
+    end
+
+    def render_to(format)
+      markdown_renderer_for(format)&.render(content)
+    end
+
+    def markdown_renderer_for(format)
+      return unless RENDERERS.key?(format)
+
+      format = RENDERERS[format]
+      return if format.blank?
+
+      renderer = format[:class]
+                 .new(format[:options].reverse_merge(attachments: attachments))
+
+      Redcarpet::Markdown.new(renderer, **MARKDOWN_CONFIG)
     end
 
     def word_count
@@ -61,12 +66,8 @@ class Article
                              .count
     end
 
-    def reading_time
-      (word_count / AVERAGE_ADULT_WORDS_PER_MINUTE).ceil.to_i
-    end
-
-    def render_to(format)
-      self.class.markdown_renderer(format)&.render(content)
+    def reading_time(words_per_minute: AVERAGE_ADULT_WORDS_PER_MINUTE)
+      (word_count / words_per_minute).ceil.to_i
     end
 
     def attachment_urls
@@ -75,47 +76,6 @@ class Article
 
     def link_urls
       content.scan(MARKDOWN_LINK_URLS_REGEX).flatten
-    end
-
-    def valid_link?(href, hmac)
-      hmac == link_id(href)
-    end
-
-    private
-
-    def change_attachemnt_urls_in_html_document(document)
-      image_map = article.images.map { |i| [i.original_path, i] }.to_h
-
-      document.css('img').each do |img|
-        image = image_map[img['src']]
-        img['src'] = image&.image_url || img['src']
-        img['loading'] = :lazy
-        img['srcset'] = image&.srcset&.join(', ')
-        img['style'] = "--image-aspect-ratio: #{image.aspect_ratio}" if image
-
-        _figure = img.wrap('<figure></figure>').parent
-
-        if img['alt']
-          img.add_next_sibling("<figcaption>#{img['alt']}</figcaption>")
-        end
-      end
-    end
-
-    def add_link_preview_attributes_to_html_document(document)
-      document.css('a').each do |link|
-        link['tabindex'] = 0
-        link['data-controller'] = 'link-preview'
-        link['data-link-preview-id-value'] = link_id(link['href'])
-        link['data-action'] = 'mouseover->link-preview#show  mouseout->link-preview#hide focus->link-preview#show  blur->link-preview#hide'
-      end
-    end
-
-    def link_id(href)
-      OpenSSL::HMAC.hexdigest('SHA256', md5_digest, href)
-    end
-
-    def md5_digest
-      @md5_digest ||= Digest::MD5.hexdigest(content)
     end
   end
 end

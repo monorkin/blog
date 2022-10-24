@@ -27,7 +27,7 @@ class Article
       def parse_body(io)
         data = JSON.parse(io.read)
 
-        link_preview.title ||= data.dig('titles', 'display')
+        link_preview.title ||= data.dig('titles', 'canonical')
         link_preview.image_url ||= data.dig('thumbnail', 'source')
         link_preview.description ||= data['extract']
         link_preview.updated_at = Time.current

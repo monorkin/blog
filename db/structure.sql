@@ -185,12 +185,12 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
--- Name: article_images; Type: TABLE; Schema: public; Owner: -
+-- Name: article_attachments; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.article_images (
+CREATE TABLE public.article_attachments (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    image_data jsonb,
+    attachment_data jsonb,
     article_id character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -293,10 +293,10 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
--- Name: article_images article_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: article_attachments article_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.article_images
+ALTER TABLE ONLY public.article_attachments
     ADD CONSTRAINT article_images_pkey PRIMARY KEY (id);
 
 
@@ -349,24 +349,24 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: index_article_images_on_article_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_article_attachments_on_article_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_article_images_on_article_id ON public.article_images USING btree (article_id);
-
-
---
--- Name: index_article_images_on_article_id_and_primary; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_article_images_on_article_id_and_primary ON public.article_images USING btree (article_id, "primary") WHERE ("primary" = true);
+CREATE INDEX index_article_attachments_on_article_id ON public.article_attachments USING btree (article_id);
 
 
 --
--- Name: index_article_images_on_primary; Type: INDEX; Schema: public; Owner: -
+-- Name: index_article_attachments_on_article_id_and_primary; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_article_images_on_primary ON public.article_images USING btree ("primary");
+CREATE UNIQUE INDEX index_article_attachments_on_article_id_and_primary ON public.article_attachments USING btree (article_id, "primary") WHERE ("primary" = true);
+
+
+--
+-- Name: index_article_attachments_on_primary; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_article_attachments_on_primary ON public.article_attachments USING btree ("primary");
 
 
 --
@@ -456,10 +456,10 @@ ALTER TABLE ONLY public.article_taggings
 
 
 --
--- Name: article_images fk_rails_95824e00d3; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: article_attachments fk_rails_95824e00d3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.article_images
+ALTER TABLE ONLY public.article_attachments
     ADD CONSTRAINT fk_rails_95824e00d3 FOREIGN KEY (article_id) REFERENCES public.articles(id);
 
 
@@ -483,6 +483,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210124171805'),
 ('20210125065024'),
 ('20210627083831'),
-('20210704144106');
+('20210704144106'),
+('20220905160355'),
+('20220905165144'),
+('20220925093723');
 
 

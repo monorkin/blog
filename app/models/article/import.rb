@@ -60,24 +60,24 @@ class Article
         # Required by underlying image processing library
         image_io.define_singleton_method(:path) { attachemnt_url }
 
-        article.images.build(image: image_io, original_path: attachemnt_url)
+        article.attachments.build(attachment: image_io, original_path: attachemnt_url)
       end
     end
 
     def create_primary_image!(bundle)
       primary_image = find_primary_image ||
                       upload_primary_image!(bundle) ||
-                      article.images.first
+                      article.attachments.select(&:image?).first
 
       return unless primary_image
 
-      article.images.each { |i| i.primary = false }
+      article.attachments.each { |i| i.primary = false }
       primary_image.primary = true
     end
 
     def find_primary_image
       article
-        .images
+        .attachments
         .find { |image| image.original_path == manifest[:primary_image] }
     end
 
@@ -93,8 +93,8 @@ class Article
 
       return unless entry
 
-      article.images.build(image: entry.get_input_stream,
-                           original_path: manifest[:primary_image])
+      article.attachments.build(attachment: entry.get_input_stream,
+                                original_path: manifest[:primary_image])
     end
 
     def apply_manifest!

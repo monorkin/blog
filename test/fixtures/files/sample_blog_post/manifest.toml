@@ -1,0 +1,8 @@
+title = "Sample Blog post"
+slug = "sample-blog-post"
+tags = [ "Test", "Technical" ]
+published = true
+publish_at = "2000-01-01T12:00:00Z"
+primary_image = "./assets/image.jpeg"
+license = "CC BY-NC-SA"
+id = "deadbeef"

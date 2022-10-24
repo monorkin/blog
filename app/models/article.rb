@@ -55,10 +55,10 @@ class Article < ApplicationRecord
           dependent: :destroy
   has_one :primary_image,
           -> { where(primary: true) },
-          class_name: 'Article::Image'
+          class_name: 'Article::Attachment'
 
-  has_many :images,
-           class_name: 'Article::Image',
+  has_many :attachments,
+           class_name: 'Article::Attachment',
            dependent: :destroy
   has_many :taggings,
            class_name: 'Article::Tagging',
@@ -126,12 +126,12 @@ class Article < ApplicationRecord
   end
 
   def content
-    @_content ||= Content.new(content: super, article: self)
+    @_content ||= Content.new(content: super, attachments: attachments)
   end
 
   def content=(new_value)
     super(new_value)
-    @_contents = nil
+    @_content = nil
     content
   end
 

@@ -69,9 +69,7 @@
 }
 
 .article .video-player {
-  max-height: 65vh;
-  max-width: 100%;
-  width: auto;
+  @apply max-h-[80vh] max-w-full w-auto;
 }
 
 .article__links {

@@ -28,7 +28,7 @@
 }
 
 .article figure figcaption {
-  @apply text-gray-500 dark:text-gray-400 text-center;
+  @apply text-gray-500 dark:text-gray-400 text-center mb-4;
 }
 
 .article > code, .article p > code {

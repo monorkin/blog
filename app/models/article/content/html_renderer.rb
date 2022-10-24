@@ -26,6 +26,7 @@ class Article
           .tap { |doc| add_link_preview_attributes_to_html_document(doc) }
           .tap { |doc| change_video_urls_in_html_document(doc) }
           .tap { |doc| change_image_urls_in_html_document(doc) }
+          .tap { |doc| convert_code_blocks_to_figures_in_html_document(doc) }
           .to_html
       end
 
@@ -103,6 +104,18 @@ class Article
 
           if img['alt']
             img.add_next_sibling("<figcaption>#{img['alt']}</figcaption>")
+          end
+        end
+      end
+
+      def convert_code_blocks_to_figures_in_html_document(document)
+        document.css('div.highlight').each do |node|
+          node.name = 'figure'
+          node['class'] = node['class'].gsub(/highlight($|\s+)/, '')
+
+          if node['alt'].present?
+            caption = node.add_child('<figcaption></figcaption>').first
+            caption.content = node['alt']
           end
         end
       end

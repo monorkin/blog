@@ -2,7 +2,7 @@
   @apply backdrop-blur bg-orange-50/90 dark:bg-slate-900/90
   mb-8
   sticky top-0 z-50
-  z-10;
+  z-20;
   transition: top 120ms ease-out;
 }
 

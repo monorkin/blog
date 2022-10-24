@@ -29,8 +29,6 @@ class Article
     MARKDOWN_ATTACHMENT_URLS_REGEX = /!\[[^\]]*\]\((.+)\)/.freeze
     MARKDOWN_LINK_URLS_REGEX = /\[[^\]]*\]\((.+)\)/.freeze
 
-    mattr_accessor :markdown_renderers
-
     attr_accessor :content,
                   :attachments
 
@@ -53,16 +51,13 @@ class Article
     def markdown_renderer_for(format)
       return unless RENDERERS.key?(format)
 
-      self.markdown_renderers ||= {}
-      self.markdown_renderers[format] ||= begin
-        format = RENDERERS[format]
-        return if format.blank?
+      format = RENDERERS[format]
+      return if format.blank?
 
-        renderer = format[:class]
-                   .new(format[:options].reverse_merge(attachments: attachments))
+      renderer = format[:class]
+                 .new(format[:options].reverse_merge(attachments: attachments))
 
-        Redcarpet::Markdown.new(renderer, **MARKDOWN_CONFIG)
-      end
+      Redcarpet::Markdown.new(renderer, **MARKDOWN_CONFIG)
     end
 
     def word_count

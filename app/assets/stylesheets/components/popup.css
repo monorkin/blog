@@ -1,4 +1,5 @@
 .popup {
+  @apply z-10;
 }
 
 .popup__container {

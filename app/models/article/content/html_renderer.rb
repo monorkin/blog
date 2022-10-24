@@ -32,8 +32,10 @@ class Article
       private
 
       def add_html_attributes_from_curly_colon_syntax(doc)
-        attribute_nodes =
-          doc.css('p').select { |node| node.text =~ CURLY_COLON_REGEX }
+        attribute_nodes = doc.css('p')
+                             .select { |node| node.text =~ CURLY_COLON_REGEX }
+                             .flat_map { |node| node.children.count > 1 ? node.children.select { |node| node.text =~ CURLY_COLON_REGEX } : node }
+                             .select { |node| node.text =~ CURLY_COLON_REGEX }
 
         attribute_nodes.each do |node|
           element = find_previous_element(node)

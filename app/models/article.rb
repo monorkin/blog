@@ -131,7 +131,7 @@ class Article < ApplicationRecord
 
   def content=(new_value)
     super(new_value)
-    @_contents = nil
+    @_content = nil
     content
   end
 

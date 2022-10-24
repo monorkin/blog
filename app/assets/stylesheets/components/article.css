@@ -1,5 +1,6 @@
 .article {
-  @apply leading-relaxed md:leading-normal;
+  @apply leading-relaxed mx-2 text-xl
+         md:mx-0 md:text-base md:leading-normal;
 }
 
 .article p {
@@ -65,6 +66,12 @@
 
 .article ol {
   @apply list-decimal;
+}
+
+.article .video-player {
+  max-height: 65vh;
+  max-width: 100%;
+  width: auto;
 }
 
 .article__links {

@@ -1,6 +1,5 @@
 .article {
-  @apply leading-relaxed mx-2 text-xl
-         md:mx-0 md:text-base md:leading-normal;
+  @apply leading-relaxed md:leading-normal;
 }
 
 .article p {

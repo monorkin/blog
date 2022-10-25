@@ -1,23 +1,67 @@
 .header {
-  @apply backdrop-blur bg-orange-50/90 dark:bg-slate-900/90
-  mb-8
+  @apply pointer-events-none
   sticky top-0 z-50
-  z-20;
-  transition: top 120ms ease-out;
+  flex flex-col;
+
+  transition: top 120ms;
 }
 
-.header__container {
-  @apply flex flex-row py-1;
+.header.header--floating .header__navigation__items {
+  @apply shadow-xl;
 }
 
-.header__links {
-  @apply flex flex-row justify-start w-9/12 px-1 md:px-2;
+.header__navigation {
+  @apply top-0 z-10
+  h-20 md:h-16
+  pt-8 mb-6 px-8 md:pt-6
+  w-full mx-auto max-w-7xl
+  lg:max-w-5xl
+  relative flex gap-4 justify-center;
 }
 
-.header__actions {
-  @apply flex flex-row justify-end w-3/12 px-1 md:px-2;
+.header__navigation__items {
+  @apply flex self-center
+  pointer-events-auto
+  rounded-full
+  bg-white/90
+  px-3
+  text-xl md:text-sm font-medium
+  shadow-lg shadow-gray-800/5
+  ring-1 ring-gray-900/5
+  backdrop-blur
+  dark:bg-gray-800/90 dark:ring-white/10;
 }
 
-.header--floating {
-  @apply shadow-lg;
+.header__navigation__items.header__navigation__items--right {
+}
+
+.header__navigation__items, .header__navigation__items a {
+  @apply text-stone-600 dark:text-zinc-200;
+}
+
+.header__navigation__item {
+  @apply relative block
+  h-full
+  px-3 py-2
+  transition
+  cursor-pointer
+  hover:text-sky-500
+  dark:hover:text-sky-400;
+}
+
+.header__navigation__item::after {
+  @apply absolute inset-x-1 -bottom-px
+  h-px;
+  content: "";
+}
+
+.header__navigation__item.header__navigation__item--active {
+  @apply text-sky-500 dark:text-sky-400;
+}
+
+.header__navigation__item.header__navigation__item--active::after {
+  @apply absolute inset-x-1 -bottom-px
+  h-px
+  bg-gradient-to-r from-sky-500/0 via-sky-500/40 to-sky-500/0
+  dark:from-teal-400/0 dark:via-teal-400/40 dark:to-teal-400/0;
 }

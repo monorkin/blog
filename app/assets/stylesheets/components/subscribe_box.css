@@ -2,7 +2,8 @@
   @apply my-4 p-3
   rounded-lg shadow-xl
   font-semibold
-  flex flex-row;
+  flex flex-row
+  dark:border dark:border-gray-700;
 }
 
 .subscribe-box__content {

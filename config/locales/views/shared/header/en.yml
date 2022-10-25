@@ -1,6 +1,7 @@
 en:
   shared:
     header:
+      preferences: 'Preferences'
       info: 'About'
       articles: 'Articles'
       color_theme: "Color theme"

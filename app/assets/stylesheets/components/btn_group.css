@@ -1,11 +1,15 @@
 .btn-group {
-  @apply inline-flex flex-row justify-items-stretch;
+  @apply inline-flex flex-row justify-items-stretch
+  shadow
+  rounded;
 }
 
 .btn-group > .btn {
   @apply inline-block
   px-6 py-2.5 m-0
   rounded-none
+  border-sky-500
+  border-r-0
   focus:outline-none focus:ring-0;
 }
 
@@ -14,7 +18,7 @@
 }
 
 .btn-group > .btn:last-of-type  {
-  @apply rounded-r;
+  @apply rounded-r border-r;
 }
 
 .btn-group .btn-group__input {
@@ -22,7 +26,6 @@
 }
 
 .btn-group.btn-group--radio .btn-group__input:checked + .btn {
-  @apply border-white
-  bg-white
-  text-sky-600 dark:text-sky-600 hover:text-sky-600 dark:hover:text-sky-600
+  @apply bg-sky-600
+  text-white dark:text-white hover:text-sky-600 dark:hover:text-white;
 }

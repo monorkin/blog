@@ -3,7 +3,7 @@
 }
 
 .about-page__header {
-  @apply mt-8 mb-12
+  @apply mb-12
   flex flex-col-reverse
   justify-center items-center;
 }

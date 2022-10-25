@@ -2,7 +2,8 @@
   @apply bg-white dark:bg-gray-800
   rounded-2xl
   shadow-lg
-  m-4 p-4;
+  m-4 p-4
+  dark:border dark:border-gray-700;
 }
 
 .card--full-width {

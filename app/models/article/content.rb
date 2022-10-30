@@ -25,7 +25,7 @@ class Article
       highlight: true,
       footnotes: true
     }.freeze
-    AVERAGE_ADULT_WORDS_PER_MINUTE = 200
+    AVERAGE_ADULT_WORDS_PER_MINUTE = 280
     MARKDOWN_ATTACHMENT_URLS_REGEX = /!\[[^\]]*\]\((.+)\)/.freeze
     MARKDOWN_LINK_URLS_REGEX = /\[[^\]]*\]\((.+)\)/.freeze
 
@@ -67,7 +67,7 @@ class Article
     end
 
     def reading_time(words_per_minute: AVERAGE_ADULT_WORDS_PER_MINUTE)
-      (word_count / words_per_minute).ceil.to_i
+      [(word_count / words_per_minute).ceil.to_i, 1].max
     end
 
     def attachment_urls

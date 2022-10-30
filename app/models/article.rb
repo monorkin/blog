@@ -139,6 +139,15 @@ class Article < ApplicationRecord
     ((statistic.view_count + 1) / (hours_since_publication**1.8)).round(6)
   end
 
+  def no_most_popular(scope = self.class.all)
+    return if id.blank?
+
+    index = scope.sorted_by_popularity.pluck(:id).find_index(id)
+    return if index.blank?
+
+    index + 1
+  end
+
   def hours_since_publication
     return 0 if Time.current < published_at
 

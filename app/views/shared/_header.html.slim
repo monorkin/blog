@@ -2,7 +2,7 @@ header.header data-controller="header"
   nav.header__navigation
     ul.header__navigation__items
       li = link_to t('.info'), root_url, class: ['header__navigation__item', controller_name == 'about' ? 'header__navigation__item--active' : nil]
-      li = link_to t('.articles'), articles_url, class: ['header__navigation__item', controller_name == 'articles' ? 'header__navigation__item--active' : nil]
+      li = link_to t('.articles'), articles_url, class: ['header__navigation__item', %w[articles analytics].include?(controller_name) ? 'header__navigation__item--active' : nil]
     .header__navigation__items.header__navigation__items--right data-controller='modal'
       a.header__navigation__item data-action='click->modal#toggle'
         = inline_svg_tag 'public/icons/settings.svg', \

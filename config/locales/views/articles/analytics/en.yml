@@ -7,6 +7,10 @@ en:
         stats_for_nerds: "Stats for Nerds"
         number_of_views: "View count"
         popularity_score: "Popularity score"
+        published_at: "Published"
+        word_count: "Word count"
+        reading_time: "Estimated reading time"
+        no_most_popular: "# most popular"
         reader_count: "Reader count by month"
         reader_count_explanation: >
           This graph shows how many people have read this article for any given

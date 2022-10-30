@@ -20,11 +20,24 @@
           table.table
             tbody
               tr
+                td.table__col.table__col--head = t '.published_at'
+                td = l(@record.article.published_at)
+              tr
                 td.table__col.table__col--head = t '.number_of_views'
                 td = short_number(@record.view_count)
               tr
                 td.table__col.table__col--head = t '.popularity_score'
                 td = format("%1.12f", @record.article.popularity)
+              tr
+                td.table__col.table__col--head = t '.no_most_popular'
+                td = @record.article.no_most_popular&.ordinalize
+              tr
+                td.table__col.table__col--head = t '.word_count'
+                td = number_with_delimiter(@record.article.content.word_count)
+              tr
+                td.table__col.table__col--head = t '.reading_time'
+                td = "#{@record.article.content.reading_time} min"
+
 
     section.analytics__section
       .card.card--full-width

@@ -1,0 +1,19 @@
+.error-page {
+  @apply flex flex-col justify-center items-center sm:py-8;
+}
+
+.error-page__image {
+  @apply order-2;
+}
+
+.error-page__image svg, .error-page__image img {
+  @apply w-full;
+}
+
+.error-page__title {
+  @apply py-6 text-center order-3;
+}
+
+.error-page__subtitle {
+  @apply py-6 text-center order-1;
+}

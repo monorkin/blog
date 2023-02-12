@@ -2,7 +2,7 @@
 
 class ErrorsController < ApplicationController
   def not_found
-    @articles = policy_scope(Article.published).order(published_at: :desc)
+    # @articles = policy_scope(Article.published).order(published_at: :desc)
     render status: :not_found
   end
 

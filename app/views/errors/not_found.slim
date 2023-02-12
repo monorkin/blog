@@ -1,4 +1,7 @@
 .content
-  center
-    h1 Not found
-    h2 404
+  .error-page
+    h1.error-page__title = t(".not_found")
+    .error-page__image
+      = inline_svg_tag "public/penguin_not_found.svg", \
+      alt: t(".image_description"), \
+      title: t(".not_found")

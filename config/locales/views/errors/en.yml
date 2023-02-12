@@ -1,0 +1,9 @@
+en:
+  errors:
+    not_found:
+      not_found: "There is nothing here..."
+      image_description: "A lone penguin sitting on an iceberg in the middle of nowhere"
+
+    internal_server_error:
+      internal_server_error: "Something went wrong..."
+      image_description: "A concerned penguin next to a keyboard and in front of a burning computer screen"

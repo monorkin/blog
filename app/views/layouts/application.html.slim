@@ -31,6 +31,8 @@ data-color-scheme-dark-class=dark_color_scheme_class
     meta name="msapplication-TileImage" content="/mstile-144x144.png"
     = stylesheet_link_tag 'tailwind', media: 'all', 'data-turbo-track': 'reload'
     = javascript_importmap_tags
+    script defer=true data-domain="stanko.io" src="https://analytics.stanko.io/js/script.js"
+
 
   body
     = render 'shared/header'

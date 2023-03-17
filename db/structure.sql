@@ -200,21 +200,6 @@ CREATE TABLE public.article_attachments (
 
 
 --
--- Name: article_statistics; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.article_statistics (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    article_id character varying,
-    view_count bigint DEFAULT 0 NOT NULL,
-    referrer_visit_counts jsonb DEFAULT '{}'::jsonb NOT NULL,
-    visit_counts_per_month jsonb DEFAULT '{}'::jsonb NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
 -- Name: article_taggings; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -301,14 +286,6 @@ ALTER TABLE ONLY public.article_attachments
 
 
 --
--- Name: article_statistics article_statistics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.article_statistics
-    ADD CONSTRAINT article_statistics_pkey PRIMARY KEY (id);
-
-
---
 -- Name: article_taggings article_taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -367,13 +344,6 @@ CREATE UNIQUE INDEX index_article_attachments_on_article_id_and_primary ON publi
 --
 
 CREATE INDEX index_article_attachments_on_primary ON public.article_attachments USING btree ("primary");
-
-
---
--- Name: index_article_statistics_on_article_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_article_statistics_on_article_id ON public.article_statistics USING btree (article_id);
 
 
 --
@@ -486,6 +456,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210704144106'),
 ('20220905160355'),
 ('20220905165144'),
-('20220925093723');
+('20220925093723'),
+('20230317081456');
 
 

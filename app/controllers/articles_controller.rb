@@ -8,7 +8,6 @@ class ArticlesController < ApplicationController
       cursor: params[:before] || params[:after]
     )
 
-    @popular_articles = Article.sorted_by_popularity.limit(2)
     @articles = @paginator.records
 
     fresh_when(@articles)
@@ -18,9 +17,6 @@ class ArticlesController < ApplicationController
     @article = Article.from_slug!(params[:slug])
 
     fresh_when(@article)
-
-    visit = Article::Statistic::Visit.new(article: @article, request: request)
-    LogArticleVisitJob.perform_later(@article, visit.to_h)
   end
 
   def atom

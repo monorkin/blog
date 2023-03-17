@@ -25,34 +25,7 @@
 #
 class Article < ApplicationRecord
   include ActionView::Helpers::TextHelper
-  include PgSearch::Model
-  pg_search_scope :search,
-                  against: { title: 'A', content: 'B' },
-                  using: {
-                    tsearch: {
-                      dictionary: 'english', tsvector_column: 'searchable'
-                    }
-                  }
 
-
-  POPULARITY_SQL = <<~SQL.squish
-    ROUND(
-      CAST(
-        (
-          (article_statistics.view_count + 1) /
-          POWER(
-            (EXTRACT(EPOCH FROM current_timestamp-articles.published_at) / 3600),
-            1.8
-          )
-        ) AS numeric
-      ),
-      6
-    )
-  SQL
-
-  has_one :statistic,
-          class_name: 'Article::Statistic',
-          dependent: :destroy
   has_one :primary_image,
           -> { where(primary: true) },
           class_name: 'Article::Attachment'
@@ -74,21 +47,12 @@ class Article < ApplicationRecord
   validates :statistic,
             presence: true
 
-  before_validation do
-    build_statistic if statistic.blank?
-  end
-
   default_scope do
     order(published: :desc, published_at: :desc, title: :asc)
   end
 
   scope(:published, lambda do
     where(published: true).where.not(published_at: (Time.current..))
-  end)
-
-  scope(:sorted_by_popularity, lambda do
-    joins(:statistic)
-      .reorder(Arel.sql("#{POPULARITY_SQL} DESC"), published_at: :desc)
   end)
 
   def self.from_slug(slug)
@@ -135,30 +99,10 @@ class Article < ApplicationRecord
     content
   end
 
-  def popularity
-    ((statistic.view_count + 1) / (hours_since_publication**1.8)).round(6)
-  end
-
-  def no_most_popular(scope = self.class.all)
-    return if id.blank?
-
-    index = scope.sorted_by_popularity.pluck(:id).find_index(id)
-    return if index.blank?
-
-    index + 1
-  end
-
-  def hours_since_publication
-    return 0 if Time.current < published_at
-
-    (Time.current - published_at) / 1.hour
-  end
-
   def suggested_articles
     Article
       .all
       .published
-      .sorted_by_popularity
       .where.not(id: self)
   end
 end

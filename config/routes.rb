@@ -23,7 +23,6 @@ Rails.application.routes.draw do
 
   resources :articles, param: :slug, path: '', only: %i[show] do
     scope module: :articles do
-      resource :analytics, only: :show
       resources :link_previews, only: :show
     end
   end

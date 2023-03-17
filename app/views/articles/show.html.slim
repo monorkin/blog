@@ -30,14 +30,6 @@
 
     hr
 
-    .article__links
-      = link_to article_analytics_path(article_slug: @article)
-        = inline_svg_tag('public/icons/activity.svg', \
-        class: 'icon', \
-        alt: t('.analytics_and_backlinks'), \
-        title: t('.analytics_and_backlinks'))
-        = t('.analytics_and_backlinks')
-
     .subscribe-box.subscribe-box--rss.subscribe-box--unhinged
       .subscribe-box__icon
         = inline_svg_tag 'public/icons/rss.svg', title: t('.rss'), class: 'icon'

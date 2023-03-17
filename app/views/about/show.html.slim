@@ -32,7 +32,7 @@
       .about-page__section__title
         h3 = t '.latest_articles'
       .about-page__section__content
-        = render collection: Article.published.limit(3), \
+        = render collection: Article.published.order(published_at: :desc).limit(3), \
         partial: 'articles/short_article', \
         cached: true
       .about-page__section__footer

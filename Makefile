@@ -5,7 +5,6 @@ export LOCAL_USER_ID ?= $(shell id -u $$USER)
 WEB_SERVICE=app
 DB_SERVICE=db
 REDIS_SERVICE=redis
-REBLOOM_SERVICE=rebloom
 IMAGE_NAME=monorkin/blog
 VERSION ?= $(shell ruby -r './config/version.rb' -e 'puts Blog::VERSION')
 
@@ -127,10 +126,6 @@ push-production-image: build-production-image
 ## Opens a redis-cli console
 redis-cli:
 	@docker compose exec $(REDIS_SERVICE) redis-cli
-
-## Opens a redis-cli console on the Rebloom instance
-rebloom-cli:
-	@docker compose exec $(REBLOOM_SERVICE) redis-cli
 
 ################################################################################
 ##                                  DATABASE                                  ##

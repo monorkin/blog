@@ -36,9 +36,6 @@ module Blog
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
-    # Store analytics configuration
-    config.analytics = config_for(:analytics)
-
     # Store Resque configuration
     config.resque = config_for(:resque)
 

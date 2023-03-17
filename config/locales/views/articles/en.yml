@@ -13,7 +13,6 @@ en:
     show:
       back: "← Back"
       published_on: "Published on %{date}"
-      analytics_and_backlinks: "Analytics & backlinks"
       subscribe_html: "Subscribe to the %{rss_link} to get future posts"
       rss: "RSS feed"
       suggested_articles: "Other articles"

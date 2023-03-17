@@ -52,9 +52,6 @@ GEM
     activejob (7.0.4.2)
       activesupport (= 7.0.4.2)
       globalid (>= 0.3.6)
-    activejob-uniqueness (0.2.5)
-      activejob (>= 4.2, < 7.1)
-      redlock (>= 1.2, < 2)
     activemodel (7.0.4.2)
       activesupport (= 7.0.4.2)
     activerecord (7.0.4.2)
@@ -121,10 +118,6 @@ GEM
       thread_safe (~> 0.3, >= 0.3.1)
     bcrypt (3.1.18)
     bindex (0.8.1)
-    bitarray (1.3.0)
-    bloomer (1.0.0)
-      bitarray
-      msgpack
     builder (3.2.4)
     byebug (11.1.3)
     capybara (3.38.0)
@@ -141,7 +134,6 @@ GEM
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.2.0)
-    connection_pool (2.3.0)
     console (1.16.2)
       fiber-local
     content_disposition (1.0.0)
@@ -162,6 +154,9 @@ GEM
     fastimage (2.2.6)
     ffi (1.15.5)
     fiber-local (1.0.0)
+    geared_pagination (1.1.2)
+      activesupport (>= 5.0)
+      addressable (>= 2.5.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
     hiredis (0.6.3)
@@ -203,7 +198,6 @@ GEM
     mini_portile2 (2.8.1)
     minitest (5.17.0)
     mono_logger (1.1.1)
-    msgpack (1.6.0)
     multi_json (1.15.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
@@ -216,18 +210,12 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nexter (0.2.1)
-      activerecord (>= 3.1)
-      activesupport (>= 3.1)
     nio4r (2.5.8)
     nokogiri (1.14.1)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     parslet (2.0.0)
     pg (1.4.5)
-    pg_search (2.3.6)
-      activerecord (>= 5.2)
-      activesupport (>= 5.2)
     propshaft (0.6.4)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
@@ -283,10 +271,6 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
-    ransack (4.0.0)
-      activerecord (>= 6.1.5)
-      activesupport (>= 6.1.5)
-      i18n
     rb-fsevent (0.11.2)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -294,8 +278,6 @@ GEM
     redis (4.8.1)
     redis-namespace (1.10.0)
       redis (>= 4)
-    redlock (1.3.2)
-      redis (>= 3.0.0, < 6.0)
     regexp_parser (2.7.0)
     resque (2.4.0)
       mono_logger (~> 1.0)
@@ -389,20 +371,18 @@ PLATFORMS
 
 DEPENDENCIES
   active_link_to
-  activejob-uniqueness
   annotate
   async-http
   aws-sdk-s3 (~> 1.14)
   axe-core-selenium
   bcrypt (~> 3.1.7)
-  bloomer
   byebug
   capybara (>= 2.15)
-  connection_pool
   cssbundling-rails
   exiftool
   faker
   fastimage
+  geared_pagination
   hiredis
   image_processing (~> 1.8)
   importmap-rails
@@ -411,19 +391,15 @@ DEPENDENCIES
   listen
   marcel (~> 1)
   memory_profiler
-  nexter
   pg (>= 0.18, < 2.0)
-  pg_search
   propshaft
   pry
   puma (~> 5.0.2)
   pundit (~> 2.1.0)
   rack-mini-profiler
   rails (~> 7.0.3)
-  ransack
   redcarpet (~> 3.5.0)
   redis (~> 4.0)
-  redlock
   resque
   rotp
   rouge (~> 3.23.0)

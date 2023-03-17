@@ -2,7 +2,9 @@
 
 module ArticleHelper
   def article_image_tag(image, options = {})
-    image_url = image.image_url(:large) || image.image_url
+    return unless image.image?
+
+    image_url = image.attachment_url(:large) || image.attachment_url
     options = options.merge(loading: 'lazy', srcset: image.srcset)
     options[:style] = [options.fetch(:style, ''), "--image-aspect-ratio: #{image.aspect_ratio}"].compact.join('; ')
 

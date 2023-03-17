@@ -44,12 +44,6 @@ class Article < ApplicationRecord
             presence: true
   validates :content,
             presence: true
-  validates :statistic,
-            presence: true
-
-  default_scope do
-    order(published: :desc, published_at: :desc, title: :asc)
-  end
 
   scope(:published, lambda do
     where(published: true).where.not(published_at: (Time.current..))

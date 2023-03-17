@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 class ArticlesController < ApplicationController
-  def index
-    @paginator = Paginator.decode(
-      scope: scope.published,
-      direction: params.key?(:before) ? :before : :after,
-      cursor: params[:before] || params[:after]
-    )
+  ORDER = { published_at: :desc, id: :desc }
+  RATIOS = [ 10, 20, 30, 50 ]
 
-    @articles = @paginator.records
+  def index
+    set_page_and_extract_portion_from scope, per_page: RATIOS
+
+    @articles = @page.records
 
     fresh_when(@articles)
   end
@@ -30,10 +29,17 @@ class ArticlesController < ApplicationController
   private
 
   def scope
-    Article.all.order(published_at: :desc).preload(:primary_image)
+    Article
+      .all
+      .order(ORDER)
+      .preload(:primary_image, :attachments)
+      .strict_loading
   end
 
   def feed
-    @feed ||= Article::Feed.new(scope: scope, host: request.host_with_port)
+    @feed ||= Article::Feed.new(
+      scope: scope.preload(:attachments),
+      host: request.host_with_port
+    )
   end
 end

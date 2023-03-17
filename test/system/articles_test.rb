@@ -55,7 +55,7 @@ class ArticlesTest < ApplicationSystemTestCase
                                 "> This is a block quote\n\n> It is cool",
                                 Faker::Markdown.sandwich(sentences: 10),
                                 Faker::Markdown.headers,
-                                "![This is an image](#{Faker::LoremPixel.image})",
+                                "![This is an image](#{Faker::LoremFlickr.image})",
                                 Faker::Markdown.sandwich(sentences: 10)
                               ].join("\n\n"),
                               publish_at: 1.day.ago,

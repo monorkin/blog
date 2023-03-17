@@ -16,27 +16,13 @@
   h1 Articles | Stanko K.R.
 
 .content
-  / section.article_search
-    = form_for @search, method: :get, url: articles_url do |search|
-      .article_search__simple
-        = search.text_field :term, placeholder: 'Search', label: false, class: 'article_search__simple__term_input'
-        label.article_search__simple__submit_button
-          = inline_svg_tag 'public/icons/search.svg', \
-          alt: 'Search', \
-          class: 'icon', \
-          title: "Search"
-          = search.submit :search, class: 'hidden'
-      - if search.object.errors.any?
-        - search.object.errors.full_messages.each do |message|
-          p.article_search__error_message = message
-
   section.articles-list
     - if @articles.any?
       = render collection: @articles, partial: :article, cached: true
     - else
       .articles_list__no_results No articles were found
   section.pagination
-    - if @paginator.previous_page_exists?
-      = link_to t('.previous_page'), url_for(before: @paginator.previous), class: 'pagination__button pagination__button--previous-page btn'
-    - if @paginator.next_page_exists?
-      = link_to t('.next_page'), url_for(after: @paginator.next), class: 'pagination__button pagination__button--next-page btn'
+    - if !@page.first?
+      = link_to t('.previous_page'), url_for(page: params.fetch(:page, 2).to_i - 1), class: 'pagination__button pagination__button--previous-page btn'
+    - if !@page.last?
+      = link_to t('.next_page'), url_for(page: @page.next_param), class: 'pagination__button pagination__button--next-page btn'

@@ -1,3 +1,17 @@
+GIT
+  remote: https://github.com/mrsked/mrsk.git
+  revision: d167e48584e71f1449c71dcb80919ca98619645f
+  ref: main
+  specs:
+    mrsk (0.9.1)
+      activesupport (>= 7.0)
+      bcrypt_pbkdf (~> 1.0)
+      dotenv (~> 2.8)
+      ed25519 (~> 1.2)
+      sshkit (~> 1.21)
+      thor (~> 1.2)
+      zeitwerk (~> 2.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -201,14 +215,6 @@ GEM
     mini_portile2 (2.8.1)
     minitest (5.17.0)
     mono_logger (1.1.1)
-    mrsk (0.9.1)
-      activesupport (>= 7.0)
-      bcrypt_pbkdf (~> 1.0)
-      dotenv (~> 2.8)
-      ed25519 (~> 1.2)
-      sshkit (~> 1.21)
-      thor (~> 1.2)
-      zeitwerk (~> 2.5)
     multi_json (1.15.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
@@ -408,7 +414,7 @@ DEPENDENCIES
   listen
   marcel (~> 1)
   memory_profiler
-  mrsk
+  mrsk!
   pg (>= 0.18, < 2.0)
   propshaft
   pry

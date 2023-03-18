@@ -2,7 +2,7 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  url: <%= Rails.application.credentials.dig(:database, :url) || 'postgres://postgres:postgres@127.0.0.1/blog_development' %>_<%= Rails.env %>
+  url: <%= Rails.application.credentials.dig(:database, :url) || 'postgres://postgres:postgres@127.0.0.1/blog' %>_<%= Rails.env %>
 
 development:
   <<: *default
@@ -10,5 +10,7 @@ development:
 test:
   <<: *default
 
+
 production:
   <<: *default
+  url: <%= Rails.application.credentials.dig(:database, :url) %>

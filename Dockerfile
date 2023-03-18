@@ -1,43 +1,29 @@
+ARG RUBY_VERSION=3.1
+
 ################################################################################
 ############################## BASE IMAGE ######################################
 ################################################################################
-FROM ruby:3.1-slim-bullseye AS base
+FROM ruby:$RUBY_VERSION-slim-bullseye AS base
 
-ARG WORKDIR=/app
-ENV WORKDIR=$WORKDIR
+# Rails app lives here
+WORKDIR /rails
 
-ARG APP_USER=user
-ENV APP_USER=$APP_USER
-
-# Install dependent libraries
-RUN export DEBIAN_FRONTEND=noninteractive \
-    && dpkg --configure -a \
-    && apt-get update \
-    && apt-get install -y \
-      libssl1.1 libssl-dev \
-      curl \
-      bash \
-      gnupg \
-      gnupg1 \
-      gnupg2 \
-      make \
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+      libsqlite3-0 \
+      postgresql-client \
+      default-mysql-client \
+      libvips \
       dumb-init \
       gosu \
-      tzdata \
-      postgresql-client \
-      libpq-dev \
-      imagemagick \
       libjemalloc-dev \
-      libvips-dev \
       ffmpeg \
       exiftool \
-    && rm -rf /var/lib/apt/lists/*
+    && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Disable documentation for Ruby gems
 RUN echo 'gem: --no-rdoc --no-ri' > /etc/gemrc
-
-# Change working directory
-WORKDIR $WORKDIR
 
 # Install bundler
 # https://bundler.io/v1.16/guides/bundler_docker_guide.html
@@ -45,13 +31,10 @@ WORKDIR $WORKDIR
 # A version needs to be specified because the base Ruby image explicetly
 # specifies the BUNDLER_VERSION variable, therefore, to use more up-to-date
 # versions we need to specify them explicitly
-ENV BUNDLER_VERSION=2.3.16
-RUN gem install bundler -v $BUNDLER_VERSION
-ENV GEM_HOME="/usr/local/bundle"
-ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
+ENV BUNDLE_PATH="/usr/local/bundle"
 
 # Set the entrypoint
-COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint
+COPY ./bin/docker-entrypoint /usr/local/bin/entrypoint
 RUN chmod +x /usr/local/bin/entrypoint
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
 
@@ -60,13 +43,20 @@ ENTRYPOINT ["/usr/local/bin/entrypoint"]
 ###################
 
 FROM base AS development
-RUN export DEBIAN_FRONTEND=noninteractive \
-    && dpkg --configure -a \
-    && apt-get update \
-    && apt-get install -y \
+
+# Install packages needed to build gems and node modules
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
       build-essential \
-      less \
       git \
+      pkg-config \
+      libpq-dev \
+      default-libmysqlclient-dev \
+      libvips \
+      curl \
+      node-gyp \
+      python-is-python3 \
+      less \
       freerdp2-shadow-x11 \
       fonts-dejavu \
       fonts-droid-fallback \
@@ -79,39 +69,39 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       firefox-esr \
       chromium \
       xauth \
-      vim \
-    && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
-    && apt-get install nodejs \
-    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
-      yarn \
-    && rm -rf /var/lib/apt/lists/* \
-    && dbus-uuidgen --ensure=/etc/machine-id
+      vim
 
-RUN yarn global add node-gyp
-ENV PATH="$PATH:$(yarn global bin)"
+# Install JavaScript dependencies
+ARG NODE_VERSION=18.15.0
+ARG YARN_VERSION=latest
+ENV PATH=/usr/local/node/bin:$PATH
+RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
+    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+    npm install -g yarn@$YARN_VERSION && \
+    rm -rf /tmp/node-build-master
 
 CMD /bin/bash -c "while true; do sleep 10; done;"
 
-############################
-### PRE-PRODUCTION IMAGE ###
-############################
+###################
+### BUILD IMAGE ###
+###################
 
-FROM development AS pre_production
+FROM development AS build
 
-COPY Gemfile* $APP_HOME/
-RUN bundle install --jobs `expr $$(nproc) - 1` --retry 3
+# Install application gems
+COPY Gemfile Gemfile.lock ./
+RUN bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
-COPY package.json yarn.lock $APP_HOME/
-RUN yarn install --production
+# Install node modules
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-COPY . $APP_HOME
+COPY . .
 
-RUN bundle exec rake assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
-RUN rm -rf $APP_HOME/node_modules
+RUN rm -rf node_modules
 
 ########################
 ### PRODUCTION IMAGE ###
@@ -119,14 +109,19 @@ RUN rm -rf $APP_HOME/node_modules
 
 FROM base AS production
 
-ARG APP_HOME=/app
-WORKDIR $APP_HOME
+# Set production environment
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development"
 
-# Copy built project
-COPY --from=pre_production /app $APP_HOME
+# Copy built artifacts: gems, application
+COPY --from=build /usr/local/bundle /usr/local/bundle
+COPY --from=build /rails /rails
 
-# Copy built gems
-COPY --from=pre_production /usr/local/bundle /usr/local/bundle
+RUN useradd rails --home /rails --shell /bin/bash && \
+    chown -R rails:rails db log storage tmp
+USER rails:rails
 
 EXPOSE 3000
-CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+CMD ["./bin/rails", "server"]

@@ -54,6 +54,7 @@ group :development do
   gem 'annotate'
   gem 'listen'
   gem 'memory_profiler'
+  gem 'mrsk'
   gem 'rack-mini-profiler', require: %w[enable_rails_patches rack-mini-profiler]
   gem 'stackprof'
   gem 'web-console', '>= 3.3.0'

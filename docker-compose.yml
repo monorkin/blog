@@ -16,7 +16,7 @@ services:
       target: development
     image: 'blog-development'
     volumes:
-      - .:/app
+      - .:/rails
       - bundle_store:/usr/local/bundle
     depends_on:
       - db
@@ -37,7 +37,7 @@ services:
       target: development
     image: 'blog-development'
     volumes:
-      - .:/app
+      - .:/rails
       - bundle_store:/usr/local/bundle
     depends_on:
       - db

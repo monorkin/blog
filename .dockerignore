@@ -14,6 +14,8 @@
 yarn-debug.log*
 
 # Ignore tempfiles
+/storage/*
+!/storage/.keep
 /public/uploads/*
 !/public/uploads/.keep
 /tmp/*
@@ -28,13 +30,11 @@ yarn-debug.log*
 /public/packs-test
 
 # Ignore encryption secrets
+.env
+.env.*
 /config/master.key
 /config/credentials/*.key
 !/config/credentials/development.key
-# Since this repo is public I don't want peopple to gain access to real
-# production secrets through brute forcing the encryption key. Out of precaution
-# I'll remove this file from Git and add it manually to the server.
-/config/credentials/production.yml.enc
 
 # Ignore OS specific files
 .DS_Store

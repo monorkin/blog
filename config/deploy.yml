@@ -1,0 +1,54 @@
+# Name of your application. Used to uniquely configure containers.
+service: blog
+
+# Name of the container image.
+image: monorkin/blog
+
+# Deploy to these servers.
+servers:
+  web:
+    hosts:
+      - shire.stanko.io
+    options:
+      network: apps
+    labels:
+      traefik.enable: true
+      traefik.http.routers.blog.rule: Host(`staging.stanko.io`)
+      traefik.http.middlewares.blog.redirectregex.regex: "^https://blog-staging.stanko.io/(.*)"
+      traefik.http.middlewares.blog.redirectregex.replacement: "https://staging.stanko.io/$${1}"
+      traefik.http.middlewares.blog.redirectregex.permanent: true
+
+# Credentials for your image host.
+registry:
+  username: monorkin
+  password:
+    - MRSK_REGISTRY_PASSWORD
+
+# Inject ENV variables into containers (secrets come from .env).
+env:
+  clear:
+    RAILS_ENV: "production"
+    RAILS_SERVE_STATIC_FILES: "true"
+    RAILS_MAX_THREADS: "10"
+    WEB_CONCURRENCY: "4"
+    REDIS_URL: "redis://redis.stanko.io:6379/0"
+  secret:
+    - RAILS_MASTER_KEY
+
+# Call a broadcast command on deploys.
+# audit_broadcast_cmd:
+#   bin/broadcast_to_bc
+
+# Use a different ssh user than root
+ssh:
+  user: ubuntu
+
+# Configure custom arguments for Traefik
+# traefik:
+#   args:
+#     accesslog: true
+#     accesslog.format: json
+
+# Configure a custom healthcheck (default is /up on port 3000)
+healthcheck:
+  path: "/"

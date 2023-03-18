@@ -117,6 +117,7 @@ GEM
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
     bcrypt (3.1.18)
+    bcrypt_pbkdf (1.1.0)
     bindex (0.8.1)
     builder (3.2.4)
     byebug (11.1.3)
@@ -143,9 +144,11 @@ GEM
     date (3.3.3)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
+    dotenv (2.8.1)
     down (5.4.0)
       addressable (~> 2.8)
     dumb_delegator (1.0.0)
+    ed25519 (1.3.0)
     erubi (1.12.0)
     exiftool (1.2.4)
       json
@@ -198,6 +201,14 @@ GEM
     mini_portile2 (2.8.1)
     minitest (5.17.0)
     mono_logger (1.1.1)
+    mrsk (0.9.1)
+      activesupport (>= 7.0)
+      bcrypt_pbkdf (~> 1.0)
+      dotenv (~> 2.8)
+      ed25519 (~> 1.2)
+      sshkit (~> 1.21)
+      thor (~> 1.2)
+      zeitwerk (~> 2.5)
     multi_json (1.15.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
@@ -208,8 +219,11 @@ GEM
       net-protocol
     net-protocol (0.2.1)
       timeout
+    net-scp (4.0.0)
+      net-ssh (>= 2.6.5, < 8.0.0)
     net-smtp (0.3.3)
       net-protocol
+    net-ssh (7.1.0)
     nio4r (2.5.8)
     nokogiri (1.14.1)
       mini_portile2 (~> 2.8.0)
@@ -322,6 +336,9 @@ GEM
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
+    sshkit (1.21.4)
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
     stackprof (0.2.23)
     stimulus-rails (1.2.1)
       railties (>= 6.0.0)
@@ -391,6 +408,7 @@ DEPENDENCIES
   listen
   marcel (~> 1)
   memory_profiler
+  mrsk
   pg (>= 0.18, < 2.0)
   propshaft
   pry

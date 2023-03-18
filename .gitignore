@@ -28,13 +28,17 @@ yarn-debug.log*
 /public/packs-test
 
 # Ignore encryption secrets
+.env
+.env.*
+!.env.erb
+!.env.*.erb
 /config/master.key
 /config/credentials/*.key
 !/config/credentials/development.key
 !/config/credentials/test.key
 # Since this repo is public I don't want peopple to gain access to real
 # production secrets through brute forcing the encryption key. Out of precaution
-# I'll remove this file from Git and add it manually to the server.
+# I'm removing this file from Git.
 /config/credentials/production.yml.enc
 
 # Ignore OS specific files

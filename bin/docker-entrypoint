@@ -1,0 +1,20 @@
+#!/bin/bash -e
+
+# Setup jemalloc
+export LD_PRELOAD="$JEMALLOC_PATH"
+export JEMALLOC_PATH
+
+JEMALLOC_PATH="$(find /usr/lib -name libjemalloc.so | head -n1)"
+
+if [ -n "$JEMALLOC_PATH" ]; then
+  LD_PRELOAD="$JEMALLOC_PATH"
+fi
+
+# If running the rails server then create or migrate existing database
+if [ "${*}" == "./bin/rails server" ]; then
+  ./bin/rails db:prepare
+fi
+
+# Run the command attached to the process with PID 1 so that signals get
+# passed to the process/app being run
+exec /usr/bin/dumb-init "${@}"

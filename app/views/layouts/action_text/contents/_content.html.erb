@@ -1,10 +1,3 @@
-<%= content_tag(:div, class: %w[
-  prose dark:prose-invert
-  prose-figure:flex prose-figure:flex-col prose-figure:items-center
-  prose-img:rounded prose-img:shadow prose-img:max-h-[70vh]
-  prose-video:rounded prose-video:shadow prose-video:max-h-[70vh] prose-video:my-0
-  prose-pre:rounded prose-pre:shadow
-  prose-code:bg-gray-900 prose-code:text-blue-50 prose-code:rounded prose-code:p-1 prose-code:before:content-none prose-code:after:content-none
-]) do %>
+<div class="trix-content">
   <%= yield -%>
-<% end %>
+</div>

@@ -65,8 +65,21 @@ class ConvertContentToActionText < ActiveRecord::Migration[7.0]
               node["url"] = Rails.application.routes.url_helpers.rails_storage_redirect_url(attachment.blob)
               node["caption"] = caption if caption.present?
             end
+
           title = doc.css("h1").first
           title.remove if title
+
+          paragraphs = doc.css("p")
+          content = paragraphs.first
+          if content
+            content.name = "div"
+          end
+          paragraphs[1..].each do |node|
+            content.inner_html += "<br>#{node.inner_html}"
+            node.remove
+          end
+
+          doc.css("action-text-attachment + br").each(&:remove)
         end.to_s
       )
     end

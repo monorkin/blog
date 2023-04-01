@@ -4,7 +4,6 @@ export default class extends ApplicationController {
   connect() {
     this.attachLinkPreviewControllers()
     // this.attachFigureEnlargementControllers()
-    this.highlightCodeSnippets()
   }
 
   attachLinkPreviewControllers() {
@@ -34,16 +33,5 @@ export default class extends ApplicationController {
     if (controllers.lenth > 0) controllers += " "
     controllers += controller
     element.dataset.controller = controllers
-  }
-
-  highlightCodeSnippets() {
-    for(const element of this.element.querySelectorAll("pre")) {
-      this.highlightCodeSnippet(element)
-    }
-  }
-
-  highlightCodeSnippet(element) {
-    const code = element.innerHTML
-    element.innerHTML = `<code>${code}</code>`
   }
 }

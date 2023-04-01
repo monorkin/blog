@@ -1,7 +1,10 @@
-<div class="w-full bg-white p-4 rounded shadow md:rounded-xl md:shadow-xl dark:bg-slate-900 dark:border dark:border-slate-700">
+<div class="w-full bg-white p-4 rounded shadow md:rounded-xl md:shadow-xl dark:bg-slate-900 dark:text-slate-200 dark:border dark:border-slate-700">
   <% if local_assigns.key?(:title) %>
     <div>
-      <h2 class="font-semibold text-3xl mb-4"><%= title %></h2>
+      <div class="flex flex-row">
+        <h2 class="font-semibold text-3xl mb-4 flex-grow"><%= title %></h2>
+        <%= local_assigns[:actions] %>
+      </div>
       <hr class="border-stone-200 mb-6">
     </div>
   <% end %>

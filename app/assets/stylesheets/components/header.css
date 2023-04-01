@@ -29,14 +29,14 @@
   shadow-lg shadow-gray-800/5
   ring-1 ring-gray-900/5
   backdrop-blur
-  dark:bg-gray-800/90 dark:ring-white/10;
+  dark:bg-slate-900/90 dark:ring-white/10;
 }
 
 .header__navigation__items.header__navigation__items--right {
 }
 
 .header__navigation__items, .header__navigation__items a {
-  @apply text-stone-600 dark:text-zinc-200;
+  @apply text-stone-600 dark:text-slate-200;
 }
 
 .header__navigation__item {

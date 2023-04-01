@@ -1,6 +1,9 @@
 import ApplicationController from "controllers/application_controller"
+import Dialog from "models/dialog"
 
 export default class extends ApplicationController {
+  static targets = [ "settingsModalTemplate" ]
+
   connect() {
     this.lastYPosition = window.scrollY
     document.addEventListener("scroll", this.smartToggle.bind(this))
@@ -67,5 +70,18 @@ export default class extends ApplicationController {
 
   get headerShouldBeShown() {
     return window.scrollY <= this.treshold
+  }
+
+  showSettings(event) {
+    event.preventDefault()
+
+    if (!this.hasSettingsModalTemplateTarget) return
+
+    const dialog = Dialog.create({ removeOnClose: true, closeOnBlur: true })
+    document.body.appendChild(dialog)
+    dialog.innerHTML = this.settingsModalTemplateTarget.innerHTML
+    dialog.classList.add("bg-transparent")
+    dialog.classList.add("backdrop:backdrop-blur-lg")
+    dialog.showModal()
   }
 }

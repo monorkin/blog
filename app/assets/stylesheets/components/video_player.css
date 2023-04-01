@@ -1,8 +1,0 @@
-.video-player {
-  @apply rounded shadow my-2 object-contain w-full;
-  aspect-ratio: var(--aspect-ratio, auto);
-}
-
-.video-player[poster] {
-  @apply object-cover;
-}

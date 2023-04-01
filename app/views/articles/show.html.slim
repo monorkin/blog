@@ -34,13 +34,14 @@
       div data-controller="article"
         == @article.content
 
-    hr
+    hr.my-6
 
-    .subscribe-box.subscribe-box--rss
-      .subscribe-box__icon
-        = inline_svg_tag 'public/icons/rss.svg', title: t('.rss'), class: 'icon'
-      .subscribe-box__content
-        = t '.subscribe_html', rss_link: link_to(t('.rss'), atom_articles_url)
+      = component "card"
+        .flex.flex-row.items-center
+          .w-8.h-8.text-orange-500
+            = inline_svg_tag 'public/icons/rss.svg', title: t('.rss'), class: 'icon'
+          .w-full.ml-4
+            = link_to(t('.subscribe_rss'), atom_articles_url)
 
     / .article__suggestions
       .card.card--full-width

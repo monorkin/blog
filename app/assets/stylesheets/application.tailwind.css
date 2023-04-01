@@ -15,24 +15,16 @@
  ******************************************************************************/
 @import './components/btn.css';
 @import './components/btn_group.css';
-@import './components/card.css';
 @import './components/color_scheme.css';
 @import './components/content.css';
-@import './components/footer.css';
 @import './components/header.css';
 @import './components/link_preview.css';
-@import './components/modal.css';
 @import './components/pagination.css';
 @import './components/popup.css';
-@import './components/subscribe_box.css';
-@import './components/table.css';
-@import './components/table_responsive.css';
-@import './components/video_player.css';
 
 /******************************************************************************
  **                                  PAGES                                   **
  ******************************************************************************/
-@import './pages/about.css';
 @import './pages/error.css';
 
 /******************************************************************************

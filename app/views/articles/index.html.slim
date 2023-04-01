@@ -1,4 +1,4 @@
-= content_for :head
+/ = content_for :head
   title Articles | Stanko K.R.
   meta name="description" content="List of articles I've written about various topics"
   meta rel="canonical" href=articles_url
@@ -16,7 +16,7 @@
   h1 Articles | Stanko K.R.
 
 .content
-  section.articles-list
+  section.flex.flex-col
     - if @articles.any?
       = render collection: @articles, partial: :article, cached: true
     - else

@@ -1,0 +1,30 @@
+<figure class="attachment attachment--<%= blob.representable? ? "preview" : "file" %> attachment--<%= blob.filename.extension %>">
+  <% if blob.video? %>
+    <% poster = blob.representable? ? url_for(blob.representation(resize_to_limit: local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, 768 ])) : false %>
+    <% options = { controls: true, autoplay: "autoplay", loop: true, muted: true } %>
+    <% options.merge!(poster: url_for(poster), poster_skip_pipeline: true) if poster %>
+
+    <%= video_tag([url_for(blob)], options) %>
+  <% elsif blob.audio? %>
+    <%= audio_tag([url_for(blob)], autoplay: false, controls: true) %>
+  <% elsif blob.content_type == "application/pdf" %>
+    <%= content_tag(:embed, src: rails_blob_url(blob), width: 800, height: 500, type: "application/pdf") %>
+  <% elsif blob.representable? %>
+    <% if blob.filename.extension == "gif" %>
+      <%= image_tag url_for(blob) %>
+    <% else %>
+      <%= image_tag blob.representation(resize_to_limit: local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, 768 ]) %>
+    <% end %>
+  <% else %>
+    <%= link_to blob.filename, url_for(blob), download: true %>
+  <% end %>
+
+  <figcaption class="attachment__caption">
+    <% if caption = blob.try(:caption) %>
+      <%= caption %>
+    <% else %>
+      <span class="attachment__name"><%= blob.filename %></span>
+      <span class="attachment__size"><%= number_to_human_size blob.byte_size %></span>
+    <% end %>
+  </figcaption>
+</figure>

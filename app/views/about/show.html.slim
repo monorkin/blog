@@ -18,71 +18,89 @@
   meta property="og:image" content=asset_url('/images/public/portrait.jpg')
   meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."
 
-.content.about-page
-  section.about-page__header
-    .about-page__header__bio
+.content
+  section.flex.flex-col.mb-12
+    div
+      = image_tag 'public/portrait.jpg', \
+        alt: "Portrait photograph of Stanko K.R.",
+        class: "rounded-full mx-auto w-full shadow sm:w-2/3 sm:shadow-lg"
+    div class="my-12 text-center prose-xl prose-a:text-sky-600 prose-a:font-semibold prose-a:dark:text-sky-400"
       h1 = t '.intro_html', name: 'Stanko'
       = t '.about_html'
-    .about-page__header__picture
-      = image_tag 'public/portrait.jpg', \
-        alt: "Portrait photograph of Stanko K.R."
 
-  section.about-page__section
-    .card.card--full-width
-      .about-page__section__title
-        h3 = t '.latest_articles'
-      .about-page__section__content
+  section.mb-12
+    = component "card", title: t(".latest_articles") do
+      div.mb-8
         = render collection: Article.published.order(published_at: :desc).limit(3), \
-        partial: 'articles/short_article', \
+        partial: 'articles/article', \
         cached: true
-      .about-page__section__footer
+      div.flex.items-center.justify-center
         = link_to t('.view_all_articles'), articles_path, class: 'btn'
 
-  section.about-page__section
-    .card.card--full-width
-      .about-page__section__title
-        h3 = t '.around_the_web'
-      .about-page__section__content
-        ul.list.about-page__contact-list
-          li
-            = link_to 'mailto:hey@stanko.io', target: :_blank, title: t('.email_title')
-              = inline_svg_tag 'public/icons/mail.svg', \
-                alt: t('.email_title'), \
-                title: t('.email_title'), \
-                class: 'icon icon--thin'
-              = t '.email'
-          li
-            = link_to 'https://keys.openpgp.org/vks/v1/by-fingerprint/1693BE29F22D9DC4ADBA6627152AE7E1127A1EEE', target: :_blank, title: t('.pgp_title')
-              = inline_svg_tag 'public/icons/key.svg', \
-                alt: t('.pgp_title'), \
-                title: t('.pgp_title'), \
-                class: 'icon icon--thin'
-              = t '.pgp'
-          li
-            = link_to 'https://twitter.com/monorkin', target: :_blank, title: t('.twitter_title')
-              = inline_svg_tag 'public/icons/twitter.svg', \
-                alt: t('.twitter_title'), \
-                title: t('.twitter_title'), \
-                class: 'icon icon--thin'
-              = t '.twitter'
-          li
-            = link_to 'https://mastodon.social/web/accounts/152166', target: :_blank, title: t('.mastodon_title')
-              = inline_svg_tag 'public/icons/send.svg', \
-                alt: t('.mastodon_title'), \
-                title: t('.mastodon_title'), \
-                class: 'icon icon--thin'
-              = t '.mastodon'
-          li
-            = link_to 'https://github.com/monorkin', target: :_blank, title: t('.github_title')
-              = inline_svg_tag 'public/icons/github.svg', \
-                alt: t('.github_title'), \
-                title: t('.github_title'), \
-                class: 'icon icon--thin'
-              = t '.github'
-          li
-            = link_to 'https://www.linkedin.com/in/stanko-krtalic', target: :_blank, title: t('.linkedin_title')
-              = inline_svg_tag 'public/icons/linkedin.svg', \
-                alt: t('.linkedin_title'), \
-                title: t('.linkedin_title'), \
-                class: 'icon icon--thin'
-              = t '.linkedin'
+  section.mb-12
+    = component "card", title: t(".contacts") do
+      dl class="text-lg grid grid-cols-[2rem_minmax(0,_1fr)] gap-2"
+        dt
+          .sr-only = t(".email_title")
+          = mail_to "hey@stanko.io", nil, title: t(".email_title")
+            = inline_svg_tag 'public/icons/mail.svg', \
+              alt: t('.email_title'), \
+              title: t('.email_title'), \
+              class: 'text-inherit inline-block stroke-1 w-9 h-9'
+        dd.py-1
+          = mail_to "hey@stanko.io", nil, title: t(".email_title")
+            = t '.email'
+
+        dt
+          .sr-only = t(".pgp_title")
+          = link_to 'https://keys.openpgp.org/vks/v1/by-fingerprint/1693BE29F22D9DC4ADBA6627152AE7E1127A1EEE', target: :_blank, title: t('.pgp_title')
+            = inline_svg_tag 'public/icons/key.svg', \
+              alt: t('.pgp_title'), \
+              title: t('.pgp_title'), \
+              class: 'text-inherit inline-block stroke-1 w-9 h-9'
+        dd.py-1
+          = link_to 'https://keys.openpgp.org/vks/v1/by-fingerprint/1693BE29F22D9DC4ADBA6627152AE7E1127A1EEE', target: :_blank, title: t('.pgp_title')
+            = t '.pgp'
+        dt
+          .sr-only = t(".twitter_title")
+          = link_to 'https://twitter.com/monorkin', target: :_blank, title: t('.twitter_title')
+            = inline_svg_tag 'public/icons/twitter.svg', \
+              alt: t('.twitter_title'), \
+              title: t('.twitter_title'), \
+              class: 'text-inherit inline-block stroke-1 w-9 h-9'
+        dd.py-1
+          = link_to 'https://twitter.com/monorkin', target: :_blank, title: t('.twitter_title')
+            = t '.twitter'
+
+        dt
+          .sr-only = t(".mastodon_title")
+          = link_to 'https://mastodon.social/web/accounts/152166', target: :_blank, title: t('.mastodon_title')
+            = inline_svg_tag 'public/icons/send.svg', \
+              alt: t('.mastodon_title'), \
+              title: t('.mastodon_title'), \
+              class: 'text-inherit inline-block stroke-1 w-9 h-9'
+        dd.py-1
+          = link_to 'https://mastodon.social/web/accounts/152166', target: :_blank, title: t('.mastodon_title')
+            = t '.mastodon'
+
+        dt
+          .sr-only = t(".github_title")
+          = link_to 'https://github.com/monorkin', target: :_blank, title: t('.github_title')
+            = inline_svg_tag 'public/icons/github.svg', \
+              alt: t('.github_title'), \
+              title: t('.github_title'), \
+              class: 'text-inherit inline-block stroke-1 w-9 h-9'
+        dd.py-1
+          = link_to 'https://github.com/monorkin', target: :_blank, title: t('.github_title')
+            = t '.github'
+
+        dt
+          .sr-only = t(".linkedin_title")
+          = link_to 'https://www.linkedin.com/in/stanko-krtalic', target: :_blank, title: t('.linkedin_title')
+            = inline_svg_tag 'public/icons/linkedin.svg', \
+              alt: t('.linkedin_title'), \
+              title: t('.linkedin_title'), \
+              class: 'text-inherit inline-block stroke-1 w-9 h-9'
+        dd.py-1
+          = link_to 'https://www.linkedin.com/in/stanko-krtalic', target: :_blank, title: t('.linkedin_title')
+            = t '.linkedin'

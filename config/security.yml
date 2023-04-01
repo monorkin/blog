@@ -1,5 +1,5 @@
 default: &default
-  default_host: 'http://stanko.test'
+  default_host: 'http://localhost:3030'
   allowed_hosts:
     - stanko.io
     - stanko.test

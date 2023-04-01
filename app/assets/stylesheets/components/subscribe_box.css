@@ -6,8 +6,11 @@
   dark:border dark:border-gray-700;
 }
 
+.subscribe-box__icon {
+}
+
 .subscribe-box__content {
-  @apply leading-9 sm:leading-6;
+  @apply w-full flex items-center;
 }
 
 .subscribe-box.subscribe-box--unhinged {

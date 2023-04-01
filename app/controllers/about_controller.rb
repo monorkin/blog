@@ -2,6 +2,7 @@
 
 class AboutController < ApplicationController
   def show
+    request.session_options[:skip] = true
     template = 'about/show.html.slim'
     file_last_modified = File.mtime(Rails.root.join("app/views/#{template}"))
 

@@ -1,6 +1,6 @@
 doctype 5
 
-html.color-scheme[
+html.box-border.bg-orange-50.font-sans.text-stone-600.text-lg.sm:text-base.lg:text-lg.xl:text-xl.2xl:text-2xl.color-scheme[
 class=current_color_scheme_class
 data-controller="color-scheme"
 data-color-scheme-light-class=light_color_scheme_class
@@ -34,7 +34,7 @@ data-color-scheme-dark-class=dark_color_scheme_class
     script defer=true data-domain="stanko.io" src="https://analytics.stanko.io/js/script.js"
 
 
-  body
+  body.h-full
     = render 'shared/header'
     main.main role="main"
       = yield

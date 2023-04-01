@@ -1,0 +1,17 @@
+test:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+# Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
+scaleway:
+  service: S3
+  access_key_id: <%= Rails.application.credentials.dig(:scaleway, :access_key_id) %>
+  secret_access_key: <%= Rails.application.credentials.dig(:scaleway, :secret_access_key) %>
+  region: fr-par
+  bucket: assets.stanko.io
+  endpoint: https://s3.fr-par.scw.cloud
+  public: true

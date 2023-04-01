@@ -64,4 +64,9 @@ Rails.application.configure do
 
   # Allow access from any host
   config.hosts << /.*/
+
+  # Allow access to the web console in development even through Docker
+  config.web_console.whitelisted_ips = Socket.ip_address_list.reduce([]) do |res, addrinfo|
+    addrinfo.ipv4? ? res << IPAddr.new(addrinfo.ip_address).mask(24) : res
+  end
 end

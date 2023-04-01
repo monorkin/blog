@@ -6,6 +6,7 @@ require 'resque/server'
 Rails.application.routes.draw do
   root to: 'about#show'
 
+  get '401', to: 'errors#unauthorized'
   get '404', to: 'errors#not_found'
   get '418', to: 'errors#im_a_teapot'
   get '422', to: 'errors#unprocessable_entity'
@@ -14,14 +15,18 @@ Rails.application.routes.draw do
 
   get 'sitemap', to: 'sitemap#index'
 
-  resources :articles, only: %i[index] do
+  get "login", to: "login#new", as: :login
+  post "login", to: "login#create"
+  delete "login", to: "login#destroy"
+
+  resources :articles, only: %i[index new create] do
     collection do
       get :rss
       get :atom
     end
   end
 
-  resources :articles, param: :slug, path: '', only: %i[show] do
+  resources :articles, param: :slug, path: '', only: %i[show edit update destroy] do
     scope module: :articles do
       resources :link_previews, only: :show
     end

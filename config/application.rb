@@ -2,20 +2,7 @@
 
 require_relative 'boot'
 
-require 'rails'
-# Pick the frameworks you want:
-require 'active_model/railtie'
-require 'active_job/railtie'
-require 'active_record/railtie'
-# require "active_storage/engine"
-require 'action_controller/railtie'
-# require "action_mailer/railtie"
-# require "action_mailbox/engine"
-# require "action_text/engine"
-require 'action_view/railtie'
-require 'action_cable/engine'
-# require 'sprockets/railtie'
-require 'rails/test_unit/railtie'
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -28,13 +15,22 @@ module Blog
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
-    # Store the schema as SQL
-    config.active_record.schema_format = :sql
-
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    config.after_initialize do
+      ActionText::ContentHelper.allowed_attributes.add "style"
+      ActionText::ContentHelper.allowed_attributes.add "controls"
+      ActionText::ContentHelper.allowed_attributes.add "autoplay"
+      ActionText::ContentHelper.allowed_attributes.add "poster"
+      ActionText::ContentHelper.allowed_attributes.add "loop"
+      ActionText::ContentHelper.allowed_attributes.add "muted"
+
+      ActionText::ContentHelper.allowed_tags.add "video"
+      ActionText::ContentHelper.allowed_tags.add "source"
+    end
 
     # Store Resque configuration
     config.resque = config_for(:resque)
@@ -43,10 +39,12 @@ module Blog
     config.security = config_for(:security)
 
     # Store file storage configurations
-    config.file_storage = config_for(:file_storage)
+    config.active_storage.service = :local
 
     # Allowed application hosts
     config.hosts.push(*config.security[:allowed_hosts])
+    config.hosts << IPAddr.new('0.0.0.0/0')
+    config.hosts << IPAddr.new('::/0')
 
     # Use custom error pages
     config.exceptions_app = routes
@@ -54,6 +52,9 @@ module Blog
     # Configure ActiveJob queue adapter
     config.active_job.queue_adapter = :resque
 
-    routes.default_url_options[:host] = config.security[:default_host]
+    uri = URI(config.security[:default_host] || "http://localhost")
+    routes.default_url_options[:host] = uri.host
+    routes.default_url_options[:protocol] = uri.scheme
+    routes.default_url_options[:port] = uri.port
   end
 end

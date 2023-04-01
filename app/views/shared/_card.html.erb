@@ -1,0 +1,11 @@
+<div class="w-full bg-white p-4 rounded shadow md:rounded-xl md:shadow-xl dark:bg-slate-900 dark:border dark:border-slate-700">
+  <% if local_assigns.key?(:title) %>
+    <div>
+      <h2 class="font-semibold text-3xl mb-4"><%= title %></h2>
+      <hr class="border-stone-200 mb-6">
+    </div>
+  <% end %>
+  <div>
+    <%= local_assigns.fetch(:content, yield) %>
+  </div>
+</div>

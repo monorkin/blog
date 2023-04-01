@@ -1,4 +1,4 @@
-= content_for :head
+/ = content_for :head
   = cache [@article, :head] do
     - seo_article = Article::SEODecorator.new(@article)
     title = seo_article.title
@@ -21,22 +21,28 @@
   article.article
     = cache @article do
       div
-        = link_to t('.back'), articles_path
+        span.mr-1 = link_to t('.back'), articles_path
+        - if Current.user.present?
+          span.mr-1.font-semibold = link_to t(".edit"), edit_article_path(@article)
+          span.mr-1.font-semibold = button_to t(".delete"), article_path(@article), method: :delete, data: { turbo_confirm: t(".confirm_delete") }
       div.article__meta
         time datetime=@article.published_at.iso8601
           = t '.published_on', date: l(@article.published_at.to_date)
       div
-        = @article.content.to_html.html_safe
+        h1 class="text-4xl font-semibold my-4"
+          = @article.title
+      div data-controller="article"
+        == @article.content
 
     hr
 
-    .subscribe-box.subscribe-box--rss.subscribe-box--unhinged
+    .subscribe-box.subscribe-box--rss
       .subscribe-box__icon
         = inline_svg_tag 'public/icons/rss.svg', title: t('.rss'), class: 'icon'
       .subscribe-box__content
         = t '.subscribe_html', rss_link: link_to(t('.rss'), atom_articles_url)
 
-    .article__suggestions
+    / .article__suggestions
       .card.card--full-width
         h4 = t '.suggested_articles'
         - suggested_articles = @article.suggested_articles.limit(3).to_a

@@ -1,7 +1,0 @@
-html {
-  @apply box-border
-  bg-orange-50
-  text-lg sm:text-base lg:text-lg xl:text-xl 2xl:text-2xl
-  text-stone-600
-  font-sans;
-}

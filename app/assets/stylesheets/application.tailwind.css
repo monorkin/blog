@@ -2,19 +2,17 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+
 /******************************************************************************
- **                                COMPONENTS                                **
+ **                                 LIBRARIES                                **
  ******************************************************************************/
-@import "./elements/a.css";
-@import "./elements/body.css";
-@import "./elements/h.css";
-@import "./elements/html.css";
-@import "./elements/table.css";
+@import "rails.css";
+@import "https://unpkg.com/trix@2.0.0/dist/trix.css";
+@import "actiontext.css";
 
 /******************************************************************************
  **                                COMPONENTS                                **
  ******************************************************************************/
-@import './components/article.css';
 @import './components/btn.css';
 @import './components/btn_group.css';
 @import './components/card.css';
@@ -22,7 +20,6 @@
 @import './components/content.css';
 @import './components/footer.css';
 @import './components/header.css';
-@import './components/icon.css';
 @import './components/link_preview.css';
 @import './components/modal.css';
 @import './components/pagination.css';

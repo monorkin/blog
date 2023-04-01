@@ -3,9 +3,11 @@
 class ApplicationController < ActionController::Base
   include Pundit
 
-  after_action -> { request.session_options[:skip] = true }
+  before_action -> { Current.user = User.find_by(id: session[:user_id]) }
 
-  def current_user
-    nil
+  private
+
+  def unauthorized
+    redirect_to({ controller: :errors, action: :unauthorized }, status: :see_other)
   end
 end

@@ -5,7 +5,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '~> 3.1'
 
-gem 'active_link_to'
 gem 'async-http'
 gem 'aws-sdk-s3', '~> 1.14'
 gem 'bcrypt', '~> 3.1.7'
@@ -31,7 +30,6 @@ gem 'rotp'
 gem 'rouge', '~> 3.23.0'
 gem 'rqrcode'
 gem 'rss'
-gem 'rubyzip'
 gem 'sentry-rails'
 gem 'sentry-resque'
 gem 'sentry-ruby'
@@ -54,7 +52,7 @@ group :development do
   gem 'annotate'
   gem 'listen'
   gem 'memory_profiler'
-  gem 'mrsk', github: "mrsked/mrsk", ref: "main"
+  gem 'mrsk', github: "monorkin/mrsk", ref: "main"
   gem 'rack-mini-profiler', require: %w[enable_rails_patches rack-mini-profiler]
   gem 'stackprof'
   gem 'web-console', '>= 3.3.0'

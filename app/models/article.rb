@@ -26,42 +26,49 @@
 class Article < ApplicationRecord
   include ActionView::Helpers::TextHelper
 
+  has_rich_text :content
+
   has_one :primary_image,
           -> { where(primary: true) },
           class_name: 'Article::Attachment'
 
-  has_many :attachments,
-           class_name: 'Article::Attachment',
-           dependent: :destroy
-  has_many :taggings,
-           class_name: 'Article::Tagging',
-           dependent: :destroy
-  has_many :tags,
-           through: :taggings
-
-  # validates :id, short_id: true
   validates :title,
-            presence: true
+    presence: true
   validates :content,
-            presence: true
+    presence: true
+  validates :slug,
+    presence: true
+  validates :slug_id,
+    presence: true
+
+  before_validation do
+    self.slug = title.presence&.parameterize if slug.blank?
+    self.generate_slug_id! if slug_id.blank?
+  end
 
   scope(:published, lambda do
     where(published: true).where.not(published_at: (Time.current..))
   end)
 
-  def self.from_slug(slug)
-    from_slug!(slug)
-  rescue ActiveRecord::RecordNotFound => _e
-    nil
-  end
+  class << self
+    def generate_slug_id(length: 12)
+      SecureRandom.alphanumeric(length)
+    end
 
-  def self.from_slug!(slug)
-    raise(ActiveRecord::RecordNotFound.new(nil, slug, self, :id)) if slug.blank?
+    def from_slug(slug)
+      from_slug!(slug)
+    rescue ActiveRecord::RecordNotFound => _e
+      nil
+    end
 
-    id = slug.scan(/^.*-([^-]+)$/).flatten.first.presence
-    raise(ActiveRecord::RecordNotFound.new(nil, id, self, :id)) if id.blank?
+    def from_slug!(slug)
+      raise(ActiveRecord::RecordNotFound.new(nil, slug, self, :id)) if slug.blank?
 
-    find(id)
+      id = slug.scan(/^.*-([^-]+)$/).flatten.first.presence
+      raise(ActiveRecord::RecordNotFound.new(nil, id, self, :id)) if id.blank?
+
+      find_by!(slug_id: id)
+    end
   end
 
   def to_param
@@ -71,7 +78,7 @@ class Article < ApplicationRecord
   def slug
     [
       super.presence || title.presence&.parameterize,
-      id.presence
+      slug_id.presence
     ].compact.join('-').presence
   end
 
@@ -80,17 +87,26 @@ class Article < ApplicationRecord
   end
 
   def excerpt(length: 300)
-    truncate(content.to_text.sub(title, ''), length: length)
+    truncate(plain_text, length: length)
   end
 
-  def content
-    @_content ||= Content.new(content: super, attachments: attachments)
+  def estimated_reading_time(words_per_minute: 325)
+    [(word_count.to_f / words_per_minute).ceil, 1].max.to_i
   end
 
-  def content=(new_value)
-    super(new_value)
-    @_content = nil
-    content
+  def word_count
+    plain_text.scan(/\w+/).flatten.count
+  end
+
+  def plain_text
+    content.body.to_plain_text.gsub(/\[[^\]]*\]/, "")
+  end
+
+  def html_content
+    @_content ||= Content.new(
+      content: self[:old_content],
+      attachments: Article::Attachment.where(article_id: slug_id)
+    )
   end
 
   def suggested_articles
@@ -98,5 +114,9 @@ class Article < ApplicationRecord
       .all
       .published
       .where.not(id: self)
+  end
+
+  def generate_slug_id!
+    self.slug_id = self.class.generate_slug_id
   end
 end

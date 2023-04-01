@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
 class ErrorsController < ApplicationController
+  after_action -> { request.session_options[:skip] = true }
+
+  def unauthorized
+    render status: :unauthorized
+  end
+
   def not_found
-    # @articles = policy_scope(Article.published).order(published_at: :desc)
     render status: :not_found
   end
 

@@ -1,6 +1,6 @@
 .btn {
   @apply inline-block
-  m-1 px-4 py-3 md:px-2 md:py-1
+  m-1 px-4 py-3 md:py-2
   bg-transparent hover:bg-sky-600
   text-sky-600 hover:text-white hover:dark:text-white text-center
   md:hover:drop-shadow md:hover:scale-110
@@ -8,7 +8,8 @@
   rounded-full
   select-none
   cursor-pointer
-  transition-colors transition-shadow transition-transform ease-out;
+  transition-colors transition-shadow transition-transform ease-out
+  dark:text-sky-400 dark:hover:bg-sky-400 dark:border-sky-400;
 }
 
 .btn.btn--inverted {

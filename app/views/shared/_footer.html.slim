@@ -3,5 +3,7 @@ footer.footer
     = link_to t('shared.header.info'), root_url
     = link_to t('shared.header.articles'), articles_url
     = link_to t('.this_is_open_source'), 'https://github.com/monorkin/blog'
+    - if Current.user.present?
+      = button_to "Logout", login_path, method: :delete
   .footer__copyright
     | © #{Time.current.year} Stanko K. R. All rights reserved.

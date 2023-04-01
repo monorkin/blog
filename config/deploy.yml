@@ -13,16 +13,26 @@ servers:
       network: apps
     labels:
       traefik.enable: true
-      traefik.http.routers.blog.rule: Host(`staging.stanko.io`)
-      traefik.http.middlewares.blog.redirectregex.regex: "^https://blog-staging.stanko.io/(.*)"
-      traefik.http.middlewares.blog.redirectregex.replacement: "https://staging.stanko.io/$${1}"
-      traefik.http.middlewares.blog.redirectregex.permanent: true
+      traefik.http.routers.blog.entrypoints: "websecure"
+      traefik.http.routers.blog.tls.certresolver: "letsencrypt"
+      traefik.http.routers.blog.rule: "Host(`stanko.io`) || Host(`blog.stanko.io`) || Host(`www.stanko.io`)"
+      traefik.http.services.blog.loadbalancer.healthcheck.path: "/"
+      traefik.http.routers.blog.middlewares: blog_redirect
+      traefik.http.middlewares.blog.retry.attempts: "5"
+      traefik.http.middlewares.blog.retry.initialinterval: "500ms"
+      traefik.http.middlewares.blog_redirect.redirectregex.regex: "^(https?://)(blog|www).stanko.io/(.*)$"
+      traefik.http.middlewares.blog_redirect.redirectregex.replacement: "https://stanko.io/$3"
+      traefik.http.middlewares.blog_redirect.redirectregex.permanent: true
 
 # Credentials for your image host.
 registry:
   username: monorkin
   password:
     - MRSK_REGISTRY_PASSWORD
+
+# Docker image builder configuration
+builder:
+  multiarch: false
 
 # Inject ENV variables into containers (secrets come from .env).
 env:

@@ -23,6 +23,13 @@ servers:
       traefik.http.middlewares.blog_redirect.redirectregex.regex: "^(https?://)(blog|www).stanko.io/(.*)$"
       traefik.http.middlewares.blog_redirect.redirectregex.replacement: "https://stanko.io/$3"
       traefik.http.middlewares.blog_redirect.redirectregex.permanent: true
+  worker:
+    cmd: bin/jobs
+    hosts:
+      - shire.stanko.io
+    options:
+      network: apps
+
 
 # Credentials for your image host.
 registry:

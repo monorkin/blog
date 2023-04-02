@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+export QUEUE='*'
+
+echo "Starting Resque on queue(s): $QUEUE"
+bin/rails resque:work

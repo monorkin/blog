@@ -4,7 +4,6 @@
 
 # Ignore installed dependencies
 /node_modules
-/vendor
 
 # Ignore logfiles
 /log/*

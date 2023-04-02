@@ -80,6 +80,9 @@ class ConvertContentToActionText < ActiveRecord::Migration[7.0]
           end
 
           doc.css("action-text-attachment + br").each(&:remove)
+          doc.css("br + action-text-attachment").each do |node|
+            node.previous.remove
+          end
 
           doc.css("pre").each do |node|
             content = node.css("code").first&.text

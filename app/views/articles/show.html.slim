@@ -14,22 +14,22 @@
     meta property="og:url" content=article_url(@article.slug)
     - first_image = @article.content.body.attachments.compact.find(&:image?)
     - if first_image.present?
-      / - image = first_image.representation(resize_to_fill: [512, 512])
-      / meta property="og:image" content=image.processed.url
-      / meta property="og:image:width" content=512
-      / meta property="og:image:height" content=512
+      - image = first_image.representation(resize_to_fill: [512, 512])
+      meta property="og:image" content=image.processed.url
+      meta property="og:image:width" content=512
+      meta property="og:image:height" content=512
     - else
       meta property="og:image" content=asset_url("public/portrait.jpg")
       meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."
 
 .content
   article.article
+    div
+      span.mr-1 = link_to t('.back'), articles_path
+      - if Current.user.present?
+        span.mr-1.font-semibold = link_to t(".edit"), edit_article_path(@article)
+        span.mr-1.font-semibold = button_to t(".delete"), article_path(@article), method: :delete, data: { turbo_confirm: t(".confirm_delete") }
     = cache @article do
-      div
-        span.mr-1 = link_to t('.back'), articles_path
-        - if Current.user.present?
-          span.mr-1.font-semibold = link_to t(".edit"), edit_article_path(@article)
-          span.mr-1.font-semibold = button_to t(".delete"), article_path(@article), method: :delete, data: { turbo_confirm: t(".confirm_delete") }
       div.article__meta
         time datetime=@article.published_at.iso8601
           = t '.published_on', date: l(@article.published_at.to_date)

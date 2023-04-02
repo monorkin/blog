@@ -1,0 +1,9 @@
+en:
+  activemodel:
+    errors:
+      models:
+        login:
+          attributes:
+            username:
+              locked: "can't login because it's locked out due to too many failed login attempts"
+              unknown: "Doesn't match any user"

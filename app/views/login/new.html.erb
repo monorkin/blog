@@ -1,0 +1,27 @@
+<div class="content">
+  <%= component("card", title: t(".login")) do  %>
+    <%= form_for(@login, url: login_path) do |login| %>
+      <label>
+        <div>
+          <%= Login.human_attribute_name(:username) %>
+        </div>
+        <%= login.text_field :username %>
+      </label>
+
+      <label>
+        <div>
+          <%= Login.human_attribute_name(:password) %>
+        </div>
+        <%= login.password_field :password %>
+      </label>
+
+      <div>
+        <%= login.submit t(".login") %>
+      </div>
+
+      <% if login.object.errors.any? %>
+        <p class="text-red-500"><%= login.object.errors.full_messages.join("; ") %></p>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

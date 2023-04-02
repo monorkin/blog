@@ -3,7 +3,9 @@
 class ApplicationController < ActionController::Base
   include Pundit
 
-  before_action -> { Current.user = User.find_by(id: session[:user_id]) }
+  before_action do
+    Current.user = User.find_by(id: session[:user_id]) if session[:user_id]
+  end
 
   private
 

@@ -100,7 +100,7 @@ class ArticlesController < ApplicationController
 
   def feed
     @feed ||= Article::Feed.new(
-      scope: scope.published.preload(:attachments),
+      scope: scope.published,
       host: request.host_with_port
     )
   end

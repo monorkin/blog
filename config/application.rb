@@ -27,6 +27,10 @@ module Blog
       ActionText::ContentHelper.allowed_attributes.add "poster"
       ActionText::ContentHelper.allowed_attributes.add "loop"
       ActionText::ContentHelper.allowed_attributes.add "muted"
+      ActionText::ContentHelper.allowed_attributes.add "loading"
+      ActionText::ContentHelper.allowed_attributes.add "data-controller"
+      ActionText::ContentHelper.allowed_attributes.add "data-action"
+      ActionText::ContentHelper.allowed_attributes.add "data-enlarge-image-url-value"
 
       ActionText::ContentHelper.allowed_tags.add "video"
       ActionText::ContentHelper.allowed_tags.add "source"

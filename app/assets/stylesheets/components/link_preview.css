@@ -11,5 +11,5 @@
 }
 
 .link-preview__image {
-  @apply max-w-full max-h-52 object-contain rounded-b-lg;
+  @apply max-w-full max-h-52 object-contain rounded-b-lg shadow-none;
 }

@@ -1,7 +1,25 @@
-<figure class="attachment attachment--<%= blob.representable? ? "preview" : "file" %> attachment--<%= blob.filename.extension %>">
+<%
+  dimensions = local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, 768 ]
+  classes = %w[attachment]
+  data = {}
+
+  classes << "attachment--#{blob.representable? ? "preview" : "file"}"
+  classes << "attachment--#{blob.filename.extension}"
+
+  if blob.image? && blob.representable?
+    classes << "cursor-zoom-in"
+    data[:action] ||= ""
+    data[:action] += " click->enlarge-image#enlarge"
+    data[:controller] ||= ""
+    data[:controller] += "enlarge-image"
+    data[:enlarge_image_url_value] = blob.url
+  end
+%>
+
+<%= content_tag(:figure, class: classes, data: data) do %>
   <% if blob.video? %>
-    <% poster = blob.representable? ? url_for(blob.representation(resize_to_limit: local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, 768 ])) : false %>
-    <% options = { controls: true, autoplay: "autoplay", loop: true, muted: true } %>
+    <% poster = blob.representable? ? url_for(blob.representation(resize_to_limit: dimensions)) : false %>
+    <% options = { controls: true, autoplay: "autoplay", loop: true, muted: true, loading: "lazy" } %>
     <% options.merge!(poster: url_for(poster), poster_skip_pipeline: true) if poster %>
 
     <%= video_tag([url_for(blob)], options) %>
@@ -11,9 +29,12 @@
     <%= content_tag(:embed, src: rails_blob_url(blob), width: 800, height: 500, type: "application/pdf") %>
   <% elsif blob.representable? %>
     <% if blob.filename.extension == "gif" %>
-      <%= image_tag url_for(blob) %>
+      <%= image_tag url_for(blob), loading: "lazy" %>
     <% else %>
-      <%= image_tag blob.representation(resize_to_limit: local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, 768 ]) %>
+      <% width, height = blob.metadata.values_at("width", "height") %>
+      <% style = (width && height) ? "aspect-ratio: #{width} / #{height};" : nil %>
+
+      <%= image_tag blob.representation(resize_to_limit: dimensions), loading: "lazy", style: style %>
     <% end %>
   <% else %>
     <%= link_to blob.filename, url_for(blob), download: true %>
@@ -27,4 +48,4 @@
       <span class="attachment__size"><%= number_to_human_size blob.byte_size %></span>
     <% end %>
   </figcaption>
-</figure>
+<% end %>

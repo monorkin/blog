@@ -3,11 +3,13 @@ import Dialog from "models/dialog"
 
 export default class extends ApplicationController {
   static values = {
-
+    url: String
   }
 
   enlarge(event) {
     event.preventDefault()
+
+    if (!this.hasUrlValue) return
 
     const dialog = Dialog.create({ closeOnBlur: true, removeOnClose: true })
     document.body.appendChild(dialog)
@@ -17,7 +19,7 @@ export default class extends ApplicationController {
     dialog.classList.add("shadow-lg")
     dialog.innerHTML = `
       <div class="flex flex-col items-center align-center">
-        ${this.element.innerHTML}
+        <img src="${this.urlValue}" class="w-auto max-h-[80vh]">
       </div>
     `
 

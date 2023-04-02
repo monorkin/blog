@@ -15,6 +15,7 @@ module RichTextHelper
     end.to_s
   end
 
+  # Makes code blocks look prettier / more readable
   def highlight_code_blocks_rich_text_transform(document)
     document.css("pre").each do |code_block|
       code = code_block.text

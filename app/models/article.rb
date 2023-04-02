@@ -28,10 +28,6 @@ class Article < ApplicationRecord
 
   has_rich_text :content
 
-  has_one :primary_image,
-          -> { where(primary: true) },
-          class_name: 'Article::Attachment'
-
   validates :title,
     presence: true
   validates :content,

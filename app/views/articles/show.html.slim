@@ -32,7 +32,7 @@
         h1 class="text-4xl font-semibold my-4"
           = @article.title
       div data-controller="article"
-        == @article.content
+        == transform_rich_text(@article.content)
 
     hr.my-6
 

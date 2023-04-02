@@ -7,13 +7,17 @@ trix-editor {
   prose-figure:flex prose-figure:flex-col prose-figure:items-center
   prose-img:rounded prose-img:shadow prose-img:max-h-[70vh]
   prose-video:rounded prose-video:shadow prose-video:max-h-[70vh] prose-video:my-0
-  prose-pre:rounded prose-pre:shadow
+  prose-pre:rounded prose-pre:shadow prose-pre:text-stone-600 prose-pre:dark:text-slate-200
   prose-code:bg-gray-900 prose-code:text-blue-50 prose-code:rounded prose-code:p-1
     prose-code:before:content-none prose-code:after:content-none;
 }
 
 .trix-content br {
   @apply mb-4;
+}
+
+.trix-content pre {
+  @apply bg-white dark:bg-slate-900
 }
 
 .trix-content .attachment {
@@ -25,6 +29,7 @@ trix-editor {
  * <action-text-attachment> element we wrap around attachments. Otherwise,
  * images in galleries will be squished by the max-width: 33%; rule.
 */
+
 /* .trix-content .attachment-gallery > action-text-attachment,*/
 /* .trix-content .attachment-gallery > .attachment {*/
 /*   flex: 1 0 33%;*/

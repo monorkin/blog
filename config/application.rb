@@ -30,6 +30,12 @@ module Blog
 
       ActionText::ContentHelper.allowed_tags.add "video"
       ActionText::ContentHelper.allowed_tags.add "source"
+      ActionText::ContentHelper.allowed_tags.add "table"
+      ActionText::ContentHelper.allowed_tags.add "thead"
+      ActionText::ContentHelper.allowed_tags.add "tbody"
+      ActionText::ContentHelper.allowed_tags.add "tr"
+      ActionText::ContentHelper.allowed_tags.add "th"
+      ActionText::ContentHelper.allowed_tags.add "td"
     end
 
     # Store Resque configuration

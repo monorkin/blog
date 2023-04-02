@@ -7,7 +7,13 @@ class ArticlesController < ApplicationController
   def index
     request.session_options[:skip] = true
 
-    set_page_and_extract_portion_from(scope, per_page: RATIOS)
+    articles = if Current.user.present?
+      scope
+    else
+      scope.published
+    end
+
+    set_page_and_extract_portion_from(articles, per_page: RATIOS)
 
     @articles = @page.records
 
@@ -80,7 +86,8 @@ class ArticlesController < ApplicationController
   private
 
   def permitted_params
-    params.require(:article).permit(:title, :content, :publish_at, :published)
+    params.require(:article).permit(:title, :content, :publish_at, :published,
+      :slug)
   end
 
   def scope
@@ -93,7 +100,7 @@ class ArticlesController < ApplicationController
 
   def feed
     @feed ||= Article::Feed.new(
-      scope: scope.preload(:attachments),
+      scope: scope.published.preload(:attachments),
       host: request.host_with_port
     )
   end

@@ -8,24 +8,25 @@ module Articles
     helper_method :url
 
     def show
-      @record = Article.from_slug!(params[:article_slug])
+      @article = Article.from_slug!(params[:article_slug])
+      @link_preview = Article::LinkPreview.for(url: url, article: @article)
 
-      return(head :not_found) unless Article::LinkPreview.id_matches_url?(id: id, url: url)
+      return(head :not_found) if @link_preview.blank?
       return(head :ok) if request.head?
 
-      @link_preview = Article::LinkPreview.new(id: id, url: url)
+      @link_preview.fetch! if !@link_preview.fetched?
 
       fresh_when(@link_preview)
     end
 
-    def id
-      params[:id]
-    end
-
     def url
-      return if params[:url].blank?
+      return if params[:id].blank?
 
-      Base64.decode64(params[:url])
+      begin
+        Base64.urlsafe_decode64(params[:id]).presence
+      rescue ArgumentError
+        nil
+      end
     end
   end
 end

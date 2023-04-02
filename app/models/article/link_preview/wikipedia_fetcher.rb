@@ -14,23 +14,22 @@ class Article
       def preprocess_url(url)
         uri = URI(url)
 
-        article_id = uri.path.gsub(/^\/wiki\//, '')
+        article_id = uri.path.gsub(/^\/wiki\//, "")
         uri.path = "/api/rest_v1/page/summary/#{article_id}"
 
         uri.to_s
       end
 
       def accept_header
-        'application/json; charset=utf-8; profile="https://www.mediawiki.org/wiki/Specs/Summary/1.2.0"'
+        "application/json; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/Summary/1.2.0\""
       end
 
       def parse_body(io)
-        data = JSON.parse(io.read)
+        response = JSON.parse(io.read)
 
-        link_preview.title ||= data.dig('titles', 'canonical')
-        link_preview.image_url ||= data.dig('thumbnail', 'source')
-        link_preview.description ||= data['extract']
-        link_preview.updated_at = Time.current
+        data[:title] ||= response.dig("titles", "canonical")
+        data[:image_url] ||= response.dig("thumbnail", "source")
+        data[:description] ||= response["extract"]
       end
     end
   end

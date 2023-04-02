@@ -74,7 +74,7 @@ class ConvertContentToActionText < ActiveRecord::Migration[7.0]
           if content
             content.name = "div"
           end
-          paragraphs[1..].each do |node|
+          paragraphs[1..]&.each do |node|
             content.inner_html += "<br>#{node.inner_html}"
             node.remove
           end
@@ -101,6 +101,14 @@ class ConvertContentToActionText < ActiveRecord::Migration[7.0]
 
           doc.css("table").each do |node|
             node.wrap("<figure></figure>")
+          end
+
+          doc.css("a[href]").each do |node|
+            node.attributes.each do |name, _|
+              next if name == "href"
+
+              node.delete(name)
+            end
           end
         end.to_s
       )

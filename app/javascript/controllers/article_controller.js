@@ -13,6 +13,8 @@ export default class extends ApplicationController {
   }
 
   attachLinkPreviewControllerTo(element) {
+    element.dataset.action = this.appendTokenTo("mouseover->link-preview#show", element.dataset.action)
+    element.dataset.action = this.appendTokenTo("mouseout->link-preview#hide", element.dataset.action)
     this.addControllerIfMissing(element, "link-preview")
   }
 
@@ -28,10 +30,7 @@ export default class extends ApplicationController {
 
   addControllerIfMissing(element, controller) {
     let controllers = element.dataset.controller || ""
-    if (controllers.includes(controller)) return
 
-    if (controllers.lenth > 0) controllers += " "
-    controllers += controller
-    element.dataset.controller = controllers
+    element.dataset.controller = this.appendTokenTo(controller, controllers)
   }
 }

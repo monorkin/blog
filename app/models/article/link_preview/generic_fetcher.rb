@@ -11,14 +11,16 @@ class Article
       REQUEST_TIMEOUT = 3
       MAX_REDIRECT = 10
 
-      attr_accessor :link_preview
+      attr_accessor :data
 
       def self.resolves?(_url)
         true
       end
 
       def fetch!(url)
-        Async do |task|
+        self.data ||= {}
+
+        Sync do |task|
           internet = Async::HTTP::Internet.new
           fetch_from_url!(internet, task, preprocess_url(url))
         ensure
@@ -55,7 +57,7 @@ class Article
           url = redirect_to(response)
           response.close
         end
-      rescue Async::TimeoutError, SocketError
+      rescue Async::TimeoutError, SocketError, ArgumentError
         nil
       ensure
         response&.close
@@ -86,10 +88,8 @@ class Article
 
       def parse_body(io)
         Nokogiri::HTML::SAX::Parser
-          .new(TagsSaxParser.new(link_preview))
+          .new(TagsSaxParser.new(data))
           .parse_io(io)
-
-        link_preview.updated_at = Time.current
       end
 
       def success?(response)

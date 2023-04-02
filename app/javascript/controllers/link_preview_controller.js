@@ -2,13 +2,14 @@ import { createPopper } from '@popperjs/core';
 import ApplicationController from "controllers/application_controller"
 
 export default class extends ApplicationController {
+  HIDDEN_CLASS = "hidden"
+
   static targets = [ "popup" ]
   static values = {
     baseUrl: String,
     url: String,
     id: String
   }
-  HIDDEN_CLASS = 'hidden'
 
   connect() {
     this.shown = false
@@ -46,14 +47,14 @@ export default class extends ApplicationController {
   }
 
   createPopup() {
-    const popupContent = document.createElement('div')
-    popupContent.classList.add('hidden')
-    popupContent.classList.add('popup')
-    popupContent.dataset.linkPreviewTarget = 'popup'
+    const popupContent = document.createElement("div")
+    popupContent.classList.add(this.HIDDEN_CLASS)
+    popupContent.classList.add("popup")
+    popupContent.dataset.linkPreviewTarget = "popup"
     popupContent.innerHTML = `
       <div class="popup__container">
         <div data-popper-arrow class="popup__container__arrow"></div>
-        <turbo-frame id="link_preview-${this.idValue}" class="popup__container__content" src="${this.previewUrl}">
+        <turbo-frame id="link_preview-${this.id}" class="popup__container__content" src="${this.previewUrl}">
           <div class="popup__container__content__loading-indicator">
             <span class="spinner"></span> Loading preview...
           </div>
@@ -100,6 +101,12 @@ export default class extends ApplicationController {
   }
 
   get previewUrl() {
-    return `${this.baseUrlValue}/${encodeURI(this.idValue)}?url=${btoa(this.urlValue)}`
+    return `${this.baseUrlValue}/${this.id}`
+  }
+
+  get id() {
+    if (!this.hasUrlValue) return null
+
+    return btoa(this.urlValue).replace(/\//g, '_').replace(/\+/g, '-')
   }
 }

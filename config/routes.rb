@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'resque'
-require 'resque/server'
-
 Rails.application.routes.draw do
   root to: 'about#show'
 

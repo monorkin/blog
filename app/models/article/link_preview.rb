@@ -7,14 +7,25 @@ class Article
       GenericFetcher
     ].freeze
 
-    attr_accessor :id,
-                  :url,
-                  :image_url,
-                  :title,
-                  :description,
-                  :fetched
+    attr_accessor :id, :url
 
-    kredis_datetime :updated_at
+    kredis_datetime :updated_at, expires_in: 30.days
+    kredis_string :image_url, expires_in: 30.days
+    kredis_string :title, expires_in: 30.days
+    kredis_string :description, expires_in: 30.days
+
+    # Makes kredis methods behave like normal AR/AM attr accessors
+    %i[updated_at image_url title description].each do |name|
+      alias_method("kredis_#{name}", name)
+
+      define_method(name) do
+        public_send("kredis_#{name}").value
+      end
+
+      define_method("#{name}=") do |new_value|
+        public_send("kredis_#{name}").value = new_value
+      end
+    end
 
     after_initialize do
       self.id ||= self.class.id_from_url(url&.to_s || '')
@@ -27,14 +38,19 @@ class Article
               presence: true,
               if: :fetched?
 
-    def self.id_from_url(url)
-      OpenSSL::HMAC.hexdigest('SHA256',
-                              Rails.application.credentials.link_preview.secret,
-                              url)
-    end
+    class << self
+      def for(url:, article:)
+        return nil if !article.content.body.links.include?(url)
 
-    def self.id_matches_url?(id:, url:)
-      ActiveSupport::SecurityUtils.secure_compare(id, id_from_url(url))
+        new(
+          id: id_from_url(url),
+          url: url
+        )
+      end
+
+      def id_from_url(url)
+        Base64.urlsafe_encode64(url)
+      end
     end
 
     def cache_key
@@ -46,51 +62,30 @@ class Article
     end
 
     def fetched?
-      !!fetched
+      title.present? || updated_at.present? || image_url.present? || description.present?
     end
 
     def image?
       image_url.present?
     end
 
-    def image_url
-      fetch! if unfetched?
-      @image_url
-    end
-
-    def title
-      fetch! if unfetched?
-      @title
-    end
-
-    def description
-      fetch! if unfetched?
-      @description
-    end
-
-    alias _update_at updated_at
-
-    def updated_at
-      fetch! if unfetched?
-      _update_at.value
-    end
-
-    def updated_at=(value)
-      Kredis.datetime(kredis_key_for_attribute(:updated_at)).value = value
-    end
-
     def fetch!
       return self if invalid?
 
-      fetcher.fetch!(url)
-      self.fetched = true
+      fetcher&.fetch!(url)
+
+      if fetcher.data
+        self.updated_at = Time.now.utc
+        self.title = fetcher.data[:title]
+        self.description = fetcher.data[:description]
+        self.image_url = fetcher.data[:image_url]
+      end
+
       self
     end
 
     def fetcher
-      @fetcher ||= FETCHERS
-                   .find { |fetcher| fetcher.resolves?(url) }
-                   &.new(link_preview: self)
+      @fetcher ||= FETCHERS.find { |fetcher| fetcher.resolves?(url) }&.new
     end
   end
 end

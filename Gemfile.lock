@@ -136,8 +136,6 @@ GEM
       fiber-local
     content_disposition (1.0.0)
     crass (1.0.6)
-    cssbundling-rails (1.1.2)
-      railties (>= 6.0.0)
     date (3.3.3)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
@@ -391,7 +389,6 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   byebug
   capybara (>= 2.15)
-  cssbundling-rails
   exiftool
   faker
   fastimage

@@ -62,9 +62,11 @@ module Blog
     # Configure ActiveJob queue adapter
     config.active_job.queue_adapter = :resque
 
-    uri = URI(config.security[:default_host] || "http://localhost")
-    routes.default_url_options[:host] = uri.host
-    routes.default_url_options[:protocol] = uri.scheme
-    routes.default_url_options[:port] = uri.port
+    if !Rails.env.test?
+      uri = URI(config.security[:default_host] || "http://localhost")
+      routes.default_url_options[:host] = uri.host
+      routes.default_url_options[:protocol] = uri.scheme
+      routes.default_url_options[:port] = uri.port
+    end
   end
 end

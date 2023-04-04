@@ -10,7 +10,6 @@ development:
 test:
   <<: *default
 
-
 production:
   <<: *default
   url: <%= Rails.application.credentials.dig(:database, :url) %>

@@ -29,7 +29,18 @@ class Sitemap < ApplicationModel
   end
 
   def configure_defaults!(set)
-    set.default_host = Rails.application.routes.default_url_options[:host]
+    uri = URI(Rails.application.routes.default_url_options.fetch(:host, "localhost"))
+    uri.port = Rails.application.routes.default_url_options[:port] if uri.port.nil?
+
+    if uri.scheme.nil? && uri.host.nil?
+      if uri.path.present?
+        uri.scheme = "http"
+        uri.host = uri.path
+        uri.path = ""
+      end
+    end
+
+    set.default_host = uri.to_s
   end
 
   def expose_static_paths!(set)

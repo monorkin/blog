@@ -94,7 +94,7 @@ class ArticlesController < ApplicationController
     Article
       .all
       .order(ORDER)
-      .with_rich_text_content
+      .with_rich_text_content_and_embeds
       .strict_loading
   end
 

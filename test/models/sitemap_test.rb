@@ -13,6 +13,7 @@ class SitemapTest < ActiveSupport::TestCase
 
     actual_urls = hash.dig("urlset", "url").map { |site| site["loc"] }
 
+    Rails.application.routes.default_url_options[:host] ||= "localhost"
     expected_urls = sitemap.scope.map { |article| article_url(article) }
     expected_urls << root_url.sub(/\/$/, "")
 

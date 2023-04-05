@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_01_174832) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_05_092411) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pgcrypto"
@@ -54,22 +54,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_174832) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "article_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "attachment_data"
-    t.string "article_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "primary", default: false, null: false
-    t.text "original_path"
-    t.index ["article_id", "primary"], name: "index_article_attachments_on_article_id_and_primary", unique: true, where: "(\"primary\" = true)"
-    t.index ["article_id"], name: "index_article_attachments_on_article_id"
-    t.index ["primary"], name: "index_article_attachments_on_primary"
-  end
-
   create_table "articles", force: :cascade do |t|
     t.string "slug_id", null: false
     t.text "title", default: "", null: false
-    t.text "old_content", default: "", null: false
     t.text "slug", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -77,7 +64,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_01_174832) do
     t.boolean "published", default: false, null: false
     t.virtual "published_at", type: :datetime, as: "COALESCE(publish_at, created_at)", stored: true
     t.string "thread"
+    t.index ["published"], name: "index_articles_on_published"
     t.index ["published_at"], name: "index_articles_on_published_at"
+    t.index ["slug_id"], name: "index_articles_on_slug_id", unique: true
     t.index ["thread"], name: "index_articles_on_thread"
   end
 

@@ -35,7 +35,8 @@ class Article < ApplicationRecord
   validates :slug,
     presence: true
   validates :slug_id,
-    presence: true
+    presence: true,
+    uniqueness: true
 
   before_validation do
     self.slug = title.presence&.parameterize if slug.blank?
@@ -96,13 +97,6 @@ class Article < ApplicationRecord
 
   def plain_text
     content.body.to_plain_text.gsub(/\[[^\]]*\]/, "")
-  end
-
-  def html_content
-    @_content ||= Content.new(
-      content: self[:old_content],
-      attachments: Article::Attachment.where(article_id: slug_id)
-    )
   end
 
   def suggested_articles

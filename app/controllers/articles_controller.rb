@@ -94,11 +94,4 @@ class ArticlesController < ApplicationController
       .with_rich_text_content_and_embeds
       .strict_loading
   end
-
-  def feed
-    @feed ||= Article::Feed.new(
-      scope: scope.published,
-      host: request.host_with_port
-    )
-  end
 end

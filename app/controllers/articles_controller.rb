@@ -22,12 +22,9 @@ class ArticlesController < ApplicationController
 
   def atom
     request.session_options[:skip] = true
+    request.format = :atom
 
-    return(head :internal_server_error) if feed.invalid?
-
-    headers['Content-Type'] = 'application/atom+xml'
-
-    render xml: feed.to_atom, layout: false
+    @articles = scope.published
   end
 
   def show

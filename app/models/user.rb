@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  MAX_LOGIN_ATTEMPTS = 5
+
   has_secure_password
 
   validates :username,
@@ -8,7 +10,7 @@ class User < ApplicationRecord
     uniqueness: true
 
   def locked?
-    login_attempt_count >= 5
+    login_attempt_count >= MAX_LOGIN_ATTEMPTS
   end
 
   def unlock!

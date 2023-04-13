@@ -1,0 +1,4 @@
+alice:
+  username: alice
+  password_digest: <%= BCrypt::Password.create("hunter2") %>
+  login_attempted_at: <%= Time.now %>

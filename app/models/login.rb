@@ -27,7 +27,10 @@ class Login < ApplicationModel
       return false
     end
 
-    return true if valid?
+    if valid?
+      user.unlock!
+      return true
+    end
 
     record_login_attempt!
 

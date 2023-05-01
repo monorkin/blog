@@ -154,7 +154,7 @@ GEM
     globalid (1.1.0)
       activesupport (>= 5.0)
     hiredis (0.6.3)
-    i18n (1.12.0)
+    i18n (1.13.0)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
     image_processing (1.12.2)
@@ -192,11 +192,12 @@ GEM
     mini_portile2 (2.8.1)
     minitest (5.18.0)
     mono_logger (1.1.1)
-    mrsk (0.10.1)
+    mrsk (0.11.0)
       activesupport (>= 7.0)
       bcrypt_pbkdf (~> 1.0)
       dotenv (~> 2.8)
       ed25519 (~> 1.2)
+      net-ssh (~> 7.0)
       sshkit (~> 1.21)
       thor (~> 1.2)
       zeitwerk (~> 2.5)
@@ -363,7 +364,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.7)
+    zeitwerk (2.6.8)
 
 PLATFORMS
   ruby

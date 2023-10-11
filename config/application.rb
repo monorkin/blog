@@ -13,7 +13,7 @@ require_relative './version'
 module Blog
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -21,29 +21,36 @@ module Blog
     # the framework and any gems in your application.
 
     config.after_initialize do
-      ActionText::ContentHelper.allowed_attributes.add "style"
-      ActionText::ContentHelper.allowed_attributes.add "controls"
-      ActionText::ContentHelper.allowed_attributes.add "autoplay"
-      ActionText::ContentHelper.allowed_attributes.add "poster"
-      ActionText::ContentHelper.allowed_attributes.add "loop"
-      ActionText::ContentHelper.allowed_attributes.add "muted"
-      ActionText::ContentHelper.allowed_attributes.add "loading"
-      ActionText::ContentHelper.allowed_attributes.add "data-controller"
-      ActionText::ContentHelper.allowed_attributes.add "data-action"
-      ActionText::ContentHelper.allowed_attributes.add "data-enlarge-image-url-value"
+      ActionText::ContentHelper.allowed_attributes = [
+        "style",
+        "controls",
+        "autoplay",
+        "poster",
+        "loop",
+        "muted",
+        "loading",
+        "data-controller",
+        "data-action",
+        "data-enlarge-image-url-value",
+        *ActionText::ContentHelper.sanitizer.class.allowed_attributes,
+        *ActionText::Attachment::ATTRIBUTES
+      ]
 
-      ActionText::ContentHelper.allowed_tags.add "video"
-      ActionText::ContentHelper.allowed_tags.add "source"
-      ActionText::ContentHelper.allowed_tags.add "table"
-      ActionText::ContentHelper.allowed_tags.add "thead"
-      ActionText::ContentHelper.allowed_tags.add "tbody"
-      ActionText::ContentHelper.allowed_tags.add "tr"
-      ActionText::ContentHelper.allowed_tags.add "th"
-      ActionText::ContentHelper.allowed_tags.add "td"
+      ActionText::ContentHelper.allowed_tags = [
+        "video",
+        "source",
+        "table",
+        "thead",
+        "tbody",
+        "tr",
+        "th",
+        "td",
+        *ActionText::ContentHelper.sanitizer.class.allowed_tags,
+        ActionText::Attachment.tag_name,
+        "figure",
+        "figcaption"
+      ]
     end
-
-    # Store Resque configuration
-    config.resque = config_for(:resque)
 
     # Store security configurations
     config.security = config_for(:security)
@@ -60,7 +67,7 @@ module Blog
     config.exceptions_app = routes
 
     # Configure ActiveJob queue adapter
-    config.active_job.queue_adapter = :resque
+    # config.active_job.queue_adapter = :resque
 
     if !Rails.env.test?
       uri = URI(config.security[:default_host] || "http://localhost")
@@ -68,5 +75,18 @@ module Blog
       routes.default_url_options[:protocol] = uri.scheme
       routes.default_url_options[:port] = uri.port
     end
+
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w(assets tasks))
+
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
+    # config.time_zone = "Central Time (US & Canada)"
+    # config.eager_load_paths << Rails.root.join("extras")
   end
 end

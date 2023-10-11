@@ -8,28 +8,7 @@ services:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
 
   redis:
-    image: "redis:5.0-alpine"
-
-  default-jobs:
-    build:
-      context: .
-      target: development
-    image: 'blog-development'
-    volumes:
-      - .:/rails
-      - bundle_store:/usr/local/bundle
-    depends_on:
-      - db
-      - redis
-    environment:
-      - LOCAL_USER_ID=${LOCAL_USER_ID}
-      - WEBPACKER_DEV_SERVER_HOST=webpack-dev-server
-      - DATABASE_URL=postgres://postgres:postgres@db/blog
-      - REDIS_URL=redis://redis:6379/0
-      - INTERVAL=0.2
-    command: rake resque:work
-    tty: true
-    stdin_open: true
+    image: "redis:7.0-alpine"
 
   app:
     build:

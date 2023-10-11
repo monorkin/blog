@@ -18,7 +18,7 @@ class Login < ApplicationModel
       return false
     end
 
-    if user.present? && user.login_attempted_at < 30.minutes.ago
+    if user.present? && user.login_attempted_at.before?(30.minutes.ago)
       user.unlock!
     end
 

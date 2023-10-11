@@ -1,4 +1,4 @@
-ARG RUBY_VERSION=3.1
+ARG RUBY_VERSION=3.2
 
 ################################################################################
 ############################## BASE IMAGE ######################################
@@ -102,6 +102,8 @@ COPY . .
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 RUN rm -rf node_modules
+
+RUN git log --pretty=format:'%h' -n 1 > REVISION
 
 ########################
 ### PRODUCTION IMAGE ###

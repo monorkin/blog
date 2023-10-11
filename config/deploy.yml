@@ -30,7 +30,7 @@ servers:
 registry:
   username: monorkin
   password:
-    - MRSK_REGISTRY_PASSWORD
+    - KAMAL_REGISTRY_PASSWORD
 
 # Docker image builder configuration
 builder:
@@ -40,13 +40,12 @@ builder:
 env:
   clear:
     RAILS_ENV: "production"
-    RAILS_SERVE_STATIC_FILES: "true"
-    RAILS_LOG_TO_STDOUT: "true"
     RAILS_MAX_THREADS: "10"
     WEB_CONCURRENCY: "4"
     REDIS_URL: "redis://redis.stanko.io:6379/0"
   secret:
     - RAILS_MASTER_KEY
+    - APPSIGNAL_PUSH_API_KEY
 
 # Call a broadcast command on deploys.
 # audit_broadcast_cmd:
@@ -64,4 +63,4 @@ ssh:
 
 # Configure a custom healthcheck (default is /up on port 3000)
 healthcheck:
-  path: "/"
+  path: "/up"

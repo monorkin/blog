@@ -16,9 +16,9 @@ servers:
       traefik.http.routers.blog-web.entrypoints: "websecure"
       traefik.http.routers.blog-web.tls.certresolver: "letsencrypt"
       traefik.http.routers.blog-web.rule: "Host(`stanko.io`)"
-      traefik.http.services.blog-web.loadbalancer.healthcheck.path: "/"
-      traefik.http.middlewares.blog-web.retry.attempts: "5"
-      traefik.http.middlewares.blog-web.retry.initialinterval: "500ms"
+      traefik.http.services.blog-web.loadbalancer.healthcheck.path: "/up"
+      traefik.http.middlewares.blog-web.retry.attempts: "10"
+      traefik.http.middlewares.blog-web.retry.initialinterval: "1s"
   worker:
     cmd: bin/jobs
     hosts:

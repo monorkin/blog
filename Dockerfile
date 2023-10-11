@@ -10,6 +10,7 @@ WORKDIR /rails
 
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
+      curl \
       libsqlite3-0 \
       postgresql-client \
       default-mysql-client \
@@ -53,7 +54,6 @@ RUN apt-get update -qq && \
       libpq-dev \
       default-libmysqlclient-dev \
       libvips \
-      curl \
       node-gyp \
       python-is-python3 \
       less \

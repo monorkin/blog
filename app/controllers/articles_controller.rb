@@ -2,11 +2,21 @@
 
 class ArticlesController < ApplicationController
   ORDER = { published_at: :desc, id: :desc }
-  RATIOS = [ 10, 20, 30, 50 ]
+  RATIOS = [ 12, 25, 50 ]
+
+  before_action only: %i[index show atom] do
+    request.session_options[:skip] = true
+  end
+
+  before_action only: %i[show edit update destroy] do
+    @article = Article.from_slug!(params[:slug])
+  end
+
+  before_action only: %i[new create edit update destroy] do
+    unauthorized if Current.user.blank?
+  end
 
   def index
-    request.session_options[:skip] = true
-
     articles = if Current.user.present?
       scope
     else
@@ -21,29 +31,21 @@ class ArticlesController < ApplicationController
   end
 
   def atom
-    request.session_options[:skip] = true
     request.format = :atom
 
-    @articles = scope.published
+    @articles = scope.published.order(ORDER)
+    fresh_when(@articles)
   end
 
   def show
-    request.session_options[:skip] = true
-
-    @article = Article.from_slug!(params[:slug])
-
     fresh_when(@article)
   end
 
   def new
-    return unauthorized if Current.user.blank?
-
     @article = Article.new
   end
 
   def create
-    return unauthorized if Current.user.blank?
-
     @article = Article.new(permitted_params)
 
     if @article.save
@@ -54,16 +56,9 @@ class ArticlesController < ApplicationController
   end
 
   def edit
-    return unauthorized if Current.user.blank?
-
-    @article = Article.from_slug!(params[:slug])
   end
 
   def update
-    return unauthorized if Current.user.blank?
-
-    @article = Article.from_slug!(params[:slug])
-
     if @article.update(permitted_params)
       redirect_to({ action: :show, slug: @article.slug }, status: :see_other)
     else
@@ -72,9 +67,6 @@ class ArticlesController < ApplicationController
   end
 
   def destroy
-    return unauthorized if Current.user.blank?
-
-    @article = Article.from_slug!(params[:slug])
     @article.destroy!
 
     redirect_to({ action: :index }, status: :see_other)

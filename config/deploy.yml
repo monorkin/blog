@@ -19,12 +19,6 @@ servers:
       traefik.http.services.blog-web.loadbalancer.healthcheck.path: "/up"
       traefik.http.middlewares.blog-web.retry.attempts: "10"
       traefik.http.middlewares.blog-web.retry.initialinterval: "1s"
-  worker:
-    cmd: bin/jobs
-    hosts:
-      - shire.stanko.io
-    options:
-      network: apps
 
 # Credentials for your image host.
 registry:

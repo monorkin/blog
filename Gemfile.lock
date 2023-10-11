@@ -125,6 +125,8 @@ GEM
     bcrypt_pbkdf (1.1.0)
     bigdecimal (3.1.4)
     bindex (0.8.1)
+    bootsnap (1.16.0)
+      msgpack (~> 1.2)
     builder (3.2.4)
     byebug (11.1.3)
     capybara (3.38.0)
@@ -215,6 +217,7 @@ GEM
     mini_mime (1.1.5)
     mini_portile2 (2.8.4)
     minitest (5.20.0)
+    msgpack (1.7.2)
     multi_json (1.15.0)
     mutex_m (0.1.2)
     net-imap (0.4.1)
@@ -374,6 +377,7 @@ DEPENDENCIES
   aws-sdk-s3 (~> 1.14)
   axe-core-selenium
   bcrypt (~> 3.1.7)
+  bootsnap
   byebug
   capybara (>= 2.15)
   exiftool

@@ -31,6 +31,9 @@ yarn-debug.log*
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
+# Ignore deployment artefacts
+/REVISION
+
 # Ignore encryption secrets
 .env
 .env.*

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "[Blog] Storing the git revision in REVISION file"
+git log --pretty=format:'%h' -n 1 > REVISION

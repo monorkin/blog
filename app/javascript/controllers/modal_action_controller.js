@@ -40,6 +40,8 @@ export default class extends ApplicationController {
       </turbo-frame>
     `
 
+    this.dialog.setAttribute("aria-label", this.frameNameValue)
+
     this.dialog.classList.add("w-full", "md:w-2/3", "bg-transparent",
       "backdrop:backdrop-blur-lg", "group")
 

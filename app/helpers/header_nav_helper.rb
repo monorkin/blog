@@ -50,7 +50,13 @@ module HeaderNavHelper
         content_tag(:a, class: "round text-indigo-600 cursor-pointer", data: { action: "navigation#openMenu" }) do
           menu_icon(class: "w-6 h-6")
         end +
-        content_tag(:dialog, class: "aboslute inset-0 w-full h-full rounded-lg backdrop:backdrop-blur-lg dark:bg-black dark:border-neutral-500 dark:border", id: "navigation-dialog", data: { controller: "dialog" }) do
+        content_tag(
+          :dialog,
+          class: "aboslute inset-0 w-full h-full rounded-lg backdrop:backdrop-blur-lg dark:bg-black dark:border-neutral-500 dark:border",
+          id: "navigation-dialog",
+          data: { controller: "dialog" },
+          "aria-label" => "Navigation menu"
+        ) do
           content_tag(:div, class: "flex flex-col gap-y-4 justify-between divide-y h-full") do
             turbo_frame_tag(:search, src: search_path, class: "grow-0 group dark:border-neutral-500", loading: :lazy, data: { close_button: false }) +
             content_tag(:ul, class: "flex flex-col items-center gap-y-4 py-4 grow dark:border-neutral-500") do

@@ -54,7 +54,7 @@ trix-editor {
 }
 
 trix-toolbar {
-  @apply sticky top-0 pt-4 z-20 backdrop-blur-xl border-b bg-orange-50/80
+  @apply sticky top-0 pt-4 z-20 backdrop-blur-xl border-b bg-neutral-50/80
   dark:bg-black/80 dark:border-slate-200;
 }
 

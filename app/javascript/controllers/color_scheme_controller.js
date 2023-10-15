@@ -5,10 +5,10 @@ export default class extends ApplicationController {
   static targets = [ "lightColorSchemeInput", "darkColorSchemeInput", "systemColorSchemeInput" ]
   static classes = [ "light", "dark" ]
 
-  LIGHT = 'light'
-  DARK = 'dark'
-  AUTO = 'auto'
-  STORAGE_KEY = 'color_scheme'
+  LIGHT = "light"
+  DARK = "dark"
+  AUTO = "auto"
+  STORAGE_KEY = "color_scheme"
 
   connect() {
     this.useColorScheme(this.currentColorScheme)

@@ -1,0 +1,22 @@
+<%# locals: (article:, article_counter: nil, article_iteration: nil) -%>
+
+<%= cache article do %>
+  <li class="flex flex-col gap-y-1 py-4 lg:py-6 px-2 md:px-0 relative group">
+
+    <%= link_to "", article_path(article), class: "absolute inset-0" %>
+
+    <div class="text-xs text-neutral-600 flex flex-row gap-x-4 dark:text-neutral-500">
+      <%= time_tag article.published_at, t(".published", date: l(article.published_at.to_date)) %>
+      <span><%= t(".reading_time", duration: article.estimated_reading_time) %></span>
+    </div>
+
+    <div class="font-semibold text-xl">
+      <%= article.title %>
+    </div>
+
+    <div class="text-sm">
+      <%= article.excerpt %>
+    </div>
+
+  </li>
+<% end %>

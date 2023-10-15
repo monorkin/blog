@@ -1,0 +1,7 @@
+en:
+  search:
+    index:
+      search: "Search"
+      search_placeholder: "Search"
+      no_results: "No results found"
+      prompt: "Enter something in the field above and press enter"

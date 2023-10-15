@@ -1,11 +1,11 @@
-# frozen_string_literal: true
-
 class AboutController < ApplicationController
-  def show
+  before_action only: %i[show] do
     request.session_options[:skip] = true
-    template = 'about/show.html.slim'
-    file_last_modified = File.mtime(Rails.root.join("app/views/#{template}"))
+  end
 
-    fresh_when last_modified: file_last_modified
+  def show
+    @latest_articles = Article.published.order(published_at: :desc, id: :desc).limit(3)
+
+    fresh_when @latest_articles
   end
 end

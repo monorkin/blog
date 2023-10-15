@@ -1,0 +1,32 @@
+<% content_for :head do %>
+  <title>Articles | Stanko K.R.</title>
+  <!--
+  meta name="description" content="List of articles I've written about various topics"
+  meta rel="canonical" href=articles_url
+  meta name="twitter:card" content="summary"
+  meta name="twitter:creator" content="@monorkin"
+  meta property="og:title" content="Articles | Stanko K.R."
+  meta property="og:description" content="List of articles I've written about various topics"
+  meta property="og:locale" content="en_US"
+  meta property="og:type" content="blog"
+  meta property="og:url" content=articles_url
+  meta property="og:image" content=asset_url('/images/portrait.jpg')
+  meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."
+  -->
+<% end %>
+
+<div data-controller="infinite-scroll">
+  <section class="hidden">
+    <h1>Articles | Stanko K.R.</h1>
+  </section>
+
+  <section>
+    <% if @articles.any? %>
+      <%= article_list(@articles, id: "articles") %>
+    <% else %>
+      <p>No articles were found</p>
+    <% end %>
+  </section>
+
+  <%= render "articles/paginaton_controls", page: @page %>
+</div>

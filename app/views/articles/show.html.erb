@@ -1,0 +1,58 @@
+<%= content_for :head do %>
+  <%= cache [@article, :head] do %>
+    <% title = [truncate(@article.title, length: 60), "Stanko K.R."].join(" | ") %>
+    <% excerpt = @article.excerpt(length: 160) %>
+    <title><%= title %></title>
+    <%= content_tag(:meta, nil, name: "description", content: excerpt) %>
+    <%= content_tag(:meta, nil, rel: "canonical", href: article_url(@article.slug)) %>
+    <%= content_tag(:meta, nil, name: "twitter:card", content: "summary") %>
+    <%= content_tag(:meta, nil, name: "twitter:creator", content: "@monorkin") %>
+    <%= content_tag(:meta, nil, property: "og:title", content: title) %>
+    <%= content_tag(:meta, nil, property: "og:description", content: excerpt) %>
+    <%= content_tag(:meta, nil, property: "og:locale", content: "en_US") %>
+    <%= content_tag(:meta, nil, property: "og:type", content: "article") %>
+    <%= content_tag(:meta, nil, property: "og:url", content: article_url(@article.slug)) %>
+    <% first_image = @article.content.body.attachments.compact.select { |attachment| attachment.respond_to?(:image?) }.find(&:image?) %>
+    <% if first_image.present? %>
+      <% image = first_image.representation(resize_to_fill: [512, 512]) %>
+      <%= content_tag(:meta, nil, property: "og:image", content: image.processed.url) %>
+      <%= content_tag(:meta, nil, property: "og:image:width", content: 512) %>
+      <%= content_tag(:meta, nil, property: "og:image:height", content: 512) %>
+    <% else %>
+      <%= content_tag(:meta, nil, property: "og:image", content: asset_url("portrait/medium.jpg")) %>
+      <%= content_tag(:meta, nil, name: "twitter:image:alt", content: "Portrait of Stanko K.R.") %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<article class="px-2 md:px-0">
+  <div class="flex flex-row gap-x-4">
+    <span><%= link_to text_with_icon(:arrow_long_left, t(".back")), articles_path, class: "text-indigo-600 hover:text-indigo-800 dark:text-indigo-500 dark:hover:text-indigo-400" %></span>
+    <% if Current.user.present? %>
+      <span class="font-semibold"><%= link_to t(".edit"), edit_article_path(@article) %></span>
+      <span class="font-semibold"><%= button_to t(".delete"), article_path(@article), method: :delete, data: { turbo_confirm: t(".confirm_delete") } %></span>
+    <% end %>
+  </div>
+
+  <%= cache @article do %>
+    <div class="text-neutral-600 dark:text-neutral-500">
+      <%= time_tag @article.published_at, t('.published_on', date: l(@article.published_at.to_date)) %>
+    </div>
+
+    <div>
+      <h1 class="text-4xl font-semibold my-4">
+        <%= @article.title %>
+      </h1>
+    </div>
+
+    <div data-controller="article">
+      <%== transform_rich_text(@article.content) %>
+    </div>
+  <% end %>
+</article>
+
+<section>
+  <div class="my-12 mx-2 md:mx-0 my-4 shadow md:shadow-lg bg-white dark:bg-neutral-900 dark:border dark:border-neutral-500 rounded md:rounded-lg p-4">
+    <%= link_to text_with_icon(:rss, t(".subscribe_rss"), position: :before, class: "text-orange-400 w-8 h-8"), atom_articles_path, target: :_blank %>
+  </div>
+</section>

@@ -8,25 +8,42 @@ export default class extends ApplicationController {
     }
   }
 
-  disconnect () {
-    this.handleClose()
+  connect() {
+    if (this.element.dataset.openOnConnect === "true") this.open()
   }
 
-  open () {
+  disconnect() {
+    if (this.isOpen) this.handleClose()
+  }
+
+  open() {
     this.element.showModal()
-    document.body.dataset.openDialogs ||= 0
-    document.body.dataset.openDialogs += 1
+
+    try {
+      let count = JSON.parse(document.body.dataset.openDialogs || "0")
+      document.body.dataset.openDialogs = count + 1
+    } catch (e) {
+      console.error("Failed to increment open dialog count", e)
+      document.body.dataset.openDialogs = 1
+    }
+
     document.body.classList.add('overflow-hidden')
   }
 
-  close (event) {
+  close(event) {
+    event?.preventDefault()
     this.element.close()
     this.handleClose(event)
   }
 
-  handleClose () {
-    document.body.dataset.openDialogs ||= 1
-    document.body.dataset.openDialogs -= 1
+  handleClose() {
+    try {
+      let count = JSON.parse(document.body.dataset.openDialogs || "1")
+      document.body.dataset.openDialogs = count - 1
+    } catch (e) {
+      console.error("Failed to decrement open dialog count", e)
+      document.body.dataset.openDialogs = 0
+    }
 
     if (document.body.dataset.openDialogs <= 0) {
       document.body.classList.remove('overflow-hidden')
@@ -35,7 +52,7 @@ export default class extends ApplicationController {
     if (this.removeOnCloseValue) this.element.remove()
   }
 
-  closeOnOutsideClick (event) {
+  closeOnOutsideClick(event) {
     if (event.target !== this.element) return
 
     const dialogBounds = this.element.getBoundingClientRect()
@@ -48,5 +65,9 @@ export default class extends ApplicationController {
     )
 
     if (!clickInsideDialog) this.close()
+  }
+
+  get isOpen() {
+    return this.element.open
   }
 }

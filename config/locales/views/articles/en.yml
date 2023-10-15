@@ -3,27 +3,21 @@ en:
     article:
       published: "Published on %{date}"
       reading_time: "%{duration} min read"
-      continue_reading: "Continue reading ..."
-
-    short_article:
-      published: "Published on %{date}"
-      reading_time: "%{duration} min read"
-      continue_reading: "Continue reading ..."
 
     show:
-      back: "← Back"
+      back: "Back"
       edit: "Edit"
       delete: "Delete"
       confirm_delete: "Are you sure you want to delete this article?"
       published_on: "Published on %{date}"
-      subscribe_rss: "Subscribe to the RSS feed to get future posts"
+      subscribe_rss: "Subscribe to the RSS feed to receive future posts"
       suggested_articles: "Other articles"
 
     edit:
-      back: "← Back"
+      back: "Back"
 
     new:
-      back: "← Back"
+      back: "Back"
 
     form:
       save: "Save"

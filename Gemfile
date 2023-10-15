@@ -35,6 +35,7 @@ gem "turbo-rails"
 
 group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
+  gem "faker"
 end
 
 group :development do
@@ -49,7 +50,6 @@ end
 group :test do
   gem "axe-core-selenium"
   gem "capybara", ">= 2.15"
-  gem "faker"
   gem "selenium-webdriver"
   gem "webdrivers"
 end

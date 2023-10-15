@@ -87,7 +87,7 @@ class Article < ApplicationRecord
     truncate(plain_text, length: length)
   end
 
-  def estimated_reading_time(words_per_minute: 325)
+  def estimated_reading_time(words_per_minute: 225)
     [(word_count.to_f / words_per_minute).ceil, 1].max.to_i
   end
 

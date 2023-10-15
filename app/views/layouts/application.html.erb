@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+
+<html lang="en"
+      class="h-full antialiased color-scheme <%= current_color_scheme_class %>"
+      data-controller="color-scheme"
+      data-color-scheme-light-class="<%= light_color_scheme_class %>"
+      data-color-scheme-dark-class="<%= dark_color_scheme_class %>">
+
+  <head>
+    <% if content_for?(:head) %>
+      <%= yield(:head) %>
+    <% else %>
+      <title>Blog | Stanko K.R.</title>
+      <meta rel="canonical" href="<%= url_for(only_path: false) %>">
+    <% end %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= auto_discovery_link_tag(:atom, controller: :articles, action: :atom) %>
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <%= stylesheet_link_tag 'tailwind', media: 'all', 'data-turbo-track': 'reload' %>
+    <%= javascript_importmap_tags %>
+    <script defer data-domain="stanko.io" src="https://analytics.stanko.io/js/script.js"></script>
+  </head>
+
+  <body class="h-full bg-neutral-50 dark:bg-black dark:text-neutral-100">
+    <div class="h-full flex flex-col gap-y-8">
+      <header>
+        <%= header_nav do %>
+          <%= header_nav_item(articles_path) { t(".articles") } %>
+        <% end %>
+      </header>
+
+      <main class="grow" role="main">
+        <div class="mx-auto w-full md:w-[65ch]">
+          <%= yield %>
+        </div>
+      </main>
+
+      <footer class="flex flex-col md:flex-row md:justify-between text-neutral-400 dark:text-neutral-500 text-sm p-2 md:p-4">
+        <div class="flex flex-row gap-x-4 justify-center md:justify-start">
+          <%= link_to t(".about"), root_url %>
+          <%= link_to t(".articles"), articles_url %>
+          <%= link_to t(".source_code"), "https://github.com/monorkin/blog", target: :_blank %>
+        </div>
+        <div class="flex flex-row gap-x-4 justify-center md:justify-start">
+          <%= t(".copyright", year: Time.current.year) %>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

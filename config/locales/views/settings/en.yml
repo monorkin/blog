@@ -1,0 +1,9 @@
+en:
+  settings:
+    index:
+      settings: "Settings"
+      color_scheme: "Color scheme"
+      color_theme:
+        light: "Light"
+        dark: "Dark"
+        system: "System"

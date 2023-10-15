@@ -7,6 +7,7 @@ export default class extends ApplicationModel {
     const element = document.createElement('dialog')
     element.dataset.controller = 'dialog'
     element.dataset.action = 'close->dialog#handleClose'
+    element.dataset.openOnConnect = options.openOnConnect || false
 
     if (options.removeOnClose) element.dataset.dialogRemoveOnCloseValue = true
     if (options.closeOnBlur) {

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ArticlesController < ApplicationController
   ORDER = { published_at: :desc, id: :desc }
   RATIOS = [ 12, 25, 50 ]
@@ -28,6 +26,11 @@ class ArticlesController < ApplicationController
     @articles = @page.records
 
     fresh_when(@articles)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def atom
@@ -74,16 +77,16 @@ class ArticlesController < ApplicationController
 
   private
 
-  def permitted_params
-    params.require(:article).permit(:title, :content, :publish_at, :published,
-      :slug)
-  end
+    def permitted_params
+      params.require(:article).permit(:title, :content, :publish_at, :published,
+        :slug)
+    end
 
-  def scope
-    Article
-      .all
-      .order(ORDER)
-      .with_rich_text_content_and_embeds
-      .strict_loading
-  end
+    def scope
+      Article
+        .all
+        .order(ORDER)
+        .with_rich_text_content_and_embeds
+        .strict_loading
+    end
 end

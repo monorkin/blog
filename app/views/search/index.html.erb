@@ -1,0 +1,55 @@
+<%= turbo_frame_tag :search do %>
+  <div class="relative mt-5 mx-5">
+    <div class="hidden absolute -top-4 -right-4 h-8 z-20 group-data-[close-button=true]:block">
+      <%= link_to root_path, class: "flex items-center justify-center w-8 h-8 bg-white rounded-full shadow transition-all scale-100 hover:scale-110", data: { action: "dialog#close" } do %>
+        <%= close_icon(class: "w-4 h-4 text-gray-500") %>
+      <% end %>
+    </div>
+
+    <div class="relative flex flex-col divide-y bg-neutral-100 rounded-lg z-10 shadow md:shadow-xl dark:bg-neutral-900 dark:border dark:border-neutral-500">
+      <div class="grow-0 relative p-2 dark:border-neutral-500">
+        <%= form_for @search, url: search_path, method: :get, html: { class: "flex flex-row items-center gap-x-4" } do |search_form| %>
+          <label class="cursor-pointer">
+            <%= search_icon(class: "w-6 h-6 text-indigo-600 hover:text-indigo-800 dark:text-indigo-500 dark:hover:text-indigo-400") %>
+            <%= search_form.submit "", class: "hidden" %>
+            <span class="sr-only"><%= t(".search") %></span>
+          </label>
+          <%= search_form.search_field :term, placeholder: t(".search_placeholder"), autofocus: true, class: "w-full inline bg-transparent border-0 focus:ring-0 dark:text-white" %>
+        <% end %>
+      </div>
+
+      <div class="grow p-2 dark:border-neutral-500">
+        <% results = @search.results %>
+
+        <% if results.empty? && @search.term.present? %>
+          <div class="p-2 text-gray-500">
+            <%= t(".no_results") %>
+          </div>
+        <% elsif results.empty? %>
+          <div class="p-2 text-gray-500">
+            <%= t(".prompt") %>
+          </div>
+        <% else %>
+          <ul class="flex flex-col divide-y">
+            <% results.each do |result| %>
+              <%= cache([result, :search_result]) do %>
+                <li class="group/result">
+                  <div class="relative p-2 group-hover/result:bg-neutral-200 dark:group-hover/result:bg-neutral-700">
+                    <%= link_to "", result, class: "absolute inset-0" %>
+                    <div class="font-semibold dark:text-white">
+                      <%= result.title %>
+                    </div>
+                    <div class="text-sm text-neutral-500 dark:group-hover/result:text-neutral-400">
+                      <%= result.class %>
+                    </div>
+                  </div>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+<% end %>

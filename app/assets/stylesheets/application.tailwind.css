@@ -1,34 +1,42 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
-
-/******************************************************************************
- **                                 LIBRARIES                                **
- ******************************************************************************/
-@import "rails.css";
+/* @import "rails.css";*/
 @import "https://unpkg.com/trix@2.0.0/dist/trix.css";
 @import "actiontext.css";
+@import "./components/link_preview.css";
+@import "./components/popup.css";
+@import "./syntax_hilighting_themes/light.css";
+@import "./syntax_hilighting_themes/dark.css";
 
-/******************************************************************************
- **                                COMPONENTS                                **
- ******************************************************************************/
-@import './components/btn.css';
-@import './components/btn_group.css';
-@import './components/color_scheme.css';
-@import './components/content.css';
-@import './components/header.css';
-@import './components/link_preview.css';
-@import './components/pagination.css';
-@import './components/popup.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/******************************************************************************
- **                                  PAGES                                   **
- ******************************************************************************/
-@import './pages/error.css';
 
-/******************************************************************************
- **                             SYNTAX HILIGHTING                            **
- ******************************************************************************/
-@import './syntax_hilighting_themes/light.css';
-@import './syntax_hilighting_themes/dark.css';
+@media screen(sm) {
+  html {
+    font-size: 18px;
+  }
+}
+
+@media screen(md) {
+  html {
+    font-size: 20px;
+  }
+}
+
+@media screen(lg) {
+  html {
+    font-size: 22px;
+  }
+}
+
+@media screen(xl) {
+  html {
+    font-size: 24px;
+  }
+}
+
+@media screen(2xl) {
+  html {
+    font-size: 26px;
+  }
+}

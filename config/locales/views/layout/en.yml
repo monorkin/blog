@@ -1,0 +1,9 @@
+en:
+  layouts:
+    application:
+      articles: "Articles"
+      about: "About"
+      close: "Close"
+      settings: "Settings"
+      source_code: "Source code"
+      copyright: "© %{year} Stanko K. R. All rights reserved."

@@ -3,13 +3,13 @@ trix-editor {
 }
 
 .trix-content {
-  @apply prose dark:prose-invert
-  prose-figure:flex prose-figure:flex-col prose-figure:items-center
+  @apply prose prose-neutral dark:prose-invert
+  prose-figure:flex prose-figure:flex-col prose-figure:items-center prose-figure:max-h-[70vh]
   prose-img:rounded prose-img:shadow prose-img:max-h-[70vh]
   prose-video:rounded prose-video:shadow prose-video:max-h-[70vh] prose-video:my-0
   prose-pre:rounded prose-pre:shadow prose-pre:text-stone-600 prose-pre:dark:text-slate-200
   prose-code:bg-gray-900 prose-code:text-blue-50 prose-code:rounded prose-code:p-1
-    prose-code:before:content-none prose-code:after:content-none;
+  prose-code:before:content-none prose-code:after:content-none;
 }
 
 .trix-content br {

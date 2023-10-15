@@ -1,7 +1,7 @@
-# frozen_string_literal: true
-
 class ErrorsController < ApplicationController
-  after_action -> { request.session_options[:skip] = true }
+  before_action do
+    request.session_options[:skip] = true
+  end
 
   def unauthorized
     render status: :unauthorized

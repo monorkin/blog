@@ -1,9 +1,0 @@
-footer class="min-h-[1rem] mt-4 p-4 flex flex-col justify-center items-center text-gray-500 dark:text-gray-400"
-  div class="text-gray-500 dark:text-gray-400 mx-2 flex flex-row gap-4"
-    = link_to t('shared.header.info'), root_url
-    = link_to t('shared.header.articles'), articles_url
-    = link_to t('.this_is_open_source'), 'https://github.com/monorkin/blog'
-    - if Current.user.present?
-      = button_to "Logout", login_path, method: :delete
-  .footer__copyright
-    | © #{Time.current.year} Stanko K. R. All rights reserved.

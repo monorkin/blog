@@ -20,10 +20,13 @@ Rails.application.routes.draw do
   post "login", to: "login#create"
   delete "login", to: "login#destroy"
 
+  get "search", to: "search#index", as: :search
+  get "settings", to: "settings#index", as: :settings
+
   resources :articles, only: %i[index new create] do
     collection do
-      get :rss
-      get :atom
+      get :rss, to: "articles#atom", defaults: { format: :atom }
+      get :atom, defaults: { format: :atom }
     end
   end
 

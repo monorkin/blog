@@ -2,13 +2,13 @@
 #   record: name_of_fixture (ClassOfFixture)
 #   name: content
 #   body: <p>In a <i>million</i> stars!</p>
-misguided_mark:
+misguided_mark_article:
   record: misguided_mark (Article)
   name: content
   body: >
     <div><!--block-->Tom was brewing tea in preparation for a 5 o'clock meeting he knew little about. The agenda was so vague it might as well have been left out - it read “Mark introduces a new system for controlling 3rd party IoT water sprinklers”. That was standard practice for CorpCorp - the company Tom worked for - everything was a meeting and things were only ever presented through meetings with at least 10 attendees, even when an email would be more than enough.<br>But Tom wanted to attend this meeting. He was the head of the Web development department and 3rd-party integrations were his responsibility. His team was short-staffed to the point that they couldn’t start working on this integration until the next quarter.<br>When Mark, a developer from the in-house IoT sprinkler department, offered to develop this integration Tom immediately accepted - Mark used to work as a Web developer before he joined CorpCorp and Tom thought that maybe he wanted to switch departments.<br>5 o’clock rolls around, Tom joins the meeting from his home office and takes a big sip of tea.<br>On his screen is Mark, standing in front of a nice looking slide deck that in bold letters says “Controlling 3rd party water sprinklers: The future of CorpCorp”.<br>Mark greeted everybody and started to present. He explained that he had spent two weeks planning out this integration and came to the conclusion that it will be built using micro-services - 13 of them - even though most of CorpCorp’s Web services were in a monolithic Web app.<br>Mark explained that monoliths were a thing of the past - they didn’t scale, and always ended up too complex to maintain. Micro-services, on the other hand, scaled infinitely and were super easy to maintain because having everything separate improved encapsulation and separation of concerns.<br>Mark stopped, looked at all the confused faces, and asked if there were any questions. Immediately a few managers that didn’t listen to half of the presentation asked simple questions that Mark already explained during his presentation - this was also standard practice at CorpCorp.<br>Tom had a working theory that the managers get bored by the technical jibber-jabber and doze off, but when the meeting ends they want to prove that they actually listened and that they were a useful addition to the meeting, so they ask a question about the last thing that they remember. Further experiments and observations were required to prove this theory, but even knowing if that was the case wouldn’t solve the problem - that the meeting should have been an email.<br>Once the flurry of questions ended Tom started to talk. He thanked Mark for taking the time to research this integration, and confirmed that it would be a good solution to the problem, but that he shouldn’t move ahead with its implementation because the system would cause too many problems down the line. He then added that Mark couldn’t see how misguided he was about monoliths because he clinged too hard to his paradigm to think level-headed.<br>The managers woke up out of a sudden - they didn’t want to miss the drama.<br>Tom started to address each point of Mark’s presentation. He began by asking Mark ih he knew why CorpCorp developed a Monolith in the first place. Mark just shrugged and guessed that it was because they were at the peak of their popularity when the project was started. Tom refuted that and said that a monolith was conscious decision by the department because:<br>MONOLITHS ARE EASIER TO MAINTAIN FOR SMALLER TEAMS<br>Tom’s department counted 12 people, but those 12 people were enough to handle most of CorpCorp’s business. Only in recent months, after one employee retired and another quit, did Tom’s department start to struggle with meeting business demands.<br>Tom’s employees built a monolith and decided upon a convention for going about their most common tasks. This allowed them to be flexible - anyone could work on any part of the system because they knew how everything was supposed to be organized. And over time, as features were added or removed, and bugs fixed, everybody became familiar with most of the system. So anybody was able to add a feature or fix a bug anywhere in the system.<br>You could achieve the same by implementing a convention on top of micro-services, but there is nothing stopping you from implementing multiple conventions. The more people that work on your micro-services, the more opinions there are on how they should be implemented, the likelier the chance that convention will be broken or changed.<br>In fact that is a big selling point of micro-services - you can use any technology and any convention you want for each individual service. And that is a desirable trait for mammoth companies that suck up developers just so the competition won't get them - they can keep them happy by letting them do what they want in their own micro-cosmos. This sometimes works out and sometimes it doesn’t, but for these kinds of companies that is just part of doing business.<br>In general, it is better for individuals and small teams, to be intentional with what they do and how they go about it. Especially in software development - where the question isn’t “is it doable?”, because the answer is always “yes”, but “how much time will it take?”.<br>And a monolith is great at ensuring that - one vision, one codebase and everybody is aligned.<br>MONOLITHS ARE EASIER TO SCALE, BUT THEY DON’T SCALE AS WELL AS MICRO-SERVICES<br>Tom decided to use an analogy here so that the managers wouldn’t doze off again. A monolith is like a hamburger, it is a meal consisting of a bun, a patty and some salad. While micro-services are a patty, some bread and a salad as three separate meals.<br>With a monolith, if you want to double the throughput you double the number of running instances. This is the equivalent of ordering two hamburgers when you are very hungry. The good thing is that it’s simple - you just double everything and you are done, the bad part is that it can be wasteful.<br>In micro-services, if you want to double the throughput you first have to identify what the bottleneck is, and then you double that service and some of its upstream services. This is the equivalent of ordering two patties, a regular salad and a bun when you are very hungry - you only pay for what you really want.<br>But figuring out what the bottleneck is can be hard, both in monoliths and micro-services.<br>COMPLEXITY COMES FROM BUSINESS NOT CODE<br>The notion that monoliths are complex to maintain and micro-services aren’t is a myth. In a monolith and in micro-services complexity comes from the business domain - what the app does. If the business domain is complex or not thought out - if there are no clear rules, if the process is dependent on many factors, if the process has many interdependent steps, if the process is convoluted to humans - the code will reflect that.<br>The code you write mirrors how you think about a problem. If you don’t think clearly, or if the problem is inherently muddy, then you are out of luck - architecture has little to do with that.<br>MICRO-SERVICES IMPROVING ENCAPSULATION OR SEPARATION OF CONCERNS IS A MYTH<br>Tom had to resort to another analogy here to keep the managers listening. Encapsulation is the act of bundling together things that belong together. It is in a way similar to doing laundry - imagine you have two laundry baskets: one for colored clothes and another for white &amp; black clothes.<br>Separating the clothes in their baskets is encapsulation - each basket encapsulates only its set of clothes. But where would you put dark blue underwear?<br>On the one hand it is blue - a color - so it should go into the color basket. But on the other hand it is dark blue, which is close to black - so it should go into the white &amp; black basket. Depending on who you ask you will get a different answer.<br>But people who argue that micro-services improve encapsulation &amp; separation of concerns argue that, somehow, the problem will solve itself if you put the laundry baskets really far apart.<br>If you are bad at separating concerns or encapsulating code, you will be equally as bad at it in a monolith and in micro-services.<br>Tom stopped for a moment to look at everyone’s faces, the managers were more alert than they have ever been while Mark was embarrassed. Tom felt bad, and decided to give a moral to this story to lighten the mood.<br>He said that this was a common mistake that young developers make - they get too attached to their paradigm and become unable to understand why someone would do things differently. They think that the existence of a new paradigm - a new school of thought - must invalidate the old one. Why else would then the new school exist? Why would micro-services exist if monoliths were good?<br>People form an understanding of the world through paradigms. There is no one perfect paradigm, no one ultimate school of thought, just like there is no one perfect theory of how the world works..<br>Look at Newton’s and Einstein's model of gravity. Einstein’s model is superior to Newton’s - it is better at explaining how objects will move when they are going slow and when they are going close to the speed of light.<br>This precision comes at a cost - it is much harder to compute Einstein’s gravity equations than Newton’s. But is this computational cost worth it? When the object is moving slowly, Newton’s equations are a fraction of a percent off compared to Einstein’s equations.<br>Many civil engineers say the trade off isn’t worth it. For their day to day work they use Newton’s equations because they can iterate bridge, road, and building designs quickly and find the best solution. But NASA engineers would beg to differ - a precise result is much more important to them.<br>Each paradigm is good at something and bad at something else. It is up to you to understand the trade off and pick what works best for you.<br>P.S. The style of writing in this essay was inspired by a book I recently read - <a href="https://geraldmweinberg.com/Site/AYLO.html">Are your light on?</a> by Donald C. Gause and Gerald M. Weinberg. Its a fantastic book about problem solving and thinking about problems.<br>Many thanks to Marko I. and Hrvoje S. for reading drafts of this article and providing feedback</div>
 
-render_test:
+render_test_article:
   record: render_test (Article)
   name: content
   body: >
@@ -16,3 +16,253 @@ render_test:
       <h1>Render Test</h1>
       <p>Render test content</p>
     </div>
+
+hold_your_own_poison_ivy_article:
+  record: hold_your_own_poison_ivy (Article)
+  name: content
+  body: >
+    <div>After two years, this week I finally caved and changed my current employment title on LinkedIn from Software Engineer to Software Architect.<br>This isn’t a position where I'm am supposed to do much programming - the thing I love most, and the thing I'm good at - but rather make high-level technical decision and manage people to achieve them. My problem with that, and any position like that, is best captured in the Croatian proverb <em>"It's easy to hold poison Ivy in somebody else's hands"</em> (that's the SFW Americanized version, <a href="https://translate.google.com/?sl=hr&amp;tl=en&amp;text=lako%20je%20tu%C4%91im%20kurcem%20po%20koprivama%20mlatiti&amp;op=translate">here's the NSFW original</a>).<br>That proverb describes a decision made by someone who isn't involved in the execution of the decision, and doesn't suffer its consequences.<br>I don't want to be the kind of person who just lobs some solution over the wall and lets other people deal with the fallout.<br>I’ve had "managers" like that in the past, and it was hell working with them. Being told to do something that you know will cause problems, then bringing that up for discussion, explaining all the implications and new problems we will face, only to be shutdown with some hand-wavy explanation, and then having to deal with the consequences of that decision months or even years later is soul crushing. And if they can’t admit to their mistakes it can become burnout inducing.<br>And I know that engineering isn't really about <em>solving problems</em> as much as it’s about <em>displacing them</em>. We are constantly trading one problem for one or more other problems. But we try to do so conscientiously, weight the pros and the cons, and pick a solution that produces problems that we can live with.<br>The problem with Software Architects, or any purely managerial position, is that you aren't eating your own dog food, and therefore you don't live with the consequences of your decisions. So you produce <em>misfit solutions</em>.</div>
+    <blockquote>The problem of displacement is compounded by the existence of designers—special people whose job it is to solve problems, in advance, for other people. Designers, like landlords, seldom if ever experience the consequences of their actions. In consequence, designers continually produce misfits. A misfit is a solution that produces a mismatch with the human beings who have to live with the solution. Some mismatches are downright dangerous.<br>— <strong>Donald C. Gause</strong>, <strong>Gerald M. Weinberg</strong> in <a href="https://www.amazon.com/Are-Your-Lights-Figure-Problem/dp/0932633161">Are Your Lights On?: How to Figure Out What the Problem Really Is</a>
+    </blockquote>
+    <div>After two years, I’m confident that I’ve managed to avoid becoming that kind of “manager” by holding my own poison Ivy, and by helping others make decisions for themselves.<br>When I'm presented with a problem, I try to implement a proof of concept solution my self. Not a demo, held up with glue and duct tape; but a proper minimal implementation. Then I present the solution to my coworkers and gather feedback. That way I can feel the consequences of my solutions.<br>When someone comes to me with a problem, we go over all the possible solutions that we can come up with, then we discuss the pros and cons, and that's it. I let person decide for themselves which solution they will go with. All I ask of them is to tell me which one they chose. The point is to shine some light on problems that the person maybe couldn't see on their own, and point out some bigger-picture things that they might not know about. That way they can make an informed decision and choose the solution with which they can live with - so there aren't any misfit solutions.<br>This isn't a silver bullet by any means. Bad decisions still get made, I fuck up, my coworkers fuck up. But we learn, fix stuff, build trust, and improve.</div>
+
+vanilla_rails_view_components_with_partials_article:
+  record: vanilla_rails_view_components_with_partials (Article)
+  name: content
+  body: >
+    <div>Many projects I work on have some kind of view component that is repeated multiple times in the same view, or is present in multiple different views. These view components can be anything that has a specific styling, JavaScript specific attributes (like Stimulus controllers), rendering logic, and HTML element structure that always has to be the same for the component to render properly - like cards, containers, content boxes, modals, lists, tables, and so on.<br>There are three ways that I have seen people work with view components in Rails - by copy-pasting them around, by using one of the <a href="https://github.com/ViewComponent/view_component" data-action="mouseover->link-preview#show mouseout->link-preview#hide" data-controller="link-preview" data-link-preview-base-url-value="/vanilla-rails-view-components-with-partials-41zctBGbN9ka/link_previews" data-link-preview-url-value="https://github.com/ViewComponent/view_component">view</a> <a href="https://github.com/trailblazer/cells" data-action="mouseover->link-preview#show mouseout->link-preview#hide" data-controller="link-preview" data-link-preview-base-url-value="/vanilla-rails-view-components-with-partials-41zctBGbN9ka/link_previews" data-link-preview-url-value="https://github.com/trailblazer/cells">component</a> gems, and partials.<br>Copy-pasting, even when using <a href="https://getbem.com/introduction/" data-action="mouseover->link-preview#show mouseout->link-preview#hide" data-controller="link-preview" data-link-preview-base-url-value="/vanilla-rails-view-components-with-partials-41zctBGbN9ka/link_previews" data-link-preview-url-value="https://getbem.com/introduction/">CSS conventions like BEM</a>, has the downside of being laborious to update should the component ever change. And I find the gems to be unnecessary since vanilla Rails already has all the features to render and manage view components through <a href="https://guides.rubyonrails.org/layouts_and_rendering.html#using-partials" data-action="mouseover->link-preview#show mouseout->link-preview#hide" data-controller="link-preview" data-link-preview-base-url-value="/vanilla-rails-view-components-with-partials-41zctBGbN9ka/link_previews" data-link-preview-url-value="https://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partials</a>.<br>This is an example of three different view components combined together to render a table-like list and a map within a content box with a title using just partials.<action-text-attachment sgid="BAh7CEkiCGdpZAY6BkVUSSIyZ2lkOi8vYmxvZy9BY3RpdmVTdG9yYWdlOjpCbG9iLzIyOT9leHBpcmVzX2luBjsAVEkiDHB1cnBvc2UGOwBUSSIPYXR0YWNoYWJsZQY7AFRJIg9leHBpcmVzX2F0BjsAVDA=--45f42c4e84bd7c0e0e37049c1429999d9be820d6" content-type="image/png" url="https://stanko.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBZVU9IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--d264ba289f6bb195ff1548beb6b68914a181f556/Untitled.png" filename="Untitled.png" filesize="601174" width="2512" height="752" previewable="true" caption="Code and browser view of multiple vanilla Rails view components composed together to show location details and a map side-by-side within a titled content box.">
+    <figure class="attachment attachment--preview attachment--png cursor-zoom-in" data-action=" click->enlarge-image#enlarge" data-controller="enlarge-image" data-enlarge-image-url-value="https://s3.fr-par.scw.cloud/assets.stanko.io/kp1fdpkexaaw64lyde4e5ekqqr0k">
+
+          <img loading="lazy" src="https://stanko.io/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MjI5LCJwdXIiOiJibG9iX2lkIn19--f6b735658e573b7fceaf7a1a1201cc782f7f7397/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsxMDI0LDc2OF19LCJwdXIiOiJ2YXJpYXRpb24ifX0=--567b63b27449fb73342219aac1215cfd3a1b572d/Untitled.png">
+
+      <figcaption class="attachment__caption">
+          Code and browser view of multiple vanilla Rails view components composed together to show location details and a map side-by-side within a titled content box.
+      </figcaption>
+    </figure></action-text-attachment>Code and browser view of multiple vanilla Rails view components composed together to show location details and a map side-by-side within a titled content box.<br>The <strong>component</strong> method might seem like there is a lot of magic under the hood, but there really isn’t. I added this method through <a href="https://api.rubyonrails.org/classes/ActionController/Helpers.html" data-action="mouseover->link-preview#show mouseout->link-preview#hide" data-controller="link-preview" data-link-preview-base-url-value="/vanilla-rails-view-components-with-partials-41zctBGbN9ka/link_previews" data-link-preview-url-value="https://api.rubyonrails.org/classes/ActionController/Helpers.html">a view helper</a> and it does just two things - it calls <strong>render</strong> with <strong>"components/#{component_name}"</strong> so that I don’t have to write the same incantation all over the place, and I’ll explain the the second purpose later.<br>For now, this is what the helper looks like</div>
+    <pre class="highlight"><span class="c1">#!/usr/bin/ruby</span>
+    <span class="k">module</span> <span class="nn">ComponentHelper</span>
+      <span class="k">def</span> <span class="nf">component</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{},</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+        <span class="n">full_path</span> <span class="o">=</span> <span class="no">Pathname</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"components"</span><span class="p">)</span> <span class="o">/</span> <span class="n">path</span>
+        <span class="n">render</span><span class="p">(</span><span class="n">full_path</span><span class="p">.</span><span class="nf">to_s</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span></pre>
+    <div>So <strong>component("map", longitude: 15.9765701, latitude: 45.8130054)</strong> is the same thing as <strong>render("components/map", longitude: 15.9765701, latitude: 45.8130054)</strong>.<br>Partials allow you to render a snippet of a view wherever you like. For example, instead of having to repeat all the HTML elements and Ruby code that renders two tables:</div>
+    <pre class="highlight">&lt;!-- app/views/matches/show.html.erb --&gt;
+    &lt;h2&gt;Winners&lt;/h2&gt;
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Rank&lt;/th&gt;
+          &lt;th&gt;Player&lt;/th&gt;
+          &lt;th&gt;Score&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;%= @match.winners.each do |player| %&gt;
+          &lt;tr&gt;
+            &lt;td&gt;&lt;%= player.rank %&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;%= player.name %&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;%= player.score %&gt;&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;% end %&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;h2&gt;Losers&lt;/h2&gt;
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Rank&lt;/th&gt;
+          &lt;th&gt;Player&lt;/th&gt;
+          &lt;th&gt;Score&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;%= @match.losers.each do |player| %&gt;
+          &lt;tr&gt;
+            &lt;td&gt;&lt;%= player.rank %&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;%= player.name %&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;%= player.score %&gt;&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;% end %&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;</pre>
+    <div>With partials you can just render the partial once for each table and pass it a local with the content it should render:</div>
+    <pre class="highlight">&lt;!-- app/views/matches/show.html.erb --&gt;
+    &lt;h2&gt;Winners&lt;/h2&gt;
+    &lt;!-- we are passing `@match.winners` as the local `players` to the partial --&gt;
+    &lt;%= render "players_table", players: @match.winners %&gt;
+
+    &lt;h2&gt;Losers&lt;/h2&gt;
+    &lt;%= render "players_table", players: @match.losers %&gt;
+
+    &lt;!-- app/views/matches/_players_table.html.erb --&gt;
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Rank&lt;/th&gt;
+          &lt;th&gt;Player&lt;/th&gt;
+          &lt;th&gt;Score&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;!-- the `players` local shows up in this partial as the `players` variable --&gt;
+        &lt;%= render collection: players, partial: "matches/player" %&gt;
+        &lt;!-- the above ^ is a shorthand for:
+        ```
+          &lt;% players.each do |player| %&gt;
+            &lt;%= render "matches/player", player: player %&gt;
+          &lt;% end %&gt;
+        ```
+        --&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;!-- app/views/matches/_player.html.erb --&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;%= player.rank %&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;%= player.name %&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;%= player.score %&gt;&lt;/td&gt;
+    &lt;/tr&gt;</pre>
+    <div>Using partials like this works for components that have predetermined content (like tables, maps and lists), but it’s a pain for components that can have anything inside them (like containers, content boxes and modals).<br>You could extract the content of each component into its own partial and pass the the name of the partial you want to render.</div>
+    <pre class="highlight">&lt;!-- app/views/teams/show.html.erb --&gt;
+    &lt;%= render "content_box", content_partial: "weekly_metrics", content_options: { team: @team } %&gt;
+    &lt;%= render "content_box", content_partial: "monthly_metrics", content_options: { team: @team } %&gt;
+
+    &lt;!-- app/views/teams/_content_box.html.erb --&gt;
+    &lt;section&gt;
+      &lt;%= render content_partial, content_options %&gt;
+    &lt;/section&gt;
+
+    &lt;!-- app/views/teams/_weekly_metrics.html.erb --&gt;
+    &lt;p&gt;Matches won: &lt;%= team.matches.where(created_at: (1.week.ago...)).won.count %&gt;&lt;/p&gt;
+    &lt;p&gt;Matches lost: &lt;%= team.matches.where(created_at: (1.week.ago...)).lost.count %&gt;&lt;/p&gt;
+    &lt;p&gt;Upcoming matches: &lt;%= team.matches.where(created_at: (Time.current...)).count %&gt;&lt;/p&gt;
+
+    &lt;!-- app/views/teams/_monthly_metrics.html.erb --&gt;
+    &lt;p&gt;Matches won: &lt;%= team.matches.where(created_at: (1.month.ago...)).won.count %&gt;&lt;/p&gt;
+    &lt;p&gt;Matches lost: &lt;%= team.matches.where(created_at: (1.month.ago...)).lost.count %&gt;&lt;/p&gt;</pre>
+    <div>This can be avoided by passing a block to the partial and yielding to it.</div>
+    <pre class="highlight">&lt;!-- app/views/teams/show.html.erb --&gt;
+    &lt;%= render "content_box" do %&gt;
+      &lt;p&gt;Matches won: &lt;%= @team.matches.where(created_at: (1.week.ago...)).won.count %&gt;&lt;/p&gt;
+      &lt;p&gt;Matches lost: &lt;%= @team.matches.where(created_at: (1.week.ago...)).lost.count %&gt;&lt;/p&gt;
+      &lt;p&gt;Upcoming matches: &lt;%= @team.matches.where(created_at: (Time.current...)).count %&gt;&lt;/p&gt;
+    &lt;% end %&gt;
+
+    &lt;%= render "content_box" do %&gt;
+      &lt;p&gt;Matches won: &lt;%= @team.matches.where(created_at: (1.month.ago...)).won.count %&gt;&lt;/p&gt;
+      &lt;p&gt;Matches lost: &lt;%= @team.matches.where(created_at: (1.month.ago...)).lost.count %&gt;&lt;/p&gt;
+    &lt;% end %&gt;
+
+    &lt;!-- app/views/teams/_content_box.html.erb --&gt;
+    &lt;section&gt;
+      &lt;%= yield %&gt;
+      &lt;!-- `yield` will be replaced by whatever is passed in the block --&gt;
+    &lt;/section&gt;</pre>
+    <div>That’s how <strong>component("content_box", title: "Location") do</strong> works.</div>
+    <pre class="highlight">&lt;!-- app/views/properties/show.html.erb --&gt;
+    &lt;% component("content_box", title: "Location") do %&gt;
+      &lt;h1&gt;Hello World!&lt;/h1&gt;
+    &lt;% end %&gt;
+
+    &lt;!-- app/views/components/_content_box.html.erb --&gt;
+    &lt;section class="rounded shadow bg-white"&gt;
+      &lt;!-- `local_assigns` is a hash that contains all the locals passed to a partial --&gt;
+      &lt;!-- we can check if a local is present and access it's value through it --&gt;
+      &lt;% if local_assigns.key?(:title) %&gt;
+        &lt;h4 class="text-gray-900 text-lg"&gt;
+          &lt;%= local_assigns[:title] %&gt;
+          &lt;!-- I could have used `title` instead of `local_assigns[:title]` --&gt;
+        &lt;/h4&gt;
+      &lt;% end %&gt;
+      &lt;div&gt;
+        &lt;%= yield %&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;</pre>
+    <div>This brings me back to the second purpose of the <strong>component</strong> method - fixing localization.<br>If I would use full localization keys for everything then there wouldn’t be a problem with just using <strong>render</strong>
+    </div>
+    <pre class="highlight">&lt;!-- app/views/properties/show.html.erb --&gt;
+    &lt;% render("components/content_box", title: t("properties.show.location")) do %&gt;
+      &lt;h1&gt;&lt;%= t("properties.show.hello_world") %&gt;&lt;/h1&gt;
+    &lt;% end %&gt;
+
+    &lt;!-- config/locales/en.yml --&gt;
+    en:
+      properties:
+        show:
+          location: "Location"
+          hello_world: "Hello World!"
+
+    &lt;!-- rendered HTML --&gt;
+    &lt;section class="rounded shadow bg-white"&gt;
+      &lt;h4 class="text-gray-900 text-lg"&gt;Location&lt;/h4&gt;
+      &lt;div&gt;
+        &lt;h1&gt;Hello World!&lt;/h1&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;</pre>
+    <div>But I’m lazy and like to use relative localization keys everywhere, which causes a problem.</div>
+    <pre class="highlight">&lt;!-- app/views/properties/show.html.erb --&gt;
+    &lt;% render("components/content_box", title: t(".location")) do %&gt;
+      &lt;h1&gt;&lt;%= t(".hello_world") %&gt;&lt;/h1&gt;
+    &lt;% end %&gt;
+
+    &lt;!-- config/locales/en.yml --&gt;
+    en:
+      properties:
+        show:
+          location: "Location"
+          hello_world: "Hello World!"
+
+    &lt;!-- rendered HTML --&gt;
+    &lt;section class="rounded shadow bg-white"&gt;
+      &lt;h4 class="text-gray-900 text-lg"&gt;Location&lt;/h4&gt;
+      &lt;div&gt;
+        &lt;h1&gt;
+          &lt;!-- This is what Rails render when a translation is missing --&gt;
+          &lt;!-- Notice that it looked for the translation in `en.components.content_box.hello_world` --&gt;
+          &lt;!-- instead of in `en.properties.show.hello_world` --&gt;
+          &lt;span class="translation_missing" title="translation missing: en.components.content_box.hello_world"&gt;
+            Hello World
+          &lt;/span&gt;
+        &lt;/h1&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;</pre>
+    <div>With relative localization keys, Rails prefixed the key with the path of the component instead of the parent.<br>When a view yields the passed block is rendered in the context of that view, not in the context of the view where the block was created. Since the partial yields the relative localization key prefix is <strong>components.content_box</strong>.<br>To solve this I can either use full localization keys within components, which is annoying; or I can add the translation to the component’s localization, which means that I would have to think about possible key collisions when using relative localization keys within components.<br>Thankfully there is a way to capture a part of a view within the context of the current view and store it as a variable. With the <strong>capture</strong> <a href="https://api.rubyonrails.org/classes/ActionView/Helpers/CaptureHelper.html#method-i-capture" data-action="mouseover->link-preview#show mouseout->link-preview#hide" data-controller="link-preview" data-link-preview-base-url-value="/vanilla-rails-view-components-with-partials-41zctBGbN9ka/link_previews" data-link-preview-url-value="https://api.rubyonrails.org/classes/ActionView/Helpers/CaptureHelper.html#method-i-capture">method</a> I can yield the block passed to the component in the context of the current view, store the result to a variable, and pass that variable in a block to <strong>render</strong>.<br>Here is the full <strong>ComponentHelper</strong> code with the relative locale keys fix.</div>
+    <pre class="highlight"><span class="c1">#!/usr/bin/ruby</span>
+    <span class="k">module</span> <span class="nn">ComponentHelper</span>
+      <span class="k">def</span> <span class="nf">component</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">locals</span> <span class="o">=</span> <span class="p">{},</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+        <span class="n">full_path</span> <span class="o">=</span> <span class="no">Pathname</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"components"</span><span class="p">)</span> <span class="o">/</span> <span class="n">path</span>
+
+        <span class="k">if</span> <span class="n">block</span>
+          <span class="c1"># Render the passed block within the current context and</span>
+          <span class="c1"># store it in the `content` variable</span>
+          <span class="n">content</span> <span class="o">=</span> <span class="n">capture</span> <span class="k">do</span>
+            <span class="n">block</span><span class="p">.</span><span class="nf">call</span>
+          <span class="k">end</span>
+
+          <span class="c1"># Call render but pass it a new block that yields just</span>
+          <span class="c1"># the contents of the `content` variable</span>
+          <span class="n">render</span><span class="p">(</span><span class="n">full_path</span><span class="p">.</span><span class="nf">to_s</span><span class="p">,</span> <span class="n">locals</span><span class="p">)</span> <span class="p">{</span> <span class="n">content</span> <span class="p">}</span>
+        <span class="k">else</span>
+          <span class="n">render</span><span class="p">(</span><span class="n">full_path</span><span class="p">.</span><span class="nf">to_s</span><span class="p">,</span> <span class="n">locals</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span></pre>
+    <div>And that’s all there is to it - <strong>render</strong>, <strong>local_assigns</strong>, <strong>yield</strong> and <strong>capture</strong>.</div>
+
+<% 100.times do |i| %>
+filler_article_<%= i %>:
+  record: filler_article_<%= i %> (Article)
+  name: content
+  body: >
+    <div>
+      <%= Faker::HTML.paragraph %>
+      <%= Faker::HTML.paragraph %>
+      <%= Faker::HTML.paragraph %>
+      <%= Faker::HTML.code %>
+      <%= Faker::HTML.paragraph %>
+      <%= Faker::HTML.paragraph %>
+      <%= Faker::HTML.paragraph %>
+    </div>
+<% end %>

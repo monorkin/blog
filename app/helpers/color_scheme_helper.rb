@@ -5,7 +5,7 @@ module ColorSchemeHelper
   DARK_COLOR_SCHEME_CLASS = 'color-scheme--dark'
 
   def current_color_scheme_class
-    color_scheme_class_for(current_color_scheme)
+    color_scheme_class_for(Current.settings&.color_scheme_or_default)
   end
 
   def color_scheme_class_for(scheme)
@@ -21,14 +21,5 @@ module ColorSchemeHelper
 
   def dark_color_scheme_class
     DARK_COLOR_SCHEME_CLASS
-  end
-
-  def current_color_scheme
-    return if cookies[:color_scheme].blank?
-
-    scheme = cookies[:color_scheme]&.to_s&.downcase&.to_sym
-    return unless %i[light dark auto].include?(scheme)
-
-    scheme
   end
 end

@@ -1,0 +1,52 @@
+<div class="flex flex-col gap-y-8">
+  <section class="flex flex-col md:flex-row gap-x-8 gap-y-8 px-2 md:px-0">
+    <div class="basis-1/3 p-4 sm:px-8 md:p-0">
+      <%= profile_image_tag class: "rounded-lg rotate-2 lg:shadow-lg" %>
+    </div>
+    <div class="basis-2/3 flex flex-col justify-center gap-y-2">
+      <h1 class="text-3xl font-bold text-neutral-800 dark:text-white">
+        Hi, I'm Stanko Krtalić Rusendić
+      </h1>
+      <p class="dark:text-neutral-100">
+        I am a Web developer from Zagreb making products with
+        <%= link_to "Ruby on Rails", "https://rubyonrails.org/", target: :_blank %>,
+        <%= link_to "Hotwired", "https://hotwired.dev/", target: :_blank %> and
+        <%= link_to "Tailwind", "https://tailwindcss.com/", target: :_blank %>.
+      </p>
+    </div>
+  </section>
+
+  <section class="px-2 md:px-0">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-1 justify-items-between">
+      <%= mail_to "hey@stanko.io", class: "col-span-2 md:col-span-1" do %>
+        <%= about_page_contact_link_content("Email", "others_logos/hey.svg") %>
+      <% end %>
+      <%= link_to "https://github.com/monorkin", target: :_blank do %>
+        <%= about_page_contact_link_content("GitHub", "others_logos/github.svg") %>
+      <% end %>
+      <%= link_to "https://mastodon.social/@monorkin", target: :_blank do %>
+        <%= about_page_contact_link_content("Mastodon", "others_logos/mastodon.svg") %>
+      <% end %>
+      <%= link_to "https://twitter.com/monorkin", target: :_blank do %>
+        <%= about_page_contact_link_content("Twitter", "others_logos/twitter.svg") %>
+      <% end %>
+      <%= link_to "https://www.linkedin.com/in/stanko-krtalic/", target: :_blank do %>
+        <%= about_page_contact_link_content("LinkedIn", "others_logos/linkedin.png") %>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="flex flex-col gap-y-4 px-2 md:px-0">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+      <%= t(".latest_articles") %>
+    </h2>
+
+    <%= article_list(@latest_articles) %>
+
+    <div>
+      <%= link_to articles_path, class: "text-lg text-indigo-600 hover:text-indigo-800 dark:text-indigo-500 dark:hover:text-indigo-400" do %>
+        <%= text_with_icon(:arrow_long_right, t(".see_all"), position: :after) %>
+      <% end %>
+    </div>
+  </section>
+</div>

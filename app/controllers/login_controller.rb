@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LoginController < ApplicationController
   def new
     @login = Login.new
@@ -23,7 +21,7 @@ class LoginController < ApplicationController
 
   private
 
-  def permitted_params
-    params.require(:login).permit(:username, :password)
-  end
+    def permitted_params
+      params.require(:login).permit(:username, :password)
+    end
 end

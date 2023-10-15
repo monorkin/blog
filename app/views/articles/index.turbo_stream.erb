@@ -1,0 +1,7 @@
+<%= turbo_stream.append "articles" do %>
+  <%= render @articles %>
+<% end %>
+
+<%= turbo_stream.replace "pagination" do %>
+  <%= render "articles/paginaton_controls", page: @page %>
+<% end %>

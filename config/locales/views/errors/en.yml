@@ -7,3 +7,19 @@ en:
     internal_server_error:
       internal_server_error: "Something went wrong..."
       image_description: "A concerned penguin next to a keyboard and in front of a burning computer screen"
+
+    im_a_teapot:
+      im_a_teapot: "I'm a teapot!"
+      image_description: "A penguin-shaped teapot"
+
+    unauthorized:
+      unauthorized: "You are not authorized to access this page"
+      image_description: "A penguin in a police uniform"
+
+    unavailable_for_legal_reasons:
+      unavailable_for_legal_reasons: "This page is unavailable for legal reasons"
+      image_description: "A penguin dressed up as a lawyer"
+
+    unprocessable_entity:
+      unprocessable_entity: "The data you sent is invalid"
+      image_description: "A collage of multiple slightly deformed penguins agains a neon background"

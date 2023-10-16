@@ -1,0 +1,19 @@
+<%= turbo_frame_tag "link_preview-#{@link_preview.id}" do %>
+  <% if @link_preview.present? && @link_preview.valid? %>
+    <%= cache(@link_preview) do %>
+      <div class="flex flex-col gap-y-4">
+        <div class="p-2">
+          <h6 class="font-semibold font-lg dark:text-white"><%= @link_preview.title %></h6>
+          <p class="text-sm"><%= @link_preview.description %></p>
+        </div>
+        <% if @link_preview.image? %>
+          <%= image_tag(@link_preview.image_url, class: "m-0") %>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="w-full flex align-center font-semibold p-4 text-red-700 dark:text-red-300">
+      <%= t(".unavailable") %>
+    </div>
+  <% end %>
+<% end %>

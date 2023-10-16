@@ -5,15 +5,6 @@
 
   classes << "attachment--#{blob.representable? ? "preview" : "file"}"
   classes << "attachment--#{blob.filename.extension}"
-
-  if blob.image? && blob.representable?
-    classes << "cursor-zoom-in"
-    data[:action] ||= ""
-    data[:action] += " click->enlarge-image#enlarge"
-    data[:controller] ||= ""
-    data[:controller] += "enlarge-image"
-    data[:enlarge_image_url_value] = blob.url
-  end
 %>
 
 <%= content_tag(:figure, class: classes, data: data) do %>

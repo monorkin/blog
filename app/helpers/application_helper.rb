@@ -19,4 +19,12 @@ module ApplicationHelper
 
     image_tag(default_image_path, **options)
   end
+
+  def validation_errors(form)
+    content_tag(:ul, class: "text-red-900 p-4 rounded-lg border border-red-700 bg-red-300") do
+      form.object.errors.full_messages.each do |message|
+        concat(content_tag(:li, message))
+      end
+    end
+  end
 end

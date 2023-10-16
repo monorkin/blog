@@ -31,7 +31,6 @@ module Blog
         "loading",
         "data-controller",
         "data-action",
-        "data-enlarge-image-url-value",
         *ActionText::ContentHelper.sanitizer.class.allowed_attributes,
         *ActionText::Attachment::ATTRIBUTES
       ]

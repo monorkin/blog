@@ -1,27 +1,25 @@
-<div class="content">
-  <%= component("card", title: t(".login")) do  %>
-    <%= form_for(@login, url: login_path) do |login| %>
-      <label>
-        <div>
-          <%= Login.human_attribute_name(:username) %>
-        </div>
-        <%= login.text_field :username %>
-      </label>
+<div class="rounded-lg m-4 p-4 shadow-lg bg-white dark:bg-neutral-900 dark:border dark:border-neutral-800">
+  <h1 class="text-2xl font-bold mb-4"><%= t(".login") %></h1>
 
-      <label>
-        <div>
-          <%= Login.human_attribute_name(:password) %>
-        </div>
-        <%= login.password_field :password %>
-      </label>
-
+  <%= form_for(@login, url: login_path, html: { class: "flex flex-col gap-y-4" }) do |login_form| %>
+    <label>
       <div>
-        <%= login.submit t(".login") %>
+        <%= Login.human_attribute_name(:username) %>
       </div>
+      <%= login_form.text_field :username, class: "w-full rounded border border-neutral-300 dark:text-black" %>
+    </label>
 
-      <% if login.object.errors.any? %>
-        <p class="text-red-500"><%= login.object.errors.full_messages.join("; ") %></p>
-      <% end %>
-    <% end %>
+    <label>
+      <div>
+        <%= Login.human_attribute_name(:password) %>
+      </div>
+      <%= login_form.password_field :password, class: "w-full rounded border border-neutral-300 dark:text-black" %>
+    </label>
+
+    <div>
+      <%= login_form.submit t(".login"), class: "rounded bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-400 text-white p-2 w-full cursor-pointer" %>
+    </div>
+
+    <%= validation_errors(login_form) if login_form.object.errors.any? %>
   <% end %>
 </div>

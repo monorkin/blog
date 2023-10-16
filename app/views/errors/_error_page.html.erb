@@ -1,0 +1,6 @@
+<%# locals: (title:, path:, description:) -%>
+
+<div class="p-4 flex flex-col gap-y-8 place-items-center">
+  <h1 class="text-4xl font-bold text-neutral-600 dark:text-neutral-400 text-center"><%= title %></h1>
+  <%= image_tag path, alt: description, title: description, class: "w-full md:w-2/3 drop-shadow md:drop-shadow-lg rounded-full" %>
+</div>

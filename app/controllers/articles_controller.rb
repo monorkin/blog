@@ -8,6 +8,9 @@ class ArticlesController < ApplicationController
 
   before_action only: %i[show edit update destroy] do
     @article = Article.from_slug!(params[:slug])
+  rescue ActiveRecord::RecordNotFound
+    raise if Rails.env.local?
+    redirect_to({ controller: :errors, action: :not_found }, status: :see_other)
   end
 
   before_action only: %i[new create edit update destroy] do

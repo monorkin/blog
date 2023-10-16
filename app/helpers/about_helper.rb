@@ -6,7 +6,7 @@ module AboutHelper
         "",
         class: %[
           hidden md:block absolute inset-0 z-10
-          group-hover:bg-gradient-radial from-indigo-600/20 group-hover:from-10% group-hover:to-70%
+          group-hover:bg-gradient-radial from-indigo-600/20 group-hover:from-10% group-hover:to-40%
           transition-all duration-300 ease-out
         ]
       ) +

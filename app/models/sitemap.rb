@@ -47,7 +47,7 @@ class Sitemap < ApplicationModel
     set.add root_path,
             changefreq: 'monthly',
             priority: 1.0,
-            lastmod: File.mtime(Rails.root.join('app/views/about/show.html.slim'))
+            lastmod: File.mtime(Rails.root.join('app/views/about/show.html.erb'))
   end
 
   def expose_article_paths!(set)

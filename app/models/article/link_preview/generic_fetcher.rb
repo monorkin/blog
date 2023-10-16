@@ -57,7 +57,7 @@ class Article
           url = redirect_to(response)
           response.close
         end
-      rescue Async::TimeoutError, SocketError, ArgumentError
+      rescue Async::TimeoutError, SocketError, ArgumentError, OpenSSL::SSL::SSLError
         nil
       ensure
         response&.close

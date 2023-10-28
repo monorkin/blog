@@ -40,9 +40,13 @@
     </div>
 
     <div>
-      <h1 class="text-4xl font-semibold my-4">
+      <h1 class="text-4xl font-semibold mt-4 mb-2">
         <%= @article.title %>
       </h1>
+      <div class="flex flex-row gap-x-2 mb-3">
+        <% @article.tags.each do |tag| %>
+          <%= tag_bubble(tag) %>
+        <% end %>
     </div>
 
     <div data-controller="article">

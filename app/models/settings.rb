@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Settings < ApplicationModel
   COLOR_SCHEMES = %w[auto light dark].freeze
   DEFAULT_COLOR_SCHEME = "auto".freeze

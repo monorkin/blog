@@ -1,30 +1,8 @@
 # frozen_string_literal: true
 
-# == Schema Information
-# Schema version: 20210704144106
-#
-# Table name: articles
-#
-#  id           :string           not null, primary key
-#  content      :text             default(""), not null
-#  publish_at   :datetime
-#  published    :boolean          default(FALSE), not null
-#  published_at :datetime
-#  searchable   :tsvector
-#  slug         :text             default(""), not null
-#  thread       :string
-#  title        :text             default(""), not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#
-# Indexes
-#
-#  index_articles_on_published_at  (published_at)
-#  index_articles_on_searchable    (searchable) USING gin
-#  index_articles_on_thread        (thread)
-#
 class Article < ApplicationRecord
   include ActionView::Helpers::TextHelper
+  include Taggable
 
   has_rich_text :content
 
@@ -84,7 +62,7 @@ class Article < ApplicationRecord
   end
 
   def excerpt(length: 300)
-    truncate(plain_text, length: length)
+    truncate(plain_text, length: length, separator: " ")
   end
 
   def estimated_reading_time(words_per_minute: 225)
@@ -97,13 +75,6 @@ class Article < ApplicationRecord
 
   def plain_text
     content.body.to_plain_text.gsub(/\[[^\]]*\]/, "")
-  end
-
-  def suggested_articles
-    Article
-      .all
-      .published
-      .where.not(id: self)
   end
 
   def generate_slug_id!

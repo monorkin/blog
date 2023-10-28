@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Search < ApplicationModel
   attr_accessor :term, :result_count
 

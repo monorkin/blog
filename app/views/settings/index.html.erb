@@ -1,12 +1,12 @@
 <%= turbo_frame_tag :settings do %>
-  <div class="relative mt-5 mx-5">
+  <div class="relative m-5">
     <div class="hidden absolute -top-4 -right-4 h-8 z-20 group-data-[close-button=true]:block">
       <%= link_to root_path, class: "flex items-center justify-center w-8 h-8 bg-white rounded-full shadow transition-all scale-100 hover:scale-110", data: { action: "dialog#close" } do %>
         <%= close_icon(class: "w-4 h-4 text-gray-500") %>
       <% end %>
     </div>
 
-    <div class="bg-neutral-100 rounded-lg z-10 shadow md:shadow-xl dark:bg-neutral-900 dark:border dark:border-neutral-500 dark:text-neutral-100">
+    <div class="bg-neutral-100 rounded-lg z-10 shadow md:shadow-xl dark:bg-neutral-900 dark:border dark:border-neutral-500 dark:text-neutral-100 p-2">
       <h2 class="p-2 text-lg font-semibold"><%= t(".settings") %></h2>
 
       <dl class="grid grid-cols-2 border-neutral-500 overflow-hidden rounded-lg items-center">
@@ -14,17 +14,17 @@
         <dd class="p-2">
           <div class="grid grid-rows-3 grid-cols-1 md:grid-rows-1 md:grid-cols-3 overflow-hidden rounded-lg border border-neutral-500 divide-y md:divide-x md:divide-y-0">
             <%= radio_button_tag :color_scheme, "system", Current.settings&.color_scheme_auto?, id: "system_color_scheme", class: "peer/system-color-scheme hidden", data: { action: "color-scheme#useSystemColorScheme" } %>
-            <label for="system_color_scheme" class="p-2 cursor-pointer border-neutral-500 text-neutral-800 dark:text-white peer-checked/system-color-scheme:bg-indigo-600 peer-checked/system-color-scheme:text-white">
+            <label for="system_color_scheme" class="p-2 cursor-pointer border-neutral-500 text-neutral-800 dark:text-white peer-checked/system-color-scheme:bg-indigo-600 peer-checked/system-color-scheme:text-white dark:peer-checked/system-color-scheme:bg-yellow-600">
               <%= text_with_icon(:computer, t(".color_theme.system"), class: "w-4 h-4") %>
             </label>
 
             <%= radio_button_tag :color_scheme, "light", Current.settings&.color_scheme_light?, id: "light_color_scheme", class: "peer/light-color-scheme hidden", data: { action: "color-scheme#useLightColorScheme" } %>
-            <label for="light_color_scheme" class="p-2 cursor-pointer border-neutral-500 text-neutral-800 dark:text-white peer-checked/light-color-scheme:bg-indigo-600 peer-checked/light-color-scheme:text-white">
+            <label for="light_color_scheme" class="p-2 cursor-pointer border-neutral-500 text-neutral-800 dark:text-white peer-checked/light-color-scheme:bg-indigo-600 peer-checked/light-color-scheme:text-white dark:peer-checked/light-color-scheme:bg-yellow-600">
               <%= text_with_icon(:sun, t(".color_theme.light"), class: "w-4 h-4") %>
             </label>
 
             <%= radio_button_tag :color_scheme, "dark", Current.settings&.color_scheme_dark?, id: "dark_color_scheme", class: "peer/dark-color-scheme hidden", data: { action: "color-scheme#useDarkColorScheme" } %>
-            <label for="dark_color_scheme" class="p-2 cursor-pointer border-neutral-500 text-neutral-800 dark:text-white peer-checked/dark-color-scheme:bg-indigo-600 peer-checked/dark-color-scheme:text-white">
+            <label for="dark_color_scheme" class="p-2 cursor-pointer border-neutral-500 text-neutral-800 dark:text-white peer-checked/dark-color-scheme:bg-indigo-600 peer-checked/dark-color-scheme:text-white dark:peer-checked/dark-color-scheme:bg-yellow-600">
               <%= text_with_icon(:moon, t(".color_theme.dark"), class: "w-4 h-4") %>
             </label>
           </div>

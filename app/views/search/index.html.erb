@@ -10,7 +10,7 @@
       <div class="grow-0 relative p-2 dark:border-neutral-500">
         <%= form_for @search, url: search_path, method: :get, html: { class: "flex flex-row items-center gap-x-4" } do |search_form| %>
           <label class="cursor-pointer">
-            <%= search_icon(class: "w-6 h-6 text-indigo-600 hover:text-indigo-800 dark:text-indigo-500 dark:hover:text-indigo-400") %>
+            <%= search_icon(class: "w-6 h-6 text-indigo-600 hover:text-indigo-800 dark:text-yellow-500 dark:hover:text-yellow-400") %>
             <%= search_form.submit "", class: "hidden" %>
             <span class="sr-only"><%= t(".search") %></span>
           </label>

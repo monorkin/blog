@@ -4,12 +4,12 @@
   id="pagination">
 
   <% unless page.first? %>
-    <%= link_to url_for(page: params.fetch(:page, 2).to_i - 1), class: "text-indigo-600 hover:text-indigo-800 dark:text-indigo-500 dark:hover:text-indigo-400" do %>
+    <%= link_to url_for(page: params.fetch(:page, 2).to_i - 1), class: "text-indigo-600 hover:text-indigo-800 dark:text-yellow-500 dark:hover:text-yellow-400" do %>
       <%= text_with_icon(:arrow_long_left, t('.previous_page'), position: :before, wrapper: { class: "justify-center" }) %>
     <% end %>
   <% end %>
   <% unless page.last? %>
-    <%= link_to url_for(page: page.next_param), data: { infinite_scroll_target: "nextButton" }, class: "text-indigo-600 hover:text-indigo-800 dark:text-indigo-500 dark:hover:text-indigo-400" do %>
+    <%= link_to url_for(page: page.next_param), data: { infinite_scroll_target: "nextButton" }, class: "text-indigo-600 hover:text-indigo-800 dark:text-yellow-500 dark:hover:text-yellow-400" do %>
       <%= text_with_icon(:arrow_long_right, t('.next_page'), position: :after, wrapper: { class: "justify-center" }) %>
     <% end %>
   <% end %>

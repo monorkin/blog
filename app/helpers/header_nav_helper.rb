@@ -30,7 +30,7 @@ module HeaderNavHelper
         content_tag(:div, class: "fixed bottom-9 right-4") do
           link_to(
             settings_path,
-            class: "p-2 block group bg-white dark:bg-neutral-900 dark:border dark:border-neutral-800 shadow-lg rounded-full text-indigo-600 hover:text-indigo-800 dark:text-indigo-500 dark:hover:text-indigo-400",
+            class: "p-2 block group bg-white dark:bg-neutral-900 dark:border dark:border-neutral-800 shadow-lg rounded-full text-indigo-600 hover:text-indigo-800 dark:text-yellow-500 dark:hover:text-yellow-400",
             data: { controller: "modal-action", modal_action_frame_name_value: :settings, modal_action_data_attributes_value: { "closeButton" => true }.to_json }
           ) do
             settings_icon(class: "group-hover:animate-spin w-6 h-6") +
@@ -86,7 +86,7 @@ module HeaderNavHelper
   def header_nav_item(url, **options, &block)
     wrapper_options = options.delete(:wrapper) || {}
 
-    options[:class] = "flex flex-row items-center gap-x-2 font-mono font-semibold uppercase text-indigo-600 dark:text-indigo-500 #{options[:class]}"
+    options[:class] = "flex flex-row items-center gap-x-2 font-mono font-semibold uppercase text-indigo-600 dark:text-yellow-500 #{options[:class]}"
 
     content_tag(:li, class: wrapper_options[:class]) do
       link_to(url, options, &block)

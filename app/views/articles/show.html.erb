@@ -27,7 +27,7 @@
 
 <article class="px-2 md:px-0">
   <div class="flex flex-row gap-x-4">
-    <span><%= link_to text_with_icon(:arrow_long_left, t(".back")), articles_path, class: "text-indigo-600 hover:text-indigo-800 dark:text-indigo-500 dark:hover:text-indigo-400" %></span>
+    <span><%= link_to text_with_icon(:arrow_long_left, t(".back")), articles_path, class: "text-indigo-600 hover:text-indigo-800 dark:text-yellow-500 dark:hover:text-yellow-400" %></span>
     <% if Current.user.present? %>
       <span class="font-semibold"><%= link_to t(".edit"), edit_article_path(@article) %></span>
       <span class="font-semibold"><%= button_to t(".delete"), article_path(@article), method: :delete, data: { turbo_confirm: t(".confirm_delete") } %></span>

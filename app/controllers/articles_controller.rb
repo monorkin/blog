@@ -40,7 +40,10 @@ class ArticlesController < ApplicationController
     request.format = :atom
 
     @articles = scope.published.order(ORDER)
-    fresh_when(@articles)
+
+    if params[:tag].present?
+      @articles = @articles.tagged_with(params[:tag])
+    end
   end
 
   def show

@@ -43,10 +43,17 @@
       <h1 class="text-4xl font-semibold mt-4 mb-2">
         <%= @article.title %>
       </h1>
-      <div class="flex flex-row gap-x-2 mb-3">
-        <% @article.tags.each do |tag| %>
-          <%= tag_bubble(tag) %>
-        <% end %>
+
+      <div class="relative">
+        <div class="z-20 absolute top-0 bottom-0 right-0 w-4 bg-gradient-to-l from-neutral-50 dark:from-black"></div>
+        <div class="z-10 overflow-x-scroll overflow-y-hidden pr-4">
+          <div class="mb-1 pb-2 flex flex-row gap-x-2">
+            <% @article.tags.each do |tag| %>
+              <%= tag_bubble(tag) %>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div data-controller="article">

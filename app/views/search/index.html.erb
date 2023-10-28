@@ -31,21 +31,40 @@
           </div>
         <% else %>
           <ul class="flex flex-col divide-y">
-            <% results.each do |result| %>
-              <%= cache([result, :search_result]) do %>
-                <li class="group/result">
-                  <div class="relative p-2 group-hover/result:bg-neutral-200 dark:group-hover/result:bg-neutral-700">
-                    <%= link_to "", result, class: "absolute inset-0" %>
-                    <div class="font-semibold dark:text-white">
-                      <%= result.title %>
+
+            <% if results[:articles].any? %>
+              <% results[:articles].each do |result| %>
+                <%= cache([result, :search_result]) do %>
+                  <li class="group/result overflow-hidden p-1">
+                    <div class="relative p-1 rounded group-hover/result:bg-neutral-200 dark:group-hover/result:bg-neutral-700">
+                      <%= link_to "", result, class: "absolute inset-0" %>
+                      <div class="font-semibold dark:text-white truncate">
+                        <%= result.title %>
+                      </div>
+                      <div class="text-sm text-neutral-500 dark:group-hover/result:text-neutral-400">
+                        <%= result.class %>
+                      </div>
                     </div>
-                    <div class="text-sm text-neutral-500 dark:group-hover/result:text-neutral-400">
-                      <%= result.class %>
-                    </div>
-                  </div>
-                </li>
+                  </li>
+                <% end %>
               <% end %>
             <% end %>
+
+            <% if results[:tags].any? %>
+              <li>
+                <div class="relative p-2">
+                  <div class="font-semibold dark:text-white">
+                    <%= Tag.model_name.human(count: 5) %>
+                  </div>
+                </div>
+                <div class="px-2 pb-2 flex flex-wrap gap-2">
+                  <% results[:tags].each do |tag| %>
+                    <%= tag_bubble(tag) %>
+                  <% end %>
+                </div>
+              </li>
+            <% end %>
+
           </ul>
         <% end %>
 

@@ -47,7 +47,7 @@ module HeaderNavHelper
         header_about_nav_item
       end +
       content_tag(:div, data: { controller: "navigation", navigation_dialog_outlet: "#navigation-dialog" }) do
-        content_tag(:a, class: "round text-indigo-600 cursor-pointer", data: { action: "navigation#openMenu" }) do
+        content_tag(:a, class: "round text-indigo-600 dark:text-yellow-500 cursor-pointer", data: { action: "navigation#openMenu" }) do
           menu_icon(class: "w-6 h-6")
         end +
         content_tag(

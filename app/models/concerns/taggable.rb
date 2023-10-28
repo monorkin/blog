@@ -3,6 +3,10 @@
 module Taggable
   extend ActiveSupport::Concern
 
+  def self.sanitize_tags(*tags)
+    Array.wrap(tags).flatten.map { Tag.normalize_value_for(:name, _1) }.uniq
+  end
+
   included do
     has_many :taggings,
       class_name: "Tag::Tagging",
@@ -11,12 +15,11 @@ module Taggable
     has_many :tags,
       through: :taggings
 
-    scope :including_tags, -> { includes(:tags) }
-    scope :tagged_with, ->(tags) { joins(:tags).where(tags: { name: tags }) }
+    scope :tagged_with, ->(tags) { joins(:tags).where(tags: { name: Taggable.sanitize_tags(tags) }) }
   end
 
   def tag(*names)
-    names = Array.wrap(names).map { _1.strip.downcase }.uniq
+    names = Taggable.sanitize_tags(*names)
 
     # First we batch-load all existing tags, and
     # assign them skipping any already assigned

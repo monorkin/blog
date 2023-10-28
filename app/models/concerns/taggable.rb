@@ -36,4 +36,14 @@ module Taggable
       taggings.build(tag: tag)
     end
   end
+
+  def tags=(value)
+    if value.is_a?(String)
+      taggings.clear
+      tags.clear
+      tag(value.split(","))
+    else
+      super
+    end
+  end
 end

@@ -85,7 +85,7 @@ class ArticlesController < ApplicationController
 
     def permitted_params
       params.require(:article).permit(:title, :content, :publish_at, :published,
-        :slug)
+        :slug, :tags)
     end
 
     def scope

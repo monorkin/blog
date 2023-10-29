@@ -176,9 +176,6 @@ GEM
     importmap-rails (1.1.5)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
-    inline_svg (1.8.0)
-      activesupport (>= 3.0)
-      nokogiri (>= 1.6)
     io-console (0.6.0)
     io-event (1.1.7)
     irb (1.8.3)
@@ -393,7 +390,6 @@ DEPENDENCIES
   hiredis
   image_processing (~> 1.8)
   importmap-rails
-  inline_svg
   kamal
   kredis (~> 1.2)
   listen

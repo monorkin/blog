@@ -4,6 +4,9 @@ en:
       published: "Published on %{date}"
       reading_time: "%{duration} min read"
 
+    index:
+      new: "New Article"
+
     show:
       back: "Back"
       edit: "Edit"

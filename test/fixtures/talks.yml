@@ -1,0 +1,28 @@
+do_you_really_need_websockets_webcamp_2018:
+  title: "Do you really need WebSockets?"
+  event: "WebCamp Zagreb 2018"
+  event_url: "https://2018.webcampzg.org/talks/do-you-really-need-websockets/"
+  video_mirror_url: "https://www.youtube.com/watch?v=LoqCvGqFyb4"
+  held_at: 2018-10-06T15:00:00+02:00
+
+developing_a_safer_web_with_rust_webcamp_zagreb_2017:
+  title: "Developing a Safer Web with Rust"
+  event: "WebCamp Zagreb 2017"
+  event_url: "https://2017.webcampzg.org/talks/developing-a-safer-web-with-rust/"
+  video_mirror_url: "https://www.youtube.com/watch?v=gUB4H7b19Aw"
+  held_at: 2017-10-06T16:55:00+02:00
+
+stubs_mocks_and_spies_voxxed_days_belgrade_2016:
+  title: "Stubs, Mocks & Spies"
+  event: "Voxxed Days Belgrade 2016"
+  event_url: "https://belgrade.voxxeddays.com/"
+  video_mirror_url: "https://www.youtube.com/watch?v=mchwIVX0KJY"
+  held_at: 2016-09-28T12:00:00+02:00
+
+
+<% 100.times do |i| %>
+filler_article_<%= i %>:
+  title: "<%= Faker::Lorem.sentence %> <%= i %>"
+  event: "Phony Event <%= i %>"
+  held_at: <%= ((Date.today.year - 2015).years + i.months).ago %>
+<% end %>

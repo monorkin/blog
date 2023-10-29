@@ -1,11 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  tag: one
-  taggable: one
-  taggable_type: Taggable
+people_on_misguided_mark:
+  tag: people
+  taggable: misguided_mark (Article)
 
-two:
-  tag: two
-  taggable: two
-  taggable_type: Taggable
+people_on_hold_your_own_poison_ivy:
+  tag: people
+  taggable: hold_your_own_poison_ivy (Article)
+
+ruby_on_vanilla_rails_view_components_with_partials:
+  tag: ruby
+  taggable: vanilla_rails_view_components_with_partials (Article)

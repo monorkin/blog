@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_10_28_054347) do
+ActiveRecord::Schema[7.1].define(version: 2023_10_29_081537) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pgcrypto"
@@ -86,6 +86,16 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_28_054347) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
+  create_table "talks", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "event", null: false
+    t.text "event_url"
+    t.text "video_mirror_url"
+    t.datetime "held_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

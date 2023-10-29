@@ -20,6 +20,12 @@
     <h1>Articles | Stanko K.R.</h1>
   </section>
 
+  <% if Current.user.present? %>
+    <div class="flex flex-row gap-x-4">
+      <%= link_to t(".new"), new_article_path, class: primary_button_classes %>
+    </div>
+  <% end %>
+
   <section>
     <% if @articles.any? %>
       <%= article_list(@articles, id: "articles") %>

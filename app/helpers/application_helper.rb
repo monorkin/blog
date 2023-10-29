@@ -27,4 +27,8 @@ module ApplicationHelper
       end
     end
   end
+
+  def primary_button_classes(extra_classes = nil)
+    "rounded text-white p-2 cursor-pointer bg-indigo-500 hover:bg-indigo-700 dark:bg-yellow-500 dark:text-yellow-900 dark:hover:bg-yellow-400 #{extra_classes}".strip
+  end
 end

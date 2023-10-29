@@ -1,0 +1,37 @@
+<%= form_for talk, html: { class: "flex flex-col gap-y-4" } do |talk_form| %>
+  <%= validation_errors(talk_form) if talk_form.object.errors.any? %>
+
+  <label>
+    <%= talk_form.object.class.human_attribute_name(:title) %>
+    <%= talk_form.text_field :title, class: "w-full rounded border border-neutral-300 dark:text-black" %>
+  </label>
+
+  <label>
+    <%= talk_form.object.class.human_attribute_name(:event) %>
+    <%= talk_form.text_field :event, class: "w-full rounded border border-neutral-300 dark:text-black" %>
+  </label>
+
+  <label>
+    <%= talk_form.object.class.human_attribute_name(:event_url) %>
+    <%= talk_form.text_field :event_url, class: "w-full rounded border border-neutral-300 dark:text-black" %>
+  </label>
+
+  <label>
+    <%= talk_form.object.class.human_attribute_name(:video_mirror_url) %>
+    <%= talk_form.text_field :video_mirror_url, class: "w-full rounded border border-neutral-300 dark:text-black" %>
+  </label>
+
+  <label>
+    <%= talk_form.object.class.human_attribute_name(:video) %>
+    <%= talk_form.file_field :video, accept: %w[.mp4 .m4v .webm].join(","), class: "w-full rounded border border-neutral-300 dark:text-black p-2" %>
+  </label>
+
+  <label>
+    <%= talk_form.object.class.human_attribute_name(:held_at) %>
+    <%= talk_form.datetime_field :held_at, class: "w-full rounded border border-neutral-300 dark:text-black" %>
+  </label>
+
+  <%= talk_form.rich_text_area(:description) %>
+
+  <%= talk_form.submit t(".save"), class: "rounded text-white p-2 w-full cursor-pointer bg-indigo-500 hover:bg-indigo-700 dark:bg-yellow-500 dark:text-yellow-900 dark:hover:bg-yellow-400" %>
+<% end %>

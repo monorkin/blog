@@ -1,0 +1,28 @@
+<li class="group">
+  <div class="p-2 rounded-lg group-hover:bg-neutral-100 dark:group-hover:bg-neutral-900">
+    <div class="relative">
+
+      <%= link_to "", talk, class: "z-40 absolute inset-0" %>
+
+      <div class="z-30 ml-8 py-3 flex flex-col gap-y-2">
+        <div class="font-semibold">
+          <%= talk.title %>
+        </div>
+
+        <div class="text-sm text-neutral-500 dark:text-neutral-400">
+          <div class="font-semibold">
+            <%= talk.event %>
+          </div>
+          <div>
+            <%= l(talk.held_at.to_date) %>
+          </div>
+        </div>
+      </div>
+
+      <div class="z-20 w-4 h-4 bg-indigo-500 ring-4 ring-neutral-50 rounded-full absolute left-1 top-4 group-hover:ring-neutral-100 dark:bg-yellow-500 dark:ring-black dark:group-hover:ring-neutral-900"></div>
+
+      <div class="z-10 w-px bg-indigo-300 absolute left-3 -top-2 -bottom-2 group-last:h-6 group-last:bottom-auto group-first:top-6 dark:bg-yellow-300"></div>
+
+    </div>
+  </div>
+</li>

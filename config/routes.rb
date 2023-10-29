@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   get "search", to: "search#index", as: :search
   get "settings", to: "settings#index", as: :settings
 
+  resources :talks
+
   resources :articles, only: %i[index new create] do
     collection do
       get :rss, to: "articles#atom", defaults: { format: :atom }

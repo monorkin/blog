@@ -12,5 +12,6 @@ class Tag::Tagging < ApplicationRecord
 
   after_create do
     tag.touch
+    taggable.touch
   end
 end

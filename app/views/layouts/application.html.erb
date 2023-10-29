@@ -43,6 +43,7 @@
       <header>
         <%= header_nav do %>
           <%= header_nav_item(articles_path) { t(".articles") } %>
+          <%= header_nav_item(talks_path) { t(".talks") } %>
         <% end %>
       </header>
 
@@ -56,6 +57,7 @@
         <div class="flex flex-row gap-x-4 justify-center md:justify-start">
           <%= link_to t(".about"), root_url %>
           <%= link_to t(".articles"), articles_url %>
+          <%= link_to t(".talks"), talks_url %>
           <%= link_to t(".source_code"), "https://github.com/monorkin/blog", target: :_blank %>
         </div>
         <div class="flex flex-row gap-x-4 justify-center md:justify-start">

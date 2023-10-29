@@ -1,9 +1,10 @@
 en:
   layouts:
     application:
-      articles: "Articles"
       about: "About"
+      articles: "Articles"
       close: "Close"
+      copyright: "© %{year} Stanko K. R. All rights reserved."
       settings: "Settings"
       source_code: "Source code"
-      copyright: "© %{year} Stanko K. R. All rights reserved."
+      talks: "Talks"

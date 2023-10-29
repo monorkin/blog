@@ -1,0 +1,32 @@
+<div class="flex flex-col gap-y-4">
+
+  <div class="flex flex-col gap-y-4">
+    <h1 class="text-2xl font-semibold">
+      <%= @talk.title %>
+    </h1>
+
+    <div class="flex flex-col gap-y-1 text-neutral-500 dark:text-neutral-400">
+      <h2 class="font-semibold">
+        <%= link_to_if @talk.event_url.present?, @talk.event, @talk.event_url, target: :_blank %>
+      </h2>
+      <%= time_tag @talk.held_at, l(@talk.held_at.to_date) %>
+    </div>
+  </div>
+
+  <% if @talk.description.present? %>
+    <div>
+      <%== transform_rich_text(@talk.description) %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= talk_video_embed(@talk) %>
+  </div>
+
+  <% if Current.user.present? %>
+    <div class="flex flex-row gap-x-4">
+      <span class="font-semibold"><%= link_to t(".edit"), edit_talk_path(@talk) %></span>
+      <span class="font-semibold"><%= button_to t(".delete"), talk_path(@talk), method: :delete, data: { turbo_confirm: t(".confirm_delete") } %></span>
+    </div>
+  <% end %>
+</div>

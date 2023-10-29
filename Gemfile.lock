@@ -253,8 +253,6 @@ GEM
     public_suffix (5.0.1)
     puma (6.4.0)
       nio4r (~> 2.0)
-    pundit (2.1.1)
-      activesupport (>= 3.0.0)
     racc (1.7.1)
     rack (3.0.8)
     rack-mini-profiler (3.0.0)
@@ -319,9 +317,6 @@ GEM
       websocket (~> 1.0)
     sitemap_generator (6.3.0)
       builder (~> 3.0)
-    slim (5.1.1)
-      temple (~> 0.10.0)
-      tilt (>= 2.1.0)
     sshkit (1.21.5)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
@@ -335,10 +330,8 @@ GEM
       railties (>= 6.0.0)
     tailwindcss-rails (2.0.31-x86_64-linux)
       railties (>= 6.0.0)
-    temple (0.10.3)
     thor (1.2.2)
     thread_safe (0.3.6)
-    tilt (2.3.0)
     timeout (0.4.0)
     timers (4.3.5)
     traces (0.9.1)
@@ -397,7 +390,6 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   propshaft
   puma (>= 5.0)
-  pundit (~> 2.1.0)
   rack-mini-profiler
   rails (~> 7.1)
   redis (~> 4.0)
@@ -405,7 +397,6 @@ DEPENDENCIES
   rss
   selenium-webdriver
   sitemap_generator
-  slim
   stackprof
   stimulus-rails
   streamio-ffmpeg

@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class ArticleTest < ActiveSupport::TestCase
-  fixtures :articles, "action_text/rich_texts"
+  fixtures :articles, "action_text/rich_texts", :tags, "tag/taggings"
 
   test ".generate_slug_id generates a random 12 chracter code" do
     slug_id = Article.generate_slug_id
@@ -55,16 +55,16 @@ class ArticleTest < ActiveSupport::TestCase
 
     article.content.body = "Lore ipsum dolor sit amet, consectetur adipiscing elit. " * 10
 
-    assert_match((/^#{article.plain_text[0...297]}\.\.\.$/i), article.excerpt,
+    assert_equal("#{article.plain_text[0...296]}...", article.excerpt,
                  "Should return the first 300 characters of the plain text content")
-    assert_match((/^#{article.plain_text[0...47]}\.\.\.$/i), article.excerpt(length: 50),
+    assert_equal("#{article.plain_text[0...38]}...", article.excerpt(length: 50),
                  "Should return the first 50 characters of the plain text content when passed a length")
   end
 
   test "#estimated_reading_time returns the estimated reading time in minutes" do
     article = articles(:misguided_mark)
 
-    assert_equal 6, article.estimated_reading_time,
+    assert_equal 8, article.estimated_reading_time,
       "Should return the estimated reading time in minutes"
 
     assert_equal 3, article.estimated_reading_time(words_per_minute: 650),

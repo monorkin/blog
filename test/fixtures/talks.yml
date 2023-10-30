@@ -21,7 +21,7 @@ stubs_mocks_and_spies_voxxed_days_belgrade_2016:
 
 
 <% 100.times do |i| %>
-filler_article_<%= i %>:
+filler_talk_<%= i %>:
   title: "<%= Faker::Lorem.sentence %> <%= i %>"
   event: "Phony Event <%= i %>"
   held_at: <%= ((Date.today.year - 2015).years + i.months).ago %>

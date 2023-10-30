@@ -21,13 +21,13 @@ class ArticlesAtomFeedTest < ActionDispatch::IntegrationTest
     assert_equal "Stanko Krtalic Rusendic", feed.css("feed > title").text
 
     # The feed has the correct updated date
-    assert_equal articles(:misguided_mark).updated_at.iso8601, feed.css("feed > updated").text
+    assert_equal articles(:hold_your_own_poison_ivy).updated_at.iso8601, feed.css("feed > updated").text
 
     # The feed has the correct number of entries
-    assert_equal 2, feed.css("feed > entry").size
+    assert_equal Article.published.count, feed.css("feed > entry").size
 
     # The feed retuns entries in the correct order
-    assert_equal articles(:misguided_mark).id, feed.css("feed > entry > id").first.text.split("/").last.to_i
+    assert_equal articles(:hold_your_own_poison_ivy).id, feed.css("feed > entry > id").first.text.split("/").last.to_i
     assert_equal articles(:render_test).id, feed.css("feed > entry > id").last.text.split("/").last.to_i
 
     # The feed has the correct fields and values for entries

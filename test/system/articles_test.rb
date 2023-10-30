@@ -1,32 +1,29 @@
 # frozen_string_literal: true
 
-require 'application_system_test_case'
+require "application_system_test_case"
 
 class ArticlesTest < ApplicationSystemTestCase
   fixtures :articles, "action_text/rich_texts"
 
-  test 'the index page should pass all accessibility criteria with articles present' do
-    50.times do |i|
-      Article.create!(title: "#{Faker::Book.title} (#{i})",
-                      content: Faker::Markdown.sandwich(sentences: 50),
-                      publish_at: i.days.ago,
-                      published: true)
-    end
-
+  test "the index page should pass all accessibility criteria with articles present" do
     visit articles_url
 
-    click_link 'Next Page'
+    click_link "Older articles"
+    assert_accessible(page)
 
-    click_link 'Previous Page'
+    click_link "Newer articles"
+    assert_accessible(page)
   end
 
-  test 'the index page should pass all accessibility criteria wihtout articles' do
+  test "the index page should pass all accessibility criteria wihtout articles" do
+    Article.all.destroy_all
+
     visit articles_url
 
     assert_accessible(page)
   end
 
-  test 'the show page has no accessibility issues' do
+  test "the show page has no accessibility issues" do
     article = articles(:misguided_mark)
 
     visit articles_url

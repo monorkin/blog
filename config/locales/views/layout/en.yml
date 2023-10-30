@@ -6,5 +6,6 @@ en:
       close: "Close"
       copyright: "© %{year} Stanko K. R. All rights reserved."
       settings: "Settings"
+      sign_out: "Logout"
       source_code: "Source code"
       talks: "Talks"

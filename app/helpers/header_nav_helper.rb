@@ -89,7 +89,11 @@ module HeaderNavHelper
     options[:class] = "flex flex-row items-center gap-x-2 font-mono font-semibold uppercase text-indigo-600 dark:text-yellow-500 #{options[:class]}"
 
     content_tag(:li, class: wrapper_options[:class]) do
-      link_to(url, options, &block)
+      if options.key?(:method)
+        button_to(url, options, &block)
+      else
+        link_to(url, options, &block)
+      end
     end
   end
 end

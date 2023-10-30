@@ -59,6 +59,10 @@
           <%= link_to t(".articles"), articles_url %>
           <%= link_to t(".talks"), talks_url %>
           <%= link_to t(".source_code"), "https://github.com/monorkin/blog", target: :_blank %>
+
+          <% if Current.user %>
+            <%= button_to t(".sign_out"), login_path, method: :delete %>
+          <% end %>
         </div>
         <div class="flex flex-row gap-x-4 justify-center md:justify-start">
           <%= t(".copyright", year: Time.current.year) %>

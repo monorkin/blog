@@ -8,9 +8,9 @@ import ApplicationController from "controllers/application_controller"
 // replaces the pagination controls with the next set of pagination controls.
 export default class extends ApplicationController {
   static targets = [
-    "nextButton", // Clicked on to load in the next page of results
-    "paginationControls", // The container for the pagination controls
-    "loadingIndicatorTemplate" // The template for the loading indicator. Replaces the pagination controls when loading.
+    "nextButton",
+    "paginationControls",
+    "loadingIndicator"
   ]
 
   initialize() {
@@ -54,6 +54,7 @@ export default class extends ApplicationController {
     // If there is a loading indicator template, replace the pagination controls
     // with it so that the person scrolling can't navigate pages, and so that
     // they know that the next page is loading.
+    this.showLoadingIndicator()
 
     // Fetch the next page of results
     fetch(this.nextButtonTarget.href, {
@@ -71,16 +72,9 @@ export default class extends ApplicationController {
   }
 
   showLoadingIndicator() {
-    if (!this.hasLoadingIndicatorTemplateTarget || !this.hasPaginationControlsTarget) return
+    if (!this.hasLoadingIndicatorTarget || !this.hasPaginationControlsTarget) return
 
-    let nextButton = null
-    if (this.hasNextButtonTarget) nextButton = this.nextButtonTarget.cloneNode(true)
-
-    this.paginationControlsTarget.replaceWith(this.loadingIndicatorTemplateTarget.content.cloneNode(true))
-
-    if (nextButton) {
-      this.paginationControlsTarget.appendChild(nextButton)
-      next.button.style.display = "none"
-    }
+    this.paginationControlsTarget.style.display = "none"
+    this.loadingIndicatorTarget.style.display = null
   }
 }

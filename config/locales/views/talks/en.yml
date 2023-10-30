@@ -2,6 +2,9 @@ en:
   talks:
     index:
       new: "New Talk"
+      previous_page: "Newer talks"
+      next_page: "Older talks"
+      loading_more: "Loading more..."
 
     show:
       download_video: Download Video

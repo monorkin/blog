@@ -6,6 +6,9 @@ en:
 
     index:
       new: "New Article"
+      previous_page: "Newer articles"
+      next_page: "Older articles"
+      loading_more: "Loading more..."
 
     show:
       back: "Back"

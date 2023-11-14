@@ -43,7 +43,7 @@ module HeaderNavHelper
 
   def mobile_header_nav(&block)
     content_tag(:nav, class: "flex md:hidden py-2 px-2 flex-row items-center gap-x-4 justify-between") do
-      content_tag(:div) do
+      content_tag(:ul) do
         header_about_nav_item
       end +
       content_tag(:div, data: { controller: "navigation", navigation_dialog_outlet: "#navigation-dialog" }) do

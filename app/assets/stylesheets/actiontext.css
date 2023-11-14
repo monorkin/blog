@@ -12,10 +12,6 @@ trix-editor {
   prose-code:before:content-none prose-code:after:content-none;
 }
 
-.trix-content br {
-  @apply mb-6 md:mb-4;
-}
-
 .trix-content pre {
   @apply bg-white dark:bg-slate-900
 }

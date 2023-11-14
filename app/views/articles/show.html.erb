@@ -77,18 +77,20 @@
       target="popupwindow"
       onsubmit="window.open('https://buttondown.email/monorkin', 'popupwindow')"
     >
-      <div class="flex flex-row gap-x-2">
-        <%= mail_icon(class: "text-indigo-500 basis-8 grow-0 dark:text-indigo-400") %>
-        <div class="grow flex flex-col gap-y-1">
+      <div class="w-full flex flex-row gap-x-2">
+        <div class="flex items-center text-indigo-500 w-8 basis-8 dark:text-indigo-400">
+          <%= mail_icon %>
+        </div>
+        <div class="flex flex-col gap-y-1">
           <div>
             <%= t(".subscribe_newsletter") %>
           </div>
-          <div class="flex flex-row">
+          <div class="w-full flex flex-row">
             <input
               type="email"
               name="email"
-              placeholder="Type your email address"
-              class="basis-full grow rounded-l-lg bg-white placeholder:text-neutral-400 focus:ring-inset focus:border-indigo-600 focus:ring-indigo-600 dark:bg-black dark:focus:border-indigo-400 dark:focus:ring-indigo-400"
+              placeholder="Your email"
+              class="w-full rounded-l-lg bg-white placeholder:text-neutral-400 focus:ring-inset focus:border-indigo-600 focus:ring-indigo-600 dark:bg-black dark:focus:border-indigo-400 dark:focus:ring-indigo-400"
             />
             <input type="submit" value="Subscribe" class="grow-0 rounded-r-lg px-4 cursor-pointer bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-400 dark:hover:bg-indigo-500" />
           </div>

@@ -16,7 +16,8 @@ en:
       delete: "Delete"
       confirm_delete: "Are you sure you want to delete this article?"
       published_on: "Published on %{date}"
-      subscribe_rss: "Subscribe to the RSS feed to receive future posts"
+      subscribe_rss: "Subscribe to the RSS feed to receive future posts in your RSS reader"
+      subscribe_newsletter: "Subscribe to the newsletter to receive future posts via email"
 
     edit:
       back: "Back"

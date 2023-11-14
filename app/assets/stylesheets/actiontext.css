@@ -13,7 +13,7 @@ trix-editor {
 }
 
 .trix-content br {
-  @apply mb-4;
+  @apply mb-6 md:mb-4;
 }
 
 .trix-content pre {

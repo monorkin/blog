@@ -5,6 +5,9 @@
 # Ignore installed dependencies
 /node_modules
 /vendor
+/.cache
+/.mozilla
+/.webdrivers
 
 # Ignore logfiles
 /log/*

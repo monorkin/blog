@@ -4,8 +4,7 @@
 @import "./components/link_preview.css";
 @import "./components/popup.css";
 @import "./components/rich_text.css";
-@import "./syntax_hilighting_themes/light.css";
-@import "./syntax_hilighting_themes/dark.css";
+@import "./components/highlight.css";
 
 @tailwind base;
 @tailwind components;

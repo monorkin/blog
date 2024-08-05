@@ -12,10 +12,6 @@ trix-editor {
   prose-code:before:content-none prose-code:after:content-none;
 }
 
-.trix-content pre {
-  @apply bg-white dark:bg-slate-900
-}
-
 .trix-content .attachment {
   @apply flex;
 }

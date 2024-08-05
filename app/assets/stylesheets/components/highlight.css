@@ -1,0 +1,104 @@
+.highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+
+.highlight {
+  --background: #ffffff;
+  --foreground: #3760bf;
+
+  --black: #b4b5b9;
+  --red: #f52a65;
+  --green: #587539;
+  --yellow: #8c6c3e;
+  --blue: #2e7de9;
+  --magenta: #9854f1;
+  --cyan: #007197;
+  --white: #6172b0;
+}
+
+.color-scheme.color-scheme--dark .highlight {
+  --background: #1a1b26;
+  --foreground: #c0caf5;
+
+  --black: #15161e;
+  --red: #f7768e;
+  --green: #9ece6a;
+  --yellow: #e0af68;
+  --blue: #7aa2f7;
+  --magenta: #bb9af7;
+  --cyan: #7dcfff;
+  --white: #a9b1d6;
+}
+
+.highlight, .highlight .w, .trix-content pre.highlight, .trix-content pre.highlight .w {
+  color: var(--foreground);
+  background-color: var(--background);
+}
+.highlight .err, .trix-content pre.highlight .err {
+  color: var(--foreground);
+  background-color: var(--red);
+}
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cm, .highlight .cpf, .highlight .c1, .highlight .cs {
+  color: var(--white);
+}
+.highlight .cp {
+  color: var(--cyan);
+}
+.highlight .n, .highlight .nb {
+  color: var(--foreground);
+}
+.highlight .o + .nb:has(+ .o) {
+  color: var(--yellow);
+}
+.highlight .nt, .highlight .nn, .highlight .nc, .highlight .no {
+  color: var(--cyan);
+}
+.highlight .nf {
+  color: var(--blue);
+}
+.highlight .o, .highlight .ow {
+  color: var(--cyan);
+}
+.highlight .p, .highlight .pi {
+  color: var(--white);
+}
+.highlight .gi {
+  color: var(--cyan);
+}
+.highlight .gd {
+  color: var(--red);
+}
+.highlight .gh {
+  color: var(--foreground);
+  background-color: var(--background);
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: var(--magenta);
+}
+.highlight .kc, .highlight .kt, .highlight .kd {
+  color: var(--cyan);
+}
+.highlight .s, .highlight .sa, .highlight .sb, .highlight .sc, .highlight .dl, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: var(--green);
+}
+.highlight .vi {
+  color: var(--green);
+}
+.highlight .sr {
+  color: var(--cyan);
+}
+.highlight .si {
+  color: var(--cyan);
+}
+.highlight .se {
+  color: var(--cyan);
+}
+.highlight .na {
+  color: var(--blue);
+}
+.highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx {
+  color: var(--cyan);
+}
+.highlight .ss {
+  color: var(--cyan);
+}

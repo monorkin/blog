@@ -2,17 +2,28 @@
 .highlight table pre { margin: 0; }
 
 .highlight {
-  --background: #ffffff;
+  --background: #fff;
   --foreground: #3760bf;
 
-  --black: #b4b5b9;
+  /* normal colorscheme */
+  /*--black: #b4b5b9;*/
+  /*--red: #f52a65;*/
+  /*--green: #587539;*/
+  /*--yellow: #8c6c3e;*/
+  /*--blue: #2e7de9;*/
+  /*--magenta: #9854f1;*/
+  /*--cyan: #007197;*/
+  /*--white: #6172b0;*/
+
+  /* bright colorscheme */
+  --black: #a1a6c5;
   --red: #f52a65;
   --green: #587539;
   --yellow: #8c6c3e;
   --blue: #2e7de9;
   --magenta: #9854f1;
   --cyan: #007197;
-  --white: #6172b0;
+  --white: #3760bf;
 }
 
 .color-scheme.color-scheme--dark .highlight {

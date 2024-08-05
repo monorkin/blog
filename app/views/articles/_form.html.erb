@@ -23,21 +23,7 @@
     </label>
   </div>
 
-  <div
-  class="rich-text"
-  data-controller="rich-text"
-  data-rich-text-ready-class="rich-text--ready"
-  data-rich-text-loading-class="rich-text--loading"
-  data-rich-text-supported-code-block-languages-value="<%= h Rouge::Lexer.all.each_with_object({}) { |lexer, hash| hash[lexer.tag] = lexer.title }.to_json %>">
-    <%= article_form.rich_text_area(:content, data: {
-      action: %w[trix-initialize->rich-text#editorReady
-        trix-attributes-change->rich-text#attributeChanged
-        trix-selection-change->rich-text#selectionChanged
-        scroll@window->rich-text#repositionDialogs
-        resize@window->rich-text#repositionDialogs].join(" "),
-      rich_text_target: "editor"
-    }) %>
-  </div>
+  <%= rich_text_field(article_form, :content) %>
 
   <%= article_form.submit t(".save"), class: "rounded text-white p-2 w-full cursor-pointer bg-indigo-500 hover:bg-indigo-700 dark:bg-yellow-500 dark:text-yellow-900 dark:hover:bg-yellow-400" %>
 <% end %>

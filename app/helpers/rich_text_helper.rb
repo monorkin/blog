@@ -28,4 +28,33 @@ module RichTextHelper
 
     document
   end
+
+  def rich_text_field(form, name)
+    code_block_languages = Rouge::Lexer.all.each_with_object({}) { |lexer, hash| hash[lexer.tag] = lexer.title }
+
+    content_tag(
+      :div,
+      class: "rich-text",
+      data: {
+        controller: "rich-text",
+        rich_text_ready_class: "rich-text--ready",
+        rich_text_loading_class: "rich-text--loading",
+        rich_text_supported_code_block_languages_value: code_block_languages.to_json
+      }
+    ) do
+      form.rich_text_area(
+        name,
+        data: {
+          action: %w[
+            trix-initialize->rich-text#editorReady
+            trix-attributes-change->rich-text#attributeChanged
+            trix-selection-change->rich-text#selectionChanged
+            scroll@window->rich-text#repositionDialogs
+            resize@window->rich-text#repositionDialogs
+          ].join(" "),
+          rich_text_target: "editor"
+        }
+      )
+    end
+  end
 end

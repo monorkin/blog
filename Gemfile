@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "~> 3.2"
+ruby "~> 3.3"
 
 gem "appsignal"
 gem "async-http"

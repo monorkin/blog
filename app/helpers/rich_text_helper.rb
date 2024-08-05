@@ -18,9 +18,10 @@ module RichTextHelper
   # Makes code blocks look prettier / more readable
   def highlight_code_blocks_rich_text_transform(document)
     document.css("pre").each do |code_block|
+      language_tag = code_block["language"].presence
       code = code_block.text
       formatter = Rouge::Formatters::HTML.new
-      lexer = Rouge::Lexer.guess({ source: code })
+      lexer = Rouge::Lexer.find(language_tag) || Rouge::Lexer.guess({ source: code })
       code_block.inner_html = formatter.format(lexer.lex(code))
       code_block["class"] = [code_block["class"], "highlight"].select(&:present?).join(" ")
     end

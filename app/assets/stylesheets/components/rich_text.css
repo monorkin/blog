@@ -1,0 +1,3 @@
+.rich-text.rich-text--loading {
+  @apply animate-pulse pointer-events-none blur-lg;
+}

@@ -69,3 +69,20 @@ trix-toolbar .trix-button-group .trix-button {
 .trix-button-group.trix-button-group--history-tools {
   @apply md:hidden;
 }
+
+.trix-dialog.trix-dialog--language {
+  @apply w-48 h-8
+  p-1
+  bg-transparent
+  border-0 shadow-none;
+}
+
+.trix-dialog.trix-dialog--language select {
+  @apply h-6 max-w-full
+  pl-3 py-1
+  bg-black/20
+  dark:bg-white/20
+  border-0 rounded-lg
+  text-xs text-black
+  dark:text-white;
+}

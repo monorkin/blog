@@ -1,2 +1,2 @@
-import "initializers"
+import "initializers/hotwired"
 import "controllers"

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     collection do
       get :rss, to: "articles#atom", defaults: { format: :atom }
       get :atom, defaults: { format: :atom }
+      get :atom_style, defaults: { format: :xsl }
     end
   end
 

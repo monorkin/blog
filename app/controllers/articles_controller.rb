@@ -42,8 +42,16 @@ class ArticlesController < ApplicationController
     @articles = scope.published.order(ORDER)
 
     if params[:tag].present?
-      @articles = @articles.tagged_with(params[:tag])
+      @articles = @articles.tagged_with(params[:tag]&.split(","))
     end
+  end
+
+  def atom_style
+    request.format = :xsl
+
+    @tags = Tag.order(:name)
+
+    fresh_when(@tags)
   end
 
   def show

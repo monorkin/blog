@@ -105,7 +105,7 @@ ENV RAILS_ENV="production" \
 # Copy built artifacts: gems, application
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
-COPY ./config/credentials/production.yml.enc ./config/credentials/production.yml.enc
+COPY ./config/credentials/production.yml.enc /rails/config/credentials/production.yml.enc
 
 RUN useradd rails --home /rails --shell /bin/bash && \
   chown -R rails:rails db log storage tmp

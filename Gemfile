@@ -29,6 +29,8 @@ gem "stimulus-rails"
 gem "streamio-ffmpeg"
 gem "tailwindcss-rails"
 gem "turbo-rails"
+gem "thruster"
+gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
@@ -38,7 +40,7 @@ end
 group :development do
   gem "listen"
   gem "memory_profiler"
-  gem "kamal"
+  gem "kamal", "~> 1.9"
   gem "rack-mini-profiler", require: %w[enable_rails_patches rack-mini-profiler]
   gem "stackprof"
   gem "web-console", ">= 3.3.0"
@@ -50,5 +52,3 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
-
-gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]

@@ -17,4 +17,4 @@ fi
 
 # Run the command attached to the process with PID 1 so that signals get
 # passed to the process/app being run
-exec /usr/bin/dumb-init "${@}"
+exec "${@}"

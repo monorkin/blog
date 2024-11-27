@@ -1,27 +1,26 @@
-ARG RUBY_VERSION=3.2
+ARG RUBY_VERSION=3.3
 
 ################################################################################
 ############################## BASE IMAGE ######################################
 ################################################################################
-FROM ruby:$RUBY_VERSION-slim-bullseye AS base
+FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
 WORKDIR /rails
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
-      curl \
-      libsqlite3-0 \
-      postgresql-client \
-      default-mysql-client \
-      libvips \
-      dumb-init \
-      gosu \
-      libjemalloc-dev \
-      ffmpeg \
-      exiftool \
-    && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+  apt-get install --no-install-recommends -y \
+  curl \
+  libsqlite3-0 \
+  postgresql-client \
+  default-mysql-client \
+  libvips \
+  libc6 \
+  libjemalloc-dev \
+  ffmpeg \
+  exiftool \
+  && \
+  rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Disable documentation for Ruby gems
 RUN echo 'gem: --no-rdoc --no-ri' > /etc/gemrc
@@ -47,38 +46,29 @@ FROM base AS development
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
-      build-essential \
-      git \
-      pkg-config \
-      libpq-dev \
-      default-libmysqlclient-dev \
-      libvips \
-      node-gyp \
-      python-is-python3 \
-      less \
-      freerdp2-shadow-x11 \
-      fonts-dejavu \
-      fonts-droid-fallback \
-      fonts-freefont-ttf \
-      fonts-liberation2 \
-      groff \
-      xvfb \
-      fontconfig \
-      dbus \
-      firefox-esr \
-      chromium \
-      xauth \
-      vim
-
-# Install JavaScript dependencies
-ARG NODE_VERSION=18.15.0
-ARG YARN_VERSION=latest
-ENV PATH=/usr/local/node/bin:$PATH
-RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
-    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
-    npm install -g yarn@$YARN_VERSION && \
-    rm -rf /tmp/node-build-master
+  apt-get install --no-install-recommends -y \
+  build-essential \
+  git \
+  pkg-config \
+  libpq-dev \
+  default-libmysqlclient-dev \
+  libvips \
+  node-gyp \
+  python-is-python3 \
+  less \
+  freerdp2-shadow-x11 \
+  fonts-dejavu \
+  fonts-droid-fallback \
+  fonts-freefont-ttf \
+  fonts-liberation2 \
+  groff \
+  xvfb \
+  fontconfig \
+  dbus \
+  firefox-esr \
+  chromium \
+  xauth \
+  vim
 
 CMD /bin/bash -c "while true; do sleep 10; done;"
 
@@ -91,12 +81,8 @@ FROM development AS build
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
-
-# Install node modules
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+  rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+  bundle exec bootsnap precompile --gemfile
 
 COPY . .
 
@@ -114,17 +100,17 @@ FROM base AS production
 
 # Set production environment
 ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
+  BUNDLE_DEPLOYMENT="1" \
+  BUNDLE_PATH="/usr/local/bundle" \
+  BUNDLE_WITHOUT="development"
 
 # Copy built artifacts: gems, application
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
 
 RUN useradd rails --home /rails --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
+  chown -R rails:rails db log storage tmp
 USER rails:rails
 
-EXPOSE 3000
-CMD ["./bin/rails", "server"]
+EXPOSE 80
+CMD ["bundle", "exec", "thrust", "bin/rails", "server"]

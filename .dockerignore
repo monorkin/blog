@@ -1,55 +1,52 @@
 # Ignore dependency manager configuration
-/.bundle
+./.bundle
 .yarn-integrity
 
 # Ignore installed dependencies
-/node_modules
-/vendor
-/.cache
-/.mozilla
-/.webdrivers
+./node_modules
+./vendor
+./.cache
+./.mozilla
+./.webdrivers
 
 # Ignore logfiles
-/log/*
-!/log/.keep
-/yarn-error.log
+./log/*
+!./log/.keep
+./yarn-error.log
 .byebug_history
 yarn-debug.log*
 
 # Ignore tempfiles
-/public/uploads/*
-!/public/uploads/.keep
-/tmp/*
-!/tmp/.keep
-/tmp/pids/*
-!/tmp/pids/
-!/tmp/pids/.keep
-/storage/*
-!/storage/.keep
+./public/uploads/*
+!./public/uploads/.keep
+./tmp/*
+!./tmp/.keep
+./tmp/pids/*
+!./tmp/pids/
+!./tmp/pids/.keep
+./storage/*
+!./storage/.keep
 
 # Ignore build artefacts
-/public/assets
-/public/packs
-/public/packs-test
-/app/assets/builds/*
-!/app/assets/builds/.keep
-
-# Ignore deployment artefacts
-/REVISION
+./public/assets
+./public/packs
+./public/packs-test
+./app/assets/builds/*
+!./app/assets/builds/.keep
 
 # Ignore encryption secrets
 .env
 .env.*
 !.env.erb
 !.env.*.erb
-/config/master.key
-/config/credentials/*.key
-!/config/credentials/development.key
-!/config/credentials/test.key
+./config/master.key
+./config/credentials/*.key
+!./config/credentials/development.key
+!./config/credentials/test.key
 
 # Ignore OS specific files
 .DS_Store
 
 # Ignore editor artefacts and configuration
 *.swap
-/tags
+./tags

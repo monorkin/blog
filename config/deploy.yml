@@ -9,16 +9,16 @@ servers:
   web:
     hosts:
       - shire.stanko.io
-    options:
-      network: apps
-    labels:
-      traefik.enable: true
-      traefik.http.routers.blog-web.entrypoints: "websecure"
-      traefik.http.routers.blog-web.tls.certresolver: "letsencrypt"
-      traefik.http.routers.blog-web.rule: "Host(`stanko.io`)"
-      traefik.http.services.blog-web.loadbalancer.healthcheck.path: "/up"
-      traefik.http.middlewares.blog-web.retry.attempts: "10"
-      traefik.http.middlewares.blog-web.retry.initialinterval: "1s"
+
+# Proxy settings
+proxy:
+  ssl: true
+  host: stanko.io
+  app_port: 3000
+  healthcheck:
+    path: /up
+    interval: 3
+    timeout: 30
 
 # Credentials for your image host.
 registry:
@@ -28,7 +28,8 @@ registry:
 
 # Docker image builder configuration
 builder:
-  multiarch: false
+  arch:
+    - amd64
 
 # Inject ENV variables into containers (secrets come from .env).
 env:
@@ -48,13 +49,3 @@ env:
 # Use a different ssh user than root
 ssh:
   user: ubuntu
-
-# Configure custom arguments for Traefik
-# traefik:
-#   args:
-#     accesslog: true
-#     accesslog.format: json
-
-# Configure a custom healthcheck (default is /up on port 3000)
-healthcheck:
-  path: "/up"

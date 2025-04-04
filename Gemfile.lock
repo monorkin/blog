@@ -216,6 +216,7 @@ GEM
     memory_profiler (1.0.1)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.5)
     minitest (5.25.5)
     msgpack (1.7.2)
     multi_json (1.15.0)
@@ -395,7 +396,7 @@ DEPENDENCIES
   hiredis
   image_processing (~> 1.8)
   importmap-rails
-  kamal
+  kamal (~> 1.9)
   kredis (~> 1.2)
   listen
   memory_profiler

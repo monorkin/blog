@@ -159,6 +159,7 @@ export default class extends ApplicationController {
   }
 
   get codeBlockLanguagePickerDialogShown() {
-    return this.codeBlockLanguagePickerDialogTarget.hasAttribute("data-trix-active")
+    return this.hasCodeBlockLanguagePickerDialogTarget && 
+      this.codeBlockLanguagePickerDialogTarget.hasAttribute("data-trix-active")
   }
 }

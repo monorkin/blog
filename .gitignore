@@ -4,7 +4,6 @@
 
 # Ignore installed dependencies
 /node_modules
-#/vendor
 /.cache
 /.mozilla
 /.webdrivers
@@ -46,10 +45,6 @@ yarn-debug.log*
 /config/credentials/*.key
 !/config/credentials/development.key
 !/config/credentials/test.key
-# Since this repo is public I don't want peopple to gain access to real
-# production secrets through brute forcing the encryption key. Out of precaution
-# I'm removing this file from Git.
-/config/credentials/production.yml.enc
 
 # Ignore OS specific files
 .DS_Store

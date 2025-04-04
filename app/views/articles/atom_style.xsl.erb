@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:atom="http://www.w3.org/2005/Atom">
+  <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
+  <xsl:template match="/">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+      <head>
+        <title>
+          RSS Feed |
+          <xsl:value-of select="/atom:feed/atom:title"/>
+        </title>
+        <meta charset="utf-8"/>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <%= stylesheet_link_tag "tailwind", "inter-font", media: :all, "data-turbo-track": "reload" %>
+      </head>
+      <body>
+        <main class="sm:max-w-xl mx-auto">
+          <dk-alert-box type="info">
+            <strong>This is an RSS feed</strong>. Subscribe by copying
+            the URL from the address bar into your newsreader.
+          </dk-alert-box>
+          <div class="py-7">
+            <h1 class="flex items-center gap-2 text-xl">
+              <%= rss_icon(class: "w-7 text-orange-500") %>
+              RSS Feed
+            </h1>
+            <h2 class="mt-4 text-2xl font-extrabold">stanko.io</h2>
+            <a class="text-sm underline">
+              <xsl:attribute name="href">
+                <xsl:value-of select="/atom:feed/atom:link[1]/@href"/>
+              </xsl:attribute>
+              Visit Website &#x2192;
+            </a>
+            <div class="mt-7">
+              <p class="text-sm">
+                Filter by tag:
+              </p>
+              <ul class="flex flex-wrap gap-4 mt-2 text-sm">
+                <li class="underline"><%= link_to("Everything", atom_articles_path) %></li>
+                <% @tags.each do |tag| %>
+                  <li class="underline">
+                    <%= link_to(tag.name.titleize, atom_articles_path(tag: tag.name)) %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+
+            <h2 class="mt-7 mb-3 text-xl font-bold">
+              Articles
+            </h2>
+
+            <xsl:for-each select="/atom:feed/atom:entry">
+              <div class="pb-7">
+                <div class="text-gray-500 text-xs font-italic">
+                  Published on
+                  <xsl:value-of select="substring(atom:published, 0, 11)" />
+                </div>
+
+                <div class="font-bold">
+                  <a class="underline">
+                    <xsl:attribute name="href">
+                      <xsl:value-of select="atom:link/@href"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="atom:title"/>
+                  </a>
+                </div>
+
+                <div class="text-xs"><xsl:value-of select="atom:summary"/></div>
+              </div>
+            </xsl:for-each>
+          </div>
+        </main>
+      </body>
+    </html>
+  </xsl:template>
+</xsl:stylesheet>

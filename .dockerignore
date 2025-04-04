@@ -43,10 +43,8 @@ yarn-debug.log*
 !/config/credentials/development.key
 !/config/credentials/test.key
 
-# Ignore OS specific files
+# Ignore editor and OS artefacts and configuration
 .DS_Store
-
-# Ignore editor artefacts and configuration
 *.swap
 /tags
 
@@ -54,6 +52,8 @@ yarn-debug.log*
 Dockerfile
 .gitignore
 .dockerignore
+/.kamal
 /.git
-/tests
 /.ruby-lsp
+/tests
+/docs

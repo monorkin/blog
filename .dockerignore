@@ -36,6 +36,7 @@ yarn-debug.log*
 .env.*
 /config/master.key
 /config/credentials/*.key
+/config/credentials/production.yml.enc
 !/config/credentials/development.key
 !/config/credentials/test.key
 

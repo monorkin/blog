@@ -49,3 +49,7 @@ env:
 # Use a different ssh user than root
 ssh:
   user: ubuntu
+
+# Use a persistent storage volume.
+volumes:
+  - "/home/ubuntu/container_data/blog/credentials/production.yml.enc/:/app/config/credentials/production.yml.enc:ro"

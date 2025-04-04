@@ -2,3 +2,4 @@
 
 echo "[Blog] Copying credentials to the server"
 scp ./config/credentials/production.yml.enc ubuntu@shire.stanko.io:/home/ubuntu/blog/credentials/production.yml.enc
+ssh ubuntu@shire.stanko.io "sudo chown 1000:1000 /home/ubuntu/blog/credentials/production.yml.enc"

@@ -5,10 +5,10 @@ trix-editor {
 .trix-content {
   @apply prose prose-neutral dark:prose-invert
   prose-figure:flex prose-figure:flex-col prose-figure:items-center prose-figure:max-h-[70vh]
-  prose-img:rounded prose-img:shadow prose-img:max-h-[70vh]
-  prose-video:rounded prose-video:shadow prose-video:max-h-[70vh] prose-video:my-0
-  prose-pre:rounded prose-pre:shadow prose-pre:text-stone-600 prose-pre:dark:text-slate-200
-  prose-code:bg-gray-900 prose-code:text-blue-50 prose-code:rounded prose-code:p-1
+  prose-img:rounded-sm prose-img:shadow-sm prose-img:max-h-[70vh]
+  prose-video:rounded-sm prose-video:shadow-sm prose-video:max-h-[70vh] prose-video:my-0
+  prose-pre:rounded-sm prose-pre:shadow-sm prose-pre:text-stone-600 dark:prose-pre:text-slate-200
+  prose-code:bg-gray-900 prose-code:text-blue-50 prose-code:rounded-sm prose-code:p-1
   prose-code:before:content-none prose-code:after:content-none;
 }
 
@@ -59,7 +59,7 @@ trix-toolbar .trix-button {
 }
 
 .trix-button {
-  @apply shadow;
+  @apply shadow-sm;
 }
 
 trix-toolbar .trix-button-group .trix-button {

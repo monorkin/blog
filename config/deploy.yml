@@ -7,8 +7,7 @@ image: monorkin/blog
 # Deploy to these servers.
 servers:
   web:
-    hosts:
-      - shire.stanko.io
+    - shire.stanko.io
 
 # Proxy settings
 proxy:
@@ -17,12 +16,13 @@ proxy:
   app_port: 3000
   healthcheck:
     path: /up
-    interval: 3
-    timeout: 30
+    interval: 6
+    timeout: 10
 
 # Credentials for your image host.
 registry:
-  username: monorkin
+  server: ghcr.io
+  username: <%= ENV["GITHUB_USERNAME"] || `gh auth status`.scan(/github.com account ([^\s]+)\s/).flatten.first %>
   password:
     - KAMAL_REGISTRY_PASSWORD
 
@@ -35,8 +35,8 @@ builder:
 env:
   clear:
     RAILS_ENV: "production"
-    RAILS_MAX_THREADS: "10"
-    WEB_CONCURRENCY: "4"
+    RAILS_MAX_THREADS: "3"
+    WEB_CONCURRENCY: "8"
     REDIS_URL: "redis://redis.stanko.io:6379/0"
   secret:
     - RAILS_MASTER_KEY

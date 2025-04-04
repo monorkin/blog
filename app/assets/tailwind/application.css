@@ -1,0 +1,66 @@
+/* @import "rails.css";*/
+@import 'https://unpkg.com/trix@2.0.0/dist/trix.css' layer(base);
+@import '../stylesheets/actiontext.css' layer(base);
+@import '../stylesheets/components/link_preview.css' layer(base);
+@import '../stylesheets/components/popup.css' layer(base);
+@import '../stylesheets/components/rich_text.css' layer(base);
+@import '../stylesheets/components/highlight.css' layer(base);
+
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+@plugin '@tailwindcss/forms';
+
+@custom-variant dark (&:is(.color-scheme.color-scheme--dark *));
+
+@theme {
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@media (width >= theme(--breakpoint-sm)) {
+  html {
+    font-size: 18px;
+  }
+}
+
+@media (width >= theme(--breakpoint-md)) {
+  html {
+    font-size: 20px;
+  }
+}
+
+@media (width >= theme(--breakpoint-lg)) {
+  html {
+    font-size: 22px;
+  }
+}
+
+@media (width >= theme(--breakpoint-xl)) {
+  html {
+    font-size: 24px;
+  }
+}
+
+@media (width >= theme(--breakpoint-2xl)) {
+  html {
+    font-size: 26px;
+  }
+}

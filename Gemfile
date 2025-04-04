@@ -27,7 +27,8 @@ gem "rss"
 gem "sitemap_generator"
 gem "stimulus-rails"
 gem "streamio-ffmpeg"
-gem "tailwindcss-rails"
+gem "tailwindcss-rails", ">= 4.0"
+gem "thruster"
 gem "turbo-rails"
 
 group :development, :test do

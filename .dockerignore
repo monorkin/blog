@@ -34,6 +34,7 @@ yarn-debug.log*
 /config/master.key
 /config/credentials/*.key
 !/config/credentials/development.key
+!/config/credentials/test.key
 
 # Ignore OS specific files
 .DS_Store
@@ -46,6 +47,6 @@ yarn-debug.log*
 Dockerfile
 .gitignore
 .dockerignore
-.ruby-version
 /.git
 /tests
+/.ruby-lsp

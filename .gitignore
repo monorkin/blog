@@ -4,7 +4,7 @@
 
 # Ignore installed dependencies
 /node_modules
-/vendor
+#/vendor
 /.cache
 /.mozilla
 /.webdrivers

@@ -52,4 +52,4 @@ ssh:
 
 # Use a persistent storage volume.
 volumes:
-  - "/home/ubuntu/container_data/blog/credentials/production.yml.enc:/rails/config/credentials/production.yml.enc:ro"
+  - "/home/ubuntu/container_data/blog/credentials/:/rails/config/credentials/:ro"

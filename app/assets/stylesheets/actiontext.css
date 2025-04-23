@@ -5,8 +5,8 @@ trix-editor {
 .trix-content {
   @apply prose prose-neutral dark:prose-invert
   prose-figure:flex prose-figure:flex-col prose-figure:items-center prose-figure:max-h-[70vh]
-  prose-img:rounded-sm prose-img:shadow-sm prose-img:max-h-[70vh]
-  prose-video:rounded-sm prose-video:shadow-sm prose-video:max-h-[70vh] prose-video:my-0
+  prose-img:rounded-sm prose-img:shadow-sm
+  prose-video:rounded-sm prose-video:shadow-sm prose-video:my-0
   prose-pre:rounded-sm prose-pre:shadow-sm prose-pre:text-stone-600 dark:prose-pre:text-slate-200
   prose-code:bg-gray-900 prose-code:text-blue-50 prose-code:rounded-sm prose-code:p-1
   prose-code:before:content-none prose-code:after:content-none;
@@ -20,27 +20,17 @@ trix-editor pre {
   @apply flex;
 }
 
-/*
- * We need to override trix.css’s image gallery styles to accommodate the
- * <action-text-attachment> element we wrap around attachments. Otherwise,
- * images in galleries will be squished by the max-width: 33%; rule.
-*/
+.trix-content .attachment-gallery > action-text-attachment,
+.trix-content .attachment-gallery > .attachment {
+  @apply flex flex-grow basis-1/3 max-w-1/3 py-2;
+}
 
- .trix-content .attachment-gallery > action-text-attachment,
- .trix-content .attachment-gallery > .attachment {
-   @apply flex flex-grow basis-1/3 max-w-1/3 py-2;
- }
-
- .trix-content .attachment-gallery.attachment-gallery--2 > action-text-attachment,
- .trix-content .attachment-gallery.attachment-gallery--2 > .attachment, .trix-content .attachment-gallery.attachment-gallery--4 > action-text-attachment,
- .trix-content .attachment-gallery.attachment-gallery--4 > .attachment {
-   @apply basis-1/2 max-w-1/2;
- }
-
- /* .trix-content action-text-attachment .attachment { */
- /*   padding: 0 !important; */
- /*   max-width: 100% !important; */
- /* } */
+.trix-content .attachment-gallery.attachment-gallery--2 > action-text-attachment,
+.trix-content .attachment-gallery.attachment-gallery--2 > .attachment,
+.trix-content .attachment-gallery.attachment-gallery--4 > action-text-attachment,
+.trix-content .attachment-gallery.attachment-gallery--4 > .attachment {
+  @apply basis-1/2 max-w-1/2;
+}
 
 .attachment__caption.attachment__caption--editing {
   @apply w-full;

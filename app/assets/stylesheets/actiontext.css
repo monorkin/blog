@@ -34,7 +34,7 @@ trix-editor pre {
  .trix-content .attachment-gallery.attachment-gallery--2 > action-text-attachment,
  .trix-content .attachment-gallery.attachment-gallery--2 > .attachment, .trix-content .attachment-gallery.attachment-gallery--4 > action-text-attachment,
  .trix-content .attachment-gallery.attachment-gallery--4 > .attachment {
-   @apply bassis-1/2 max-w-1/2;
+   @apply basis-1/2 max-w-1/2;
  }
 
  /* .trix-content action-text-attachment .attachment { */

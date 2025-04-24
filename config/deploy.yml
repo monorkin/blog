@@ -53,3 +53,9 @@ ssh:
 # Use a persistent storage volume.
 volumes:
   - "/home/ubuntu/container_data/blog/credentials/:/rails/config/credentials/:ro"
+
+aliases:
+  console: app exec --interactive --reuse "bin/rails console"
+  shell: app exec --interactive --reuse "bash"
+  logs: app logs -f
+  dbc: app exec --interactive --reuse "bin/rails dbconsole"

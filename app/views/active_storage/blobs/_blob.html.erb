@@ -10,7 +10,7 @@
 <%= content_tag(:figure, class: classes, data: data) do %>
   <% if blob.video? %>
     <% poster = blob.representable? ? url_for(blob.representation(resize_to_limit: dimensions)) : false %>
-    <% options = { controls: true, autoplay: "autoplay", loop: true, muted: true, loading: "lazy" } %>
+    <% options = { controls: true, autoplay: "autoplay", playsinline: true, loop: true, muted: true, loading: "lazy" } %>
     <% options.merge!(poster: url_for(poster), poster_skip_pipeline: true) if poster %>
 
     <%= video_tag([url_for(blob)], options) %>

@@ -25,6 +25,7 @@ module Blog
         "style",
         "controls",
         "autoplay",
+        "playsinline",
         "poster",
         "loop",
         "muted",

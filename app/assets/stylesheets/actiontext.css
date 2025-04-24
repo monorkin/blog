@@ -5,8 +5,8 @@ trix-editor {
 .trix-content {
   @apply prose prose-neutral dark:prose-invert
   prose-figure:flex prose-figure:flex-col prose-figure:items-center prose-figure:max-h-[70vh] prose-figure:border-0
-  prose-img:rounded-sm prose-img:shadow-sm
-  prose-video:rounded-sm prose-video:shadow-sm prose-video:my-0 prose-video:h-1/2
+  prose-img:rounded-sm prose-img:shadow-sm prose-img:max-w-full prose-img:h-auto /* Added max-width and height constraints */
+  prose-video:rounded-sm prose-video:shadow-sm prose-video:my-0 prose-video:h-1/2 prose-video:max-w-full /* Added max-width */
   prose-pre:rounded-sm prose-pre:shadow-sm prose-pre:text-stone-600 dark:prose-pre:text-slate-200
   prose-code:bg-gray-900 prose-code:text-blue-50 prose-code:rounded-sm prose-code:p-1
   prose-code:before:content-none prose-code:after:content-none;
@@ -17,12 +17,21 @@ trix-editor pre {
 }
 
 .trix-content .attachment {
-  @apply flex;
+  @apply flex flex-col items-center w-full;
+}
+
+.trix-content .attachment figure {
+  @apply w-full flex flex-col items-center;
+}
+
+.trix-content .attachment figure img,
+.trix-content .attachment figure video {
+  @apply max-w-full h-auto object-contain;
 }
 
 .trix-content .attachment-gallery > action-text-attachment,
 .trix-content .attachment-gallery > .attachment {
-  @apply flex flex-grow basis-1/3 max-w-1/3 py-2 justify-center items-center;
+  @apply flex flex-grow basis-1/3 max-w-1/3 py-2 justify-center items-center my-4;
 }
 
 .trix-content .attachment-gallery.attachment-gallery--2 > action-text-attachment,
@@ -30,6 +39,10 @@ trix-editor pre {
 .trix-content .attachment-gallery.attachment-gallery--4 > action-text-attachment,
 .trix-content .attachment-gallery.attachment-gallery--4 > .attachment {
   @apply basis-1/2 max-w-1/2;
+}
+
+action-text-attachment {
+  @apply block w-full overflow-hidden;
 }
 
 .attachment__caption.attachment__caption--editing {

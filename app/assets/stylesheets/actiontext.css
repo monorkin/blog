@@ -32,7 +32,7 @@ trix-editor pre {
   @apply basis-1/2 max-w-1/2;
 }
 
-.trix-content .attachment-file.attachment-mp4 {
+.trix-content .attachment.attachment--file.attachment--mp4 {
   @apply border-0;
 }
 

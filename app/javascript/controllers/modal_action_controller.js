@@ -42,8 +42,8 @@ export default class extends ApplicationController {
 
     this.dialog.setAttribute("aria-label", this.frameNameValue)
 
-    this.dialog.classList.add("w-full", "md:w-2/3", "bg-transparent",
-      "backdrop:backdrop-blur-lg", "group")
+    // this.dialog.classList.add("w-full", "md:w-2/3", "bg-transparent",
+    //   "backdrop:backdrop-blur-lg", "group")
 
     if (this.hasClassValue) this.classValue.split(" ").forEach((klass) => this.dialog.classList.add(klass))
 

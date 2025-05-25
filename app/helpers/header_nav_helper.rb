@@ -20,7 +20,7 @@ module HeaderNavHelper
             data: {
               controller: "modal-action",
               modal_action_frame_name_value: :search,
-              modal_action_class_value: "absolute top-0 bottom-0 left-0 right-0 md:bottom-auto md:top-8",
+              modal_action_class_value: "absolute top-5 left-5 md:top-24 lg:top-32 w-screen h-screen bg-transparent flex flex-col items-center backdrop:backdrop-blur-xs",
               modal_action_data_attributes_value: { "closeButton" => true }.to_json
             }
           ) do
@@ -31,7 +31,12 @@ module HeaderNavHelper
           link_to(
             settings_path,
             class: "p-2 block group bg-white dark:bg-neutral-900 dark:border dark:border-neutral-800 shadow-lg rounded-full text-indigo-600 hover:text-indigo-800 dark:text-yellow-500 dark:hover:text-yellow-400",
-            data: { controller: "modal-action", modal_action_frame_name_value: :settings, modal_action_data_attributes_value: { "closeButton" => true }.to_json }
+            data: {
+              controller: "modal-action",
+              modal_action_frame_name_value: :settings,
+              modal_action_class_value: "absolute top-5 left-5 md:top-24 lg:top-32 w-full h-full bg-transparent flex flex-col items-center backdrop:backdrop-blur-xs",
+              modal_action_data_attributes_value: { "closeButton" => true }.to_json
+            }
           ) do
             settings_icon(class: "group-hover:animate-spin w-6 h-6") +
             content_tag(:span, t(".settings"), class: "sr-only")
@@ -52,17 +57,21 @@ module HeaderNavHelper
         end +
         content_tag(
           :dialog,
-          class: "aboslute inset-0 w-full h-full rounded-lg backdrop:backdrop-blur-lg dark:bg-black dark:border-neutral-500 dark:border",
+          class: "aboslute inset-5 w-full h-full rounded-lg backdrop:backdrop-blur-lg dark:bg-black dark:border-neutral-500 dark:border",
           id: "navigation-dialog",
           data: { controller: "dialog" },
           "aria-label" => "Navigation menu"
         ) do
-          content_tag(:div, class: "flex flex-col gap-y-4 justify-between divide-y h-full") do
-            turbo_frame_tag(:search, src: search_path, class: "grow-0 group dark:border-neutral-500", loading: :lazy, data: { close_button: false }) +
-            content_tag(:ul, class: "flex flex-col items-center gap-y-4 py-4 grow dark:border-neutral-500") do
+          content_tag(:div, class: "flex flex-col justify-between h-full divide-y") do
+            turbo_frame_tag(:search, src: search_path, class: "grow-0 group dark:border-neutral-500 pb-6", loading: :lazy, data: { close_button: false }) +
+            content_tag(:ul, class: "flex flex-col items-center gap-y-4 py-4 grow dark:border-neutral-500 py-6") do
               concat(header_nav_item(root_path) { t(".about") })
               block.call
-              concat(header_nav_item(settings_path, data: { controller: "modal-action", modal_action_frame_name_value: :settings }) { t(".settings") })
+              concat(header_nav_item(settings_path, data: {
+                  controller: "modal-action",
+                  modal_action_frame_name_value: :settings,
+                  modal_action_class_value: "aboslute inset-5 w-full h-full bg-transparent backdrop:backdrop-blur-lg",
+                }) { t(".settings") })
             end +
             content_tag(:ul, class: "flex flex-col items-center gap-y-4 py-4 grow-0 dark:border-neutral-500") do
               concat(header_nav_item(root_path, data: { action: "dialog#close" }) { t(".close") })

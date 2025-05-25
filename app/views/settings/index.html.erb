@@ -1,6 +1,6 @@
 <%= turbo_frame_tag :settings do %>
   <div class="relative m-5">
-    <div class="hidden absolute -top-4 -right-4 h-8 z-20 group-data-[close-button=true]:block">
+    <div class="absolute -top-4 -right-4 h-8 z-20">
       <%= link_to root_path, class: "flex items-center justify-center w-8 h-8 bg-white rounded-full shadow transition-all scale-100 hover:scale-110", data: { action: "dialog#close" } do %>
         <%= close_icon(class: "w-4 h-4 text-gray-500") %>
       <% end %>

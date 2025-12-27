@@ -20,7 +20,7 @@ gem "kredis", "~> 1.2"
 gem "pg", ">= 0.18", "< 2.0"
 gem "propshaft"
 gem "puma", ">= 5.0"
-gem "rails", "~> 7.1"
+gem "rails", github: "rails/rails", branch: "main"
 gem "redis"
 gem "rouge"
 gem "rss"
@@ -30,7 +30,6 @@ gem "streamio-ffmpeg"
 gem "tailwindcss-rails", ">= 4.0"
 gem "thruster"
 gem "turbo-rails"
-gem "thruster"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do

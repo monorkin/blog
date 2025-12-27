@@ -6,11 +6,11 @@ class Talk < ApplicationRecord
   has_rich_text :description
 
   validates :title,
-    presence: true
+            presence: true
   validates :event,
-    presence: true
+            presence: true
   validates :held_at,
-    presence: true
+            presence: true
 
   class << self
     def from_slug!(slug)

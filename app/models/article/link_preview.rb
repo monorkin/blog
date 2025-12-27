@@ -28,7 +28,7 @@ class Article
     end
 
     after_initialize do
-      self.id ||= self.class.id_from_url(url&.to_s || '')
+      self.id ||= self.class.id_from_url(url.to_s)
     end
 
     validates :url,
@@ -40,7 +40,7 @@ class Article
 
     class << self
       def for(url:, article:)
-        return nil if !article.content.body.links.include?(url)
+        return nil unless article.content.body.links.include?(url)
 
         new(
           id: id_from_url(url),

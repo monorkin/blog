@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module VideoHelper
   def video_embed_for(url, **options)
-    if url.include?("youtube")
+    if url.include?('youtube')
       youtube_video_embed_for(url, **options)
     else
       html_video_embed_for(url, **options)
@@ -11,7 +13,7 @@ module VideoHelper
     video_id = url.scan(/v=([^&]+)/).flatten.first
 
     content_tag(:iframe, nil, src: "https://www.youtube.com/embed/#{video_id}",
-      frameborder: 0, allowfullscreen: true, **options)
+                              frameborder: 0, allowfullscreen: true, **options)
   end
 
   def html_video_embed_for(url, **options)

@@ -9,11 +9,11 @@ module Taggable
 
   included do
     has_many :taggings,
-      class_name: "Tag::Tagging",
-      as: :taggable,
-      dependent: :destroy
+             class_name: 'Tag::Tagging',
+             as: :taggable,
+             dependent: :destroy
     has_many :tags,
-      through: :taggings
+             through: :taggings
 
     scope :tagged_with, ->(tags) { joins(:tags).where(tags: { name: Taggable.sanitize_tags(tags) }) }
   end
@@ -26,6 +26,7 @@ module Taggable
     existing_tags = Tag.where(name: names)
     existing_tags.each do |tag|
       next if tags.include?(tag)
+
       taggings.build(tag: tag)
     end
 
@@ -41,7 +42,7 @@ module Taggable
     if value.is_a?(String)
       taggings.clear
       tags.clear
-      tag(value.split(","))
+      tag(value.split(','))
     else
       super
     end

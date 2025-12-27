@@ -6,8 +6,8 @@ class User < ApplicationRecord
   has_secure_password
 
   validates :username,
-    presence: true,
-    uniqueness: true
+            presence: true,
+            uniqueness: true
 
   def locked?
     login_attempt_count >= MAX_LOGIN_ATTEMPTS

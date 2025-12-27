@@ -18,9 +18,7 @@ class Login < ApplicationModel
       return false
     end
 
-    if user.present? && user.login_attempted_at.before?(30.minutes.ago)
-      user.unlock!
-    end
+    user.unlock! if user.present? && user.login_attempted_at.before?(30.minutes.ago)
 
     if login_attempts_exceeded?
       errors.add(:username, :locked)

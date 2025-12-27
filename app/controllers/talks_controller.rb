@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class TalksController < ApplicationController
-  ORDER = { held_at: :desc, title: :asc, event: :asc }
-  RATIOS = [ 12, 25, 50 ]
+  ORDER = { held_at: :desc, title: :asc, event: :asc }.freeze
+  RATIOS = [12, 25, 50].freeze
 
   before_action only: %i[index show] do
     request.session_options[:skip] = true
@@ -10,6 +12,7 @@ class TalksController < ApplicationController
     @talk = Talk.from_slug!(params[:id])
   rescue ActiveRecord::RecordNotFound
     raise if Rails.env.local?
+
     redirect_to({ controller: :errors, action: :not_found }, status: :see_other)
   end
 
@@ -48,8 +51,7 @@ class TalksController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @talk.update(permitted_params)
@@ -67,12 +69,12 @@ class TalksController < ApplicationController
 
   private
 
-    def permitted_params
-      params.require(:talk).permit(:title, :event, :event_url,
-        :video_mirror_url, :held_at, :video, :description)
-    end
+  def permitted_params
+    params.require(:talk).permit(:title, :event, :event_url,
+                                 :video_mirror_url, :held_at, :video, :description)
+  end
 
-    def scope
-      Talk.all.order(ORDER).with_rich_text_description_and_embeds.strict_loading
-    end
+  def scope
+    Talk.all.order(ORDER).with_rich_text_description_and_embeds.strict_loading
+  end
 end

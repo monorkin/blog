@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TagHelper
   def tag_bubble(tag, **options)
     base_classes = %w[

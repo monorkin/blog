@@ -2,7 +2,7 @@
 
 class Settings < ApplicationModel
   COLOR_SCHEMES = %w[auto light dark].freeze
-  DEFAULT_COLOR_SCHEME = "auto".freeze
+  DEFAULT_COLOR_SCHEME = 'auto'
 
   attr_accessor :color_scheme
 

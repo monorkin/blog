@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SearchController < ApplicationController
   before_action do
     request.session_options[:skip] = true
@@ -9,7 +11,7 @@ class SearchController < ApplicationController
 
   private
 
-    def permitted_params
-      params.fetch(:search, {}).permit(:term)
-    end
+  def permitted_params
+    params.fetch(:search, {}).permit(:term)
+  end
 end

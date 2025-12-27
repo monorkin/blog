@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   before_action do
     Current.user = User.find_by(id: session[:user_id]) if session[:user_id]
-    Current.settings = Settings.new(cookies.to_h.slice("color_scheme"))
+    Current.settings = Settings.new(cookies.to_h.slice('color_scheme'))
     ActiveStorage::Current.url_options = Rails.application.default_url_options
   end
 

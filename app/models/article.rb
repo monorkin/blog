@@ -7,18 +7,18 @@ class Article < ApplicationRecord
   has_rich_text :content
 
   validates :title,
-    presence: true
+            presence: true
   validates :content,
-    presence: true
+            presence: true
   validates :slug,
-    presence: true
+            presence: true
   validates :slug_id,
-    presence: true,
-    uniqueness: true
+            presence: true,
+            uniqueness: true
 
   before_validation do
     self.slug = title.presence&.parameterize if slug.blank?
-    self.generate_slug_id! if slug_id.blank?
+    generate_slug_id! if slug_id.blank?
   end
 
   scope(:published, lambda do
@@ -62,7 +62,7 @@ class Article < ApplicationRecord
   end
 
   def excerpt(length: 300)
-    truncate(plain_text, length: length, separator: " ")
+    truncate(plain_text, length: length, separator: ' ')
   end
 
   def estimated_reading_time(words_per_minute: 225)
@@ -74,7 +74,7 @@ class Article < ApplicationRecord
   end
 
   def plain_text
-    content.body.to_plain_text.gsub(/\[[^\]]*\]/, "")
+    content.body.to_plain_text.gsub(/\[[^\]]*\]/, '')
   end
 
   def generate_slug_id!

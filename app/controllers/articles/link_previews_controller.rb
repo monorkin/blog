@@ -1,27 +1,31 @@
-class Articles::LinkPreviewsController < ApplicationController
-  layout false
+# frozen_string_literal: true
 
-  helper_method :url
+module Articles
+  class LinkPreviewsController < ApplicationController
+    layout false
 
-  def show
-    @article = Article.from_slug!(params[:article_slug])
-    @link_preview = Article::LinkPreview.for(url: url, article: @article)
+    helper_method :url
 
-    return(head :not_found) if @link_preview.blank?
-    return(head :ok) if request.head?
+    def show
+      @article = Article.from_slug!(params[:article_slug])
+      @link_preview = Article::LinkPreview.for(url: url, article: @article)
 
-    @link_preview.fetch! if !@link_preview.fetched?
+      return head :not_found if @link_preview.blank?
+      return head :ok if request.head?
 
-    fresh_when(@link_preview)
-  end
+      @link_preview.fetch! unless @link_preview.fetched?
 
-  def url
-    return if params[:id].blank?
+      fresh_when(@link_preview)
+    end
 
-    begin
-      Base64.urlsafe_decode64(params[:id]).presence
-    rescue ArgumentError
-      nil
+    def url
+      return if params[:id].blank?
+
+      begin
+        Base64.urlsafe_decode64(params[:id]).presence
+      rescue ArgumentError
+        nil
+      end
     end
   end
 end

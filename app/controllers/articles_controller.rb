@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class ArticlesController < ApplicationController
-  ORDER = { published_at: :desc, id: :desc }
-  RATIOS = [ 12, 25, 50 ]
+  ORDER = { published_at: :desc, id: :desc }.freeze
+  RATIOS = [12, 25, 50].freeze
 
   before_action only: %i[index show atom] do
     request.session_options[:skip] = true
@@ -10,6 +12,7 @@ class ArticlesController < ApplicationController
     @article = Article.from_slug!(params[:slug])
   rescue ActiveRecord::RecordNotFound
     raise if Rails.env.local?
+
     redirect_to({ controller: :errors, action: :not_found }, status: :see_other)
   end
 
@@ -19,10 +22,10 @@ class ArticlesController < ApplicationController
 
   def index
     articles = if Current.user.present?
-      scope
-    else
-      scope.published
-    end
+                 scope
+               else
+                 scope.published
+               end
 
     set_page_and_extract_portion_from(articles, per_page: RATIOS)
 
@@ -41,9 +44,9 @@ class ArticlesController < ApplicationController
 
     @articles = scope.published.order(ORDER)
 
-    if params[:tag].present?
-      @articles = @articles.tagged_with(params[:tag]&.split(","))
-    end
+    return unless params[:tag].present?
+
+    @articles = @articles.tagged_with(params[:tag]&.split(','))
   end
 
   def atom_style
@@ -72,8 +75,7 @@ class ArticlesController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @article.update(permitted_params)
@@ -91,16 +93,16 @@ class ArticlesController < ApplicationController
 
   private
 
-    def permitted_params
-      params.require(:article).permit(:title, :content, :publish_at, :published,
-        :slug, :tags)
-    end
+  def permitted_params
+    params.require(:article).permit(:title, :content, :publish_at, :published,
+                                    :slug, :tags)
+  end
 
-    def scope
-      Article
-        .all
-        .order(ORDER)
-        .with_rich_text_content_and_embeds
-        .strict_loading
-    end
+  def scope
+    Article
+      .all
+      .order(ORDER)
+      .with_rich_text_content_and_embeds
+      .strict_loading
+  end
 end

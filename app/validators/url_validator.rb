@@ -5,13 +5,11 @@ class UrlValidator < ActiveModel::EachValidator
   LOOPBACK_HOSTS = %w[localhost 127.0.0.1 ::1].freeze
 
   def validate_each(record, attribute, value)
-    if invalid?(value)
-      return record.errors.add(attribute, options[:message] || :invalid_url)
-    end
+    return record.errors.add(attribute, options[:message] || :invalid_url) if invalid?(value)
 
-    if loopback?(value)
-      return record.errors.add(attribute, options[:message] || :loopback_url)
-    end
+    return unless loopback?(value)
+
+    record.errors.add(attribute, options[:message] || :loopback_url)
   end
 
   def invalid?(value)

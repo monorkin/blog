@@ -21,20 +21,20 @@ class Search < ApplicationModel
 
     scope = Article.published.order(published_at: :desc, title: :asc).limit(result_count)
 
-    if term.starts_with?("#")
-      scope.tagged_with(term.gsub(/^#/, ""))
+    if term.starts_with?('#')
+      scope.tagged_with(term.gsub(/^#/, ''))
     else
-      scope.where("title ILIKE ?", "%#{term}%")
+      scope.where('title ILIKE ?', "%#{term}%")
     end
   end
 
   def tags
-    return Tag.none if term.blank? || term.starts_with?("#")
+    return Tag.none if term.blank? || term.starts_with?('#')
 
-    normalized_term = Tag.normalize_value_for(:name, term)
+    Tag.normalize_value_for(:name, term)
 
     Tag
-      .where("name ILIKE ?", "%#{term}%")
+      .where('name ILIKE ?', "%#{term}%")
       .order(name: :asc)
       .limit(result_count)
   end

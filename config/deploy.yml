@@ -40,7 +40,7 @@ env:
     REDIS_URL: "redis://redis.stanko.io:6379/0"
   secret:
     - RAILS_MASTER_KEY
-    - APPSIGNAL_PUSH_API_KEY
+    - SENTRY_DSN
 
 # Call a broadcast command on deploys.
 # audit_broadcast_cmd:

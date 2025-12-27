@@ -107,9 +107,6 @@ GEM
       railties
     addressable (2.8.8)
       public_suffix (>= 2.0.2, < 8.0)
-    appsignal (4.8.1)
-      logger
-      rack (>= 2.0.0)
     async (2.35.0)
       console (~> 1.29)
       fiber-annotation
@@ -358,6 +355,12 @@ GEM
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
+    sentry-rails (6.2.0)
+      railties (>= 5.2.0)
+      sentry-ruby (~> 6.2.0)
+    sentry-ruby (6.2.0)
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
     sitemap_generator (6.3.0)
       builder (~> 3.0)
     sshkit (1.25.0)
@@ -415,7 +418,6 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  appsignal
   async-http
   aws-sdk-s3 (~> 1.14)
   axe-core-selenium
@@ -443,6 +445,8 @@ DEPENDENCIES
   rouge
   rss
   selenium-webdriver
+  sentry-rails
+  sentry-ruby
   sitemap_generator
   stackprof
   stimulus-rails

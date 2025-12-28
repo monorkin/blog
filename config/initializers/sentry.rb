@@ -20,6 +20,9 @@ Sentry.init do |config|
   # Set the environment
   config.environment = Rails.env
 
+  # Track releases using the application version (Git revision)
+  config.release = Rails.application.config.version
+
   # Enable performance monitoring
   config.enabled_environments = %w[production]
 end

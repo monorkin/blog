@@ -46,6 +46,10 @@ env:
 # audit_broadcast_cmd:
 #   bin/broadcast_to_bc
 
+builder:
+  args:
+    REVISION: "<%= `git log --pretty=format:'%h' -n 1` %>"
+
 # Use a different ssh user than root
 ssh:
   user: ubuntu

@@ -47,6 +47,8 @@ env:
 #   bin/broadcast_to_bc
 
 builder:
+  arch:
+    - amd64
   args:
     REVISION: "<%= `git log --pretty=format:'%h' -n 1` %>"
 

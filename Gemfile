@@ -39,7 +39,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'kamal', '~> 1.9'
+  gem 'kamal', '>= 2'
   gem 'listen'
   gem 'memory_profiler'
   gem 'rack-mini-profiler', require: %w[enable_rails_patches rack-mini-profiler]

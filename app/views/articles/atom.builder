@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 cache ["feed/#{params[:tag] || 'everything'}", @articles.maximum(:updated_at)] do
-  atom_feed(root_url: root_url, instruct: {
+  atom_feed(root_url: articles_url, instruct: {
               "xml-stylesheet": { href: atom_style_articles_path, type: 'text/xsl' }
             }) do |feed|
     feed.title('Stanko Krtalic Rusendic')

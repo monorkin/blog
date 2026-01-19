@@ -1,0 +1,39 @@
+<% content_for :head do %>
+  <title>#<%= @tag.name %> | Stanko K.R.</title>
+  <%= content_tag(:link, nil, rel: "canonical", href: tag_url(@tag)) %>
+  <% seo_meta_tags(
+    title: "##{@tag.name}",
+    description: "Articles tagged with #{@tag.name}",
+    url: tag_url(@tag)
+  ).each { |tag| concat tag } %>
+<% end %>
+
+<div data-controller="infinite-scroll">
+  <section class="mb-4 px-2 md:px-0">
+    <h1 class="text-4xl font-semibold">#<%= @tag.name %></h1>
+    <p class="text-neutral-600 dark:text-neutral-400 mt-2">
+      <%= pluralize(@tag.published_articles_count, 'article') %> with this tag
+    </p>
+  </section>
+
+  <% if @related_tags.any? %>
+    <section class="mb-6 px-2 md:px-0">
+      <h2 class="text-lg font-medium mb-2">Related Tags</h2>
+      <div class="flex flex-wrap gap-2">
+        <% @related_tags.each do |tag| %>
+          <%= tag_bubble(tag) %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <section>
+    <% if @articles.any? %>
+      <%= article_list(@articles, id: "articles") %>
+    <% else %>
+      <p class="px-2 md:px-0">No articles found with this tag</p>
+    <% end %>
+  </section>
+
+  <%= paginate page: @page %>
+</div>

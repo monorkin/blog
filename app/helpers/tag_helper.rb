@@ -12,10 +12,12 @@ module TagHelper
       dark:hover:bg-yellow-500 dark:hover:text-neutral-900
     ]
 
+    label = "##{tag.name}"
+
     link_to(
-      "##{tag.name}",
-      search_path(search: { term: "##{tag.name}" }),
-      class: "#{base_classes.join(' ')} #{options[:class]}".strip
+      label,
+      tag_path(tag),
+      class: token_list(*base_classes, options[:class])
     )
   end
 end

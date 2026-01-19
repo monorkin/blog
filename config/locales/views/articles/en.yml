@@ -16,8 +16,18 @@ en:
       delete: "Delete"
       confirm_delete: "Are you sure you want to delete this article?"
       published_on: "Published on %{date}"
-      subscribe_rss: "Subscribe to the RSS feed to receive future posts in your RSS reader"
-      subscribe_newsletter: "Subscribe to the newsletter to receive future posts via email"
+
+      navigation:
+        previous_article: "Previous"
+        next_article: "Next"
+
+      stay_updated_prompt:
+        subscribe_rss: "Subscribe to the RSS feed to receive future posts in your RSS reader"
+        or: "or"
+        subscribe_newsletter: "Subscribe to the newsletter to receive future posts via email"
+
+      related_articles:
+        popular_articles: "Popular Articles"
 
     edit:
       back: "Back"

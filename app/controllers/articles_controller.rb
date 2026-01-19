@@ -58,7 +58,12 @@ class ArticlesController < ApplicationController
   end
 
   def show
-    fresh_when(@article)
+    @related_articles = @article.related_articles(limit: 5)
+    @previous_article = @article.previous_article
+    @next_article = @article.next_article
+    @popular_articles = Article.popular(limit: 5).where.not(id: @article.id)
+
+    fresh_when etag: [ @article, @related_articles, @previous_article, @next_article, @popular_articles ]
   end
 
   def new

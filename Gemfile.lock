@@ -209,6 +209,10 @@ GEM
     globalid (1.3.0)
       activesupport (>= 6.1)
     hiredis (0.6.3)
+    hotwire-spark (0.1.13)
+      listen
+      rails (>= 7.0.0)
+      zeitwerk
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
@@ -361,8 +365,6 @@ GEM
     sentry-ruby (6.2.0)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sitemap_generator (6.3.0)
-      builder (~> 3.0)
     sshkit (1.25.0)
       base64
       logger
@@ -430,6 +432,7 @@ DEPENDENCIES
   fastimage
   geared_pagination
   hiredis
+  hotwire-spark
   image_processing (~> 1.8)
   importmap-rails
   kamal (>= 2)
@@ -447,7 +450,6 @@ DEPENDENCIES
   selenium-webdriver
   sentry-rails
   sentry-ruby
-  sitemap_generator
   stackprof
   stimulus-rails
   streamio-ffmpeg

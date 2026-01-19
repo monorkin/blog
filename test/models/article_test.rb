@@ -90,4 +90,38 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal 12, article.slug_id.length, 'Slug id should be 12 characters'
     assert_match(/[a-zA-Z0-9]{12}/, article.slug_id, 'Slug id should be alphanumeric')
   end
+
+  test '#related_articles returns articles with shared tags' do
+    article = articles(:misguided_mark)
+
+    related = article.related_articles(limit: 5)
+
+    assert_kind_of ActiveRecord::Relation, related
+    assert related.none? { |a| a.id == article.id }, 'Should not include the article itself'
+  end
+
+  test '#previous_article returns the article published before' do
+    article = articles(:hold_your_own_poison_ivy)
+
+    previous = article.previous_article
+
+    assert_not_nil previous
+    assert previous.published_at < article.published_at, 'Previous article should be older'
+  end
+
+  test '#next_article returns the article published after' do
+    article = articles(:misguided_mark)
+
+    next_article = article.next_article
+
+    assert_not_nil next_article
+    assert next_article.published_at > article.published_at, 'Next article should be newer'
+  end
+
+  test '.popular returns the most recent published articles' do
+    popular = Article.popular(limit: 5)
+
+    assert_equal 5, popular.count
+    assert popular.all?(&:published?), 'All articles should be published'
+  end
 end

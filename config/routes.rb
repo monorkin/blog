@@ -7,7 +7,11 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get 'up' => 'rails/health#show', as: :rails_health_check
 
-  get 'sitemap', to: 'sitemap#index'
+  get '/sitemap.xml', to: 'sitemaps#index', as: :sitemap, defaults: { format: :xml }
+  get '/sitemap-pages.xml', to: 'sitemaps#pages', as: :sitemap_pages, defaults: { format: :xml }
+  get '/sitemap-articles.xml', to: 'sitemaps#articles', as: :sitemap_articles, defaults: { format: :xml }
+  get '/sitemap-talks.xml', to: 'sitemaps#talks', as: :sitemap_talks, defaults: { format: :xml }
+  get '/sitemap-tags.xml', to: 'sitemaps#tags', as: :sitemap_tags, defaults: { format: :xml }
 
   get 'login', to: 'login#new', as: :login
   post 'login', to: 'login#create'
@@ -15,6 +19,8 @@ Rails.application.routes.draw do
 
   get 'search', to: 'search#index', as: :search
   get 'settings', to: 'settings#index', as: :settings
+
+  resources :tags, only: :show, param: :name
 
   resources :talks
 

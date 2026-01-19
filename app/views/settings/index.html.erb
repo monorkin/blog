@@ -1,3 +1,8 @@
+<% content_for :head do %>
+  <title>Settings | Stanko K.R.</title>
+  <%= noindex_meta_tag %>
+<% end %>
+
 <%= turbo_frame_tag :settings do %>
   <div class="relative m-5">
     <div class="absolute -top-4 -right-4 h-8 z-20">
@@ -7,6 +12,7 @@
     </div>
 
     <div class="bg-neutral-100 rounded-lg z-10 shadow md:shadow-xl dark:bg-neutral-900 dark:border dark:border-neutral-500 dark:text-neutral-100 p-2">
+      <h1 class="sr-only">Settings</h1>
       <h2 class="p-2 text-lg font-semibold"><%= t(".settings") %></h2>
 
       <dl class="grid grid-cols-2 border-neutral-500 overflow-hidden rounded-lg items-center">

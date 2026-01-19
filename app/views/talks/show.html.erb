@@ -1,4 +1,16 @@
-<div class="flex flex-col gap-y-4">
+<% content_for :head do %>
+  <% title = truncate(@talk.title, length: 60) %>
+  <% description = @talk.excerpt(length: 160) || "A talk about #{@talk.title} at #{@talk.event}" %>
+  <title><%= title %> | Stanko K.R.</title>
+  <% seo_meta_tags(
+    title: title,
+    description: description,
+    type: "article",
+    url: talk_url(@talk)
+  ).each { |tag| concat tag } %>
+<% end %>
+
+<div class="flex flex-col gap-y-4 px-2 md:px-0">
 
   <div class="flex flex-col gap-y-4">
     <h1 class="text-2xl font-semibold">

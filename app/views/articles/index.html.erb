@@ -1,23 +1,16 @@
 <% content_for :head do %>
   <title>Articles | Stanko K.R.</title>
-  <!--
-  meta name="description" content="List of articles I've written about various topics"
-  meta rel="canonical" href=articles_url
-  meta name="twitter:card" content="summary"
-  meta name="twitter:creator" content="@monorkin"
-  meta property="og:title" content="Articles | Stanko K.R."
-  meta property="og:description" content="List of articles I've written about various topics"
-  meta property="og:locale" content="en_US"
-  meta property="og:type" content="blog"
-  meta property="og:url" content=articles_url
-  meta property="og:image" content=asset_url('/images/portrait.jpg')
-  meta name="twitter:image:alt" content="Portrait photo of Stanko K.R."
-  -->
+  <%= content_tag(:link, nil, rel: "canonical", href: articles_url) %>
+  <% seo_meta_tags(
+    title: "Articles",
+    description: "Collection of articles about Ruby, Rails, and software development",
+    url: articles_url
+  ).each { |tag| concat tag } %>
 <% end %>
 
 <div data-controller="infinite-scroll">
-  <section class="hidden">
-    <h1>Articles | Stanko K.R.</h1>
+  <section class="mb-4 px-2 md:px-0">
+    <h1 class="text-4xl font-semibold">Articles</h1>
   </section>
 
   <% if Current.user.present? %>

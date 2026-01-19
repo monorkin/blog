@@ -1,3 +1,8 @@
+<% content_for :head do %>
+  <title>Search | Stanko K.R.</title>
+  <%= noindex_meta_tag %>
+<% end %>
+
 <%= turbo_frame_tag :search do %>
   <div class="relative mt-5 mx-5">
     <div class="absolute -top-4 -right-4 h-8 z-20">
@@ -7,6 +12,7 @@
     </div>
 
     <div class="relative flex flex-col divide-y bg-neutral-100 rounded-lg z-10 shadow md:shadow-xl dark:bg-neutral-900 dark:border dark:border-neutral-500">
+      <h1 class="sr-only">Search</h1>
       <div class="grow-0 relative p-2 dark:border-neutral-500">
         <%= form_for @search, url: search_path, method: :get, html: { class: "flex flex-row items-center gap-x-4" } do |search_form| %>
           <label class="cursor-pointer">

@@ -80,4 +80,37 @@ class Article < ApplicationRecord
   def generate_slug_id!
     self.slug_id = self.class.generate_slug_id
   end
+
+  def related_articles(limit: 5)
+    return Article.none if tags.empty?
+
+    Article
+      .published
+      .where.not(id: id)
+      .joins(:taggings)
+      .where(taggings: { tag_id: tags.pluck(:id) })
+      .group(:id)
+      .order(Arel.sql('COUNT(taggings.tag_id) DESC'), published_at: :desc)
+      .limit(limit)
+  end
+
+  def previous_article
+    Article
+      .published
+      .where(published_at: ...published_at)
+      .order(published_at: :desc)
+      .first
+  end
+
+  def next_article
+    Article
+      .published
+      .where(published_at: (published_at + 1.second)..)
+      .order(published_at: :asc)
+      .first
+  end
+
+  def self.popular(limit: 5)
+    published.order(published_at: :desc).limit(limit)
+  end
 end

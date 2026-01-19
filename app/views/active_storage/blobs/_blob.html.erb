@@ -1,5 +1,6 @@
 <%
   dimensions = local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, 768 ]
+  image_options = { resize_to_limit: dimensions, saver: { strip: true } }
   classes = %w[attachment]
   data = {}
 
@@ -9,7 +10,7 @@
 
 <%= content_tag(:figure, class: classes, data: data) do %>
   <% if blob.video? %>
-    <% poster = blob.representable? ? url_for(blob.representation(resize_to_limit: dimensions)) : false %>
+    <% poster = blob.representable? ? url_for(blob.representation(image_options)) : false %>
     <% options = { controls: true, autoplay: "autoplay", playsinline: true, loop: true, muted: true, loading: "lazy" } %>
     <% options.merge!(poster: url_for(poster), poster_skip_pipeline: true) if poster %>
 
@@ -25,7 +26,7 @@
       <% width, height = blob.metadata.values_at("width", "height") %>
       <% style = (width && height) ? "aspect-ratio: #{width} / #{height};" : nil %>
 
-      <%= image_tag blob.representation(resize_to_limit: dimensions), loading: "lazy", style: style %>
+      <%= image_tag blob.representation(image_options), loading: "lazy", style: style %>
     <% end %>
   <% else %>
     <%= link_to blob.filename, url_for(blob), download: true %>

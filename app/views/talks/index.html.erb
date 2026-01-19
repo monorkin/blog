@@ -1,6 +1,20 @@
+<% content_for :head do %>
+  <title>Talks | Stanko K.R.</title>
+  <%= content_tag(:link, nil, rel: "canonical", href: talks_url) %>
+  <% seo_meta_tags(
+    title: "Talks",
+    description: "Conference talks and presentations about Ruby, Rails, and web development",
+    url: talks_url
+  ).each { |tag| concat tag } %>
+<% end %>
+
 <div class="flex flex-col gap-y-6" data-controller="infinite-scroll">
+  <section class="mb-4 px-2 md:px-0">
+    <h1 class="text-4xl font-semibold">Talks</h1>
+  </section>
+
   <% if Current.user.present? %>
-    <div class="flex flex-row gap-x-4">
+    <div class="flex flex-row gap-x-4 px-2 md:px-0">
       <%= link_to t(".new"), new_talk_path, class: primary_button_classes %>
     </div>
   <% end %>

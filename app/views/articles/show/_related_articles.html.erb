@@ -1,0 +1,12 @@
+<% if popular_articles.any? %>
+  <div class="mx-2 md:mx-0 p-4">
+    <h2 class="font-semibold mb-3"><%= t(".popular_articles") %></h2>
+    <ul class="space-y-2">
+      <% popular_articles.limit(3).each do |article| %>
+        <li>
+          <%= link_to article.title, article_path(article), class: "text-indigo-600 hover:text-indigo-800 dark:text-yellow-500 dark:hover:text-yellow-400" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

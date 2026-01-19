@@ -52,4 +52,5 @@ yarn-debug.log*
 # Ignore editor artefacts and configuration
 *.swap
 /tags
+/talks
 

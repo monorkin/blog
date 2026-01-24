@@ -21,6 +21,8 @@ class Article < ApplicationRecord
     generate_slug_id! if slug_id.blank?
   end
 
+  before_save :set_published_at
+
   scope(:published, lambda do
     where(published: true).where.not(published_at: (Time.current..))
   end)
@@ -79,6 +81,10 @@ class Article < ApplicationRecord
 
   def generate_slug_id!
     self.slug_id = self.class.generate_slug_id
+  end
+
+  def set_published_at
+    self.published_at = publish_at || created_at || Time.current
   end
 
   def related_articles(limit: 5)

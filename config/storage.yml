@@ -1,15 +1,15 @@
 test:
   service: Disk
-  root: <%= Rails.root.join("tmp/storage") %>
+  root: <%= Rails.root.join("tmp/storage/files") %>
 
 local:
   service: Disk
-  root: <%= Rails.root.join("storage") %>
+  root: <%= Rails.root.join("storage", Rails.env, "files") %>
 
 scaleway:
   service: S3
-  access_key_id: <%= Rails.app.creds.require(:scaleway, :access_key_id) %>
-  secret_access_key: <%= Rails.app.creds.require(:scaleway, :secret_access_key) %>
+  access_key_id: <%= Rails.app.creds.option(:scaleway, :access_key_id) %>
+  secret_access_key: <%= Rails.app.creds.option(:scaleway, :secret_access_key) %>
   region: fr-par
   bucket: assets.stanko.io
   endpoint: https://s3.fr-par.scw.cloud

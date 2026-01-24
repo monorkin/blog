@@ -10,12 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2023_10_29_081537) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "citext"
-  enable_extension "pg_catalog.plpgsql"
-  enable_extension "pgcrypto"
-
+ActiveRecord::Schema[8.2].define(version: 2026_01_24_095858) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -58,7 +53,7 @@ ActiveRecord::Schema[8.2].define(version: 2023_10_29_081537) do
     t.datetime "created_at", null: false
     t.datetime "publish_at", precision: nil
     t.boolean "published", default: false, null: false
-    t.virtual "published_at", type: :datetime, as: "COALESCE(publish_at, created_at)", stored: true
+    t.datetime "published_at"
     t.text "slug", default: "", null: false
     t.string "slug_id", null: false
     t.string "thread"

@@ -24,7 +24,7 @@ class Search < ApplicationModel
     if term.starts_with?('#')
       scope.tagged_with(term.gsub(/^#/, ''))
     else
-      scope.where('title ILIKE ?', "%#{term}%")
+      scope.where('title LIKE ? COLLATE NOCASE', "%#{term}%")
     end
   end
 
@@ -34,7 +34,7 @@ class Search < ApplicationModel
     Tag.normalize_value_for(:name, term)
 
     Tag
-      .where('name ILIKE ?', "%#{term}%")
+      .where('name LIKE ? COLLATE NOCASE', "%#{term}%")
       .order(name: :asc)
       .limit(result_count)
   end

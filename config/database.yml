@@ -1,15 +1,16 @@
 default: &default
-  adapter: postgresql
-  encoding: unicode
+  adapter: sqlite3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  url: <%= Rails.application.credentials.dig(:database, :url) || 'postgres://postgres:@127.0.0.1/blog' %>_<%= Rails.env %>
+  timeout: 5000
 
 development:
   <<: *default
+  database: storage/development.sqlite3
 
 test:
   <<: *default
+  database: storage/test.sqlite3
 
 production:
   <<: *default
-  url: <%= Rails.application.credentials.dig(:database, :url) %>
+  database: storage/production.sqlite3

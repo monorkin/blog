@@ -290,7 +290,6 @@ GEM
     nokogiri (1.18.10-x86_64-linux-gnu)
       racc (~> 1.4)
     ostruct (0.6.3)
-    pg (1.6.2-x86_64-linux)
     pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
@@ -365,6 +364,7 @@ GEM
     sentry-ruby (6.2.0)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
+    sqlite3 (2.9.0-x86_64-linux-gnu)
     sshkit (1.25.0)
       base64
       logger
@@ -439,7 +439,6 @@ DEPENDENCIES
   kredis (~> 1.2)
   listen
   memory_profiler
-  pg (>= 0.18, < 2.0)
   propshaft
   puma (>= 5.0)
   rack-mini-profiler
@@ -450,6 +449,7 @@ DEPENDENCIES
   selenium-webdriver
   sentry-rails
   sentry-ruby
+  sqlite3
   stackprof
   stimulus-rails
   streamio-ffmpeg

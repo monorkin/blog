@@ -58,6 +58,7 @@ ssh:
 
 # Use a persistent storage volume.
 volumes:
+  - "/home/ubuntu/container_data/blog/storage/:/rails/storage/"
   - "/home/ubuntu/container_data/blog/credentials/:/rails/config/credentials/:ro"
 
 aliases:

@@ -34,10 +34,9 @@ class ArticlesController < ApplicationController
     request.format = :atom
 
     @articles = scope.published.order(ORDER)
+    @articles = @articles.tagged_with(params[:tag]&.split(",")) if params[:tag].present?
 
-    return unless params[:tag].present?
-
-    @articles = @articles.tagged_with(params[:tag]&.split(","))
+    fresh_when(@articles)
   end
 
   def atom_style

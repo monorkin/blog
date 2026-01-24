@@ -22,6 +22,7 @@ class Article < ApplicationRecord
   end
 
   before_save :set_published_at
+  after_commit :generate_link_previews, on: [:create, :update]
 
   scope(:published, lambda do
     where(published: true).where.not(published_at: (Time.current..))
@@ -118,5 +119,17 @@ class Article < ApplicationRecord
 
   def self.popular(limit: 5)
     published.order(published_at: :desc).limit(limit)
+  end
+
+  def generate_link_previews
+    active_link_previews = Set.new
+
+    content.body.links.each do |link|
+      link_preview = link_previews.find_or_create_by(url: link)
+      active_link_previews << link_preview.id
+      link_preview.fetch_later
+    end
+
+    link_previews.where.not(id: active_link_previews.to_a).destroy_all
   end
 end

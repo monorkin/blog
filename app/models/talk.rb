@@ -27,16 +27,16 @@ class Talk < ApplicationRecord
       title.presence&.parameterize,
       event.presence&.parameterize,
       id
-    ].join('-').presence
+    ].join("-").presence
   end
 
   def excerpt(length: 300)
     return nil if description.blank?
 
-    truncate(plain_text, length: length, separator: ' ')
+    truncate(plain_text, length: length, separator: " ")
   end
 
   def plain_text
-    description.body.to_plain_text.gsub(/\[[^\]]*\]/, '')
+    description.body.to_plain_text.gsub(/\[[^\]]*\]/, "")
   end
 end

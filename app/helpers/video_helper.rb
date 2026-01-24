@@ -2,7 +2,7 @@
 
 module VideoHelper
   def video_embed_for(url, **options)
-    if url.include?('youtube')
+    if url.include?("youtube")
       youtube_video_embed_for(url, **options)
     else
       html_video_embed_for(url, **options)

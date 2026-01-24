@@ -39,7 +39,7 @@ class Article
     end
 
     def cache_key
-      [self.class.name.underscore, id || :new].join('/')
+      [ self.class.name.underscore, id || :new ].join("/")
     end
 
     def unfetched?

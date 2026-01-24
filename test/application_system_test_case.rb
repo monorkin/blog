@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'test_helper'
-require 'axe/matchers/be_axe_clean'
+require "test_helper"
+require "axe/matchers/be_axe_clean"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :selenium, using: :headless_firefox

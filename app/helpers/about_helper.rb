@@ -2,10 +2,10 @@
 
 module AboutHelper
   def about_page_contact_link_content(title, img_path)
-    content_tag(:div, class: 'group relative') do
+    content_tag(:div, class: "group relative") do
       content_tag(
         :div,
-        '',
+        "",
         class: %(
           hidden md:block absolute inset-0 z-10
           transition-all duration-300 ease-out
@@ -13,7 +13,7 @@ module AboutHelper
           dark:from-yellow-500/20
         )
       ) +
-        content_tag(:div, class: 'relative z-20 flex flex-col place-items-center') do
+        content_tag(:div, class: "relative z-20 flex flex-col place-items-center") do
           image_tag(
             img_path,
             class: %w[
@@ -29,7 +29,7 @@ module AboutHelper
             content_tag(
               :div,
               title,
-              class: 'text-center font-semibold text-neutral-600 group-hover:text-indigo-600 dark:text-neutral-500 dark:group-hover:text-yellow-500'
+              class: "text-center font-semibold text-neutral-600 group-hover:text-indigo-600 dark:text-neutral-500 dark:group-hover:text-yellow-500"
             )
         end
     end

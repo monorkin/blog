@@ -2,7 +2,7 @@ xml.instruct!
 xml.sitemapindex xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9" do
   xml.sitemap do
     xml.loc sitemap_pages_url
-    xml.lastmod File.mtime(Rails.root.join('app/views/about/show.html.erb')).iso8601
+    xml.lastmod File.mtime(Rails.root.join("app/views/about/show.html.erb")).iso8601
   end
   xml.sitemap do
     xml.loc sitemap_articles_url

@@ -2,21 +2,21 @@
 
 class ArticlesController < ApplicationController
   ORDER = { published_at: :desc, id: :desc }.freeze
-  RATIOS = [12, 25, 50].freeze
+  RATIOS = [ 12, 25, 50 ].freeze
 
   before_action only: %i[index show atom] do
     request.session_options[:skip] = true
   end
 
-  before_action :set_account, only: %i[show edit update destroy] do
+  before_action :set_account, only: %i[show edit update destroy]
   ensure_authenticated only: %i[new create edit update destroy]
 
   def index
     articles = if Current.user.present?
                  scope
-               else
+    else
                  scope.published
-               end
+    end
 
     set_page_and_extract_portion_from(articles, per_page: RATIOS)
 
@@ -37,7 +37,7 @@ class ArticlesController < ApplicationController
 
     return unless params[:tag].present?
 
-    @articles = @articles.tagged_with(params[:tag]&.split(','))
+    @articles = @articles.tagged_with(params[:tag]&.split(","))
   end
 
   def atom_style

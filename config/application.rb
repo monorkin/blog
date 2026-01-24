@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -30,34 +30,34 @@ module Blog
 
     config.after_initialize do
       ActionText::ContentHelper.allowed_attributes = [
-        'style',
-        'controls',
-        'autoplay',
-        'playsinline',
-        'poster',
-        'loop',
-        'muted',
-        'loading',
-        'data-controller',
-        'data-action',
-        'language',
+        "style",
+        "controls",
+        "autoplay",
+        "playsinline",
+        "poster",
+        "loop",
+        "muted",
+        "loading",
+        "data-controller",
+        "data-action",
+        "language",
         *ActionText::ContentHelper.sanitizer.class.allowed_attributes,
         *ActionText::Attachment::ATTRIBUTES
       ]
 
       ActionText::ContentHelper.allowed_tags = [
-        'video',
-        'source',
-        'table',
-        'thead',
-        'tbody',
-        'tr',
-        'th',
-        'td',
+        "video",
+        "source",
+        "table",
+        "thead",
+        "tbody",
+        "tr",
+        "th",
+        "td",
         *ActionText::ContentHelper.sanitizer.class.allowed_tags,
         ActionText::Attachment.tag_name,
-        'figure',
-        'figcaption'
+        "figure",
+        "figcaption"
       ]
     end
   end

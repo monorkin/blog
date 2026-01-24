@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'async'
-require 'async/http/internet'
-require 'async/http/body/pipe'
+require "async"
+require "async/http/internet"
+require "async/http/body/pipe"
 
 class Article
   class LinkPreview
     class GenericFetcher < ApplicationModel
-      USER_AGENT = 'stanko.io/1.0.0 link_preview_bot/1.0.0'
+      USER_AGENT = "stanko.io/1.0.0 link_preview_bot/1.0.0"
       REQUEST_TIMEOUT = 3
       MAX_REDIRECT = 10
 
@@ -69,13 +69,13 @@ class Article
 
       def build_headers
         [
-          ['User-Agent', USER_AGENT],
-          ['Accept', accept_header]
+          [ "User-Agent", USER_AGENT ],
+          [ "Accept", accept_header ]
         ]
       end
 
       def accept_header
-        'text/html'
+        "text/html"
       end
 
       def parse_from_response_body!(response)
@@ -101,7 +101,7 @@ class Article
       end
 
       def redirect_to(response)
-        response.headers['location']
+        response.headers["location"]
       end
     end
   end

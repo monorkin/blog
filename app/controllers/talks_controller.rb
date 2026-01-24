@@ -2,7 +2,7 @@
 
 class TalksController < ApplicationController
   ORDER = { held_at: :desc, title: :asc, event: :asc }.freeze
-  RATIOS = [12, 25, 50].freeze
+  RATIOS = [ 12, 25, 50 ].freeze
 
   before_action only: %i[index show] do
     request.session_options[:skip] = true

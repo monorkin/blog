@@ -14,7 +14,7 @@ class Article
       def preprocess_url(url)
         uri = URI(url)
 
-        article_id = uri.path.gsub(%r{^/wiki/}, '')
+        article_id = uri.path.gsub(%r{^/wiki/}, "")
         uri.path = "/api/rest_v1/page/summary/#{article_id}"
 
         uri.to_s
@@ -27,9 +27,9 @@ class Article
       def parse_body(io)
         response = JSON.parse(io.read)
 
-        data[:title] ||= response.dig('titles', 'canonical')
-        data[:image_url] ||= response.dig('thumbnail', 'source')
-        data[:description] ||= response['extract']
+        data[:title] ||= response.dig("titles", "canonical")
+        data[:image_url] ||= response.dig("thumbnail", "source")
+        data[:description] ||= response["extract"]
       end
     end
   end

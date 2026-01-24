@@ -9,7 +9,7 @@ module Taggable
 
   included do
     has_many :taggings,
-             class_name: 'Tag::Tagging',
+             class_name: "Tag::Tagging",
              as: :taggable,
              dependent: :destroy
     has_many :tags,
@@ -42,7 +42,7 @@ module Taggable
     if value.is_a?(String)
       taggings.clear
       tags.clear
-      tag(value.split(','))
+      tag(value.split(","))
     else
       super
     end

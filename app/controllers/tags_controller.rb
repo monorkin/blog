@@ -2,7 +2,7 @@
 
 class TagsController < ApplicationController
   ORDER = { published_at: :desc, id: :desc }.freeze
-  RATIOS = [12, 25, 50].freeze
+  RATIOS = [ 12, 25, 50 ].freeze
 
   before_action do
     request.session_options[:skip] = true

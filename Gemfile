@@ -36,6 +36,7 @@ gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "faker"
+  gem "rubocop-rails-omakase", require: false
 end
 
 group :development do

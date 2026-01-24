@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require "test_helper"
 
 class Tag::TaggingTest < ActiveSupport::TestCase
-  fixtures :tags, 'tag/taggings', :articles
+  fixtures :tags, "tag/taggings", :articles
 
-  test 'touches both the tag and the taggable after create' do
+  test "touches both the tag and the taggable after create" do
     tag = tags(:ruby)
     taggable = articles(:hold_your_own_poison_ivy)
 

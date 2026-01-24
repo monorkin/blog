@@ -56,7 +56,7 @@ class Article < ApplicationRecord
     [
       super.presence || title.presence&.parameterize,
       slug_id.presence
-    ].compact.join('-').presence
+    ].compact.join("-").presence
   end
 
   def published?
@@ -64,11 +64,11 @@ class Article < ApplicationRecord
   end
 
   def excerpt(length: 300)
-    truncate(plain_text, length: length, separator: ' ')
+    truncate(plain_text, length: length, separator: " ")
   end
 
   def estimated_reading_time(words_per_minute: 225)
-    [(word_count.to_f / words_per_minute).ceil, 1].max.to_i
+    [ (word_count.to_f / words_per_minute).ceil, 1 ].max.to_i
   end
 
   def word_count
@@ -76,7 +76,7 @@ class Article < ApplicationRecord
   end
 
   def plain_text
-    content.body.to_plain_text.gsub(/\[[^\]]*\]/, '')
+    content.body.to_plain_text.gsub(/\[[^\]]*\]/, "")
   end
 
   def generate_slug_id!
@@ -96,7 +96,7 @@ class Article < ApplicationRecord
       .joins(:taggings)
       .where(taggings: { tag_id: tags.pluck(:id) })
       .group(:id)
-      .order(Arel.sql('COUNT(taggings.tag_id) DESC'), published_at: :desc)
+      .order(Arel.sql("COUNT(taggings.tag_id) DESC"), published_at: :desc)
       .limit(limit)
   end
 

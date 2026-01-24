@@ -1,40 +1,40 @@
 # frozen_string_literal: true
 
-require 'application_system_test_case'
+require "application_system_test_case"
 
 class TagsTest < ApplicationSystemTestCase
-  fixtures :articles, :tags, 'tag/taggings', 'action_text/rich_texts'
+  fixtures :articles, :tags, "tag/taggings", "action_text/rich_texts"
 
-  test 'visiting a tag page shows tagged articles' do
+  test "visiting a tag page shows tagged articles" do
     tag = tags(:ruby)
     article = articles(:vanilla_rails_view_components_with_partials)
 
     visit tag_path(tag)
 
     # Should show the tag name as heading
-    assert_selector 'h1', text: "##{tag.name}"
+    assert_selector "h1", text: "##{tag.name}"
 
     # Should show the tagged article
     assert_text article.title
   end
 
-  test 'clicking a tag bubble navigates to tag page' do
+  test "clicking a tag bubble navigates to tag page" do
     article = articles(:vanilla_rails_view_components_with_partials)
     tag = tags(:ruby)
 
     visit article_path(article)
 
     # Find and click the tag bubble
-    within 'article' do
+    within "article" do
       click_link "##{tag.name}"
     end
 
     # Should be on the tag page
     assert_current_path tag_path(tag)
-    assert_selector 'h1', text: "##{tag.name}"
+    assert_selector "h1", text: "##{tag.name}"
   end
 
-  test 'tag page has pagination for many articles' do
+  test "tag page has pagination for many articles" do
     tag = tags(:ruby)
 
     # Create many articles with the tag
@@ -43,7 +43,7 @@ class TagsTest < ApplicationSystemTestCase
         title: "Test Article #{i}",
         content: ActionText::Content.new("Content #{i}"),
         published: true,
-        tags: 'ruby',
+        tags: "ruby",
         publish_at: i.days.ago
       )
     end
@@ -51,40 +51,40 @@ class TagsTest < ApplicationSystemTestCase
     visit tag_path(tag)
 
     # Should have pagination link
-    assert_selector 'a', text: /Older articles/i, count: 1
+    assert_selector "a", text: /Older articles/i, count: 1
   end
 
-  test 'tag page only shows published articles' do
+  test "tag page only shows published articles" do
     tag = tags(:people)
 
     # Create unpublished article with tag
     Article.create!(
-      title: 'Unpublished Test Article',
-      content: ActionText::Content.new('Content'),
+      title: "Unpublished Test Article",
+      content: ActionText::Content.new("Content"),
       published: false,
-      tags: 'people'
+      tags: "people"
     )
 
     visit tag_path(tag)
 
     # Should not show unpublished article
-    assert_no_text 'Unpublished Test Article'
+    assert_no_text "Unpublished Test Article"
 
     # Should show published articles
     assert_text articles(:misguided_mark).title
   end
 
-  test 'tag page shows empty state when no articles' do
+  test "tag page shows empty state when no articles" do
     # Create a new tag with no articles
-    new_tag = Tag.create!(name: 'empty-tag')
+    new_tag = Tag.create!(name: "empty-tag")
 
     visit tag_path(new_tag)
 
-    assert_selector 'h1', text: "##{new_tag.name}"
-    assert_text 'No articles found with this tag'
+    assert_selector "h1", text: "##{new_tag.name}"
+    assert_text "No articles found with this tag"
   end
 
-  test 'tag page passes accessibility criteria' do
+  test "tag page passes accessibility criteria" do
     tag = tags(:ruby)
 
     visit tag_path(tag)
@@ -92,7 +92,7 @@ class TagsTest < ApplicationSystemTestCase
     assert_accessible(page)
   end
 
-  test 'tag page with pagination passes accessibility criteria' do
+  test "tag page with pagination passes accessibility criteria" do
     tag = tags(:ruby)
 
     # Create enough articles to trigger pagination
@@ -101,7 +101,7 @@ class TagsTest < ApplicationSystemTestCase
         title: "Accessible Article #{i}",
         content: ActionText::Content.new("Content #{i}"),
         published: true,
-        tags: 'ruby',
+        tags: "ruby",
         publish_at: i.days.ago
       )
     end
@@ -111,7 +111,7 @@ class TagsTest < ApplicationSystemTestCase
     assert_accessible(page)
   end
 
-  test 'tag page has proper SEO meta tags' do
+  test "tag page has proper SEO meta tags" do
     tag = tags(:ruby)
 
     visit tag_path(tag)

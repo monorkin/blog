@@ -7,28 +7,13 @@ class Article
       GenericFetcher
     ].freeze
 
-    attr_accessor :id, :url
+    CACHE_EXPIRY = 30.days
 
-    kredis_datetime :updated_at, expires_in: 30.days
-    kredis_string :image_url, expires_in: 30.days
-    kredis_string :title, expires_in: 30.days
-    kredis_string :description, expires_in: 30.days
-
-    # Makes kredis methods behave like normal AR/AM attr accessors
-    %i[updated_at image_url title description].each do |name|
-      alias_method("kredis_#{name}", name)
-
-      define_method(name) do
-        public_send("kredis_#{name}").value
-      end
-
-      define_method("#{name}=") do |new_value|
-        public_send("kredis_#{name}").value = new_value
-      end
-    end
+    attr_accessor :id, :url, :updated_at, :image_url, :title, :description
 
     after_initialize do
       self.id ||= self.class.id_from_url(url.to_s)
+      load_from_cache
     end
 
     validates :url,
@@ -79,6 +64,7 @@ class Article
         self.title = fetcher.data[:title]
         self.description = fetcher.data[:description]
         self.image_url = fetcher.data[:image_url]
+        save_to_cache
       end
 
       self
@@ -86,6 +72,35 @@ class Article
 
     def fetcher
       @fetcher ||= FETCHERS.find { |fetcher| fetcher.resolves?(url) }&.new
+    end
+
+    private
+
+    def load_from_cache
+      return unless id.present?
+
+      cached_data = Rails.cache.read(cache_key)
+      return unless cached_data.is_a?(Hash)
+
+      self.updated_at = cached_data[:updated_at]
+      self.image_url = cached_data[:image_url]
+      self.title = cached_data[:title]
+      self.description = cached_data[:description]
+    end
+
+    def save_to_cache
+      return unless id.present?
+
+      Rails.cache.write(
+        cache_key,
+        {
+          updated_at: updated_at,
+          image_url: image_url,
+          title: title,
+          description: description
+        },
+        expires_in: CACHE_EXPIRY
+      )
     end
   end
 end

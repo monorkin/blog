@@ -8,17 +8,8 @@ class ArticlesController < ApplicationController
     request.session_options[:skip] = true
   end
 
-  before_action only: %i[show edit update destroy] do
-    @article = Article.from_slug!(params[:slug])
-  rescue ActiveRecord::RecordNotFound
-    raise if Rails.env.local?
-
-    redirect_to({ controller: :errors, action: :not_found }, status: :see_other)
-  end
-
-  before_action only: %i[new create edit update destroy] do
-    unauthorized if Current.user.blank?
-  end
+  before_action :set_account, only: %i[show edit update destroy] do
+  ensure_authenticated only: %i[new create edit update destroy]
 
   def index
     articles = if Current.user.present?
@@ -31,7 +22,7 @@ class ArticlesController < ApplicationController
 
     @articles = @page.records
 
-    fresh_when(@articles)
+    fresh_when(@page)
 
     respond_to do |format|
       format.html
@@ -97,17 +88,20 @@ class ArticlesController < ApplicationController
   end
 
   private
+    def set_article
+      @article = Article.from_slug!(params[:slug])
+    end
 
-  def permitted_params
-    params.require(:article).permit(:title, :content, :publish_at, :published,
-                                    :slug, :tags)
-  end
+    def permitted_params
+      params.require(:article).permit(:title, :content, :publish_at, :published,
+                                      :slug, :tags)
+    end
 
-  def scope
-    Article
-      .all
-      .order(ORDER)
-      .with_rich_text_content_and_embeds
-      .strict_loading
-  end
+    def scope
+      Article
+        .all
+        .order(ORDER)
+        .with_rich_text_content_and_embeds
+        .strict_loading
+    end
 end

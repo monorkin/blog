@@ -8,6 +8,10 @@ image: monorkin/blog
 servers:
   web:
     - shire.stanko.io
+  jobs:
+    hosts:
+      - shire.stanko.io
+    cmd: bin/jobs
 
 # Proxy settings
 proxy:
@@ -30,6 +34,8 @@ registry:
 builder:
   arch:
     - amd64
+  args:
+    REVISION: "<%= `git log --pretty=format:'%h' -n 1` %>"
 
 # Inject ENV variables into containers (secrets come from .env).
 env:
@@ -37,20 +43,11 @@ env:
     RAILS_ENV: "production"
     RAILS_MAX_THREADS: "3"
     WEB_CONCURRENCY: "8"
-    REDIS_URL: "redis://redis.stanko.io:6379/0"
   secret:
-    - RAILS_MASTER_KEY
+    - RAILS_SECRET_KEY_BASE
+    - SCALEWAY_SECRET_ACCESS_KEY
+    - SCALEWAY_ACCESS_KEY_ID
     - SENTRY_DSN
-
-# Call a broadcast command on deploys.
-# audit_broadcast_cmd:
-#   bin/broadcast_to_bc
-
-builder:
-  arch:
-    - amd64
-  args:
-    REVISION: "<%= `git log --pretty=format:'%h' -n 1` %>"
 
 # Use a different ssh user than root
 ssh:

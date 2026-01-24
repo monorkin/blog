@@ -8,24 +8,15 @@ class TalksController < ApplicationController
     request.session_options[:skip] = true
   end
 
-  before_action only: %i[show edit update destroy] do
-    @talk = Talk.from_slug!(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    raise if Rails.env.local?
-
-    redirect_to({ controller: :errors, action: :not_found }, status: :see_other)
-  end
-
-  before_action only: %i[new create edit update destroy] do
-    unauthorized if Current.user.blank?
-  end
+  before_action :set_talk, only: %i[show edit update destroy]
+  ensure_authenticated only: %i[new create edit update destroy]
 
   def index
     set_page_and_extract_portion_from(scope, per_page: RATIOS)
 
     @talks = @page.records
 
-    fresh_when(@talks)
+    fresh_when(@page)
 
     respond_to do |format|
       format.html
@@ -68,13 +59,16 @@ class TalksController < ApplicationController
   end
 
   private
+    def set_talk
+      @talk = Talk.from_slug!(params[:id])
+    end
 
-  def permitted_params
-    params.require(:talk).permit(:title, :event, :event_url,
-                                 :video_mirror_url, :held_at, :video, :description)
-  end
+    def permitted_params
+      params.require(:talk).permit(:title, :event, :event_url,
+                                  :video_mirror_url, :held_at, :video, :description)
+    end
 
-  def scope
-    Talk.all.order(ORDER).with_rich_text_description_and_embeds.strict_loading
-  end
+    def scope
+      Talk.all.order(ORDER).with_rich_text_description_and_embeds.strict_loading
+    end
 end

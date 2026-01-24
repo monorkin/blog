@@ -4,7 +4,6 @@ class ApplicationModel
   include ActiveModel::Model
   include ActiveModel::Attributes
   include ActiveModel::Validations::Callbacks
-  include Kredis::Attributes
 
   define_model_callbacks :initialize
 

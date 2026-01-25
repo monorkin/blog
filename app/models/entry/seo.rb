@@ -26,8 +26,8 @@ class Entry::SEO
     entry.excerpt(length: DESCRIPTION_MAX_LENGTH)
   end
 
-  def canonical_url(**params)
-    url_helpers.url_for(entry.entryable, only_path: false, **params)
+  def canonical_url
+    url_helpers.polymorphic_url(entry.entryable)
   end
 
   def og_type

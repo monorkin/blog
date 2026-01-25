@@ -49,3 +49,45 @@ filler_article_<%= i %>_entry:
   created_at: <%= (5.years + i.days).ago %>
   updated_at: <%= (5.years + i.days).ago %>
 <% end %>
+
+do_you_really_need_websockets_webcamp_2018_entry:
+  slug: "do-you-really-need-websockets-webcamp-zagreb-2018"
+  slug_id: "ws2018xyz"
+  published: true
+  published_at: 2018-10-06T15:00:00+02:00
+  publish_at: 2018-10-06T15:00:00+02:00
+  entryable: do_you_really_need_websockets_webcamp_2018 (Talk)
+  created_at: 2018-10-06T15:00:00+02:00
+  updated_at: 2018-10-06T15:00:00+02:00
+
+developing_a_safer_web_with_rust_webcamp_zagreb_2017_entry:
+  slug: "developing-a-safer-web-with-rust-webcamp-zagreb-2017"
+  slug_id: "rust2017xy"
+  published: true
+  published_at: 2017-10-06T16:55:00+02:00
+  publish_at: 2017-10-06T16:55:00+02:00
+  entryable: developing_a_safer_web_with_rust_webcamp_zagreb_2017 (Talk)
+  created_at: 2017-10-06T16:55:00+02:00
+  updated_at: 2017-10-06T16:55:00+02:00
+
+stubs_mocks_and_spies_voxxed_days_belgrade_2016_entry:
+  slug: "stubs-mocks-and-spies-voxxed-days-belgrade-2016"
+  slug_id: "stubs2016x"
+  published: true
+  published_at: 2016-09-28T12:00:00+02:00
+  publish_at: 2016-09-28T12:00:00+02:00
+  entryable: stubs_mocks_and_spies_voxxed_days_belgrade_2016 (Talk)
+  created_at: 2016-09-28T12:00:00+02:00
+  updated_at: 2016-09-28T12:00:00+02:00
+
+<% 100.times do |i| %>
+filler_talk_<%= i %>_entry:
+  slug: "filler-talk-<%= i %>"
+  slug_id: "talk<%= i %><%= SecureRandom.hex(((5 - i.to_s.length) / 2.0).ceil) %>"
+  published: true
+  published_at: <%= ((Date.today.year - 2015).years + i.months).ago %>
+  publish_at: <%= ((Date.today.year - 2015).years + i.months).ago %>
+  entryable: filler_talk_<%= i %> (Talk)
+  created_at: <%= ((Date.today.year - 2015).years + i.months).ago %>
+  updated_at: <%= ((Date.today.year - 2015).years + i.months).ago %>
+<% end %>

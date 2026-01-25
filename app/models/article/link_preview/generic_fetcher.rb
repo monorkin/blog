@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require "async"
-require "async/http/internet"
-require "async/http/body/pipe"
-
 class Article
   class LinkPreview
     class GenericFetcher < ApplicationModel
@@ -17,92 +13,72 @@ class Article
         true
       end
 
+      def self.fetch(url)
+        fetcher = new
+        fetcher.fetch!(url)
+
+        Metadata.new(
+          title: fetcher.data[:title],
+          description: fetcher.data[:description],
+          image_url: fetcher.data[:image_url]
+        )
+      end
+
       def fetch!(url)
         self.data ||= {}
-
-        Sync do |task|
-          internet = Async::HTTP::Internet.new
-          fetch_from_url!(internet, task, preprocess_url(url))
-        ensure
-          internet.close
-        end
-
+        fetch_from_url!(preprocess_url(url))
         self
       end
 
       private
+        def preprocess_url(url)
+          url
+        end
 
-      def preprocess_url(url)
-        url
-      end
-
-      def fetch_from_url!(internet, task, url)
-        redirect_count = 0
-        response = nil
-
-        loop do
+        def fetch_from_url!(url, redirect_count = 0)
           return if redirect_count > MAX_REDIRECT
           return if url.blank?
 
-          task.with_timeout(REQUEST_TIMEOUT) do
-            response = internet.get(url, headers, nil)
+          response = http_client.get(url)
+          return if response.is_a?(HTTPX::ErrorResponse)
+
+          if success?(response)
+            parse_from_response_body!(response)
+          elsif redirect?(response)
+            redirect_url = response.headers["location"]
+            fetch_from_url!(redirect_url, redirect_count + 1)
           end
-
-          return parse_from_response_body!(response) if success?(response)
-
-          # An error occured if it's not a redirect, break iteration
-          return unless redirect?(response)
-
-          redirect_count += 1
-          url = redirect_to(response)
-          response.close
+        rescue SocketError, OpenSSL::SSL::SSLError, ArgumentError
+          nil
         end
-      rescue Async::TimeoutError, SocketError, ArgumentError, OpenSSL::SSL::SSLError
-        nil
-      ensure
-        response&.close
-      end
 
-      def headers
-        @headers ||= build_headers
-      end
+        def http_client
+          @http_client ||= HTTPX
+            .with(timeout: { operation_timeout: REQUEST_TIMEOUT })
+            .with(headers: { "user-agent" => USER_AGENT, "accept" => accept_header })
+        end
 
-      def build_headers
-        [
-          [ "User-Agent", USER_AGENT ],
-          [ "Accept", accept_header ]
-        ]
-      end
+        def accept_header
+          "text/html"
+        end
 
-      def accept_header
-        "text/html"
-      end
+        def parse_from_response_body!(response)
+          parse_body(StringIO.new(response.body.to_s))
+        end
 
-      def parse_from_response_body!(response)
-        pipe = Async::HTTP::Body::Pipe.new(response.body)
+        def parse_body(io)
+          Nokogiri::HTML::SAX::Parser
+            .new(TagsSaxParser.new(data))
+            .parse_io(io)
+        end
 
-        parse_body(pipe.to_io)
-      ensure
-        pipe.close
-      end
+        def success?(response)
+          (200...300).include?(response.status)
+        end
 
-      def parse_body(io)
-        Nokogiri::HTML::SAX::Parser
-          .new(TagsSaxParser.new(data))
-          .parse_io(io)
-      end
-
-      def success?(response)
-        (200...300).include?(response.status)
-      end
-
-      def redirect?(response)
-        (300...400).include?(response.status)
-      end
-
-      def redirect_to(response)
-        response.headers["location"]
-      end
+        def redirect?(response)
+          (300...400).include?(response.status)
+        end
     end
   end
 end

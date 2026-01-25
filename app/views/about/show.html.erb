@@ -1,11 +1,11 @@
 <% content_for :head do %>
   <title>Blog | Stanko K.R.</title>
-  <% seo_meta_tags(
+  <%= seo_meta_tags(
     title: "Blog",
     description: "Web developer from Zagreb making products with Ruby on Rails, Hotwired and Tailwind",
     type: "website",
     url: root_url
-  ).each { |tag| concat tag } %>
+  ) %>
 <% end %>
 
 <div class="flex flex-col gap-y-8">

@@ -46,7 +46,7 @@ Rails.application.routes.draw do
 
   resources :articles, param: :slug, path: "", only: %i[show edit update destroy] do
     scope module: :articles do
-      resources :link_previews, only: :show
+      resources :link_previews, only: :show, param: :base64_encoded_url
     end
   end
 end

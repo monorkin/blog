@@ -7,6 +7,10 @@ class Entry::SEO::Image
 
   delegate :url_helpers, to: "Rails.application.routes"
 
+  def self.default
+    { url: ActionController::Base.helpers.asset_url("default_seo_image.jpg") }
+  end
+
   attr_reader :entry
 
   def initialize(entry)
@@ -43,12 +47,7 @@ class Entry::SEO::Image
     if present?
       { url: url, width: width, height: height }
     else
-      { url: default_url }
+      self.class.default
     end
   end
-
-  private
-    def default_url
-      url_helpers.asset_url("default_seo_image.jpg")
-    end
 end

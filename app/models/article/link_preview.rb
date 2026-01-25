@@ -17,8 +17,32 @@ class Article::LinkPreview < ApplicationRecord
   def fetch
     if fetcher = FETCHERS.find { it.resolves?(url) }
       metadata = fetcher.fetch(url)
-      update!(title: metadata.title, description: metadata.description)
-      image.attach(io: metadata.image.file, filename: metadata.image.name, content_type: metadata.image.content_type) if metadata.image.present?
+
+      if metadata.present?
+        update!(title: metadata.title, description: metadata.description)
+
+        if metadata.image.present?
+          image.attach(
+            io: metadata.image.file,
+            filename: metadata.image.filename,
+            content_type: metadata.image.content_type
+          )
+        end
+      end
+    end
+  end
+
+  def fetched?
+    title.present? || description.present?
+  end
+
+  def image?
+    image.attached?
+  end
+
+  def image_url
+    if image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
     end
   end
 end

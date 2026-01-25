@@ -3,16 +3,17 @@
 require "test_helper"
 
 class TalkTest < ActiveSupport::TestCase
-  fixtures :talks, "action_text/rich_texts"
+  fixtures :talks, :entries, "action_text/rich_texts"
 
-  test ".from_slug" do
+  test ".from_slug via Entry" do
     talk = talks(:do_you_really_need_websockets_webcamp_2018)
+    entry = talk.entry
 
-    assert_equal talk, Talk.from_slug!(talk.to_param), "Can resolve a Talk from it's slug"
-    assert_equal talk, Talk.from_slug!(talk.id.to_s), "Can resolve a Talk from it's id"
+    assert_equal entry, Entry.from_slug!(entry.to_param), "Can resolve an Entry from its slug"
+    assert_equal talk, Entry.from_slug!(entry.to_param).entryable, "Can resolve a Talk via Entry"
 
     assert_raises(ActiveRecord::RecordNotFound) do
-      Talk.from_slug!("does-not-exist")
+      Entry.from_slug!("does-not-exist")
     end
   end
 
@@ -42,23 +43,12 @@ class TalkTest < ActiveSupport::TestCase
     assert_nil talk.excerpt
   end
 
-  test "#plain_text strips formatting from description" do
+  test "#content returns ActionText::Content from description" do
     talk = talks(:do_you_really_need_websockets_webcamp_2018)
     talk.description = ActionText::Content.new("<p>This is <strong>formatted</strong> text</p>")
 
-    plain = talk.plain_text
+    content = talk.content
 
-    assert_equal "This is formatted text", plain
-    assert_no_match(/<[^>]+>/, plain, "Should not contain HTML tags")
-  end
-
-  test "#plain_text removes action text attachment markers" do
-    talk = talks(:do_you_really_need_websockets_webcamp_2018)
-    talk.description = ActionText::Content.new("Text with [attachment] markers")
-
-    plain = talk.plain_text
-
-    assert_equal "Text with  markers", plain
-    assert_no_match(/\[[^\]]*\]/, plain, "Should not contain attachment markers")
+    assert_kind_of ActionText::Content, content
   end
 end

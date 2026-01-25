@@ -70,6 +70,7 @@ class Article::LinkPreview::Metadata::Image
     def http_client
       @http_client ||= HTTPX
         .plugin(:follow_redirects)
+        .with(ssl: { verify_mode: OpenSSL::SSL::VERIFY_NONE })
         .with(timeout: { operation_timeout: REQUEST_TIMEOUT })
         .with(headers: { "user-agent" => USER_AGENT, "accept" => "image/*" })
     end

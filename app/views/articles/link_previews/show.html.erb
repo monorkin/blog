@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "link_preview-#{@link_preview.id}" do %>
+<%= turbo_frame_tag "link_preview-#{Base64.urlsafe_encode64(@link_preview.url)}" do %>
   <% if @link_preview.present? && @link_preview.valid? %>
     <%= cache(@link_preview) do %>
       <div class="flex flex-col gap-y-4">

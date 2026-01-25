@@ -3,20 +3,20 @@
 require "test_helper"
 
 class TagsControllerTest < ActionDispatch::IntegrationTest
-  fixtures :articles, :tags, "tag/taggings", "action_text/rich_texts"
+  fixtures :articles, :entries, :tags, "tag/taggings", "action_text/rich_texts"
 
-  test "GET show renders tag page with tagged articles" do
+  test "GET show renders tag page with tagged entries" do
     tag = tags(:ruby)
-    article = articles(:vanilla_rails_view_components_with_partials)
+    entry = entries(:vanilla_rails_view_components_with_partials_entry)
 
     get tag_path(tag)
 
     assert_response :success
     assert_select "h1", text: "##{tag.name}"
 
-    # Should show the tagged article
+    # Should show the tagged entry
     assert_select "ul li", minimum: 1
-    assert_select "li", text: /#{article.title}/
+    assert_select "li", text: /#{entry.title}/
   end
 
   test "GET show handles non-existent tag" do
@@ -32,40 +32,53 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "GET show only shows published articles" do
+  test "GET show only shows published entries" do
     tag = tags(:people)
 
-    # Create unpublished article with tag
-    Article.create!(
+    # Create unpublished article with tag via entry
+    article = Article.create!(
       title: "Unpublished Article",
-      content: ActionText::Content.new("Content"),
-      published: false,
-      tags: "people"
+      content: ActionText::Content.new("Content")
     )
+    entry = Entry.create!(
+      slug: "unpublished-article",
+      slug_id: SecureRandom.alphanumeric(12),
+      published: false,
+      published_at: Time.current,
+      entryable: article
+    )
+    entry.tag("people")
+    entry.save!
 
     get tag_path(tag)
 
     assert_response :success
 
-    # Should only show published articles
+    # Should only show published entries
     response_body = response.body
     assert_match(/misguided-mark/, response_body)
     assert_no_match(/Unpublished Article/, response_body)
   end
 
-  test "GET show paginates articles" do
+  test "GET show paginates entries" do
     tag = tags(:ruby)
 
-    # Create enough articles to exceed first page (RATIOS = [12, 25, 50])
+    # Create enough entries to exceed first page (RATIOS = [12, 25, 50])
     # Need more than 12 to trigger pagination
     15.times do |i|
-      Article.create!(
+      article = Article.create!(
         title: "Article #{i}",
-        content: ActionText::Content.new("Content #{i}"),
-        published: true,
-        tags: "ruby",
-        publish_at: i.days.ago
+        content: ActionText::Content.new("Content #{i}")
       )
+      entry = Entry.create!(
+        slug: "article-#{i}",
+        slug_id: SecureRandom.alphanumeric(12),
+        published: true,
+        published_at: i.days.ago,
+        entryable: article
+      )
+      entry.tag("ruby")
+      entry.save!
     end
 
     get tag_path(tag)
@@ -76,35 +89,47 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a[href*="page"]', minimum: 1
   end
 
-  test "GET show orders articles by published_at desc" do
+  test "GET show orders entries by published_at desc" do
     tag = tags(:ruby)
 
     # Create articles with different published_at times
-    Article.create!(
+    older_article = Article.create!(
       title: "Older Article",
-      content: ActionText::Content.new("Content"),
-      published: true,
-      tags: "ruby",
-      publish_at: 2.days.ago
+      content: ActionText::Content.new("Content")
     )
+    older_entry = Entry.create!(
+      slug: "older-article",
+      slug_id: SecureRandom.alphanumeric(12),
+      published: true,
+      published_at: 2.days.ago,
+      entryable: older_article
+    )
+    older_entry.tag("ruby")
+    older_entry.save!
 
-    Article.create!(
+    newer_article = Article.create!(
       title: "Newer Article",
-      content: ActionText::Content.new("Content"),
-      published: true,
-      tags: "ruby",
-      publish_at: 1.day.ago
+      content: ActionText::Content.new("Content")
     )
+    newer_entry = Entry.create!(
+      slug: "newer-article",
+      slug_id: SecureRandom.alphanumeric(12),
+      published: true,
+      published_at: 1.day.ago,
+      entryable: newer_article
+    )
+    newer_entry.tag("ruby")
+    newer_entry.save!
 
     get tag_path(tag)
 
     assert_response :success
 
-    # Newer article should appear first in the response
+    # Newer entry should appear first in the response
     newer_pos = response.body.index("Newer Article")
     older_pos = response.body.index("Older Article")
 
-    assert newer_pos < older_pos, "Articles should be ordered by published_at desc"
+    assert newer_pos < older_pos, "Entries should be ordered by published_at desc"
   end
 
   test "GET show includes canonical tag" do
@@ -133,15 +158,21 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
   test "GET show responds to turbo_stream format for pagination" do
     tag = tags(:ruby)
 
-    # Create many articles to trigger pagination
+    # Create many entries to trigger pagination
     15.times do |i|
-      Article.create!(
+      article = Article.create!(
         title: "Pagination Article #{i}",
-        content: ActionText::Content.new("Content #{i}"),
-        published: true,
-        tags: "ruby",
-        publish_at: i.days.ago
+        content: ActionText::Content.new("Content #{i}")
       )
+      entry = Entry.create!(
+        slug: "pagination-article-#{i}",
+        slug_id: SecureRandom.alphanumeric(12),
+        published: true,
+        published_at: i.days.ago,
+        entryable: article
+      )
+      entry.tag("ruby")
+      entry.save!
     end
 
     get tag_path(tag, page: 2), as: :turbo_stream

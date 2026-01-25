@@ -5,157 +5,178 @@ require "test_helper"
 class SEOHelperTest < ActionView::TestCase
   include SEOHelper
 
-  test "seo_meta_tags returns array of meta tags" do
-    tags = seo_meta_tags(
+  def default_image
+    { url: "https://example.com/default.jpg" }
+  end
+
+  test "seo_meta_tags returns HTML string with meta tags" do
+    result = seo_meta_tags(
       title: "Test Page",
       description: "This is a test page",
+      image: default_image,
       url: "https://example.com/test"
     )
 
-    assert_instance_of Array, tags
-    assert tags.size > 0
+    assert_instance_of ActiveSupport::SafeBuffer, result
+    assert result.include?("meta")
   end
 
-  test 'seo_meta_tags includes title in format "Title | Stanko K.R."' do
-    tags = seo_meta_tags(
+  test "seo_meta_tags includes title" do
+    result = seo_meta_tags(
       title: "Test Page",
       description: "Description",
+      image: default_image,
       url: "https://example.com"
     )
 
-    # Find Twitter title tag
-    twitter_title = tags.find { |tag| tag.include?("twitter:title") }
-    assert_match(/Test Page \| Stanko K\.R\./, twitter_title)
+    # Should include Twitter title tag
+    assert_match(/twitter:title/, result)
+    assert_match(/Test Page/, result)
 
-    # Find OG title tag
-    og_title = tags.find { |tag| tag.include?("og:title") }
-    assert_match(/Test Page \| Stanko K\.R\./, og_title)
+    # Should include OG title tag
+    assert_match(/og:title/, result)
   end
 
   test "seo_meta_tags includes description" do
     description = "This is a test description"
-    tags = seo_meta_tags(
+    result = seo_meta_tags(
       title: "Test",
       description: description,
+      image: default_image,
       url: "https://example.com"
     )
 
     # Should include meta description
-    meta_desc = tags.find { |tag| tag.include?('name="description"') }
-    assert_match(/#{description}/, meta_desc)
+    assert_match(/name="description"/, result)
+    assert_match(/#{description}/, result)
 
     # Should include Twitter description
-    twitter_desc = tags.find { |tag| tag.include?("twitter:description") }
-    assert_match(/#{description}/, twitter_desc)
+    assert_match(/twitter:description/, result)
 
     # Should include OG description
-    og_desc = tags.find { |tag| tag.include?("og:description") }
-    assert_match(/#{description}/, og_desc)
+    assert_match(/og:description/, result)
   end
 
   test "seo_meta_tags includes canonical link" do
     url = "https://example.com/test"
-    tags = seo_meta_tags(
+    result = seo_meta_tags(
       title: "Test",
       description: "Description",
+      image: default_image,
       url: url
     )
 
-    canonical = tags.find { |tag| tag.include?('rel="canonical"') }
-    assert_not_nil canonical
-    assert_match(/href="#{Regexp.escape(url)}"/, canonical)
+    assert_match(/rel="canonical"/, result)
+    assert_match(/href="#{Regexp.escape(url)}"/, result)
   end
 
   test "seo_meta_tags includes Twitter card tags" do
-    tags = seo_meta_tags(
+    result = seo_meta_tags(
       title: "Test",
       description: "Description",
+      image: default_image,
       url: "https://example.com"
     )
 
     # Should have Twitter card type
-    assert(tags.any? { |tag| tag.include?("twitter:card") && tag.include?("summary") })
+    assert_match(/twitter:card/, result)
+    assert_match(/summary/, result)
 
     # Should have Twitter creator
-    assert(tags.any? { |tag| tag.include?("twitter:creator") && tag.include?("@monorkin") })
+    assert_match(/twitter:creator/, result)
+    assert_match(/@monorkin/, result)
   end
 
   test "seo_meta_tags includes Open Graph tags" do
-    tags = seo_meta_tags(
+    result = seo_meta_tags(
       title: "Test",
       description: "Description",
+      image: default_image,
       url: "https://example.com",
       type: "article"
     )
 
     # Should have OG type
-    assert(tags.any? { |tag| tag.include?("og:type") && tag.include?("article") })
+    assert_match(/og:type/, result)
+    assert_match(/article/, result)
 
     # Should have OG locale
-    assert(tags.any? { |tag| tag.include?("og:locale") && tag.include?("en_US") })
+    assert_match(/og:locale/, result)
+    assert_match(/en_US/, result)
 
     # Should have OG URL
-    assert(tags.any? { |tag| tag.include?("og:url") })
+    assert_match(/og:url/, result)
   end
 
-  test "seo_meta_tags uses default image when not provided" do
-    tags = seo_meta_tags(
+  test "seo_meta_tags includes image url from hash" do
+    image_url = "https://example.com/image.jpg"
+    result = seo_meta_tags(
       title: "Test",
       description: "Description",
+      image: { url: image_url },
       url: "https://example.com"
     )
 
-    # Should include default portrait image
-    twitter_image = tags.find { |tag| tag.include?("twitter:image") }
-    assert_match(%r{portrait/medium\.jpg}, twitter_image)
+    assert_match(/twitter:image/, result)
+    assert_match(/#{Regexp.escape(image_url)}/, result)
 
-    og_image = tags.find { |tag| tag.include?("og:image") }
-    assert_match(%r{portrait/medium\.jpg}, og_image)
+    assert_match(/og:image/, result)
   end
 
-  test "seo_meta_tags uses custom image when provided" do
-    custom_image = "https://example.com/custom.jpg"
-    tags = seo_meta_tags(
+  test "seo_meta_tags includes image dimensions when provided" do
+    result = seo_meta_tags(
       title: "Test",
       description: "Description",
-      url: "https://example.com",
-      image: custom_image
+      image: { url: "https://example.com/image.jpg", width: 512, height: 512 },
+      url: "https://example.com"
     )
 
-    twitter_image = tags.find { |tag| tag.include?("twitter:image") }
-    assert_match(/#{Regexp.escape(custom_image)}/, twitter_image)
+    assert_match(/og:image:width/, result)
+    assert_match(/og:image:height/, result)
+    assert_match(/512/, result)
+  end
 
-    og_image = tags.find { |tag| tag.include?("og:image") }
-    assert_match(/#{Regexp.escape(custom_image)}/, og_image)
+  test "seo_meta_tags omits image dimensions when not provided" do
+    result = seo_meta_tags(
+      title: "Test",
+      description: "Description",
+      image: { url: "https://example.com/image.jpg" },
+      url: "https://example.com"
+    )
+
+    assert_no_match(/og:image:width/, result)
+    assert_no_match(/og:image:height/, result)
   end
 
   test "seo_meta_tags uses custom type when provided" do
-    tags = seo_meta_tags(
+    result = seo_meta_tags(
       title: "Test",
       description: "Description",
+      image: default_image,
       url: "https://example.com",
       type: "article"
     )
 
-    og_type = tags.find { |tag| tag.include?("og:type") }
-    assert_match(/article/, og_type)
+    assert_match(/og:type/, result)
+    assert_match(/article/, result)
   end
 
   test "seo_meta_tags defaults to website type" do
-    tags = seo_meta_tags(
+    result = seo_meta_tags(
       title: "Test",
       description: "Description",
+      image: default_image,
       url: "https://example.com"
     )
 
-    og_type = tags.find { |tag| tag.include?("og:type") }
-    assert_match(/website/, og_type)
+    assert_match(/og:type/, result)
+    assert_match(/website/, result)
   end
 
   test "noindex_meta_tag returns robots noindex tag" do
-    tag = noindex_meta_tag
+    result = noindex_meta_tag
 
-    assert_match(/name="robots"/, tag)
-    assert_match(/content="noindex, nofollow"/, tag)
+    assert_match(/name="robots"/, result)
+    assert_match(/content="noindex, nofollow"/, result)
   end
 end

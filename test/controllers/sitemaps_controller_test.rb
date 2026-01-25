@@ -3,7 +3,7 @@
 require "test_helper"
 
 class SitemapsControllerTest < ActionDispatch::IntegrationTest
-  fixtures :articles, :talks, :tags, "tag/taggings", "action_text/rich_texts"
+  fixtures :articles, :entries, :talks, :tags, "tag/taggings", "action_text/rich_texts"
 
   test "GET index renders sitemap index" do
     get sitemap_path
@@ -107,12 +107,12 @@ class SitemapsControllerTest < ActionDispatch::IntegrationTest
     # Should be a valid urlset
     assert_equal "urlset", sitemap.root.name
 
-    # Should only include tags with articles
-    tags_with_articles = Tag.joins(:taggings)
-                            .where(taggings: { taggable_type: "Article" })
-                            .distinct
-                            .count
-    assert_equal tags_with_articles, sitemap.css("url").size
+    # Should only include tags with entries
+    tags_with_entries = Tag.joins(:taggings)
+                           .where(taggings: { taggable_type: "Entry" })
+                           .distinct
+                           .count
+    assert_equal tags_with_entries, sitemap.css("url").size
 
     # Should have proper structure
     sitemap.css("url").each do |url_node|

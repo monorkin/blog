@@ -1,0 +1,51 @@
+misguided_mark_entry:
+  slug: "misguided-mark-misrepresents-micro-services-a-story-about-paradigms"
+  slug_id: "4yi4om7PhAT2"
+  published: true
+  published_at: 2022-07-11T12:00:00.000Z
+  publish_at: 2022-07-11T12:00:00.000Z
+  entryable: misguided_mark (Article)
+  created_at: 2022-07-06T12:00:00.000Z
+  updated_at: 2022-07-10T12:00:00.000Z
+
+render_test_entry:
+  slug: "render-test"
+  slug_id: "deadbeef"
+  published: true
+  published_at: 1900-01-01T12:00:00.000Z
+  publish_at: 1900-01-01T12:00:00.000Z
+  entryable: render_test (Article)
+  created_at: 1900-01-01T12:00:00.000Z
+  updated_at: 1900-01-01T12:00:00.000Z
+
+hold_your_own_poison_ivy_entry:
+  slug: "hold-your-own-poison-ivy"
+  slug_id: "MIpqar9OcB5v"
+  published: true
+  published_at: 2023-08-28T12:00:00.000Z
+  publish_at: 2023-08-28T12:00:00.000Z
+  entryable: hold_your_own_poison_ivy (Article)
+  created_at: 2023-08-28T13:00:00.000Z
+  updated_at: 2023-08-28T13:00:00.000Z
+
+vanilla_rails_view_components_with_partials_entry:
+  slug: "vanilla-rails-view-components-with-partials"
+  slug_id: "41zctBGbN9ka"
+  published: true
+  published_at: 2023-08-28T12:00:00.000Z
+  publish_at: 2023-08-28T12:00:00.000Z
+  entryable: vanilla_rails_view_components_with_partials (Article)
+  created_at: 2023-08-28T12:00:00.000Z
+  updated_at: 2023-08-28T12:00:00.000Z
+
+<% 100.times do |i| %>
+filler_article_<%= i %>_entry:
+  slug: "filler-article-<%= i %>"
+  slug_id: "<%= i %><%= SecureRandom.hex(((4 - i.to_s.length) / 2.0).ceil) %>"
+  published: true
+  published_at: <%= (5.years + i.days).ago %>
+  publish_at: <%= (5.years + i.days).ago %>
+  entryable: filler_article_<%= i %> (Article)
+  created_at: <%= (5.years + i.days).ago %>
+  updated_at: <%= (5.years + i.days).ago %>
+<% end %>

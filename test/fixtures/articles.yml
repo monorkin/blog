@@ -1,51 +1,26 @@
 misguided_mark:
-  slug_id: "4yi4om7PhAT2"
   title: "Misguided Mark misrepresents Micro-services: A story about paradigms"
-  slug: "misguided-mark-misrepresents-micro-services-a-story-about-paradigms"
-  publish_at: 2022-07-11T12:00:00.000Z
-  published_at: 2022-07-11T12:00:00.000Z
-  published: true
   created_at: 2022-07-06T12:00:00.000Z
   updated_at: 2022-07-10T12:00:00.000Z
 
 render_test:
-  slug_id: "deadbeef"
   title: "Render Test"
-  slug: "render-test"
-  publish_at: 1900-01-01T12:00:00.000Z
-  published_at: 1900-01-01T12:00:00.000Z
-  published: true
   created_at: 1900-01-01T12:00:00.000Z
   updated_at: 1900-01-01T12:00:00.000Z
 
 hold_your_own_poison_ivy:
-  slug_id: "MIpqar9OcB5v"
   title: "Hold your own poison ivy"
-  slug: "hold-your-own-poison-ivy"
-  publish_at: 2023-08-28T12:00:00.000Z
-  published_at: 2023-08-28T12:00:00.000Z
-  published: true
   created_at: 2023-08-28T13:00:00.000Z
   updated_at: 2023-08-28T13:00:00.000Z
 
 vanilla_rails_view_components_with_partials:
-  slug_id: "41zctBGbN9ka"
   title: "Vanilla Rails View Components with Partials"
-  slug: "vanilla-rails-view-components-with-partials"
-  publish_at: 2023-08-28T12:00:00.000Z
-  published_at: 2023-08-28T12:00:00.000Z
-  published: true
   created_at: 2023-08-28T12:00:00.000Z
   updated_at: 2023-08-28T12:00:00.000Z
 
 <% 100.times do |i| %>
 filler_article_<%= i %>:
-  slug_id: "<%= i %><%= SecureRandom.hex(((4 - i.to_s.length) / 2.0).ceil) %>"
   title: "<%= Faker::Lorem.sentence %>"
-  slug: "filler-article-<%= i %>"
-  publish_at: <%= (5.years + i.days).ago %>
-  published_at: <%= (5.years + i.days).ago %>
-  published: true
   created_at: <%= (5.years + i.days).ago %>
   updated_at: <%= (5.years + i.days).ago %>
 <% end %>

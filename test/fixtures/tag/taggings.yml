@@ -2,12 +2,12 @@
 
 people_on_misguided_mark:
   tag: people
-  taggable: misguided_mark (Article)
+  taggable: misguided_mark_entry (Entry)
 
 people_on_hold_your_own_poison_ivy:
   tag: people
-  taggable: hold_your_own_poison_ivy (Article)
+  taggable: hold_your_own_poison_ivy_entry (Entry)
 
 ruby_on_vanilla_rails_view_components_with_partials:
   tag: ruby
-  taggable: vanilla_rails_view_components_with_partials (Article)
+  taggable: vanilla_rails_view_components_with_partials_entry (Entry)

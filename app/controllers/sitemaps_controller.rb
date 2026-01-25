@@ -35,7 +35,7 @@ class SitemapsController < ApplicationController
 
   def tags
     @tags = Tag.joins(:taggings)
-               .where(taggings: { taggable_type: "Article" })
+               .where(taggings: { taggable_type: "Entry" })
                .distinct
                .order(:name)
 

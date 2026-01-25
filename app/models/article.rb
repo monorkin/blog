@@ -2,66 +2,21 @@
 
 class Article < ApplicationRecord
   include ActionView::Helpers::TextHelper
-  include Taggable
+  include Entryable
 
   has_rich_text :content
+  has_many :link_previews, dependent: :destroy
 
-  validates :title,
-            presence: true
-  validates :content,
-            presence: true
-  validates :slug,
-            presence: true
-  validates :slug_id,
-            presence: true,
-            uniqueness: true
+  validates :title, presence: true
+  validates :content, presence: true
 
-  before_validation do
-    self.slug = title.presence&.parameterize if slug.blank?
-    generate_slug_id! if slug_id.blank?
-  end
-
-  before_save :set_published_at
   after_commit :generate_link_previews, on: [:create, :update]
+  after_commit :ensure_entry!, on: [:create]
 
-  scope(:published, lambda do
-    where(published: true).where.not(published_at: (Time.current..))
-  end)
-
-  class << self
-    def generate_slug_id(length: 12)
-      SecureRandom.alphanumeric(length)
-    end
-
-    def from_slug(slug)
-      from_slug!(slug)
-    rescue ActiveRecord::RecordNotFound => _e
-      nil
-    end
-
-    def from_slug!(slug)
-      raise(ActiveRecord::RecordNotFound.new(nil, slug, self, :id)) if slug.blank?
-
-      id = slug.scan(/^.*-([^-]+)$/).flatten.first.presence
-      raise(ActiveRecord::RecordNotFound.new(nil, id, self, :id)) if id.blank?
-
-      find_by!(slug_id: id)
-    end
-  end
+  scope :published, -> { joins(:entry).merge(Entry.published) }
 
   def to_param
-    slug
-  end
-
-  def slug
-    [
-      super.presence || title.presence&.parameterize,
-      slug_id.presence
-    ].compact.join("-").presence
-  end
-
-  def published?
-    published && published_at <= Time.current
+    entry&.to_param
   end
 
   def excerpt(length: 300)
@@ -80,45 +35,58 @@ class Article < ApplicationRecord
     content.body.to_plain_text.gsub(/\[[^\]]*\]/, "")
   end
 
-  def generate_slug_id!
-    self.slug_id = self.class.generate_slug_id
-  end
-
-  def set_published_at
-    self.published_at = publish_at || created_at || Time.current
+  def cover_image
+    content.body.attachments.compact
+      .select { |a| a.respond_to?(:image?) }
+      .find(&:image?)
   end
 
   def related_articles(limit: 5)
-    return Article.none if tags.empty?
+    return Article.none unless entry&.tags&.any?
+
+    tag_ids = entry.tags.pluck(:id)
 
     Article
       .published
+      .joins(entry: :taggings)
+      .preload(:entry)
       .where.not(id: id)
-      .joins(:taggings)
-      .where(taggings: { tag_id: tags.pluck(:id) })
-      .group(:id)
-      .order(Arel.sql("COUNT(taggings.tag_id) DESC"), published_at: :desc)
+      .where(tag_taggings: { tag_id: tag_ids })
+      .group("articles.id")
+      .order(Arel.sql("COUNT(tag_taggings.tag_id) DESC"), Arel.sql("entries.published_at DESC"))
       .limit(limit)
   end
 
   def previous_article
+    return nil unless entry&.published_at
+
     Article
       .published
-      .where(published_at: ...published_at)
-      .order(published_at: :desc)
+      .joins(:entry)
+      .preload(:entry)
+      .where(entries: { published_at: ...entry.published_at })
+      .order("entries.published_at DESC")
       .first
   end
 
   def next_article
+    return nil unless entry&.published_at
+
     Article
       .published
-      .where(published_at: (published_at + 1.second)..)
-      .order(published_at: :asc)
+      .joins(:entry)
+      .preload(:entry)
+      .where(entries: { published_at: (entry.published_at + 1.second).. })
+      .order("entries.published_at ASC")
       .first
   end
 
   def self.popular(limit: 5)
-    published.order(published_at: :desc).limit(limit)
+    published
+      .joins(:entry)
+      .preload(:entry)
+      .order("entries.published_at DESC")
+      .limit(limit)
   end
 
   def generate_link_previews
@@ -131,5 +99,15 @@ class Article < ApplicationRecord
     end
 
     link_previews.where.not(id: active_link_previews.to_a).destroy_all
+  end
+
+  def ensure_entry!
+    return if entry.present?
+
+    create_entry!(
+      slug: title.parameterize,
+      published: false,
+      published_at: Time.current
+    )
   end
 end

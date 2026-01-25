@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2026_01_24_095858) do
+ActiveRecord::Schema[8.2].define(version: 2026_01_24_145355) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -49,20 +49,39 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_24_095858) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "article_link_previews", force: :cascade do |t|
+    t.integer "article_id", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.text "title"
+    t.datetime "updated_at", null: false
+    t.text "url", null: false
+    t.index ["article_id", "url"], name: "index_article_link_previews_on_article_id_and_url", unique: true
+    t.index ["article_id"], name: "index_article_link_previews_on_article_id"
+  end
+
   create_table "articles", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.datetime "publish_at", precision: nil
+    t.string "thread"
+    t.text "title", default: "", null: false
+    t.datetime "updated_at", null: false
+    t.index ["thread"], name: "index_articles_on_thread"
+  end
+
+  create_table "entries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "entryable_id", null: false
+    t.string "entryable_type", null: false
+    t.datetime "publish_at"
     t.boolean "published", default: false, null: false
     t.datetime "published_at"
     t.text "slug", default: "", null: false
     t.string "slug_id", null: false
-    t.string "thread"
-    t.text "title", default: "", null: false
     t.datetime "updated_at", null: false
-    t.index ["published"], name: "index_articles_on_published"
-    t.index ["published_at"], name: "index_articles_on_published_at"
-    t.index ["slug_id"], name: "index_articles_on_slug_id", unique: true
-    t.index ["thread"], name: "index_articles_on_thread"
+    t.index ["entryable_type", "entryable_id"], name: "index_entries_on_entryable"
+    t.index ["published"], name: "index_entries_on_published"
+    t.index ["published_at"], name: "index_entries_on_published_at"
+    t.index ["slug_id"], name: "index_entries_on_slug_id", unique: true
   end
 
   create_table "tag_taggings", force: :cascade do |t|
@@ -105,5 +124,6 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_24_095858) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "article_link_previews", "articles"
   add_foreign_key "tag_taggings", "tags"
 end

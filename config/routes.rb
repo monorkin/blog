@@ -19,15 +19,28 @@ Rails.application.routes.draw do
   get "search", to: "search#index", as: :search
   get "settings", to: "settings#index", as: :settings
 
+  # Unified feed with type filtering
+  get "feed", to: "feed#show", as: :feed, defaults: { format: :atom }
+  get "feed/style", to: "feed#style", as: :feed_style, defaults: { format: :xsl }
+
   resources :tags, only: :show, param: :name
 
   resources :talks
 
   resources :articles, only: %i[index new create] do
     collection do
-      get :rss, to: "articles#atom", defaults: { format: :atom }
-      get :atom, defaults: { format: :atom }
-      get :atom_style, defaults: { format: :xsl }
+      # Legacy redirects - preserve tag param, add types=article filter
+      get :rss, to: redirect { |_, req|
+        query = { types: "article" }
+        query[:tag] = req.params[:tag] if req.params[:tag].present?
+        "/feed?#{query.to_query}"
+      }, status: 301
+      get :atom, to: redirect { |_, req|
+        query = { types: "article" }
+        query[:tag] = req.params[:tag] if req.params[:tag].present?
+        "/feed?#{query.to_query}"
+      }, status: 301
+      get :atom_style, to: redirect("/feed/style"), status: 301
     end
   end
 

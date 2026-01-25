@@ -3,51 +3,13 @@
 require "test_helper"
 
 class ArticleTest < ActiveSupport::TestCase
-  fixtures :articles, "action_text/rich_texts", :tags, "tag/taggings"
+  fixtures :articles, :entries, "action_text/rich_texts"
 
-  test ".generate_slug_id generates a random 12 chracter code" do
-    slug_id = Article.generate_slug_id
-
-    assert_equal 12, slug_id.length, "Slug id should be 12 characters"
-    assert_match(/[a-zA-Z0-9]{12}/, slug_id, "Slug id should be alphanumeric")
-  end
-
-  test ".from_slug finds an article by slug but doesn't raise an error if non was found" do
+  test "#to_param returns the entry's slug" do
     article = articles(:misguided_mark)
+    entry = entries(:misguided_mark_entry)
 
-    assert_equal article, Article.from_slug(article.slug), "Should find article by slug"
-    assert_nil Article.from_slug("non-existent-slug"), "Should return nil if no article was found"
-  end
-
-  test ".from_slug! finds an article by slug and raises an error if non was found" do
-    article = articles(:misguided_mark)
-
-    assert_equal article, Article.from_slug!(article.slug), "Should find article by slug"
-    assert_raises ActiveRecord::RecordNotFound do
-      Article.from_slug!("non-existent-slug")
-    end
-  end
-
-  test "#to_param returns the slug" do
-    article = articles(:misguided_mark)
-
-    assert_equal article.slug, article.to_param, "Should return the slug"
-  end
-
-  test "#slug returns the slug or generates one from the title" do
-    article = articles(:misguided_mark)
-
-    slug = SecureRandom.hex(6)
-    article.slug = slug
-
-    assert_match(/^#{slug}/, article.slug, "Should generate a slug from the title")
-    assert_match(/-#{article.slug_id}$/, article.slug, "Should end with the slug_id")
-
-    article.slug = nil
-
-    assert_match(/^#{article.title.parameterize}/, article.slug,
-                 "Should generate a slug from the title")
-    assert_match(/-#{article.slug_id}$/, article.slug, "Should end with the slug_id")
+    assert_equal entry.to_param, article.to_param, "Should return the entry's to_param"
   end
 
   test "#excerpt returns the first 300 characters of the plain text content" do
@@ -82,15 +44,6 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal "Some bold text", article.plain_text, "Should return the plain text content"
   end
 
-  test "#generate_slug_id! generates a random 12 chracter code" do
-    article = articles(:misguided_mark)
-
-    article.generate_slug_id!
-
-    assert_equal 12, article.slug_id.length, "Slug id should be 12 characters"
-    assert_match(/[a-zA-Z0-9]{12}/, article.slug_id, "Slug id should be alphanumeric")
-  end
-
   test "#related_articles returns articles with shared tags" do
     article = articles(:misguided_mark)
 
@@ -123,5 +76,19 @@ class ArticleTest < ActiveSupport::TestCase
 
     assert_equal 5, popular.count
     assert popular.all?(&:published?), "All articles should be published"
+  end
+
+  test "#published? delegates to entry" do
+    article = articles(:misguided_mark)
+    entry = entries(:misguided_mark_entry)
+
+    assert_equal entry.published?, article.published?
+  end
+
+  test "#published_at delegates to entry" do
+    article = articles(:misguided_mark)
+    entry = entries(:misguided_mark_entry)
+
+    assert_equal entry.published_at, article.published_at
   end
 end

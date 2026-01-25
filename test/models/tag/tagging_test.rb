@@ -3,11 +3,11 @@
 require "test_helper"
 
 class Tag::TaggingTest < ActiveSupport::TestCase
-  fixtures :tags, "tag/taggings", :articles
+  fixtures :tags, "tag/taggings", :entries
 
   test "touches both the tag and the taggable after create" do
     tag = tags(:ruby)
-    taggable = articles(:hold_your_own_poison_ivy)
+    taggable = entries(:hold_your_own_poison_ivy_entry)
 
     old_tag_updated_at = tag.updated_at
     old_taggable_updated_at = taggable.updated_at

@@ -2,32 +2,29 @@
 
 class Talk < ApplicationRecord
   include ActionView::Helpers::TextHelper
+  include Entryable
 
+  has_one_attached :image
   has_one_attached :video
 
   has_rich_text :description
 
-  validates :title,
-            presence: true
-  validates :event,
-            presence: true
-  validates :held_at,
-            presence: true
-
-  class << self
-    def from_slug!(slug)
-      id = slug&.scan(/^(.*-)?(\d+)$/)&.flatten&.last
-
-      find_by!(id: id)
-    end
-  end
+  validates :title, presence: true
+  validates :event, presence: true
+  validates :held_at, presence: true
 
   def to_param
     [
       title.presence&.parameterize,
       event.presence&.parameterize,
       id
-    ].join("-").presence
+    ].compact.join("-").presence
+  end
+
+  def cover_image
+    description&.body&.attachments&.compact
+      &.select { |a| a.respond_to?(:image?) }
+      &.find(&:image?)
   end
 
   def excerpt(length: 300)

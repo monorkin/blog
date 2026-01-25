@@ -60,7 +60,8 @@ class TalksController < ApplicationController
 
   private
     def set_talk
-      @talk = Talk.from_slug!(params[:id])
+      @entry = Entry.talks.from_slug!(params[:id])
+      @talk = @entry.entryable
     end
 
     def permitted_params

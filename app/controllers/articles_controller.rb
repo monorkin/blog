@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class ArticlesController < ApplicationController
-  ORDER = { published_at: :desc, id: :desc }.freeze
+  ORDER = { "entries.published_at" => :desc, "articles.id" => :desc }.freeze
   RATIOS = [ 12, 25, 50 ].freeze
 
-  before_action only: %i[index show atom] do
+  before_action only: %i[index show] do
     request.session_options[:skip] = true
   end
 
-  before_action :set_account, only: %i[show edit update destroy]
+  before_action :set_article, only: %i[show edit update destroy]
   ensure_authenticated only: %i[new create edit update destroy]
 
   def index
@@ -30,53 +30,55 @@ class ArticlesController < ApplicationController
     end
   end
 
-  def atom
-    request.format = :atom
-
-    @articles = scope.published.order(ORDER)
-    @articles = @articles.tagged_with(params[:tag]&.split(",")) if params[:tag].present?
-
-    fresh_when(@articles)
-  end
-
-  def atom_style
-    request.format = :xsl
-
-    @tags = Tag.order(:name)
-
-    fresh_when(@tags)
-  end
-
   def show
     @related_articles = @article.related_articles(limit: 5)
     @previous_article = @article.previous_article
     @next_article = @article.next_article
     @popular_articles = Article.popular(limit: 5).where.not(id: @article.id)
 
-    fresh_when etag: [ @article, @related_articles, @previous_article, @next_article, @popular_articles ]
+    fresh_when etag: [ @article, @entry, @related_articles, @previous_article, @next_article, @popular_articles ]
   end
 
   def new
-    @article = Article.new
+    @article = Article.new(entry: Entry.new)
   end
 
   def create
-    @article = Article.new(permitted_params)
+    @article = Article.new(article_params)
 
-    if @article.save
-      redirect_to({ action: :show, slug: @article.slug }, status: :see_other)
-    else
-      render :new, status: :unprocessable_entity
+    Article.transaction do
+      if @article.save
+        @entry = Entry.create!(
+          entryable: @article,
+          slug: @article.title.parameterize,
+          published: entry_params[:published] == "1",
+          publish_at: entry_params[:publish_at],
+          published_at: entry_params[:publish_at] || Time.current
+        )
+        @entry.tags = entry_params[:tags] if entry_params[:tags].present?
+        redirect_to({ action: :show, slug: @entry.to_param }, status: :see_other)
+      else
+        @entry = Entry.new
+        render :new, status: :unprocessable_entity
+      end
     end
   end
 
   def edit; end
 
   def update
-    if @article.update(permitted_params)
-      redirect_to({ action: :show, slug: @article.slug }, status: :see_other)
-    else
-      render :edit, status: :unprocessable_entity
+    Article.transaction do
+      if @article.update(article_params)
+        @entry.update!(
+          slug: @article.title.parameterize,
+          published: entry_params[:published] == "1",
+          publish_at: entry_params[:publish_at]
+        )
+        @entry.tags = entry_params[:tags] if entry_params.key?(:tags)
+        redirect_to({ action: :show, slug: @entry.to_param }, status: :see_other)
+      else
+        render :edit, status: :unprocessable_entity
+      end
     end
   end
 
@@ -88,17 +90,23 @@ class ArticlesController < ApplicationController
 
   private
     def set_article
-      @article = Article.from_slug!(params[:slug])
+      @entry = Entry.articles.from_slug!(params[:slug])
+      @article = @entry.entryable
     end
 
-    def permitted_params
-      params.require(:article).permit(:title, :content, :publish_at, :published,
-                                      :slug, :tags)
+    def article_params
+      params.require(:article).permit(:title, :content)
+    end
+
+    def entry_params
+      params.require(:article).permit(:publish_at, :published, :slug, :tags)
     end
 
     def scope
       Article
         .all
+        .joins(:entry)
+        .preload(:entry)
         .order(ORDER)
         .with_rich_text_content_and_embeds
         .strict_loading

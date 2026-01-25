@@ -1,27 +1,7 @@
 <%= content_for :head do %>
-  <%= cache [@article, :head] do %>
-    <% title = [truncate(@article.title, length: 60), "Stanko K.R."].join(" | ") %>
-    <% excerpt = @article.excerpt(length: 160) %>
-    <title><%= title %></title>
-    <%= content_tag(:meta, nil, name: "description", content: excerpt) %>
-    <%= content_tag(:meta, nil, rel: "canonical", href: article_url(@article.slug)) %>
-    <%= content_tag(:meta, nil, name: "twitter:card", content: "summary") %>
-    <%= content_tag(:meta, nil, name: "twitter:creator", content: "@monorkin") %>
-    <%= content_tag(:meta, nil, property: "og:title", content: title) %>
-    <%= content_tag(:meta, nil, property: "og:description", content: excerpt) %>
-    <%= content_tag(:meta, nil, property: "og:locale", content: "en_US") %>
-    <%= content_tag(:meta, nil, property: "og:type", content: "article") %>
-    <%= content_tag(:meta, nil, property: "og:url", content: article_url(@article.slug)) %>
-    <% first_image = @article.content.body.attachments.compact.select { |attachment| attachment.respond_to?(:image?) }.find(&:image?) %>
-    <% if first_image.present? %>
-      <% image = first_image.representation(resize_to_fill: [512, 512], saver: { strip: true }) %>
-      <%= content_tag(:meta, nil, property: "og:image", content: image.processed.url) %>
-      <%= content_tag(:meta, nil, property: "og:image:width", content: 512) %>
-      <%= content_tag(:meta, nil, property: "og:image:height", content: 512) %>
-    <% else %>
-      <%= content_tag(:meta, nil, property: "og:image", content: asset_url("portrait/medium.jpg")) %>
-      <%= content_tag(:meta, nil, name: "twitter:image:alt", content: "Portrait of Stanko K.R.") %>
-    <% end %>
+  <%= cache [@article.entry, :seo] do %>
+    <title><%= @article.entry.seo.title %></title>
+    <%= seo_meta_tags_for_entry(@article.entry) %>
   <% end %>
 <% end %>
 

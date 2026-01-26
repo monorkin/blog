@@ -13,12 +13,4 @@ class Talk < ApplicationRecord
   validates :title, presence: true
   validates :event, presence: true
   validates :held_at, presence: true
-
-  def to_param
-    [
-      title.presence&.parameterize,
-      event.presence&.parameterize,
-      id
-    ].compact.join("-").presence
-  end
 end

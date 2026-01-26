@@ -35,20 +35,13 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
   test "GET show only shows published entries" do
     tag = tags(:people)
 
-    # Create unpublished article with tag via entry
+    # Create unpublished article with tag
     article = Article.create!(
       title: "Unpublished Article",
-      content: ActionText::Content.new("Content")
-    )
-    entry = Entry.create!(
-      slug: "unpublished-article",
-      slug_id: SecureRandom.alphanumeric(12),
+      body: "Content",
       published: false,
-      published_at: Time.current,
-      entryable: article
+      tags: "people"
     )
-    entry.tag("people")
-    entry.save!
 
     get tag_path(tag)
 
@@ -66,19 +59,13 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     # Create enough entries to exceed first page (RATIOS = [12, 25, 50])
     # Need more than 12 to trigger pagination
     15.times do |i|
-      article = Article.create!(
+      Article.create!(
         title: "Article #{i}",
-        content: ActionText::Content.new("Content #{i}")
-      )
-      entry = Entry.create!(
-        slug: "article-#{i}",
-        slug_id: SecureRandom.alphanumeric(12),
+        body: "Content #{i}",
         published: true,
-        published_at: i.days.ago,
-        entryable: article
+        publish_at: i.days.ago,
+        tags: "ruby"
       )
-      entry.tag("ruby")
-      entry.save!
     end
 
     get tag_path(tag)
@@ -93,33 +80,21 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     tag = tags(:ruby)
 
     # Create articles with different published_at times
-    older_article = Article.create!(
+    Article.create!(
       title: "Older Article",
-      content: ActionText::Content.new("Content")
-    )
-    older_entry = Entry.create!(
-      slug: "older-article",
-      slug_id: SecureRandom.alphanumeric(12),
+      body: "Content",
       published: true,
-      published_at: 2.days.ago,
-      entryable: older_article
+      publish_at: 2.days.ago,
+      tags: "ruby"
     )
-    older_entry.tag("ruby")
-    older_entry.save!
 
-    newer_article = Article.create!(
+    Article.create!(
       title: "Newer Article",
-      content: ActionText::Content.new("Content")
-    )
-    newer_entry = Entry.create!(
-      slug: "newer-article",
-      slug_id: SecureRandom.alphanumeric(12),
+      body: "Content",
       published: true,
-      published_at: 1.day.ago,
-      entryable: newer_article
+      publish_at: 1.day.ago,
+      tags: "ruby"
     )
-    newer_entry.tag("ruby")
-    newer_entry.save!
 
     get tag_path(tag)
 
@@ -160,19 +135,13 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
 
     # Create many entries to trigger pagination
     15.times do |i|
-      article = Article.create!(
+      Article.create!(
         title: "Pagination Article #{i}",
-        content: ActionText::Content.new("Content #{i}")
-      )
-      entry = Entry.create!(
-        slug: "pagination-article-#{i}",
-        slug_id: SecureRandom.alphanumeric(12),
+        body: "Content #{i}",
         published: true,
-        published_at: i.days.ago,
-        entryable: article
+        publish_at: i.days.ago,
+        tags: "ruby"
       )
-      entry.tag("ruby")
-      entry.save!
     end
 
     get tag_path(tag, page: 2), as: :turbo_stream

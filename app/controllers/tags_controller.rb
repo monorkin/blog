@@ -12,7 +12,9 @@ class TagsController < ApplicationController
 
   def show
     entries = Entry.published.tagged_with(@tag.name).preload(:entryable).order(ORDER)
+
     set_page_and_extract_portion_from(entries, per_page: RATIOS)
+
     @entries = @page.records
     @related_tags = @tag.related_tags(limit: 10)
 
@@ -25,8 +27,7 @@ class TagsController < ApplicationController
   end
 
   private
-
-  def set_tag
-    @tag = Tag.find_by!(name: params[:name])
-  end
+    def set_tag
+      @tag = Tag.find_by!(name: params[:name])
+    end
 end

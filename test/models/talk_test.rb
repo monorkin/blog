@@ -17,10 +17,10 @@ class TalkTest < ActiveSupport::TestCase
     end
   end
 
-  test "#to_param" do
+  test "#to_param delegates to entry" do
     talk = talks(:do_you_really_need_websockets_webcamp_2018)
 
-    assert_equal "do-you-really-need-websockets-webcamp-zagreb-2018-#{talk.id}", talk.to_param
+    assert_equal talk.entry.to_param, talk.to_param
   end
 
   test "#excerpt returns truncated plain text from description" do

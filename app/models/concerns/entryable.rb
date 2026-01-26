@@ -4,11 +4,13 @@ module Entryable
   extend ActiveSupport::Concern
 
   included do
-    include Taggable
-
     class_attribute :content_resolver, default: -> { send(:body) }, instance_accessor: false
 
-    has_one :entry, as: :entryable, touch: true, dependent: :destroy
+    has_one :entry, as: :entryable, touch: true, dependent: :destroy, autosave: true
+
+    before_validation :ensure_entry
+
+    delegate :to_param, :published, :published?, :publish_at, :published_at, :tags, to: :entry, allow_nil: true
   end
 
   class_methods do
@@ -26,23 +28,51 @@ module Entryable
   def content
     value = instance_exec(&self.class.content_resolver)
 
-    if value.is_a?(ActionText::Content)
+    case value
+    when ActionText::Content
       value
+    when ActionText::RichText
+      value.body || ActionText::Content.new("")
     else
       ActionText::Content.new(value.to_s)
     end
   end
 
+  def slug
+    if defined?(super)
+      super()
+    elsif respond_to?(:title)
+      title
+    else
+      raise NotImplementedError, "Define a slug method or a title method in #{self.class.name}"
+    end
+  end
+
+  def plain_text_content
+    content&.to_plain_text&.gsub(/\[[^\]]*\]/, "") || ""
+  end
+
   def excerpt(length: 300)
-    plain_text = content&.to_plain_text&.gsub(/\[[^\]]*\]/, "")
-    plain_text&.truncate(length, separator: " ").presence
+    plain_text_content.truncate(length, separator: " ").presence
   end
 
-  def published?
-    entry&.published?
+  def published=(value)
+    ensure_entry
+    entry.published = value
   end
 
-  def published_at
-    entry&.published_at
+  def publish_at=(value)
+    ensure_entry
+    entry.publish_at = value
   end
+
+  def tags=(value)
+    ensure_entry
+    entry.tags = value
+  end
+
+  private
+    def ensure_entry
+      build_entry(slug: slug, published_at: Time.current) unless entry.present?
+    end
 end

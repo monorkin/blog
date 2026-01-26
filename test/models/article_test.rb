@@ -15,11 +15,11 @@ class ArticleTest < ActiveSupport::TestCase
   test "#excerpt returns the first 300 characters of the plain text content" do
     article = articles(:misguided_mark)
 
-    article.content.body = "Lore ipsum dolor sit amet, consectetur adipiscing elit. " * 10
+    article.body = "Lore ipsum dolor sit amet, consectetur adipiscing elit. " * 10
 
-    assert_equal("#{article.plain_text[0...296]}...", article.excerpt,
+    assert_equal("#{article.plain_text_content[0...296]}...", article.excerpt,
                  "Should return the first 300 characters of the plain text content")
-    assert_equal("#{article.plain_text[0...38]}...", article.excerpt(length: 50),
+    assert_equal("#{article.plain_text_content[0...38]}...", article.excerpt(length: 50),
                  "Should return the first 50 characters of the plain text content when passed a length")
   end
 
@@ -32,16 +32,16 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal 3, article.estimated_reading_time(words_per_minute: 650),
                  "Should return the estimated reading time in minutes based on the given reading speed"
 
-    article.content.body = ""
-    assert_equal 1, article.estimated_reading_time, "Should return 0 if the article is empty"
+    article.body = ""
+    assert_equal 1, article.estimated_reading_time, "Should return 1 if the article is empty"
   end
 
-  test "#plain_text returns the plain text content" do
+  test "#plain_text_content returns the plain text content" do
     article = articles(:misguided_mark)
 
-    article.content.body = "<p>Some <strong>bold</strong> text</p>"
+    article.body = "<p>Some <strong>bold</strong> text</p>"
 
-    assert_equal "Some bold text", article.plain_text, "Should return the plain text content"
+    assert_equal "Some bold text", article.plain_text_content, "Should return the plain text content"
   end
 
   test "#related_articles returns articles with shared tags" do

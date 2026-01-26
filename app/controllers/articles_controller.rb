@@ -36,49 +36,30 @@ class ArticlesController < ApplicationController
     @next_article = @article.next_article
     @popular_articles = Article.popular(limit: 5).where.not(id: @article.id)
 
-    fresh_when etag: [ @article, @entry, @related_articles, @previous_article, @next_article, @popular_articles ]
+    fresh_when etag: [ @article, @article.entry, @related_articles, @previous_article, @next_article, @popular_articles ]
   end
 
   def new
-    @article = Article.new(entry: Entry.new)
+    @article = Article.new
   end
 
   def create
-    @article = Article.new(article_params)
+    @article = Article.new(permitted_params)
 
-    Article.transaction do
-      if @article.save
-        @entry = Entry.create!(
-          entryable: @article,
-          slug: @article.title.parameterize,
-          published: entry_params[:published] == "1",
-          publish_at: entry_params[:publish_at],
-          published_at: entry_params[:publish_at] || Time.current
-        )
-        @entry.tags = entry_params[:tags] if entry_params[:tags].present?
-        redirect_to({ action: :show, slug: @entry.to_param }, status: :see_other)
-      else
-        @entry = Entry.new
-        render :new, status: :unprocessable_entity
-      end
+    if @article.save
+      redirect_to({ action: :show, slug: @article.to_param }, status: :see_other)
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   def edit; end
 
   def update
-    Article.transaction do
-      if @article.update(article_params)
-        @entry.update!(
-          slug: @article.title.parameterize,
-          published: entry_params[:published] == "1",
-          publish_at: entry_params[:publish_at]
-        )
-        @entry.tags = entry_params[:tags] if entry_params.key?(:tags)
-        redirect_to({ action: :show, slug: @entry.to_param }, status: :see_other)
-      else
-        render :edit, status: :unprocessable_entity
-      end
+    if @article.update(permitted_params)
+      redirect_to({ action: :show, slug: @article.to_param }, status: :see_other)
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -90,16 +71,11 @@ class ArticlesController < ApplicationController
 
   private
     def set_article
-      @entry = Entry.articles.from_slug!(params[:slug])
-      @article = @entry.entryable
+      @article = Entry.articles.from_slug!(params[:slug]).entryable
     end
 
-    def article_params
-      params.require(:article).permit(:title, :content)
-    end
-
-    def entry_params
-      params.require(:article).permit(:publish_at, :published, :slug, :tags)
+    def permitted_params
+      params.require(:article).permit(:title, :body, :publish_at, :published, :tags)
     end
 
     def scope

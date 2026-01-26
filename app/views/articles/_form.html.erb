@@ -1,31 +1,31 @@
-<%# locals: (article:, entry:) -%>
+<%# locals: (article:) -%>
 
-<%= form_for article, html: { class: "flex flex-col gap-y-4" } do |article_form| %>
-  <%= validation_errors(article_form) if article_form.object.errors.any? %>
+<%= form_for article, html: { class: "flex flex-col gap-y-4" } do |form| %>
+  <%= validation_errors(form) if form.object.errors.any? %>
 
   <label>
-    <%= article_form.object.class.human_attribute_name(:title) %>
-    <%= article_form.text_field :title, class: "w-full rounded border border-neutral-300 dark:text-black" %>
+    <%= form.object.class.human_attribute_name(:title) %>
+    <%= form.text_field :title, class: "w-full rounded border border-neutral-300 dark:text-black" %>
   </label>
 
   <label>
     Tags
-    <%= article_form.text_field :tags, value: entry.tags.pluck(:name).join(", "), class: "w-full rounded border border-neutral-300 dark:text-black" %>
+    <%= form.text_field :tags, value: article.entry&.tags&.pluck(:name)&.join(", "), class: "w-full rounded border border-neutral-300 dark:text-black" %>
   </label>
 
   <div class="flex flex-col md:flex-row gap-x-4 gap-y-4">
     <label class="grow">
       Publish at
-      <%= article_form.datetime_field :publish_at, value: entry.publish_at, class: "w-full rounded border border-neutral-300 dark:text-black" %>
+      <%= form.datetime_field :publish_at, class: "w-full rounded border border-neutral-300 dark:text-black" %>
     </label>
 
     <label class="flex flex-row gap-x-2 items-center pt-5">
-      <%= article_form.check_box :published, checked: entry.published %>
+      <%= form.check_box :published %>
       Published
     </label>
   </div>
 
-  <%= rich_text_field(article_form, :content) %>
+  <%= rich_text_field(form, :body) %>
 
-  <%= article_form.submit t(".save"), class: "rounded text-white p-2 w-full cursor-pointer bg-indigo-500 hover:bg-indigo-700 dark:bg-yellow-500 dark:text-yellow-900 dark:hover:bg-yellow-400" %>
+  <%= form.submit t(".save"), class: "rounded text-white p-2 w-full cursor-pointer bg-indigo-500 hover:bg-indigo-700 dark:bg-yellow-500 dark:text-yellow-900 dark:hover:bg-yellow-400" %>
 <% end %>

@@ -8,6 +8,7 @@ class TalksController < ApplicationController
     request.session_options[:skip] = true
   end
 
+  before_action :handle_legacy_slug
   before_action :set_talk, only: %i[show edit update destroy]
   ensure_authenticated only: %i[new create edit update destroy]
 
@@ -59,17 +60,22 @@ class TalksController < ApplicationController
   end
 
   private
+    def handle_legacy_slug
+      if params[:id] =~ /\A\d+\z/
+        talk = Talk.find(params[:id])
+        redirect_to talk_path(talk), status: :moved_permanently
+      end
+    end
+
     def set_talk
-      @entry = Entry.talks.from_slug!(params[:id])
-      @talk = @entry.entryable
+      @talk = Entry.talks.from_slug!(params[:id]).entryable
     end
 
     def permitted_params
-      params.require(:talk).permit(:title, :event, :event_url,
-                                  :video_mirror_url, :held_at, :video, :description)
+      params.expect talk: %w[title event event_url video_mirror_url held_at video description]
     end
 
     def scope
-      Talk.all.order(ORDER).with_rich_text_description_and_embeds.strict_loading
+      Talk.all.order(ORDER).with_rich_text_description_and_embeds.preload(:entry).strict_loading
     end
 end

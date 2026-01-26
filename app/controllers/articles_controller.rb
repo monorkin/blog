@@ -84,7 +84,7 @@ class ArticlesController < ApplicationController
         .joins(:entry)
         .preload(:entry)
         .order(ORDER)
-        .with_rich_text_content_and_embeds
+        .with_rich_text_body_and_embeds
         .strict_loading
     end
 end

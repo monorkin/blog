@@ -1,0 +1,278 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# This script imports data exported from the main branch (PostgreSQL) schema
+# and transforms it to the spring-cleaning branch (SQLite) schema.
+#
+# Key transformations:
+# - articles: publishing fields moved to entries table
+# - talks: now have associated entries
+# - tag_taggings: taggable_type changes from Article to Entry
+
+require_relative "../../../config/environment"
+
+input_path = ARGV[0]
+
+if input_path.nil?
+  puts "Usage: ./script/migrations/pg2sqlite/import <path/to/export.json>"
+  exit 1
+end
+
+unless File.exist?(input_path)
+  puts "Error: File not found: #{input_path}"
+  exit 1
+end
+
+puts "Importing database from #{input_path}..."
+
+data = JSON.parse(File.read(input_path), symbolize_names: true)
+
+puts "Source schema: #{data[:source_schema]}"
+puts "Exported at: #{data[:exported_at]}"
+puts ""
+
+conn = ActiveRecord::Base.connection
+
+def clear_table(conn, table_name)
+  conn.execute("DELETE FROM #{table_name}") if conn.table_exists?(table_name)
+end
+
+def quote_value(conn, value)
+  if value.nil?
+    "NULL"
+  elsif value.is_a?(Integer) || value.is_a?(Float)
+    value.to_s
+  elsif value == true
+    "1"
+  elsif value == false
+    "0"
+  elsif value.is_a?(Hash) || value.is_a?(Array)
+    conn.quote(value.to_json)
+  else
+    conn.quote(value.to_s)
+  end
+end
+
+def insert_record(conn, table_name, record)
+  columns = record.keys
+  values = columns.map { |col| quote_value(conn, record[col]) }
+  sql = "INSERT INTO #{table_name} (#{columns.join(', ')}) VALUES (#{values.join(', ')})"
+  conn.execute(sql)
+end
+
+def import_table(conn, table_name, records)
+  return if records.nil? || records.empty?
+  return unless conn.table_exists?(table_name)
+
+  records.each { |record| insert_record(conn, table_name, record) }
+end
+
+ActiveRecord::Base.transaction do
+  # Clear all existing data in reverse dependency order
+  puts "Clearing existing data..."
+  tables_to_clear = %w[
+    article_link_previews
+    tag_taggings
+    entries
+    action_text_rich_texts
+    active_storage_variant_records
+    active_storage_attachments
+    active_storage_blobs
+    talks
+    articles
+    tags
+    users
+  ]
+  tables_to_clear.each { |t| clear_table(conn, t) }
+  puts "  Done"
+
+  # Import in dependency order
+  puts ""
+  puts "Importing data..."
+
+  # 1. Users
+  if (users = data[:tables][:users]).present?
+    puts "  Importing users..."
+    import_table(conn, "users", users)
+    puts "    #{users.size} records"
+  end
+
+  # 2. Tags
+  if (tags = data[:tables][:tags]).present?
+    puts "  Importing tags..."
+    import_table(conn, "tags", tags)
+    puts "    #{tags.size} records"
+  end
+
+  # 3. Articles - transform from old schema (with publishing fields) to new (without)
+  old_articles = data[:tables][:articles] || []
+  article_entries = []
+
+  if old_articles.present?
+    puts "  Importing articles..."
+    entry_id = 1
+
+    old_articles.each do |old_article|
+      # New article only has: id, title, thread, created_at, updated_at
+      new_article = {
+        id: old_article[:id],
+        title: old_article[:title],
+        thread: old_article[:thread],
+        created_at: old_article[:created_at],
+        updated_at: old_article[:updated_at]
+      }
+      insert_record(conn, "articles", new_article)
+
+      # Create entry for this article
+      published_at = old_article[:published_at] || old_article[:publish_at] || old_article[:created_at]
+      entry = {
+        id: entry_id,
+        entryable_type: "Article",
+        entryable_id: old_article[:id],
+        slug: old_article[:slug],
+        slug_id: old_article[:slug_id],
+        publish_at: old_article[:publish_at],
+        published: old_article[:published],
+        published_at: published_at,
+        created_at: old_article[:created_at],
+        updated_at: old_article[:updated_at]
+      }
+      article_entries << entry
+      entry_id += 1
+    end
+    puts "    #{old_articles.size} records"
+  end
+
+  # 4. Talks - create entries for each talk
+  old_talks = data[:tables][:talks] || []
+  talk_entries = []
+  next_entry_id = article_entries.size + 1
+
+  if old_talks.present?
+    puts "  Importing talks..."
+
+    old_talks.each do |old_talk|
+      # Talk schema is mostly the same
+      new_talk = {
+        id: old_talk[:id],
+        title: old_talk[:title],
+        event: old_talk[:event],
+        event_url: old_talk[:event_url],
+        held_at: old_talk[:held_at],
+        video_mirror_url: old_talk[:video_mirror_url],
+        created_at: old_talk[:created_at],
+        updated_at: old_talk[:updated_at]
+      }
+      insert_record(conn, "talks", new_talk)
+
+      # Create entry for this talk
+      # Talks on main branch didn't have entries, so we need to generate slug_id
+      slug = old_talk[:title]&.parameterize
+      slug_id = Entry.generate_slug_id
+
+      entry = {
+        id: next_entry_id,
+        entryable_type: "Talk",
+        entryable_id: old_talk[:id],
+        slug: slug,
+        slug_id: slug_id,
+        publish_at: nil,
+        published: true, # Assume talks are published
+        published_at: old_talk[:held_at] || old_talk[:created_at],
+        created_at: old_talk[:created_at],
+        updated_at: old_talk[:updated_at]
+      }
+      talk_entries << entry
+      next_entry_id += 1
+    end
+    puts "    #{old_talks.size} records"
+  end
+
+  # 5. Insert all entries
+  all_entries = article_entries + talk_entries
+  if all_entries.present?
+    puts "  Creating entries..."
+    all_entries.each { |entry| insert_record(conn, "entries", entry) }
+    puts "    #{all_entries.size} records"
+  end
+
+  # Build mapping from old article IDs to new entry IDs
+  article_id_to_entry_id = {}
+  article_entries.each do |entry|
+    article_id_to_entry_id[entry[:entryable_id]] = entry[:id]
+  end
+
+  # 6. Active Storage
+  if (blobs = data[:tables][:active_storage_blobs]).present?
+    puts "  Importing active_storage_blobs..."
+    import_table(conn, "active_storage_blobs", blobs)
+    puts "    #{blobs.size} records"
+  end
+
+  if (attachments = data[:tables][:active_storage_attachments]).present?
+    puts "  Importing active_storage_attachments..."
+    import_table(conn, "active_storage_attachments", attachments)
+    puts "    #{attachments.size} records"
+  end
+
+  if (variants = data[:tables][:active_storage_variant_records]).present?
+    puts "  Importing active_storage_variant_records..."
+    import_table(conn, "active_storage_variant_records", variants)
+    puts "    #{variants.size} records"
+  end
+
+  # 7. Action Text
+  if (rich_texts = data[:tables][:action_text_rich_texts]).present?
+    puts "  Importing action_text_rich_texts..."
+    import_table(conn, "action_text_rich_texts", rich_texts)
+    puts "    #{rich_texts.size} records"
+  end
+
+  # 8. Tag Taggings - transform Article -> Entry
+  if (taggings = data[:tables][:tag_taggings]).present?
+    puts "  Importing tag_taggings..."
+
+    taggings.each do |tagging|
+      new_tagging = tagging.dup
+
+      # Transform: Article taggings become Entry taggings
+      if tagging[:taggable_type] == "Article"
+        entry_id = article_id_to_entry_id[tagging[:taggable_id]]
+        if entry_id
+          new_tagging[:taggable_type] = "Entry"
+          new_tagging[:taggable_id] = entry_id
+        else
+          puts "    Warning: No entry found for Article #{tagging[:taggable_id]}, skipping tagging"
+          next
+        end
+      end
+
+      insert_record(conn, "tag_taggings", new_tagging)
+    end
+    puts "    #{taggings.size} records"
+  end
+
+  # Reset SQLite sequences
+  puts ""
+  puts "Resetting SQLite sequences..."
+  %w[users tags articles talks entries active_storage_blobs active_storage_attachments
+     active_storage_variant_records action_text_rich_texts tag_taggings article_link_previews].each do |table|
+    next unless conn.table_exists?(table)
+
+    max_id = conn.select_value("SELECT MAX(id) FROM #{table}") || 0
+    if max_id > 0
+      conn.execute("INSERT OR REPLACE INTO sqlite_sequence (name, seq) VALUES ('#{table}', #{max_id})")
+    end
+  end
+  puts "  Done"
+
+  puts ""
+  puts "Generate link previews for articles..."
+  Article.find_each do |article|
+    article.send(:generate_link_previews)
+  end
+  puts "  Done"
+end
+
+puts ""
+puts "Import complete!"

@@ -1,9 +1,11 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative "../config/environment"
+# This script exports data from the main branch (PostgreSQL) schema
+# where articles have publishing fields directly and talks have no entries.
+# Run this on the main branch before migrating to the spring-cleaning branch.
 
-SCHEMA_VERSION = ActiveRecord::Migrator.current_version
+require_relative "../../../config/environment"
 
 output_path = ARGV[0] || Rails.root.join("storage/export.json")
 
@@ -12,7 +14,7 @@ puts "Exporting database to #{output_path}..."
 conn = ActiveRecord::Base.connection
 
 data = {
-  schema_version: SCHEMA_VERSION,
+  source_schema: "main",
   exported_at: Time.current.iso8601,
   tables: {}
 }
@@ -21,19 +23,18 @@ def export_table(conn, table_name)
   conn.select_all("SELECT * FROM #{table_name}").to_a
 end
 
-# Export all tables that exist
+# Export tables from main branch schema
+# Note: main branch has articles with publishing fields, no entries table
 tables_to_export = %w[
   users
   tags
   articles
   talks
+  tag_taggings
   active_storage_blobs
   active_storage_attachments
   active_storage_variant_records
   action_text_rich_texts
-  entries
-  tag_taggings
-  article_link_previews
 ]
 
 tables_to_export.each do |table|

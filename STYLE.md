@@ -1,4 +1,3 @@
-
 # Style
 
 We aim to write code that is a pleasure to read, and we have a lot of opinions about how to do it well. Writing great code is an essential part of our programming culture, and we deliberately set a high bar for every code change anyone contributes. We care about how code reads, how code looks, and how code makes you feel when you read it.
@@ -72,35 +71,29 @@ class SomeClass
       method_1_1
       method_1_2
     end
-  
+
     def method_1_1
       # ...
     end
-  
+
     def method_1_2
       # ...
     end
-  
+
     def method_2
       method_2_1
       method_2_2
     end
-  
+
     def method_2_1
       # ...
     end
-  
+
     def method_2_2
       # ...
     end
 end
 ```
-
-## To bang or not to bang
-
-Should I call a method `do_something` or `do_something!`?
-
-As a general rule, we only use `!` for methods that have a correspondent counterpart without `!`. In particular, we don’t use `!` to flag destructive actions. There are plenty of destructive methods in Ruby and Rails that do not end with `!`.
 
 ## Visibility modifiers
 
@@ -123,17 +116,13 @@ class SomeClass
 end
 ```
 
-If a module only has private methods, we mark it `private` at the top and add an extra new line after but don't indent.
+## To bang or not to bang
 
-```ruby
-module SomeModule
-  private
-  
-  def some_private_method
-    # ...
-  end
-end
-```
+Should I call a method `do_something` or `do_something!`?
+
+As a general rule, we only use `!` for methods that have a correspondent counterpart without `!`. In particular, we don't use `!` to flag destructive actions. There are plenty of destructive methods in Ruby and Rails that do not end with `!`.
+
+In this codebase, we use bang methods for operations that perform the work synchronously (e.g., `analyze!`, `generate!`) when there's a corresponding async method (e.g., `analyze_later`, `generate_later`).
 
 ## CRUD controllers
 
@@ -169,9 +158,11 @@ end
 For more complex behavior, we prefer clear, intention-revealing model APIs that controllers call directly:
 
 ```ruby
-class Cards::GoldnessesController < ApplicationController
-  def create
-    @card.gild
+class ContentsController < ApplicationController
+  def analyze
+    @content.pending!
+    @content.analyze_later
+    redirect_to @content, notice: "Re-analysis started..."
   end
 end
 ```
@@ -179,7 +170,7 @@ end
 When justified, it is fine to use services or form objects, but don't treat those as special artifacts:
 
 ```ruby
-Signup.new(email_address: email_address).create_identity
+Audio::Transcriber.new(file_path).transcribe
 ```
 
 ## Run async operations in jobs
@@ -187,28 +178,104 @@ Signup.new(email_address: email_address).create_identity
 As a general rule, we write shallow job classes that delegate the logic itself to domain models:
 
 * We typically use the suffix `_later` to flag methods that enqueue a job.
-* A common scenario is having a model class that enqueues a job that, when executed, invokes some method in that same class. In this case, we use the suffix `_now` for the regular synchronous method.
+* A common scenario is having a model class that enqueues a job that, when executed, invokes some method in that same class. In this case, we use the suffix `!` for the synchronous method.
 
 ```ruby
-module Event::Relaying
+module Content::Analyzable
   extend ActiveSupport::Concern
 
   included do
-    after_create_commit :relay_later
+    after_create_commit :analyze_later
   end
 
-  def relay_later
-    Event::RelayJob.perform_later(self)
+  def analyze_later
+    AnalyzeContentJob.perform_later(self)
   end
 
-  def relay_now
-    # ...
+  def analyze!
+    # ... actual analysis logic
   end
 end
 
-class Event::RelayJob < ApplicationJob
-  def perform(event)
-    event.relay_now
+class AnalyzeContentJob < ApplicationJob
+  def perform(content)
+    content.analyze!
   end
 end
+```
+
+## Concerns and modules
+
+We use concerns to extract cohesive functionality from models. Include the concern at the top of the model file:
+
+```ruby
+class Content < ApplicationRecord
+  include Content::Analyzable
+
+  # ... rest of model
+end
+```
+
+Use `included do` blocks for hooks and associations that need to be defined in the context of the including class:
+
+```ruby
+module Content::Analyzable
+  extend ActiveSupport::Concern
+
+  included do
+    has_many_attached :frames
+    after_create_commit :analyze_later
+  end
+
+  # ... methods
+end
+```
+
+## Scopes
+
+Prefer scopes for reusable query logic:
+
+```ruby
+class Entity < ApplicationRecord
+  scope :by_prominence, -> { order(prominence: :desc) }
+  scope :animals, -> { where(entity_type: "animal") }
+  scope :plants, -> { where(entity_type: "plant") }
+end
+```
+
+## Status enums
+
+Use string-backed enums for readability in the database:
+
+```ruby
+enum :status, %w[pending processing analyzed failed].index_by(&:itself)
+```
+
+## Error handling in jobs
+
+Use job-level error handling directives for retry and discard logic:
+
+```ruby
+class GenerateRemixJob < ApplicationJob
+  retry_on Comfy::Client::ConnectionError, wait: 30.seconds, attempts: 5
+  discard_on Comfy::Client::APIError
+
+  def perform(remix)
+    remix.generate!
+  end
+end
+```
+
+## Naming service objects
+
+When creating service objects, name them after what they do (noun form):
+
+```ruby
+# Good
+Audio::Transcriber.new(file_path).transcribe
+Video::FrameExtractor.new(file_path).extract
+
+# Bad
+TranscribeAudio.new(file_path).call
+ExtractVideoFrames.new(file_path).call
 ```

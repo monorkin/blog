@@ -8,6 +8,9 @@ module Entryable
 
     has_one :entry, as: :entryable, touch: true, dependent: :destroy, autosave: true
 
+    scope :with_entry, -> { joins(:entry).preload(:entry) }
+    scope :published, -> { with_entry.merge(Entry.published) }
+
     before_validation :ensure_entry
 
     delegate :to_param, :published, :published?, :publish_at, :published_at, :tags, to: :entry, allow_nil: true

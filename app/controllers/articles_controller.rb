@@ -13,9 +13,9 @@ class ArticlesController < ApplicationController
 
   def index
     articles = if Current.user.present?
-                 scope
+      scope
     else
-                 scope.published
+      scope.published
     end
 
     set_page_and_extract_portion_from(articles, per_page: RATIOS)

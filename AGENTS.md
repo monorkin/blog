@@ -11,7 +11,7 @@ This is my personal blog.
 ### Setup and Server
 ```bash
 bin/setup              # Initial setup (installs gems, creates DB, loads schema)
-bin/dev                # Start development server (runs on port 3006)
+bin/dev                # Start development server (runs on port 3000)
 ```
 
 Development URL: http://localhost:3000

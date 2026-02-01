@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../config/environment"
+
+SCHEMA_VERSION = ActiveRecord::Migrator.current_version
+
+output_path = ARGV[0] || Rails.root.join("storage/export.json")
+
+puts "Exporting database to #{output_path}..."
+
+conn = ActiveRecord::Base.connection
+
+data = {
+  schema_version: SCHEMA_VERSION,
+  exported_at: Time.current.iso8601,
+  tables: {}
+}
+
+def export_table(conn, table_name)
+  conn.select_all("SELECT * FROM #{table_name}").to_a
+end
+
+# Export all tables that exist
+tables_to_export = %w[
+  users
+  tags
+  articles
+  talks
+  active_storage_blobs
+  active_storage_attachments
+  active_storage_variant_records
+  action_text_rich_texts
+  entries
+  tag_taggings
+  article_link_previews
+]
+
+tables_to_export.each do |table|
+  if conn.table_exists?(table)
+    puts "  Exporting #{table}..."
+    data[:tables][table.to_sym] = export_table(conn, table)
+    puts "    #{data[:tables][table.to_sym].size} records"
+  else
+    puts "  Skipping #{table} (table does not exist)"
+  end
+end
+
+FileUtils.mkdir_p(File.dirname(output_path))
+File.write(output_path, JSON.pretty_generate(data))
+
+puts "Export complete! (#{File.size(output_path)} bytes)"

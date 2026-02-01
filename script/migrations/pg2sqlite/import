@@ -33,38 +33,33 @@ puts ""
 
 conn = ActiveRecord::Base.connection
 
-def clear_table(conn, table_name)
-  conn.execute("DELETE FROM #{table_name}") if conn.table_exists?(table_name)
+# Mapping for tables with non-standard model names
+TABLE_TO_MODEL = {
+  "action_text_rich_texts" => ActionText::RichText,
+  "active_storage_blobs" => ActiveStorage::Blob,
+  "active_storage_attachments" => ActiveStorage::Attachment,
+  "active_storage_variant_records" => ActiveStorage::VariantRecord,
+  "tag_taggings" => Tag::Tagging
+}.freeze
+
+def model_for_table(table_name)
+  TABLE_TO_MODEL[table_name] || table_name.classify.constantize
 end
 
-def quote_value(conn, value)
-  if value.nil?
-    "NULL"
-  elsif value.is_a?(Integer) || value.is_a?(Float)
-    value.to_s
-  elsif value == true
-    "1"
-  elsif value == false
-    "0"
-  elsif value.is_a?(Hash) || value.is_a?(Array)
-    conn.quote(value.to_json)
-  else
-    conn.quote(value.to_s)
+def clear_table(table_name)
+  model_for_table(table_name).delete_all
+rescue NameError
+  conn = ActiveRecord::Base.connection
+  if conn.table_exists?(table_name)
+    conn.execute("DELETE FROM #{conn.quote_table_name(table_name)}")
   end
 end
 
-def insert_record(conn, table_name, record)
-  columns = record.keys
-  values = columns.map { |col| quote_value(conn, record[col]) }
-  sql = "INSERT INTO #{table_name} (#{columns.join(', ')}) VALUES (#{values.join(', ')})"
-  conn.execute(sql)
-end
+def import_table(table_name, records)
+  return if records.blank?
 
-def import_table(conn, table_name, records)
-  return if records.nil? || records.empty?
-  return unless conn.table_exists?(table_name)
-
-  records.each { |record| insert_record(conn, table_name, record) }
+  model = model_for_table(table_name)
+  model.insert_all(records.map { |r| r.transform_keys(&:to_s) })
 end
 
 ActiveRecord::Base.transaction do
@@ -83,7 +78,7 @@ ActiveRecord::Base.transaction do
     tags
     users
   ]
-  tables_to_clear.each { |t| clear_table(conn, t) }
+  tables_to_clear.each { |t| clear_table(t) }
   puts "  Done"
 
   # Import in dependency order
@@ -93,14 +88,14 @@ ActiveRecord::Base.transaction do
   # 1. Users
   if (users = data[:tables][:users]).present?
     puts "  Importing users..."
-    import_table(conn, "users", users)
+    import_table("users", users)
     puts "    #{users.size} records"
   end
 
   # 2. Tags
   if (tags = data[:tables][:tags]).present?
     puts "  Importing tags..."
-    import_table(conn, "tags", tags)
+    import_table("tags", tags)
     puts "    #{tags.size} records"
   end
 
@@ -121,7 +116,7 @@ ActiveRecord::Base.transaction do
         created_at: old_article[:created_at],
         updated_at: old_article[:updated_at]
       }
-      insert_record(conn, "articles", new_article)
+      Article.insert_all([ new_article.transform_keys(&:to_s) ])
 
       # Create entry for this article
       published_at = old_article[:published_at] || old_article[:publish_at] || old_article[:created_at]
@@ -163,7 +158,7 @@ ActiveRecord::Base.transaction do
         created_at: old_talk[:created_at],
         updated_at: old_talk[:updated_at]
       }
-      insert_record(conn, "talks", new_talk)
+      Talk.insert_all([ new_talk.transform_keys(&:to_s) ])
 
       # Create entry for this talk
       # Talks on main branch didn't have entries, so we need to generate slug_id
@@ -192,7 +187,7 @@ ActiveRecord::Base.transaction do
   all_entries = article_entries + talk_entries
   if all_entries.present?
     puts "  Creating entries..."
-    all_entries.each { |entry| insert_record(conn, "entries", entry) }
+    Entry.insert_all(all_entries.map { |e| e.transform_keys(&:to_s) })
     puts "    #{all_entries.size} records"
   end
 
@@ -205,26 +200,38 @@ ActiveRecord::Base.transaction do
   # 6. Active Storage
   if (blobs = data[:tables][:active_storage_blobs]).present?
     puts "  Importing active_storage_blobs..."
-    import_table(conn, "active_storage_blobs", blobs)
+    import_table("active_storage_blobs", blobs)
     puts "    #{blobs.size} records"
   end
 
   if (attachments = data[:tables][:active_storage_attachments]).present?
     puts "  Importing active_storage_attachments..."
-    import_table(conn, "active_storage_attachments", attachments)
+    import_table("active_storage_attachments", attachments)
     puts "    #{attachments.size} records"
   end
 
   if (variants = data[:tables][:active_storage_variant_records]).present?
     puts "  Importing active_storage_variant_records..."
-    import_table(conn, "active_storage_variant_records", variants)
+    import_table("active_storage_variant_records", variants)
     puts "    #{variants.size} records"
   end
 
-  # 7. Action Text
+  # 7. Action Text - transform Article content -> body
   if (rich_texts = data[:tables][:action_text_rich_texts]).present?
     puts "  Importing action_text_rich_texts..."
-    import_table(conn, "action_text_rich_texts", rich_texts)
+
+    transformed_rich_texts = rich_texts.map do |rich_text|
+      new_rich_text = rich_text.dup
+
+      # Transform: Article "content" -> "body" (field was renamed)
+      if rich_text[:record_type] == "Article" && rich_text[:name] == "content"
+        new_rich_text[:name] = "body"
+      end
+
+      new_rich_text.transform_keys(&:to_s)
+    end
+
+    ActionText::RichText.insert_all(transformed_rich_texts)
     puts "    #{rich_texts.size} records"
   end
 
@@ -232,7 +239,7 @@ ActiveRecord::Base.transaction do
   if (taggings = data[:tables][:tag_taggings]).present?
     puts "  Importing tag_taggings..."
 
-    taggings.each do |tagging|
+    transformed_taggings = taggings.filter_map do |tagging|
       new_tagging = tagging.dup
 
       # Transform: Article taggings become Entry taggings
@@ -247,8 +254,10 @@ ActiveRecord::Base.transaction do
         end
       end
 
-      insert_record(conn, "tag_taggings", new_tagging)
+      new_tagging.transform_keys(&:to_s)
     end
+
+    Tag::Tagging.insert_all(transformed_taggings) if transformed_taggings.present?
     puts "    #{taggings.size} records"
   end
 
@@ -259,9 +268,10 @@ ActiveRecord::Base.transaction do
      active_storage_variant_records action_text_rich_texts tag_taggings article_link_previews].each do |table|
     next unless conn.table_exists?(table)
 
-    max_id = conn.select_value("SELECT MAX(id) FROM #{table}") || 0
+    quoted_table = conn.quote_table_name(table)
+    max_id = conn.select_value("SELECT MAX(id) FROM #{quoted_table}") || 0
     if max_id > 0
-      conn.execute("INSERT OR REPLACE INTO sqlite_sequence (name, seq) VALUES ('#{table}', #{max_id})")
+      conn.execute("INSERT OR REPLACE INTO sqlite_sequence (name, seq) VALUES (#{conn.quote(table)}, #{max_id.to_i})")
     end
   end
   puts "  Done"

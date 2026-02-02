@@ -17,9 +17,14 @@ module RichTextHelper
 
   # Makes code blocks look prettier / more readable
   def highlight_code_blocks_rich_text_transform(document)
-    document.css("pre").each do |code_block|
-      language_tag = code_block["language"].presence
+    # Support both pre (legacy/trix) and code[data-language] (lexxy)
+    document.css("pre, code[data-language]").each do |code_block|
+      language_tag = code_block["language"].presence || code_block["data-language"].presence
+
+      # Lexxy uses <br> for line breaks, convert them to newlines before extracting text
+      code_block.css("br").each { |br| br.replace("\n") }
       code = code_block.text
+
       formatter = Rouge::Formatters::HTML.new
       lexer = Rouge::Lexer.find(language_tag) || Rouge::Lexer.guess({ source: code })
       code_block.inner_html = formatter.format(lexer.lex(code))

@@ -40,9 +40,20 @@
   --white: #a9b1d6;
 }
 
-.highlight, .highlight .w, .lexxy-content pre.highlight, .lexxy-content pre.highlight .w {
+.highlight, .highlight .w, .lexxy-content pre.highlight, .lexxy-content pre.highlight .w,
+.lexxy-content code.highlight, .lexxy-content code.highlight .w {
   color: var(--foreground);
   background-color: var(--background);
+}
+
+/* Ensure code blocks with highlight class display properly */
+.lexxy-content pre.highlight,
+.lexxy-content code.highlight {
+  display: block;
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 0.125rem;
+  white-space: pre;
 }
 .highlight .err, .lexxy-content pre.highlight .err {
   color: var(--foreground);

@@ -32,12 +32,62 @@
   @apply w-full;
 }
 
+.lexxy-content table {
+  @apply w-full border-collapse text-sm;
+}
+
+.lexxy-content th {
+  @apply text-left font-semibold pb-2 border-b border-neutral-300;
+}
+
+.lexxy-content td {
+  @apply py-2 border-b border-neutral-200;
+}
+
+.lexxy-content tr:last-child td {
+  @apply border-b-0;
+}
+
+/* Code blocks (lexxy uses pre[data-language]) */
+.lexxy-content pre[data-language],
+.lexxy-content code[data-language] {
+  @apply block overflow-x-auto p-4 rounded-sm shadow-sm;
+  white-space: pre;
+}
+
+.color-scheme--dark .lexxy-content th {
+  @apply border-neutral-600;
+}
+
+.color-scheme--dark .lexxy-content td {
+  @apply border-neutral-700;
+}
+
+.color-scheme--dark .lexxy-content .lexxy-content__table-cell--header {
+  background-color: rgb(38, 38, 38) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.color-scheme--light) .lexxy-content th {
+    @apply border-neutral-600;
+  }
+
+  :root:not(.color-scheme--light) .lexxy-content td {
+    @apply border-neutral-700;
+  }
+
+  :root:not(.color-scheme--light) .lexxy-content .lexxy-content__table-cell--header {
+    background-color: rgb(38, 38, 38) !important;
+  }
+}
+
 lexxy-toolbar {
   @apply sticky top-0 z-20;
 }
 
 /* Lexxy dark mode */
-.color-scheme--dark lexxy-editor {
+.color-scheme--dark lexxy-editor,
+.color-scheme--dark .lexxy-content {
   --lexxy-color-ink: oklch(90% 0 0);
   --lexxy-color-ink-medium: oklch(70% 0 0);
   --lexxy-color-ink-light: oklch(50% 0 0);
@@ -47,6 +97,8 @@ lexxy-toolbar {
   --lexxy-color-canvas: oklch(10% 0 0);
   --lexxy-color-text: oklch(90% 0 0);
   --lexxy-color-text-subtle: oklch(60% 0 0);
+  --lexxy-color-accent-light: oklch(35% 0.08 254);
+  --lexxy-color-accent-lightest: oklch(28% 0.06 254);
   --lexxy-color-code-token-att: #ff7b72;
   --lexxy-color-code-token-comment: #8b949e;
   --lexxy-color-code-token-function: #d2a8ff;
@@ -58,7 +110,8 @@ lexxy-toolbar {
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not(.color-scheme--light) lexxy-editor {
+  :root:not(.color-scheme--light) lexxy-editor,
+  :root:not(.color-scheme--light) .lexxy-content {
     --lexxy-color-ink: oklch(90% 0 0);
     --lexxy-color-ink-medium: oklch(70% 0 0);
     --lexxy-color-ink-light: oklch(50% 0 0);
@@ -68,6 +121,8 @@ lexxy-toolbar {
     --lexxy-color-canvas: oklch(10% 0 0);
     --lexxy-color-text: oklch(90% 0 0);
     --lexxy-color-text-subtle: oklch(60% 0 0);
+    --lexxy-color-accent-light: oklch(35% 0.08 254);
+    --lexxy-color-accent-lightest: oklch(28% 0.06 254);
     --lexxy-color-code-token-att: #ff7b72;
     --lexxy-color-code-token-comment: #8b949e;
     --lexxy-color-code-token-function: #d2a8ff;

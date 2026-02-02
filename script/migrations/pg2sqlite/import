@@ -124,7 +124,7 @@ ActiveRecord::Base.transaction do
         id: entry_id,
         entryable_type: "Article",
         entryable_id: old_article[:id],
-        slug: old_article[:slug],
+        slug: old_article[:slug].presence || old_article[:title]&.parameterize,
         slug_id: old_article[:slug_id],
         publish_at: old_article[:publish_at],
         published: old_article[:published],

@@ -32,7 +32,7 @@ class Entry::SEO::Image
   end
 
   def url
-    variant&.processed&.url
+    url_helpers.url_for(variant) if variant
   end
 
   def width

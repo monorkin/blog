@@ -279,3 +279,192 @@ Video::FrameExtractor.new(file_path).extract
 TranscribeAudio.new(file_path).call
 ExtractVideoFrames.new(file_path).call
 ```
+
+## Stimulus controllers
+
+### Privacy
+
+Use JavaScript's native `#` prefix for private methods and instance variables. Everything that isn't part of the public API (actions, target callbacks, lifecycle) should be private.
+
+```javascript
+export default class extends Controller {
+  #timer
+  #fetchController
+
+  // Public action
+  submit() {
+    if (this.#dirty) this.#save()
+  }
+
+  // Private
+  #save() {
+    // ...
+  }
+
+  get #dirty() {
+    return !!this.#timer
+  }
+}
+```
+
+### Controller structure
+
+Organize controllers in this order: static declarations, lifecycle, actions, public methods, private methods. Separate sections with a comment.
+
+```javascript
+export default class extends Controller {
+  static targets = [ "input", "item" ]
+  static values = { ... }
+  static classes = [ "active" ]
+
+  // Lifecycle
+
+  initialize() { }
+  connect() { }
+  disconnect() { }
+
+  // Actions
+
+  toggle() { }
+  close() { }
+
+  // Public
+
+  selectItem(item) { }
+
+  // Private
+
+  #clearSelection() { }
+}
+```
+
+### Lifecycle
+
+Use `initialize()` for one-time setup that must happen before the value observer runs (e.g., reading initial DOM state, creating debounced functions). Use `connect()` for setup that depends on targets and values being ready. Use `disconnect()` for cleanup.
+
+```javascript
+initialize() {
+  this.filter = debounce(this.filter.bind(this), 100)
+}
+```
+
+Use target callbacks (`targetConnected`/`targetDisconnected`) for dynamic elements instead of manually managing event listeners on targets:
+
+```javascript
+imageTargetConnected(element) {
+  element.addEventListener("click", this.#handleImageClick)
+}
+
+imageTargetDisconnected(element) {
+  element.removeEventListener("click", this.#handleImageClick)
+}
+
+#handleImageClick = (event) => {
+  event.preventDefault()
+  this.#open(event.currentTarget)
+}
+```
+
+### Event handling
+
+Prefer Stimulus actions declared in HTML over manual `addEventListener`. For document or window-level events, use the `@document` or `@window` modifier in `data-action`:
+
+```html
+data-action="click@window->dialog#closeOnClickOutside"
+```
+
+When manual listeners are truly necessary (e.g., for events Stimulus can't bind), use arrow function class fields so the reference is stable for removal:
+
+```javascript
+#handleClick = (event) => { ... }
+```
+
+### Outside click
+
+Use a consistent pattern and naming for outside-click handlers:
+
+```javascript
+closeOnClickOutside({ target }) {
+  if (!this.element.contains(target)) this.close()
+}
+```
+
+### Keyboard navigation
+
+Use a key handler object instead of a `switch` statement:
+
+```javascript
+#keyHandlers = {
+  ArrowDown(event) {
+    this.#selectNext()
+    event.preventDefault()
+  },
+  ArrowUp(event) {
+    this.#selectPrevious()
+    event.preventDefault()
+  },
+  Enter(event) {
+    if (event.isComposing) return
+    this.#confirmSelection(event)
+  }
+}
+
+navigate(event) {
+  this.#keyHandlers[event.key]?.call(this, event)
+}
+```
+
+### Debouncing
+
+Create debounced versions of methods in `initialize()` using a shared `debounce` helper. Bind the method so it can be used as an action directly:
+
+```javascript
+initialize() {
+  this.search = debounce(this.search.bind(this), 200)
+}
+```
+
+### Naming
+
+Action methods describe *what they do*, not *what event triggered them*. Never prefix actions with `on` — names like `onClick`, `onInput`, `onKeydown` describe the event, not the intent. Instead, name the action after the behavior it performs:
+
+```javascript
+// Bad — describes the event
+onInput() { ... }
+onClick() { ... }
+onKeydown() { ... }
+
+// Good — describes the behavior
+filter() { ... }
+select() { ... }
+navigate() { ... }
+```
+
+Target names are nouns: `input`, `item`, `label`, `dialog`. Value names describe configuration: `reverseOrder`, `selectionAttribute`, `autoScroll`.
+
+### Constants
+
+Extract magic numbers and timing values into constants at the top of the file:
+
+```javascript
+const AUTOSAVE_INTERVAL = 3000
+const DEBOUNCE_DELAY = 100
+```
+
+### Computed state
+
+Use getters for derived state instead of storing redundant instance variables:
+
+```javascript
+get #dirty() {
+  return !!this.#timer
+}
+
+get #visibleItems() {
+  return this.itemTargets.filter(item => !item.hidden)
+}
+```
+
+### DOM manipulation
+
+Use DOM APIs (`cloneNode`, `appendChild`, `textContent`, `classList`, `toggleAttribute`) rather than building HTML strings with template literals. Clone `<template>` elements for repeating structures. Use `textContent` instead of `innerHTML` when setting text to avoid XSS risks.

@@ -64,3 +64,11 @@
     font-size: 26px;
   }
 }
+
+lexxy-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: oklch(from var(--lexxy-color-canvas) l c h / 0.8);
+  backdrop-filter: blur(8px);
+}

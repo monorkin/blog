@@ -81,10 +81,6 @@
   }
 }
 
-lexxy-toolbar {
-  @apply sticky top-0 z-20;
-}
-
 /* Lexxy dark mode */
 .color-scheme--dark lexxy-editor,
 .color-scheme--dark .lexxy-content {

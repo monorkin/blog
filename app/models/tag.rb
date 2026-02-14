@@ -8,6 +8,18 @@ class Tag < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
+  class << self
+    def suggest(query, limit: 10)
+      normalized_query = normalize_value_for(:name, query.to_s)
+
+      if normalized_query.present?
+        where("name LIKE ?", "#{sanitize_sql_like(normalized_query)}%").limit(limit).pluck(:name)
+      else
+        none
+      end
+    end
+  end
+
   def to_param
     name
   end

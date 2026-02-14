@@ -45,7 +45,7 @@ module Entryable
     if defined?(super)
       super()
     elsif respond_to?(:title)
-      title
+      title&.parameterize
     else
       raise NotImplementedError, "Define a slug method or a title method in #{self.class.name}"
     end

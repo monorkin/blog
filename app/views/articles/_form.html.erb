@@ -13,19 +13,33 @@
     <%= tag_input_field(form, tags: article.entry&.tags&.pluck(:name) || []) %>
   </div>
 
-  <div class="flex flex-col md:flex-row gap-x-4 gap-y-4">
-    <label class="grow">
-      Publish at
-      <%= form.datetime_field :publish_at, class: "w-full rounded border border-neutral-300 dark:text-black" %>
-    </label>
-
-    <label class="flex flex-row gap-x-2 items-center pt-5">
-      <%= form.check_box :published %>
-      Published
-    </label>
-  </div>
-
   <%= rich_text_field(form, :body) %>
 
-  <%= form.submit t(".save"), class: "rounded text-white p-2 w-full cursor-pointer bg-indigo-500 hover:bg-indigo-700 dark:bg-yellow-500 dark:text-yellow-900 dark:hover:bg-yellow-400" %>
+  <div data-controller="publish" data-publish-published-value="<%= article.published? %>">
+    <%= form.hidden_field :published, data: { publish_target: "publishedInput" } %>
+    <%= form.hidden_field :publish_at, value: "", data: { publish_target: "publishAtInput" } %>
+
+    <div data-publish-target="draftControls" class="flex flex-row gap-x-2">
+      <%= form.submit "Save draft", class: "rounded text-white p-2 grow cursor-pointer bg-neutral-500 hover:bg-neutral-600" %>
+
+      <div class="relative flex flex-row">
+        <%= form.submit "Publish", class: "rounded-l text-white p-2 cursor-pointer bg-indigo-500 hover:bg-indigo-700 dark:bg-yellow-500 dark:text-yellow-900 dark:hover:bg-yellow-400", data: { action: "publish#publish" } %>
+        <button type="button" class="rounded-r border-l border-white/30 text-white px-2 cursor-pointer bg-indigo-500 hover:bg-indigo-700 dark:bg-yellow-500 dark:text-yellow-900 dark:hover:bg-yellow-400" data-action="publish#toggleSchedule">
+          &#128340;
+        </button>
+
+        <div data-publish-target="schedulePopup" hidden class="absolute top-full right-0 mt-1 p-3 bg-white dark:bg-neutral-800 rounded shadow-lg border border-neutral-200 dark:border-neutral-700 z-10 flex flex-col gap-y-2 min-w-60">
+          <input type="datetime-local" data-publish-target="scheduleDatetime" class="rounded border border-neutral-300 dark:text-black p-1 w-full">
+          <button type="submit" data-action="publish#publishAtTime" class="rounded text-white p-2 cursor-pointer bg-indigo-500 hover:bg-indigo-700 dark:bg-yellow-500 dark:text-yellow-900 dark:hover:bg-yellow-400 text-sm">
+            Publish at set time
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div data-publish-target="publishedControls" class="flex flex-row gap-x-2" hidden>
+      <%= form.submit "Update", class: "rounded text-white p-2 grow cursor-pointer bg-indigo-500 hover:bg-indigo-700 dark:bg-yellow-500 dark:text-yellow-900 dark:hover:bg-yellow-400" %>
+      <%= form.submit "Unpublish", class: "rounded text-white p-2 cursor-pointer bg-neutral-500 hover:bg-neutral-600", data: { action: "publish#unpublish" } %>
+    </div>
+  </div>
 <% end %>

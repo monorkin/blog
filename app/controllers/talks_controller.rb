@@ -72,7 +72,7 @@ class TalksController < ApplicationController
     end
 
     def permitted_params
-      params.expect talk: %w[title event event_url video_mirror_url held_at video description]
+      params.expect talk: %w[title event event_url video_mirror_url held_at video description tags]
     end
 
     def scope

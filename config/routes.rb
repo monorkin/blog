@@ -23,7 +23,11 @@ Rails.application.routes.draw do
   get "feed", to: "feed#show", as: :feed, defaults: { format: :atom }
   get "feed/style", to: "feed#style", as: :feed_style, defaults: { format: :xsl }
 
-  resources :tags, only: :show, param: :name
+  resources :tags, only: :show, param: :name do
+    collection do
+      resources :suggestions, only: :index, module: :tags
+    end
+  end
 
   resources :talks
 

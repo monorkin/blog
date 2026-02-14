@@ -31,6 +31,11 @@
     <%= talk_form.datetime_field :held_at, class: "w-full rounded border border-neutral-300 dark:text-black" %>
   </label>
 
+  <div>
+    Tags
+    <%= tag_input_field(talk_form, tags: talk.entry&.tags&.pluck(:name) || []) %>
+  </div>
+
   <%= rich_text_field(talk_form, :description) %>
 
   <%= talk_form.submit t(".save"), class: "rounded text-white p-2 w-full cursor-pointer bg-indigo-500 hover:bg-indigo-700 dark:bg-yellow-500 dark:text-yellow-900 dark:hover:bg-yellow-400" %>

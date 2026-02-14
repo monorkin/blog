@@ -54,6 +54,20 @@
 .lexxy-content code[data-language] {
   @apply block overflow-x-auto p-4 rounded-sm shadow-sm;
   white-space: pre;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.color-scheme--dark .lexxy-content pre[data-language],
+.color-scheme--dark .lexxy-content code[data-language] {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.color-scheme--light) .lexxy-content pre[data-language],
+  :root:not(.color-scheme--light) .lexxy-content code[data-language] {
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
 }
 
 .color-scheme--dark .lexxy-content th {

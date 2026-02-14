@@ -54,7 +54,22 @@
   padding: 1rem;
   border-radius: 0.125rem;
   white-space: pre;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
+
+.color-scheme--dark .lexxy-content pre.highlight,
+.color-scheme--dark .lexxy-content code.highlight {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.color-scheme--light) .lexxy-content pre.highlight,
+  :root:not(.color-scheme--light) .lexxy-content code.highlight {
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+}
+
 .highlight .err, .lexxy-content pre.highlight .err {
   color: var(--foreground);
   background-color: var(--red);

@@ -8,6 +8,7 @@
   prose-code:before:content-none prose-code:after:content-none;
 }
 
+
 .lexxy-content .attachment {
   @apply flex;
 }
@@ -95,6 +96,8 @@
   --lexxy-color-text-subtle: oklch(60% 0 0);
   --lexxy-color-accent-light: oklch(35% 0.08 254);
   --lexxy-color-accent-lightest: oklch(28% 0.06 254);
+  --lexxy-color-selected: oklch(25% 0.04 254);
+  --lexxy-color-selected-hover: oklch(30% 0.06 254);
   --lexxy-color-code-token-att: #ff7b72;
   --lexxy-color-code-token-comment: #8b949e;
   --lexxy-color-code-token-function: #d2a8ff;
@@ -119,6 +122,8 @@
     --lexxy-color-text-subtle: oklch(60% 0 0);
     --lexxy-color-accent-light: oklch(35% 0.08 254);
     --lexxy-color-accent-lightest: oklch(28% 0.06 254);
+    --lexxy-color-selected: oklch(25% 0.04 254);
+    --lexxy-color-selected-hover: oklch(30% 0.06 254);
     --lexxy-color-code-token-att: #ff7b72;
     --lexxy-color-code-token-comment: #8b949e;
     --lexxy-color-code-token-function: #d2a8ff;

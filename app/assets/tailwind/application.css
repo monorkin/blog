@@ -65,6 +65,16 @@
   }
 }
 
+.lexxy-content h2,
+.lexxy-content h3,
+.lexxy-content h4 {
+  margin-top: 1.5em;
+}
+
+.lexxy-content figure {
+  margin-top: 2em;
+}
+
 lexxy-toolbar {
   position: sticky;
   top: 0;

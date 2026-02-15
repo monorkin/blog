@@ -3,8 +3,6 @@
 require "application_system_test_case"
 
 class LoginTest < ApplicationSystemTestCase
-  fixtures :users
-
   test "allows me to login with valid information" do
     visit login_path
 

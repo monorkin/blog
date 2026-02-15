@@ -3,8 +3,6 @@
 require "test_helper"
 
 class SitemapsControllerTest < ActionDispatch::IntegrationTest
-  fixtures :articles, :entries, :talks, :tags, "tag/taggings", "action_text/rich_texts"
-
   test "GET index renders sitemap index" do
     get sitemap_path
 

@@ -10,6 +10,7 @@ module Entryable
 
     scope :with_entry, -> { joins(:entry).preload(:entry) }
     scope :published, -> { with_entry.merge(Entry.published) }
+    scope :tagged_with, ->(tags) { joins(:entry).merge(Entry.tagged_with(tags)) }
 
     before_validation :ensure_entry
 

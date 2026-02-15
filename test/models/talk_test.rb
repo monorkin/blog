@@ -3,8 +3,6 @@
 require "test_helper"
 
 class TalkTest < ActiveSupport::TestCase
-  fixtures :talks, :entries, "action_text/rich_texts"
-
   test ".from_slug via Entry" do
     talk = talks(:do_you_really_need_websockets_webcamp_2018)
     entry = talk.entry

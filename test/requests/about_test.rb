@@ -3,8 +3,6 @@
 require "test_helper"
 
 class AboutRequestTest < ActionDispatch::IntegrationTest
-  fixtures :articles, :entries
-
   test "/ renders successfully" do
     get root_path
 

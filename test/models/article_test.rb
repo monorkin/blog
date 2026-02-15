@@ -3,8 +3,6 @@
 require "test_helper"
 
 class ArticleTest < ActiveSupport::TestCase
-  fixtures :articles, :entries, "action_text/rich_texts"
-
   test "#to_param returns the entry's slug" do
     article = articles(:misguided_mark)
     entry = entries(:misguided_mark_entry)
@@ -90,5 +88,18 @@ class ArticleTest < ActiveSupport::TestCase
     entry = entries(:misguided_mark_entry)
 
     assert_equal entry.published_at, article.published_at
+  end
+
+  test "#cover_image returns nil when no images are attached" do
+    article = articles(:misguided_mark)
+    article.body = "<p>No images here</p>"
+
+    assert_nil article.cover_image
+  end
+
+  test ".published returns only published articles" do
+    published = Article.published
+
+    assert published.all?(&:published?), "Should only return published articles"
   end
 end

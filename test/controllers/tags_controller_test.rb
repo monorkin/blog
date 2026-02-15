@@ -3,8 +3,6 @@
 require "test_helper"
 
 class TagsControllerTest < ActionDispatch::IntegrationTest
-  fixtures :articles, :entries, :tags, "tag/taggings", "action_text/rich_texts"
-
   test "GET show renders tag page with tagged entries" do
     tag = tags(:ruby)
     entry = entries(:vanilla_rails_view_components_with_partials_entry)

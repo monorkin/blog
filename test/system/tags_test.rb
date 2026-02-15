@@ -3,8 +3,6 @@
 require "application_system_test_case"
 
 class TagsTest < ApplicationSystemTestCase
-  fixtures :articles, :tags, "tag/taggings", "action_text/rich_texts"
-
   test "visiting a tag page shows tagged articles" do
     tag = tags(:ruby)
     article = articles(:vanilla_rails_view_components_with_partials)

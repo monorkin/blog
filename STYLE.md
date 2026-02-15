@@ -468,3 +468,62 @@ get #visibleItems() {
 ### DOM manipulation
 
 Use DOM APIs (`cloneNode`, `appendChild`, `textContent`, `classList`, `toggleAttribute`) rather than building HTML strings with template literals. Clone `<template>` elements for repeating structures. Use `textContent` instead of `innerHTML` when setting text to avoid XSS risks.
+
+## Testing
+
+### Fixtures
+
+All fixtures are loaded globally via `fixtures :all` in `test_helper.rb`. Never declare `fixtures` in individual test files.
+
+When adding new fixture files, make sure all associations reference labels that exist in other fixture files — broken references cause foreign key violations when all fixtures load together.
+
+### Test only public behavior
+
+Don't test private methods directly. Test them through the public interface that exercises them.
+
+### Test naming
+
+Prefix test names with `#method_name` for instance methods and `.method_name` for class methods:
+
+```ruby
+test "#excerpt returns the first 300 characters of the plain text content" do
+test ".published returns only published entryables" do
+```
+
+### Test structure
+
+Follow a setup–action–assertion pattern with blank lines between each phase:
+
+```ruby
+test "#published= writes through to the entry" do
+  article = articles(:misguided_mark)
+
+  article.published = false
+
+  assert_equal false, article.entry.published
+end
+```
+
+### Assertion messages
+
+Include a descriptive message on assertions to explain intent, especially when the assertion alone doesn't make the failure obvious:
+
+```ruby
+assert published_articles.all?(&:published?), "Should only return published articles"
+```
+
+### Fixtures over factories
+
+Prefer fixture data for test setup. Only create records inline when the test needs specific state that doesn't exist in fixtures:
+
+```ruby
+# Prefer loading fixtures
+article = articles(:misguided_mark)
+
+# Create inline only when you need specific state
+Article.create!(title: "Unpublished Article", body: "Content", published: false, tags: "people")
+```
+
+### Test file organization
+
+Mirror the `app/models/` structure under `test/models/`. Test concerns in their own file (e.g., `test/models/entryable_test.rb` for the `Entryable` concern).

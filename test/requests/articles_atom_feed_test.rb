@@ -3,8 +3,6 @@
 require "test_helper"
 
 class ArticlesAtomFeedTest < ActionDispatch::IntegrationTest
-  fixtures :articles, :entries, :talks, "action_text/rich_texts"
-
   test "/articles/atom redirects to /feed with types=article" do
     get atom_articles_path
 

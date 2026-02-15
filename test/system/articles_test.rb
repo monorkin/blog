@@ -3,8 +3,6 @@
 require "application_system_test_case"
 
 class ArticlesTest < ApplicationSystemTestCase
-  fixtures :articles, "action_text/rich_texts"
-
   test "the index page should pass all accessibility criteria with articles present" do
     visit articles_url
 

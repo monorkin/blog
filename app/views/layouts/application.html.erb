@@ -10,7 +10,7 @@
     <% if content_for?(:head) %>
       <%= yield(:head) %>
     <% else %>
-      <title>Blog | Stanko K.R.</title>
+      <title><%= Entry::SEO.titleize("Blog") %></title>
       <meta rel="canonical" href="<%= url_for(only_path: false) %>">
     <% end %>
     <%= csrf_meta_tags %>

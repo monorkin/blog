@@ -11,15 +11,21 @@ class Entry::SEO
 
   attr_reader :entry
 
+  class << self
+    def titleize(name)
+      [
+        name.truncate(TITLE_MAX_LENGTH, separator: " "),
+        SITE_NAME
+      ].join(SEPARATOR)
+    end
+  end
+
   def initialize(entry)
     @entry = entry
   end
 
   def title
-    [
-      entry.title.truncate(TITLE_MAX_LENGTH, separator: " "),
-      SITE_NAME
-    ].join(SEPARATOR)
+    self.class.titleize(entry.title)
   end
 
   def description

@@ -1,5 +1,5 @@
 <% content_for :head do %>
-  <title>Talks | Stanko K.R.</title>
+  <title><%= Entry::SEO.titleize("Talks") %></title>
   <%= seo_meta_tags(
     title: "Talks",
     description: "Conference talks and presentations about Ruby, Rails, and web development",

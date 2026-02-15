@@ -1,5 +1,5 @@
 <% content_for :head do %>
-  <title>Blog | Stanko K.R.</title>
+  <title><%= Entry::SEO.titleize("Blog") %></title>
   <%= seo_meta_tags(
     title: "Blog",
     description: "Web developer from Zagreb making products with Ruby on Rails, Hotwired and Tailwind",

@@ -1,5 +1,5 @@
 <% content_for :head do %>
-  <title>#<%= @tag.name %> | Stanko K.R.</title>
+  <title><%= Entry::SEO.titleize(@tag.name) %></title>
   <%= seo_meta_tags(
     title: "##{@tag.name}",
     description: "Content tagged with #{@tag.name}",

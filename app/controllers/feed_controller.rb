@@ -12,7 +12,7 @@ class FeedController < ApplicationController
     @entries = @entries.with_types(params[:types].split(",")) if params[:types].present?
     @entries = @entries.tagged_with(params[:tag].split(",")) if params[:tag].present?
 
-    fresh_when(@entries)
+    return if fresh_when(@entries)
 
     render content_type: "application/xml"
   end

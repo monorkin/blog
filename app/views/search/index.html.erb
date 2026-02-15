@@ -11,70 +11,18 @@
       <% end %>
     </div>
 
-    <div class="relative flex flex-col divide-y bg-neutral-100 rounded-lg z-10 shadow md:shadow-xl dark:bg-neutral-900 dark:border dark:border-neutral-500">
-      <h1 class="sr-only">Search</h1>
-      <div class="grow-0 relative p-2 dark:border-neutral-500">
-        <%= form_for @search, url: search_path, method: :get, html: { class: "flex flex-row items-center gap-x-4" } do |search_form| %>
-          <label class="cursor-pointer">
-            <%= search_icon(class: "w-6 h-6 text-indigo-600 hover:text-indigo-800 dark:text-yellow-500 dark:hover:text-yellow-400") %>
-            <%= search_form.submit "", class: "hidden" %>
-            <span class="sr-only"><%= t(".search") %></span>
-          </label>
-          <%= search_form.search_field :term, placeholder: t(".search_placeholder"), autofocus: true, class: "w-full inline bg-transparent border-0 focus:ring-0 dark:text-white" %>
-        <% end %>
-      </div>
+    <%= render "form", frame_id: :search %>
+  </div>
+<% end %>
 
-      <div class="grow p-2 dark:border-neutral-500">
-        <% results = @search.results %>
-
-        <% if results.empty? && @search.term.present? %>
-          <div class="p-2 text-gray-500">
-            <%= t(".no_results") %>
-          </div>
-        <% elsif results.empty? %>
-          <div class="p-2 text-gray-500">
-            <%= t(".prompt") %>
-          </div>
-        <% else %>
-          <ul class="flex flex-col divide-y">
-
-            <% if results[:articles].any? %>
-              <% results[:articles].each do |result| %>
-                <%= cache([result.entry, :search_result]) do %>
-                  <li class="group/result overflow-hidden p-1">
-                    <div class="relative p-1 rounded group-hover/result:bg-neutral-200 dark:group-hover/result:bg-neutral-700">
-                      <%= link_to "", result, class: "absolute inset-0" %>
-                      <div class="font-semibold dark:text-white truncate">
-                        <%= result.title %>
-                      </div>
-                      <div class="text-sm text-neutral-500 dark:group-hover/result:text-neutral-400">
-                        <%= result.class %>
-                      </div>
-                    </div>
-                  </li>
-                <% end %>
-              <% end %>
-            <% end %>
-
-            <% if results[:tags].any? %>
-              <li>
-                <div class="relative p-2">
-                  <div class="font-semibold dark:text-white">
-                    <%= Tag.model_name.human(count: 5) %>
-                  </div>
-                </div>
-                <div class="px-2 pb-2 flex flex-wrap gap-2">
-                  <% results[:tags].each do |tag| %>
-                    <%= tag_bubble(tag) %>
-                  <% end %>
-                </div>
-              </li>
-            <% end %>
-
-          </ul>
-        <% end %>
-
-      </div>
+<%= turbo_frame_tag :mobile_search do %>
+  <div class="relative mt-5 mx-5">
+    <div class="absolute -top-4 -right-4 h-8 z-20">
+      <%= link_to root_path, class: "flex items-center justify-center w-8 h-8 bg-white rounded-full shadow transition-all scale-100 hover:scale-110", data: { action: "dialog#close" } do %>
+        <%= close_icon(class: "w-4 h-4 text-gray-500") %>
+      <% end %>
     </div>
+
+    <%= render "form", frame_id: :mobile_search %>
   </div>
 <% end %>

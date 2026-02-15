@@ -12,6 +12,7 @@ class Search < ApplicationModel
 
     {
       articles: articles.load_async,
+      talks: talks.load_async,
       tags: tags.load_async
     }
   end
@@ -20,6 +21,18 @@ class Search < ApplicationModel
     return Article.none if term.blank?
 
     scope = Article.published.order(published_at: :desc, title: :asc).limit(result_count)
+
+    if term.starts_with?("#")
+      scope.tagged_with(term.gsub(/^#/, ""))
+    else
+      scope.where("title LIKE ? COLLATE NOCASE", "%#{term}%")
+    end
+  end
+
+  def talks
+    return Talk.none if term.blank?
+
+    scope = Talk.published.order(published_at: :desc, title: :asc).limit(result_count)
 
     if term.starts_with?("#")
       scope.tagged_with(term.gsub(/^#/, ""))

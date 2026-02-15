@@ -1,0 +1,79 @@
+<div class="relative flex flex-col divide-y bg-neutral-100 rounded-lg z-10 shadow md:shadow-xl dark:bg-neutral-900 dark:border dark:border-neutral-500" data-controller="search navigable-list">
+  <h1 class="sr-only">Search</h1>
+  <div class="grow-0 relative p-2 dark:border-neutral-500">
+    <%= form_for @search, url: search_path, method: :get, html: { class: "flex flex-row items-center gap-x-4", data: { turbo_frame: frame_id, search_target: "form" } } do |search_form| %>
+      <label class="cursor-pointer">
+        <%= search_icon(class: "w-6 h-6 text-indigo-600 hover:text-indigo-800 dark:text-yellow-500 dark:hover:text-yellow-400") %>
+        <%= search_form.submit "", class: "hidden" %>
+        <span class="sr-only"><%= t(".search") %></span>
+      </label>
+      <%= search_form.search_field :term, placeholder: t(".search_placeholder"), autofocus: true, class: "w-full inline bg-transparent border-0 focus:ring-0 dark:text-white", data: { action: "input->search#search keydown->navigable-list#navigate" } %>
+    <% end %>
+  </div>
+
+  <div class="grow p-2 dark:border-neutral-500">
+    <% results = @search.results %>
+    <% has_results = results.is_a?(Hash) && results.any? { |_, v| v.any? } %>
+
+    <% if !has_results && @search.term.present? %>
+      <div class="p-2 text-gray-500">
+        <%= t(".no_results") %>
+      </div>
+    <% elsif !has_results %>
+      <div class="p-2 text-gray-500">
+        <%= t(".prompt") %>
+      </div>
+    <% else %>
+      <ul class="flex flex-col divide-y" role="listbox">
+
+        <% results[:articles].each do |result| %>
+          <%= cache([result.entry, :search_result]) do %>
+            <li class="group/result overflow-hidden p-1" role="option" aria-selected="false" data-navigable-list-target="item" data-action="click->navigable-list#select mouseenter->navigable-list#hoverSelect">
+              <div class="relative p-1 rounded group-hover/result:bg-neutral-200 dark:group-hover/result:bg-neutral-700 group-aria-selected/result:bg-neutral-200 dark:group-aria-selected/result:bg-neutral-700">
+                <%= link_to "", result, class: "absolute inset-0", data: { turbo_frame: "_top" } %>
+                <div class="font-semibold dark:text-white truncate">
+                  <%= result.title %>
+                </div>
+                <div class="text-sm text-neutral-500 dark:group-hover/result:text-neutral-400 dark:group-aria-selected/result:text-neutral-400">
+                  Article
+                </div>
+              </div>
+            </li>
+          <% end %>
+        <% end %>
+
+        <% results[:talks].each do |result| %>
+          <%= cache([result.entry, :search_result]) do %>
+            <li class="group/result overflow-hidden p-1" role="option" aria-selected="false" data-navigable-list-target="item" data-action="click->navigable-list#select mouseenter->navigable-list#hoverSelect">
+              <div class="relative p-1 rounded group-hover/result:bg-neutral-200 dark:group-hover/result:bg-neutral-700 group-aria-selected/result:bg-neutral-200 dark:group-aria-selected/result:bg-neutral-700">
+                <%= link_to "", result, class: "absolute inset-0", data: { turbo_frame: "_top" } %>
+                <div class="font-semibold dark:text-white truncate">
+                  <%= result.title %>
+                </div>
+                <div class="text-sm text-neutral-500 dark:group-hover/result:text-neutral-400 dark:group-aria-selected/result:text-neutral-400">
+                  Talk
+                </div>
+              </div>
+            </li>
+          <% end %>
+        <% end %>
+
+        <% results[:tags].each do |tag| %>
+          <li class="group/result overflow-hidden p-1" role="option" aria-selected="false" data-navigable-list-target="item" data-action="click->navigable-list#select mouseenter->navigable-list#hoverSelect">
+            <div class="relative p-1 rounded group-hover/result:bg-neutral-200 dark:group-hover/result:bg-neutral-700 group-aria-selected/result:bg-neutral-200 dark:group-aria-selected/result:bg-neutral-700">
+              <%= link_to "", tag, class: "absolute inset-0", data: { turbo_frame: "_top" } %>
+              <div class="font-semibold dark:text-white truncate">
+                <%= tag.name %>
+              </div>
+              <div class="text-sm text-neutral-500 dark:group-hover/result:text-neutral-400 dark:group-aria-selected/result:text-neutral-400">
+                Tag
+              </div>
+            </div>
+          </li>
+        <% end %>
+
+      </ul>
+    <% end %>
+
+  </div>
+</div>

@@ -1,7 +1,5 @@
 import ApplicationController from "controllers/application_controller"
 
-const SUGGESTION_DEBOUNCE = 200
-
 export default class extends ApplicationController {
   static targets = [ "hiddenInput", "textInput", "tagList", "suggestions" ]
   static values = {
@@ -12,7 +10,6 @@ export default class extends ApplicationController {
   // Lifecycle
 
   initialize() {
-    this.#highlightedIndex = -1
     this.#fetchController = null
 
     // Read initial tags from the server-rendered hidden input before
@@ -67,7 +64,6 @@ export default class extends ApplicationController {
   }
 
   closeSuggestions() {
-    this.#highlightedIndex = -1
     this.suggestionsTarget.classList.add("hidden")
     this.suggestionsTarget.replaceChildren()
   }
@@ -82,28 +78,11 @@ export default class extends ApplicationController {
 
   // Private
 
-  #highlightedIndex
   #fetchController
-
-  #confirmTag(event) {
-    event.preventDefault()
-    if (this.#highlightedIndex >= 0) {
-      this.#addHighlightedSuggestion()
-    } else {
-      this.#addFromInput()
-    }
-  }
 
   #addFromInput() {
     const name = this.#normalizeTag(this.textInputTarget.value)
     if (name.length > 0) this.addTag(name)
-  }
-
-  #addHighlightedSuggestion() {
-    const items = this.suggestionsTarget.querySelectorAll("li")
-    if (this.#highlightedIndex >= 0 && this.#highlightedIndex < items.length) {
-      this.addTag(items[this.#highlightedIndex].dataset.name)
-    }
   }
 
   #removeLastTag() {
@@ -132,7 +111,6 @@ export default class extends ApplicationController {
   }
 
   #renderSuggestions(names) {
-    this.#highlightedIndex = -1
     const list = this.suggestionsTarget
 
     if (names.length === 0) {
@@ -141,12 +119,13 @@ export default class extends ApplicationController {
       return
     }
 
-    list.replaceChildren(...names.map((name, i) => {
+    list.replaceChildren(...names.map((name) => {
       const li = document.createElement("li")
-      li.className = "px-3 py-1.5 cursor-pointer hover:bg-indigo-100 text-sm text-black"
-      li.dataset.index = i
+      li.className = "px-3 py-1.5 cursor-pointer text-sm text-black aria-selected:bg-indigo-100"
+      li.setAttribute("aria-selected", "false")
       li.dataset.name = name
-      li.dataset.action = "click->tag-input#selectSuggestion"
+      li.dataset.navigableListTarget = "item"
+      li.dataset.action = "click->tag-input#selectSuggestion mouseenter->navigable-list#hoverSelect"
       li.textContent = name
       return li
     }))
@@ -174,28 +153,15 @@ export default class extends ApplicationController {
     }))
   }
 
-  #moveHighlight(direction, event) {
-    const items = this.suggestionsTarget.querySelectorAll("li")
-    if (items.length === 0) return
-
-    event.preventDefault()
-    items.forEach(li => li.classList.remove("bg-indigo-100"))
-
-    this.#highlightedIndex += direction
-    if (this.#highlightedIndex < 0) this.#highlightedIndex = items.length - 1
-    if (this.#highlightedIndex >= items.length) this.#highlightedIndex = 0
-
-    items[this.#highlightedIndex].classList.add("bg-indigo-100")
-    items[this.#highlightedIndex].scrollIntoView({ block: "nearest" })
-  }
-
   #normalizeTag(value) {
     return value.trim().toLowerCase().replace(/[^0-9a-z]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "")
   }
 
   #keyHandlers = {
     Enter(event) {
-      this.#confirmTag(event)
+      if (event.defaultPrevented) return
+      event.preventDefault()
+      this.#addFromInput()
     },
     ","(event) {
       event.preventDefault()
@@ -203,12 +169,6 @@ export default class extends ApplicationController {
     },
     Backspace() {
       this.#removeLastTag()
-    },
-    ArrowDown(event) {
-      this.#moveHighlight(1, event)
-    },
-    ArrowUp(event) {
-      this.#moveHighlight(-1, event)
     },
     Escape() {
       this.closeSuggestions()

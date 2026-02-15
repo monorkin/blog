@@ -23,7 +23,7 @@ module TagHelper
 
   def tag_input_field(form, tags: [])
     content_tag(:div, class: "relative",
-      data: { controller: "tag-input",
+      data: { controller: "tag-input navigable-list",
               tag_input_suggestions_url_value: suggestions_path,
               action: "click@document->tag-input#closeOnClickOutside" }) do
       concat form.hidden_field(:tags, value: tags.join(", "), data: { tag_input_target: "hiddenInput" })
@@ -35,7 +35,7 @@ module TagHelper
           autocomplete: "off",
           placeholder: tags.empty? ? "Add tags..." : "",
           class: "flex-1 min-w-[120px] border-0 bg-transparent p-0 focus:ring-0 placeholder:text-gray-400",
-          data: { tag_input_target: "textInput", action: "input->tag-input#search keydown->tag-input#navigate" })
+          data: { tag_input_target: "textInput", action: "input->tag-input#search keydown->navigable-list#navigate keydown->tag-input#navigate" })
       }
       concat content_tag(:ul, "",
         class: "hidden absolute z-50 mt-1 w-full max-h-48 overflow-y-auto bg-white border border-neutral-300 rounded shadow-lg",

@@ -14,3 +14,4 @@ pin "application", preload: true
 pin_all_from "app/javascript/initializers", under: "initializers"
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin_all_from "app/javascript/models", under: "models"
+pin_all_from "app/javascript/helpers", under: "helpers"

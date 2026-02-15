@@ -11,7 +11,8 @@ module Taggable
     has_many :taggings,
              class_name: "Tag::Tagging",
              as: :taggable,
-             dependent: :destroy
+             dependent: :destroy,
+             autosave: true
     has_many :tags,
              through: :taggings
 

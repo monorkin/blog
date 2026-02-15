@@ -67,4 +67,15 @@ class TaggableTest < ActiveSupport::TestCase
     assert_not_includes tag_names, "people",
                         "Should have replaced the previous tags"
   end
+
+  test "#tags= persists tags when set through entryable" do
+    article = articles(:misguided_mark)
+
+    article.tags = "ruby,elixir"
+    article.save!
+
+    tag_names = article.reload.tags.map(&:name)
+    assert_includes tag_names, "ruby", "Should persist ruby tag through entryable"
+    assert_includes tag_names, "elixir", "Should persist elixir tag through entryable"
+  end
 end

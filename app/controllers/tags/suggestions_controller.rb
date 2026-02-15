@@ -4,6 +4,6 @@ class Tags::SuggestionsController < ApplicationController
   ensure_authenticated
 
   def index
-    render json: Tag.suggest(query)
+    render json: Tag.suggest(params[:query])
   end
 end

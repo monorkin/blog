@@ -78,4 +78,15 @@ class TaggableTest < ActiveSupport::TestCase
     assert_includes tag_names, "ruby", "Should persist ruby tag through entryable"
     assert_includes tag_names, "elixir", "Should persist elixir tag through entryable"
   end
+
+  test "#tags= busts the entry cache when tags change" do
+    article = articles(:misguided_mark)
+    original_cache_version = article.entry.cache_version
+
+    article.tags = "ruby,elixir"
+    article.save!
+
+    assert_not_equal original_cache_version, article.entry.reload.cache_version,
+                     "Entry cache should be busted when tags change"
+  end
 end

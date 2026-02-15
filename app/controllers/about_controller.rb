@@ -6,8 +6,8 @@ class AboutController < ApplicationController
   end
 
   def show
-    @latest_articles = Article.published.order(published_at: :desc, id: :desc).limit(3)
+    @latest_entries = Article.published.order(published_at: :desc, id: :desc).limit(3).map(&:entry)
 
-    fresh_when @latest_articles
+    fresh_when @latest_entries
   end
 end

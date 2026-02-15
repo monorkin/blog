@@ -20,7 +20,7 @@ class ArticlesController < ApplicationController
 
     set_page_and_extract_portion_from(articles, per_page: RATIOS)
 
-    @articles = @page.records
+    @entries = @page.records.map(&:entry)
 
     fresh_when(@page)
 

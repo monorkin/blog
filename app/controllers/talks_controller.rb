@@ -15,7 +15,7 @@ class TalksController < ApplicationController
   def index
     set_page_and_extract_portion_from(scope, per_page: RATIOS)
 
-    @talks = @page.records
+    @entries = @page.records.map(&:entry)
 
     fresh_when(@page)
 

@@ -19,8 +19,8 @@
   <% end %>
 
   <section>
-    <% if @articles.any? %>
-      <%= article_list(@articles, id: "articles") %>
+    <% if @entries.any? %>
+      <%= entry_list(@entries, id: "articles") %>
     <% else %>
       <p>No articles were found</p>
     <% end %>

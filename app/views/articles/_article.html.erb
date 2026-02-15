@@ -1,6 +1,6 @@
 <%# locals: (article:, article_counter: nil, article_iteration: nil) -%>
 
-<%= cache article do %>
+<%= cache article.entry do %>
   <li class="flex flex-col gap-y-1 py-4 lg:py-6 px-2 md:px-0 relative group">
 
     <%= link_to "", article_path(article), class: "absolute inset-0" %>

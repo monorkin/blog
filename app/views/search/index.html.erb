@@ -40,7 +40,7 @@
 
             <% if results[:articles].any? %>
               <% results[:articles].each do |result| %>
-                <%= cache([result, :search_result]) do %>
+                <%= cache([result.entry, :search_result]) do %>
                   <li class="group/result overflow-hidden p-1">
                     <div class="relative p-1 rounded group-hover/result:bg-neutral-200 dark:group-hover/result:bg-neutral-700">
                       <%= link_to "", result, class: "absolute inset-0" %>

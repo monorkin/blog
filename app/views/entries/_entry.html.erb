@@ -3,8 +3,8 @@
 <%= cache entry do %>
   <% case entry.entryable %>
   <% when Article %>
-    <%= render partial: "entries/article", locals: { entry: entry, article: entry.entryable } %>
+    <%= render partial: "articles/article", locals: { article: entry.entryable } %>
   <% when Talk %>
-    <%= render partial: "entries/talk", locals: { entry: entry, talk: entry.entryable } %>
+    <%= render partial: "talks/talk", locals: { talk: entry.entryable } %>
   <% end %>
 <% end %>

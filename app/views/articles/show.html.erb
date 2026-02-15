@@ -14,7 +14,7 @@
     <% end %>
   </div>
 
-  <%= cache @article do %>
+  <%= cache @article.entry do %>
     <div class="text-neutral-600 dark:text-neutral-500">
       <%= time_tag @article.published_at, t('.published_on', date: l(@article.published_at.to_date)) %>
     </div>

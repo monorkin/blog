@@ -18,9 +18,7 @@
     </div>
   <% end %>
 
-  <ul class="flex flex-col" id="talks">
-    <%= render @talks %>
-  </ul>
+  <%= entry_list(@entries, id: "talks", class: "flex flex-col") %>
 
   <%= paginate page: @page %>
 </div>

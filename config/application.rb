@@ -40,7 +40,7 @@ module Blog
         "loading",
         "data-controller",
         "data-action",
-        "language",
+        "data-language",
         *ActionText::ContentHelper.sanitizer.class.allowed_attributes,
         *ActionText::Attachment::ATTRIBUTES
       ]

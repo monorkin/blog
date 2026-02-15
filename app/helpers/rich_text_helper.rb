@@ -32,6 +32,7 @@ module RichTextHelper
 
       formatter = Rouge::Formatters::HTML.new
       code_block.inner_html = formatter.format(lexer.lex(code))
+      code_block["data-language"] = language_tag
       code_block["class"] = [ code_block["class"], "highlight" ].select(&:present?).join(" ")
     end
 

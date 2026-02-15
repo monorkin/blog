@@ -21,12 +21,12 @@
     <%= content_tag(:embed, src: rails_blob_url(blob), width: 800, height: 500, type: "application/pdf") %>
   <% elsif blob.representable? %>
     <% if blob.filename.extension == "gif" %>
-      <%= image_tag url_for(blob), loading: "lazy" %>
+      <%= image_tag url_for(blob), alt: blob.try(:caption).presence || blob.filename.base, loading: "lazy" %>
     <% else %>
       <% width, height = blob.metadata.values_at("width", "height") %>
       <% style = (width && height) ? "aspect-ratio: #{width} / #{height};" : nil %>
 
-      <%= image_tag blob.representation(image_options), loading: "lazy", style: style %>
+      <%= image_tag blob.representation(image_options), alt: blob.try(:caption).presence || blob.filename.base, loading: "lazy", style: style %>
     <% end %>
   <% else %>
     <%= link_to blob.filename, url_for(blob), download: true %>

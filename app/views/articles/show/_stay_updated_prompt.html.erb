@@ -1,5 +1,5 @@
 <div class="mx-2 md:mx-0 shadow md:shadow-lg bg-white dark:bg-neutral-900 dark:border dark:border-neutral-500 rounded md:rounded-lg p-4">
-  <%= link_to text_with_icon(:rss, t(".subscribe_rss"), position: :before, class: "text-orange-400 w-8 h-8"), atom_articles_path, target: :_blank %>
+  <%= link_to text_with_icon(:rss, t(".subscribe_rss"), position: :before, class: "text-orange-400 w-8 h-8"), feed_path(types: :article), target: :_blank %>
 
   <div class="relative my-4">
     <hr class="border-t-2 border-dotted border-neutral-200 dark:border-neutral-700">

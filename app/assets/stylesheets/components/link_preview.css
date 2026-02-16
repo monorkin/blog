@@ -10,7 +10,7 @@
     font-size: var(--text-sm);
 
     & h6 {
-      font-size: var(--text-lg);
+      font-size: var(--text-xl);
       margin-block-start: 0;
       font-weight: 600;
     }
@@ -26,10 +26,10 @@
     }
   }
 
-  .link-preview__image {
+  .link-preview .link-preview__image {
     inline-size: 100%;
     aspect-ratio: 2 / 1;
-    object-fit: cover;
+    object-fit: cover !important;
     margin: 0;
     border-end-start-radius: var(--radius-lg);
     border-end-end-radius: var(--radius-lg);

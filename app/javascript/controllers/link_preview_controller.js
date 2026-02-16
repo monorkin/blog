@@ -111,7 +111,7 @@ export default class extends ApplicationController {
 
     // Reset arrow to center before clamping
     arrow.style.left = "50%"
-    arrow.style.transform = "translateX(-50%)"
+    arrow.style.translate = "-50%"
 
     // Clamp popup within viewport, shifting the arrow to stay over the link
     requestAnimationFrame(() => {
@@ -126,7 +126,7 @@ export default class extends ApplicationController {
 
       if (shift !== 0) {
         popup.style.transform = `translateX(calc(-50% + ${shift}px))`
-        arrow.style.transform = `translateX(calc(-50% - ${shift}px))`
+        arrow.style.translate = `calc(-50% - ${shift}px)`
       }
     })
   }

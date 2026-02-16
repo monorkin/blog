@@ -5,7 +5,7 @@
 
   .popup__container {
     position: relative;
-    margin: var(--space-4);
+    margin: var(--space-2);
     inline-size: 24rem;
     border-radius: var(--radius-lg);
     background-color: var(--color-surface);
@@ -63,7 +63,8 @@
     inline-size: 1rem;
     block-size: 1rem;
     inset-inline-start: 50%;
-    transform: translateX(-50%) rotate(45deg);
+    translate: -50%;
+    rotate: 45deg;
     background-color: var(--color-surface);
     border-radius: 0.125rem;
     box-shadow: var(--shadow-lg);

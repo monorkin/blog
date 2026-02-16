@@ -29,7 +29,6 @@ gem "sentry-rails"
 gem "sentry-ruby"
 gem "stimulus-rails"
 gem "streamio-ffmpeg"
-gem "tailwindcss-rails", ">= 4.0"
 gem "thruster"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]

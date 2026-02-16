@@ -1,3 +1,12 @@
-.rich-text.rich-text--loading {
-  @apply animate-pulse pointer-events-none blur-lg;
+@layer components {
+  .rich-text.rich-text--loading {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    pointer-events: none;
+    filter: blur(16px);
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
 }

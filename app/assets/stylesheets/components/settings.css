@@ -1,0 +1,90 @@
+@layer components {
+  .settings {
+    background-color: oklch(95.14% 0.005 286.07);
+    border-radius: var(--radius-lg);
+    z-index: var(--z-above);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-2);
+  }
+
+  .color-scheme.color-scheme--dark .settings {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-ink);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .color-scheme:not(.color-scheme--light) .settings {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-ink);
+    }
+  }
+
+  .settings__title {
+    padding: var(--space-2);
+    font-size: var(--text-lg);
+    font-weight: 600;
+  }
+
+  .settings__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-color: var(--color-border);
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    align-items: center;
+  }
+
+  .settings__label {
+    padding: var(--space-2);
+    color: var(--color-ink-subtle);
+  }
+
+  .settings__value {
+    padding: var(--space-2);
+  }
+
+  .settings__color-picker {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: 1fr;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+
+  @media (width >= 768px) {
+    .settings__color-picker {
+      grid-template-rows: 1fr;
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .settings__color-picker > * + * {
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  @media (width >= 768px) {
+    .settings__color-picker > * + * {
+      border-block-start: 0;
+      border-inline-start: 1px solid var(--color-border);
+    }
+  }
+
+  .settings__option-input {
+    display: none;
+  }
+
+  .settings__option-label {
+    display: block;
+    padding: var(--space-2);
+    cursor: pointer;
+    color: var(--color-ink);
+  }
+
+  .settings__option-input:checked + .settings__option-label {
+    background-color: var(--color-settings-active-bg);
+    color: var(--color-settings-active-text);
+  }
+}

@@ -1,0 +1,18 @@
+@layer components {
+  .card {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-4);
+  }
+
+  .color-scheme.color-scheme--dark .card {
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .color-scheme:not(.color-scheme--light) .card {
+      border: 1px solid var(--color-border-subtle);
+    }
+  }
+}

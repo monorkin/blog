@@ -11,10 +11,10 @@ class AboutHelperTest < ActionView::TestCase
     assert_match(/portrait\/small\.jpg/, result)
   end
 
-  test "#about_page_contact_link_content includes hover transition classes" do
+  test "#about_page_contact_link_content includes BEM component classes" do
     result = about_page_contact_link_content("GitHub", "portrait/small.jpg")
 
-    assert_match(/group-hover:scale-110/, result)
-    assert_match(/transition-all/, result)
+    assert_match(/about__contact/, result)
+    assert_match(/about__contact-glow/, result)
   end
 end

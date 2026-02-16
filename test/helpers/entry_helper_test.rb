@@ -11,7 +11,7 @@ class EntryHelperTest < ActionView::TestCase
     result = entry_list([ entries(:misguided_mark_entry) ])
 
     assert_match(/<ul/, result)
-    assert_match(/flex flex-col divide-y/, result)
+    assert_match(/entry-list/, result)
   end
 
   test "#entry_list accepts custom classes" do

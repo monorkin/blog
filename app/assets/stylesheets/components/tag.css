@@ -1,0 +1,114 @@
+@layer components {
+  .tag {
+    display: inline-block;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    background-color: var(--color-tag-bg);
+    color: var(--color-tag-text);
+    transition: background-color 0.1s ease-in, color 0.1s ease-in;
+
+    &:hover {
+      background-color: var(--color-tag-bg-hover);
+      color: var(--color-tag-text-hover);
+    }
+  }
+
+  .tag-input {
+    position: relative;
+  }
+
+  .tag-input__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1);
+    inline-size: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    padding: var(--space-2) var(--space-3);
+    cursor: text;
+
+    &:focus-within {
+      border-color: var(--color-accent);
+      outline: 2px solid var(--color-accent);
+      outline-offset: -1px;
+    }
+  }
+
+  .color-scheme.color-scheme--dark .tag-input__wrapper {
+    color: oklch(0% 0 0);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .color-scheme:not(.color-scheme--light) .tag-input__wrapper {
+      color: oklch(0% 0 0);
+    }
+  }
+
+  .tag-input__field {
+    flex: 1;
+    min-inline-size: 120px;
+    border: 0;
+    background-color: transparent;
+    padding: 0;
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    &::placeholder {
+      color: var(--color-ink-faint);
+    }
+  }
+
+  .tag-input__suggestions {
+    position: absolute;
+    z-index: var(--z-popup);
+    margin-block-start: var(--space-1);
+    inline-size: 100%;
+    max-block-size: 12rem;
+    overflow-y: auto;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .tag-input__suggestion {
+    padding: var(--space-1-5) var(--space-3);
+    cursor: pointer;
+    font-size: var(--text-sm);
+    color: oklch(0% 0 0);
+  }
+
+  .tag-input__suggestion[aria-selected="true"] {
+    background-color: var(--color-accent-light);
+  }
+
+  .tag-input__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    padding: var(--space-0-5) var(--space-2);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    background-color: var(--color-tag-bg);
+    color: var(--color-tag-text);
+  }
+
+  .tag-input__pill-remove {
+    margin-inline-start: 0.125rem;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: inherit;
+
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+}

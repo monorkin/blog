@@ -1,0 +1,141 @@
+@layer utilities {
+  /* Text sizes */
+  .txt-xs { font-size: var(--text-xs); }
+  .txt-sm { font-size: var(--text-sm); }
+  .txt-lg { font-size: var(--text-lg); }
+  .txt-xl { font-size: var(--text-xl); }
+  .txt-2xl { font-size: var(--text-2xl); }
+  .txt-3xl { font-size: var(--text-3xl); }
+  .txt-4xl { font-size: var(--text-4xl); }
+
+  /* Text colors */
+  .txt-subtle { color: var(--color-ink-subtle); }
+  .txt-muted { color: var(--color-ink-muted); }
+  .txt-faint { color: var(--color-ink-faint); }
+  .txt-accent { color: var(--color-accent); }
+  .txt-negative { color: var(--color-negative); }
+
+  /* Text styles */
+  .font-bold { font-weight: 700; }
+  .font-semibold { font-weight: 600; }
+  .font-medium { font-weight: 500; }
+  .font-mono { font-family: var(--font-mono); }
+  .uppercase { text-transform: uppercase; }
+  .text-center { text-align: center; }
+  .text-right { text-align: end; }
+  .truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  /* Flex */
+  .flex { display: flex; }
+  .flex-row { flex-direction: row; }
+  .flex-col { flex-direction: column; }
+  .flex-wrap { flex-wrap: wrap; }
+  .flex-grow { flex-grow: 1; }
+  .items-center { align-items: center; }
+  .justify-center { justify-content: center; }
+  .justify-between { justify-content: space-between; }
+  .contents { display: contents; }
+
+  /* Gap */
+  .gap-1 { gap: var(--space-1); }
+  .gap-2 { gap: var(--space-2); }
+  .gap-4 { gap: var(--space-4); }
+  .gap-x-2 { column-gap: var(--space-2); }
+  .gap-x-4 { column-gap: var(--space-4); }
+  .gap-y-1 { row-gap: var(--space-1); }
+  .gap-y-2 { row-gap: var(--space-2); }
+  .gap-y-4 { row-gap: var(--space-4); }
+  .gap-y-6 { row-gap: var(--space-6); }
+  .gap-y-8 { row-gap: var(--space-8); }
+
+  /* Spacing */
+  .pad-2 { padding: var(--space-2); }
+  .pad-4 { padding: var(--space-4); }
+  .pad-inline-2 { padding-inline: var(--space-2); }
+  .margin-block-2 { margin-block: var(--space-2); }
+  .margin-block-4 { margin-block: var(--space-4); }
+  .margin-block-6 { margin-block: var(--space-6); }
+  .margin-block-end-2 { margin-block-end: var(--space-2); }
+  .margin-block-end-4 { margin-block-end: var(--space-4); }
+  .margin-block-end-6 { margin-block-end: var(--space-6); }
+  .margin-block-start-2 { margin-block-start: var(--space-2); }
+  .margin-block-start-4 { margin-block-start: var(--space-4); }
+  .margin-4 { margin: var(--space-4); }
+  .margin-5 { margin: var(--space-5); }
+
+  /* Sizing */
+  .w-full { inline-size: 100%; }
+
+  /* Icons */
+  .icon-sm { inline-size: 1rem; block-size: 1rem; }
+  .icon { inline-size: 1.5rem; block-size: 1.5rem; }
+  .icon-lg { inline-size: 2rem; block-size: 2rem; }
+
+  /* Display */
+  .hidden { display: none; }
+  .block { display: block; }
+  .inline { display: inline; }
+  .inline-block { display: inline-block; }
+  .inline-flex { display: inline-flex; }
+
+  /* Accessibility */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Overflow */
+  .overflow-hidden { overflow: hidden; }
+
+  /* Position */
+  .relative { position: relative; }
+
+  /* Links */
+  .txt-link {
+    color: var(--color-link);
+
+    &:hover {
+      color: var(--color-link-hover);
+    }
+  }
+
+  /* Grayscale */
+  .grayscale { filter: grayscale(100%); }
+
+  /* Profile image — color in light mode, grayscale in dark mode */
+  .color-scheme.color-scheme--dark .profile-img {
+    filter: grayscale(100%);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .color-scheme:not(.color-scheme--light) .profile-img {
+      filter: grayscale(100%);
+    }
+  }
+
+  /* Pagination */
+  .pagination__trigger {
+    display: block;
+    block-size: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+}

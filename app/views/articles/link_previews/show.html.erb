@@ -1,18 +1,18 @@
 <%= turbo_frame_tag "link_preview-#{Base64.urlsafe_encode64(@link_preview.url)}" do %>
   <% if @link_preview.present? && @link_preview.valid? %>
     <%= cache(@link_preview) do %>
-      <div class="flex flex-col gap-y-4">
-        <div class="p-2">
-          <h6 class="font-semibold text-lg dark:text-white"><%= @link_preview.title %></h6>
-          <p class="text-sm text-stone-600 dark:text-slate-300"><%= @link_preview.description %></p>
+      <div class="link-preview">
+        <div class="link-preview__text">
+          <h6><%= @link_preview.title %></h6>
+          <p><%= @link_preview.description %></p>
         </div>
         <% if @link_preview.image? %>
-          <%= image_tag(@link_preview.image_url, class: "m-0 w-full aspect-2/1 object-cover!") %>
+          <%= image_tag(@link_preview.image_url, class: "link-preview__image") %>
         <% end %>
       </div>
     <% end %>
   <% else %>
-    <div class="w-full flex align-center font-semibold p-4 text-red-700 dark:text-red-300">
+    <div class="txt-negative font-semibold pad-4">
       <%= t(".unavailable") %>
     </div>
   <% end %>

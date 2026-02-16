@@ -121,7 +121,7 @@ export default class extends ApplicationController {
 
     list.replaceChildren(...names.map((name) => {
       const li = document.createElement("li")
-      li.className = "px-3 py-1.5 cursor-pointer text-sm text-black aria-selected:bg-indigo-100"
+      li.className = "tag-input__suggestion"
       li.setAttribute("aria-selected", "false")
       li.dataset.name = name
       li.dataset.navigableListTarget = "item"
@@ -136,7 +136,7 @@ export default class extends ApplicationController {
   #renderPills() {
     this.tagListTarget.replaceChildren(...this.tagsValue.map(name => {
       const pill = document.createElement("span")
-      pill.className = "inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs bg-indigo-100 text-indigo-800 dark:bg-yellow-300 dark:text-neutral-700"
+      pill.className = "tag-input__pill"
 
       const label = document.createTextNode(name)
       pill.appendChild(label)
@@ -145,7 +145,7 @@ export default class extends ApplicationController {
       button.type = "button"
       button.dataset.action = "tag-input#removeTag"
       button.dataset.tagName = name
-      button.className = "ml-0.5 hover:text-indigo-500 dark:hover:text-neutral-900 cursor-pointer"
+      button.className = "tag-input__pill-remove"
       button.textContent = "\u00d7"
       pill.appendChild(button)
 

@@ -1,0 +1,23 @@
+@layer base {
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    gap: var(--space-8);
+  }
+
+  .main {
+    flex-grow: 1;
+  }
+
+  .main__content {
+    margin-inline: auto;
+    inline-size: 100%;
+  }
+
+  @media (width >= 768px) {
+    .main__content {
+      inline-size: var(--content-width);
+    }
+  }
+}

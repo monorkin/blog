@@ -1,0 +1,25 @@
+@layer components {
+  .talk__video-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .talk__video {
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-lg);
+  }
+
+  .talk__video-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .talk__video-links {
+      flex-direction: row;
+      column-gap: var(--space-4);
+    }
+  }
+}

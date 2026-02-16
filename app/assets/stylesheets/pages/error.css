@@ -1,19 +1,34 @@
-.error-page {
-  @apply flex flex-col justify-center items-center sm:py-8;
-}
+@layer components {
+  .error-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-.error-page__image {
-  @apply order-2;
-}
+  @media (width >= 640px) {
+    .error-page {
+      padding-block: var(--space-8);
+    }
+  }
 
-.error-page__image svg, .error-page__image img {
-  @apply w-full;
-}
+  .error-page__image {
+    order: 2;
 
-.error-page__title {
-  @apply py-6 text-center order-3;
-}
+    & svg, & img {
+      inline-size: 100%;
+    }
+  }
 
-.error-page__subtitle {
-  @apply py-6 text-center order-1;
+  .error-page__title {
+    padding-block: var(--space-6);
+    text-align: center;
+    order: 3;
+  }
+
+  .error-page__subtitle {
+    padding-block: var(--space-6);
+    text-align: center;
+    order: 1;
+  }
 }

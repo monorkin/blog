@@ -3,11 +3,11 @@
 require "test_helper"
 
 class ApplicationHelperTest < ActionView::TestCase
-  test "#profile_image_tag renders an image tag with grayscale class" do
+  test "#profile_image_tag renders an image tag with profile-img class" do
     result = profile_image_tag
 
     assert_match(/img/, result)
-    assert_match(/grayscale/, result)
+    assert_match(/profile-img/, result)
   end
 
   test "#profile_image_tag defaults to medium version" do
@@ -43,18 +43,4 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_match(/Stanko K\.R\./, result)
   end
 
-  test "#primary_button_classes returns base classes" do
-    result = primary_button_classes
-
-    assert_includes result, "bg-indigo-500"
-    assert_includes result, "rounded"
-    assert_includes result, "cursor-pointer"
-  end
-
-  test "#primary_button_classes appends extra classes" do
-    result = primary_button_classes("mt-4")
-
-    assert_includes result, "mt-4"
-    assert_includes result, "bg-indigo-500"
-  end
 end

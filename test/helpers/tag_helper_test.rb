@@ -18,15 +18,14 @@ class TagHelperTest < ActionView::TestCase
 
     result = tag_bubble(tag)
 
-    assert_match(/rounded-full/, result)
-    assert_match(/bg-indigo-100/, result)
+    assert_match(/tag/, result)
   end
 
   test "#tag_bubble accepts additional classes" do
     tag = tags(:ruby)
 
-    result = tag_bubble(tag, class: "ml-2")
+    result = tag_bubble(tag, class: "extra")
 
-    assert_match(/ml-2/, result)
+    assert_match(/extra/, result)
   end
 end

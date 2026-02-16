@@ -8,7 +8,7 @@ module IconHelper
     position = options.delete(:position)&.to_sym
     icon_html = send("#{icon}_icon", **options)
 
-    content_tag(:span, class: "flex flex-row items-center gap-x-2 #{options[:wrapper].fetch(:class, '')}") do
+    content_tag(:span, class: "inline-flex flex-row items-center gap-x-2 #{options[:wrapper].fetch(:class, '')}") do
       if position == :after
         concat(text)
         concat(icon_html)
@@ -110,7 +110,7 @@ module IconHelper
       "viewBox" => options.fetch(:view_box, "0 0 24 24"),
       "stroke-width" => options.fetch(:stroke_width, "1.5"),
       "stroke" => options.fetch(:stroke, "currentColor"),
-      "class" => options.fetch(:class, "h-4"),
+      "class" => options.fetch(:class, "icon-sm"),
       "alt" => options.fetch(:alt, nil),
       "aria-label" => options.fetch(:alt, nil)
     ) do

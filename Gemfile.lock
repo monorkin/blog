@@ -389,10 +389,6 @@ GEM
     streamio-ffmpeg (3.0.2)
       multi_json (~> 1.8)
     stringio (3.2.0)
-    tailwindcss-rails (4.4.0)
-      railties (>= 7.0.0)
-      tailwindcss-ruby (~> 4.0)
-    tailwindcss-ruby (4.1.18-x86_64-linux-gnu)
     thor (1.5.0)
     thruster (0.1.17-x86_64-linux)
     timeout (0.6.0)
@@ -460,7 +456,6 @@ DEPENDENCIES
   stackprof
   stimulus-rails
   streamio-ffmpeg
-  tailwindcss-rails (>= 4.0)
   thruster
   turbo-rails
   tzinfo-data

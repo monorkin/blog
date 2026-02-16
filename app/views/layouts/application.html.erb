@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 
 <html lang="en"
-      class="h-full antialiased color-scheme <%= current_color_scheme_class %>"
+      class="color-scheme <%= current_color_scheme_class %>"
       data-controller="color-scheme"
       data-color-scheme-light-class="<%= light_color_scheme_class %>"
       data-color-scheme-dark-class="<%= dark_color_scheme_class %>">
@@ -34,42 +34,40 @@
     <meta name="msapplication-TileColor" content="#2d89ef">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
     <%= stylesheet_link_tag "lexxy", media: :all, "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "tailwind", media: :all, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag :app, media: :all, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <script defer data-domain="stanko.io" src="https://analytics.stanko.io/js/script.js"></script>
     <script src="https://analytics.ahrefs.com/analytics.js" data-key="wcLak/1lJhto3qkm5/r33w" async></script>
   </head>
 
-  <body class="h-full bg-neutral-50 dark:bg-black dark:text-neutral-100">
-    <div class="h-full flex flex-col gap-y-8">
-      <header>
-        <%= header_nav do %>
-          <%= header_nav_item(articles_path) { t(".articles") } %>
-          <%= header_nav_item(talks_path) { t(".talks") } %>
+  <body>
+    <header>
+      <%= header_nav do %>
+        <%= header_nav_item(articles_path) { t(".articles") } %>
+        <%= header_nav_item(talks_path) { t(".talks") } %>
+      <% end %>
+    </header>
+
+    <main class="main" role="main">
+      <div class="main__content">
+        <%= yield %>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__links">
+        <%= link_to t(".about"), root_url %>
+        <%= link_to t(".articles"), articles_url %>
+        <%= link_to t(".talks"), talks_url %>
+        <%= link_to t(".source_code"), "https://github.com/monorkin/blog", target: :_blank %>
+
+        <% if Current.user %>
+          <%= button_to t(".sign_out"), login_path, method: :delete %>
         <% end %>
-      </header>
-
-      <main class="grow" role="main">
-        <div class="mx-auto w-full md:w-[65ch]">
-          <%= yield %>
-        </div>
-      </main>
-
-      <footer class="flex flex-col md:flex-row md:justify-between text-neutral-400 dark:text-neutral-500 text-sm p-2 md:p-4">
-        <div class="flex flex-row gap-x-4 justify-center md:justify-start">
-          <%= link_to t(".about"), root_url %>
-          <%= link_to t(".articles"), articles_url %>
-          <%= link_to t(".talks"), talks_url %>
-          <%= link_to t(".source_code"), "https://github.com/monorkin/blog", target: :_blank %>
-
-          <% if Current.user %>
-            <%= button_to t(".sign_out"), login_path, method: :delete %>
-          <% end %>
-        </div>
-        <div class="flex flex-row gap-x-4 justify-center md:justify-start">
-          <%= t(".copyright", year: Time.current.year) %>
-        </div>
-      </footer>
-    </div>
+      </div>
+      <div class="footer__copyright">
+        <%= t(".copyright", year: Time.current.year) %>
+      </div>
+    </footer>
   </body>
 </html>

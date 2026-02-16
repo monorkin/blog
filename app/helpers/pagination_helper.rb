@@ -23,7 +23,7 @@ module PaginationHelper
 
         link_to "Load more",
           url_for(page: next_page),
-          class: "block h-px overflow-hidden opacity-0 pointer-events-none",
+          class: "pagination__trigger",
           data: { pagination_target: "link", turbo_frame: frame_id }
       end
     end

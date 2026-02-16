@@ -3,14 +3,14 @@
   <%= seo_meta_tags_for_entry(@talk.entry) %>
 <% end %>
 
-<div class="flex flex-col gap-y-4 px-2 md:px-0">
+<div class="article flex flex-col gap-y-4">
 
   <div class="flex flex-col gap-y-4">
-    <h1 class="text-2xl font-semibold">
+    <h1 class="txt-2xl font-semibold">
       <%= @talk.title %>
     </h1>
 
-    <div class="flex flex-col gap-y-1 text-neutral-500 dark:text-neutral-400">
+    <div class="flex flex-col gap-y-1 txt-muted">
       <h2 class="font-semibold">
         <%= link_to_if @talk.event_url.present?, @talk.event, @talk.event_url, target: :_blank %>
       </h2>

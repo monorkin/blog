@@ -1,141 +1,143 @@
-.highlight table td { padding: 5px; }
-.highlight table pre { margin: 0; }
+@layer components {
+  .highlight table td { padding: 5px; }
+  .highlight table pre { margin: 0; }
 
-.highlight {
-  --background: #fff;
-  --foreground: #3760bf;
+  .highlight {
+    --background: #fff;
+    --foreground: #3760bf;
 
-  /* normal colorscheme */
-  /*--black: #b4b5b9;*/
-  /*--red: #f52a65;*/
-  /*--green: #587539;*/
-  /*--yellow: #8c6c3e;*/
-  /*--blue: #2e7de9;*/
-  /*--magenta: #9854f1;*/
-  /*--cyan: #007197;*/
-  /*--white: #6172b0;*/
+    /* normal colorscheme */
+    /*--black: #b4b5b9;*/
+    /*--red: #f52a65;*/
+    /*--green: #587539;*/
+    /*--yellow: #8c6c3e;*/
+    /*--blue: #2e7de9;*/
+    /*--magenta: #9854f1;*/
+    /*--cyan: #007197;*/
+    /*--white: #6172b0;*/
 
-  /* bright colorscheme */
-  --black: #a1a6c5;
-  --red: #f52a65;
-  --green: #587539;
-  --yellow: #8c6c3e;
-  --blue: #2e7de9;
-  --magenta: #9854f1;
-  --cyan: #007197;
-  --white: #3760bf;
-}
+    /* bright colorscheme */
+    --black: #a1a6c5;
+    --red: #f52a65;
+    --green: #587539;
+    --yellow: #8c6c3e;
+    --blue: #2e7de9;
+    --magenta: #9854f1;
+    --cyan: #007197;
+    --white: #3760bf;
+  }
 
-.color-scheme.color-scheme--dark .highlight {
-  --background: #1a1b26;
-  --foreground: #c0caf5;
+  .color-scheme.color-scheme--dark .highlight {
+    --background: #1a1b26;
+    --foreground: #c0caf5;
 
-  --black: #15161e;
-  --red: #f7768e;
-  --green: #9ece6a;
-  --yellow: #e0af68;
-  --blue: #7aa2f7;
-  --magenta: #bb9af7;
-  --cyan: #7dcfff;
-  --white: #a9b1d6;
-}
+    --black: #15161e;
+    --red: #f7768e;
+    --green: #9ece6a;
+    --yellow: #e0af68;
+    --blue: #7aa2f7;
+    --magenta: #bb9af7;
+    --cyan: #7dcfff;
+    --white: #a9b1d6;
+  }
 
-.highlight, .highlight .w, .lexxy-content pre.highlight, .lexxy-content pre.highlight .w,
-.lexxy-content code.highlight, .lexxy-content code.highlight .w {
-  color: var(--foreground);
-  background-color: var(--background);
-}
+  .highlight, .highlight .w, .lexxy-content pre.highlight, .lexxy-content pre.highlight .w,
+  .lexxy-content code.highlight, .lexxy-content code.highlight .w {
+    color: var(--foreground);
+    background-color: var(--background);
+  }
 
-/* Ensure code blocks with highlight class display properly */
-.lexxy-content pre.highlight,
-.lexxy-content code.highlight {
-  display: block;
-  overflow-x: auto;
-  padding: 1rem;
-  border-radius: 0.125rem;
-  white-space: pre;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-}
+  /* Ensure code blocks with highlight class display properly */
+  .lexxy-content pre.highlight,
+  .lexxy-content code.highlight {
+    display: block;
+    overflow-x: auto;
+    padding: 1rem;
+    border-radius: 0.125rem;
+    white-space: pre;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  }
 
-.color-scheme--dark .lexxy-content pre.highlight,
-.color-scheme--dark .lexxy-content code.highlight {
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not(.color-scheme--light) .lexxy-content pre.highlight,
-  :root:not(.color-scheme--light) .lexxy-content code.highlight {
+  .color-scheme--dark .lexxy-content pre.highlight,
+  .color-scheme--dark .lexxy-content code.highlight {
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
   }
-}
 
-.highlight .err, .lexxy-content pre.highlight .err {
-  color: var(--foreground);
-  background-color: var(--red);
-}
-.highlight .c, .highlight .ch, .highlight .cd, .highlight .cm, .highlight .cpf, .highlight .c1, .highlight .cs {
-  color: var(--white);
-}
-.highlight .cp {
-  color: var(--cyan);
-}
-.highlight .n, .highlight .nb {
-  color: var(--foreground);
-}
-.highlight .o + .nb:has(+ .o) {
-  color: var(--yellow);
-}
-.highlight .nt, .highlight .nn, .highlight .nc, .highlight .no {
-  color: var(--cyan);
-}
-.highlight .nf {
-  color: var(--blue);
-}
-.highlight .o, .highlight .ow {
-  color: var(--cyan);
-}
-.highlight .p, .highlight .pi {
-  color: var(--white);
-}
-.highlight .gi {
-  color: var(--cyan);
-}
-.highlight .gd {
-  color: var(--red);
-}
-.highlight .gh {
-  color: var(--foreground);
-  background-color: var(--background);
-  font-weight: bold;
-}
-.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
-  color: var(--magenta);
-}
-.highlight .kc, .highlight .kt, .highlight .kd {
-  color: var(--cyan);
-}
-.highlight .s, .highlight .sa, .highlight .sb, .highlight .sc, .highlight .dl, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
-  color: var(--green);
-}
-.highlight .vi {
-  color: var(--green);
-}
-.highlight .sr {
-  color: var(--cyan);
-}
-.highlight .si {
-  color: var(--cyan);
-}
-.highlight .se {
-  color: var(--cyan);
-}
-.highlight .na {
-  color: var(--blue);
-}
-.highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx {
-  color: var(--cyan);
-}
-.highlight .ss {
-  color: var(--cyan);
+  @media (prefers-color-scheme: dark) {
+    :root:not(.color-scheme--light) .lexxy-content pre.highlight,
+    :root:not(.color-scheme--light) .lexxy-content code.highlight {
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    }
+  }
+
+  .highlight .err, .lexxy-content pre.highlight .err {
+    color: var(--foreground);
+    background-color: var(--red);
+  }
+  .highlight .c, .highlight .ch, .highlight .cd, .highlight .cm, .highlight .cpf, .highlight .c1, .highlight .cs {
+    color: var(--white);
+  }
+  .highlight .cp {
+    color: var(--cyan);
+  }
+  .highlight .n, .highlight .nb {
+    color: var(--foreground);
+  }
+  .highlight .o + .nb:has(+ .o) {
+    color: var(--yellow);
+  }
+  .highlight .nt, .highlight .nn, .highlight .nc, .highlight .no {
+    color: var(--cyan);
+  }
+  .highlight .nf {
+    color: var(--blue);
+  }
+  .highlight .o, .highlight .ow {
+    color: var(--cyan);
+  }
+  .highlight .p, .highlight .pi {
+    color: var(--white);
+  }
+  .highlight .gi {
+    color: var(--cyan);
+  }
+  .highlight .gd {
+    color: var(--red);
+  }
+  .highlight .gh {
+    color: var(--foreground);
+    background-color: var(--background);
+    font-weight: bold;
+  }
+  .highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+    color: var(--magenta);
+  }
+  .highlight .kc, .highlight .kt, .highlight .kd {
+    color: var(--cyan);
+  }
+  .highlight .s, .highlight .sa, .highlight .sb, .highlight .sc, .highlight .dl, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+    color: var(--green);
+  }
+  .highlight .vi {
+    color: var(--green);
+  }
+  .highlight .sr {
+    color: var(--cyan);
+  }
+  .highlight .si {
+    color: var(--cyan);
+  }
+  .highlight .se {
+    color: var(--cyan);
+  }
+  .highlight .na {
+    color: var(--blue);
+  }
+  .highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx {
+    color: var(--cyan);
+  }
+  .highlight .ss {
+    color: var(--cyan);
+  }
 }

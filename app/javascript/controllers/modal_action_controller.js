@@ -37,10 +37,10 @@ export default class extends ApplicationController {
     const frame = document.createElement("turbo-frame")
     frame.id = this.frameNameValue
     frame.src = this.element.href
-    frame.classList.add("block", "w-full")
+    frame.classList.add("dialog__frame")
 
     const loading = document.createElement("div")
-    loading.classList.add("rounded", "p-4", "bg-white", "dark:bg-neutral-900", "dark:border", "dark:border-neutral-500")
+    loading.classList.add("dialog__loading")
     loading.textContent = "Loading..."
 
     frame.appendChild(loading)

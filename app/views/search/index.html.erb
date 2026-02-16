@@ -4,10 +4,10 @@
 <% end %>
 
 <%= turbo_frame_tag :search do %>
-  <div class="relative mt-5 mx-5">
-    <div class="absolute -top-4 -right-4 h-8 z-20">
-      <%= link_to root_path, class: "flex items-center justify-center w-8 h-8 bg-white rounded-full shadow transition-all scale-100 hover:scale-110", data: { action: "dialog#close" } do %>
-        <%= close_icon(class: "w-4 h-4 text-gray-500") %>
+  <div class="dialog__panel">
+    <div class="dialog__close-btn-wrapper">
+      <%= link_to root_path, class: "dialog__close-btn", data: { action: "dialog#close" } do %>
+        <%= close_icon(class: "icon-sm") %>
       <% end %>
     </div>
 
@@ -16,10 +16,10 @@
 <% end %>
 
 <%= turbo_frame_tag :mobile_search do %>
-  <div class="relative mt-5 mx-5">
-    <div class="absolute -top-4 -right-4 h-8 z-20">
-      <%= link_to root_path, class: "flex items-center justify-center w-8 h-8 bg-white rounded-full shadow transition-all scale-100 hover:scale-110", data: { action: "dialog#close" } do %>
-        <%= close_icon(class: "w-4 h-4 text-gray-500") %>
+  <div class="dialog__panel">
+    <div class="dialog__close-btn-wrapper">
+      <%= link_to root_path, class: "dialog__close-btn", data: { action: "dialog#close" } do %>
+        <%= close_icon(class: "icon-sm") %>
       <% end %>
     </div>
 

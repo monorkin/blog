@@ -9,15 +9,15 @@
 <% end %>
 
 <div class="flex flex-col gap-y-8">
-  <section class="flex flex-col md:flex-row gap-x-8 gap-y-8 px-2 md:px-0">
-    <div class="basis-1/3 p-4 sm:px-8 md:p-0">
-      <%= profile_image_tag class: "rounded-lg rotate-2 lg:shadow-lg" %>
+  <section class="about__hero">
+    <div class="about__portrait">
+      <%= profile_image_tag %>
     </div>
-    <div class="basis-2/3 flex flex-col justify-center gap-y-2">
-      <h1 class="text-3xl font-bold text-neutral-800 dark:text-white">
-        Hi, I'm Stanko Krtalić Rusendić
+    <div class="about__bio">
+      <h1 class="txt-3xl font-bold">
+        Hi, I'm Stanko Krtalic Rusendic
       </h1>
-      <p class="dark:text-neutral-100">
+      <p>
         I am a Web developer from Zagreb making products with
         <%= link_to "Ruby on Rails", "https://rubyonrails.org/", target: :_blank %>,
         <%= link_to "Hotwired", "https://hotwired.dev/", target: :_blank %> and
@@ -26,9 +26,9 @@
     </div>
   </section>
 
-  <section class="px-2 md:px-0">
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-1 justify-items-between">
-      <%= mail_to "hey@stanko.io", class: "col-span-2 md:col-span-1" do %>
+  <section class="pad-inline-2">
+    <div class="about__contacts">
+      <%= mail_to "hey@stanko.io" do %>
         <%= about_page_contact_link_content("Email", "others_logos/hey.svg") %>
       <% end %>
       <%= link_to "https://github.com/monorkin", target: :_blank do %>
@@ -46,15 +46,15 @@
     </div>
   </section>
 
-  <section class="flex flex-col gap-y-4 px-2 md:px-0">
-    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+  <section class="article flex flex-col gap-y-4">
+    <h2 class="txt-2xl font-bold">
       <%= t(".latest_articles") %>
     </h2>
 
     <%= entry_list(@latest_entries) %>
 
     <div>
-      <%= link_to articles_path, class: "text-lg text-indigo-600 hover:text-indigo-800 dark:text-yellow-500 dark:hover:text-yellow-400" do %>
+      <%= link_to articles_path, class: "txt-lg txt-link" do %>
         <%= text_with_icon(:arrow_long_right, t(".see_all"), position: :after) %>
       <% end %>
     </div>

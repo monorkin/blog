@@ -1,23 +1,23 @@
-<div class="rounded-lg m-4 p-4 shadow-lg bg-white dark:bg-neutral-900 dark:border dark:border-neutral-800">
-  <h1 class="text-2xl font-bold mb-4"><%= t(".login") %></h1>
+<div class="card margin-4">
+  <h1 class="txt-2xl font-bold margin-block-end-4"><%= t(".login") %></h1>
 
-  <%= form_for(@login, url: login_path, html: { class: "flex flex-col gap-y-4" }) do |login_form| %>
+  <%= form_for(@login, url: login_path, html: { class: "form" }) do |login_form| %>
     <label>
       <div>
         <%= Login.human_attribute_name(:username) %>
       </div>
-      <%= login_form.text_field :username, class: "w-full rounded border border-neutral-300 dark:text-black" %>
+      <%= login_form.text_field :username, class: "input" %>
     </label>
 
     <label>
       <div>
         <%= Login.human_attribute_name(:password) %>
       </div>
-      <%= login_form.password_field :password, class: "w-full rounded border border-neutral-300 dark:text-black" %>
+      <%= login_form.password_field :password, class: "input" %>
     </label>
 
     <div>
-      <%= login_form.submit t(".login"), class: primary_button_classes("w-full") %>
+      <%= login_form.submit t(".login"), class: "btn btn--primary w-full" %>
     </div>
 
     <%= validation_errors(login_form) if login_form.object.errors.any? %>

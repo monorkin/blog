@@ -1,0 +1,102 @@
+@layer components {
+  .timeline__item {
+    padding: var(--space-2);
+    border-radius: var(--radius-lg);
+
+    &:hover {
+      background-color: oklch(95.14% 0.005 286.07);
+    }
+  }
+
+  .color-scheme.color-scheme--dark .timeline__item:hover {
+    background-color: var(--color-surface);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .color-scheme:not(.color-scheme--light) .timeline__item:hover {
+      background-color: var(--color-surface);
+    }
+  }
+
+  .timeline__inner {
+    position: relative;
+    padding-inline-start: 2rem;
+  }
+
+  .timeline__link {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+  }
+
+  .timeline__content {
+    position: relative;
+    z-index: 30;
+    padding-block: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .timeline__title {
+    font-weight: 600;
+  }
+
+  .timeline__meta {
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .timeline__meta-event {
+    font-weight: 600;
+  }
+
+  .timeline__dot {
+    position: absolute;
+    z-index: 20;
+    inline-size: 1rem;
+    block-size: 1rem;
+    background-color: var(--color-timeline-dot);
+    outline: 4px solid var(--color-timeline-ring);
+    border-radius: var(--radius-full);
+    inset-inline-start: 0.25rem;
+    inset-block-start: 1rem;
+  }
+
+  .timeline__item:hover .timeline__dot {
+    outline-color: oklch(95.14% 0.005 286.07);
+  }
+
+  .color-scheme.color-scheme--dark .timeline__item:hover .timeline__dot {
+    outline-color: var(--color-surface);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .color-scheme:not(.color-scheme--light) .timeline__item:hover .timeline__dot {
+      outline-color: var(--color-surface);
+    }
+  }
+
+  .timeline__line {
+    position: absolute;
+    z-index: 10;
+    inline-size: 1px;
+    background-color: var(--color-timeline-line);
+    inset-inline-start: 0.75rem;
+    inset-block-start: -0.5rem;
+    inset-block-end: -0.5rem;
+  }
+
+  .timeline--last > .timeline__item:last-child .timeline__line {
+    block-size: 1.5rem;
+    inset-block-end: auto;
+  }
+
+  .timeline--first > .timeline__item:first-child .timeline__line {
+    inset-block-start: 1.5rem;
+  }
+
+  .timeline--first.timeline--last > .timeline__item:last-child:first-child .timeline__line {
+    block-size: 0;
+  }
+}

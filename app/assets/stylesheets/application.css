@@ -1,0 +1,9 @@
+@import 'https://unpkg.com/trix@2.0.0/dist/trix.css' layer(base);
+
+lexxy-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: oklch(from var(--lexxy-color-canvas) l c h / 0.8);
+  backdrop-filter: blur(8px);
+}

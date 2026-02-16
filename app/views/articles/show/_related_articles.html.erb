@@ -1,10 +1,10 @@
 <% if popular_articles.any? %>
-  <div class="mx-2 md:mx-0 p-4">
-    <h2 class="font-semibold mb-3"><%= t(".popular_articles") %></h2>
-    <ul class="space-y-2">
+  <div class="related-articles">
+    <h2 class="related-articles__title"><%= t(".popular_articles") %></h2>
+    <ul class="related-articles__list">
       <% popular_articles.limit(3).each do |article| %>
         <li>
-          <%= link_to article.title, article_path(article), class: "text-indigo-600 hover:text-indigo-800 dark:text-yellow-500 dark:hover:text-yellow-400" %>
+          <%= link_to article.title, article_path(article), class: "related-articles__link" %>
         </li>
       <% end %>
     </ul>

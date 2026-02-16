@@ -8,17 +8,17 @@
 <% end %>
 
 <div class="flex flex-col gap-y-6">
-  <section class="mb-4 px-2 md:px-0">
-    <h1 class="text-4xl font-semibold">Talks</h1>
+  <section class="article margin-block-end-4">
+    <h1 class="txt-4xl font-semibold">Talks</h1>
   </section>
 
   <% if Current.user.present? %>
-    <div class="flex flex-row gap-x-4 px-2 md:px-0">
-      <%= link_to t(".new"), new_talk_path, class: primary_button_classes %>
+    <div class="article flex flex-row gap-x-4">
+      <%= link_to t(".new"), new_talk_path, class: "btn btn--primary" %>
     </div>
   <% end %>
 
   <%= with_automatic_pagination("talks", @page) do %>
-    <%= entry_list(@entries, class: "flex flex-col") %>
+    <%= entry_list(@entries, page: @page, class: "flex flex-col") %>
   <% end %>
 </div>

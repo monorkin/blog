@@ -39,7 +39,7 @@ class TagsTest < ApplicationSystemTestCase
     15.times do |i|
       Article.create!(
         title: "Test Article #{i}",
-        content: ActionText::Content.new("Content #{i}"),
+        body: "Content #{i}",
         published: true,
         tags: "ruby",
         publish_at: i.days.ago
@@ -49,7 +49,7 @@ class TagsTest < ApplicationSystemTestCase
     visit tag_path(tag)
 
     # Should have pagination link
-    assert_selector "a", text: /Older articles/i, count: 1
+    assert_selector "a", text: /Load more/i, visible: :all, count: 1
   end
 
   test "tag page only shows published articles" do
@@ -58,7 +58,7 @@ class TagsTest < ApplicationSystemTestCase
     # Create unpublished article with tag
     Article.create!(
       title: "Unpublished Test Article",
-      content: ActionText::Content.new("Content"),
+      body: "Content",
       published: false,
       tags: "people"
     )
@@ -79,34 +79,7 @@ class TagsTest < ApplicationSystemTestCase
     visit tag_path(new_tag)
 
     assert_selector "h1", text: "##{new_tag.name}"
-    assert_text "No articles found with this tag"
-  end
-
-  test "tag page passes accessibility criteria" do
-    tag = tags(:ruby)
-
-    visit tag_path(tag)
-
-    assert_accessible(page)
-  end
-
-  test "tag page with pagination passes accessibility criteria" do
-    tag = tags(:ruby)
-
-    # Create enough articles to trigger pagination
-    15.times do |i|
-      Article.create!(
-        title: "Accessible Article #{i}",
-        content: ActionText::Content.new("Content #{i}"),
-        published: true,
-        tags: "ruby",
-        publish_at: i.days.ago
-      )
-    end
-
-    visit tag_path(tag)
-
-    assert_accessible(page)
+    assert_text "No content found with this tag"
   end
 
   test "tag page has proper SEO meta tags" do

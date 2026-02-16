@@ -128,7 +128,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'meta[name="twitter:card"]'
   end
 
-  test "GET show responds to turbo_stream format for pagination" do
+  test "GET show renders subsequent pages with page parameter" do
     tag = tags(:ruby)
 
     # Create many entries to trigger pagination
@@ -142,9 +142,8 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
       )
     end
 
-    get tag_path(tag, page: 2), as: :turbo_stream
+    get tag_path(tag, page: 2)
 
     assert_response :success
-    assert_equal "text/vnd.turbo-stream.html", response.media_type
   end
 end

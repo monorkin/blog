@@ -19,11 +19,10 @@ class TalksControllerTest < ActionDispatch::IntegrationTest
     assert_nil session[:session_id]
   end
 
-  test "GET index responds to turbo_stream format" do
-    get talks_path(page: 2), as: :turbo_stream
+  test "GET index renders subsequent pages with page parameter" do
+    get talks_path(page: 2)
 
     assert_response :success
-    assert_equal "text/vnd.turbo-stream.html", response.media_type
   end
 
   # Show

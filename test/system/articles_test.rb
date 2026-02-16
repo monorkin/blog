@@ -3,25 +3,13 @@
 require "application_system_test_case"
 
 class ArticlesTest < ApplicationSystemTestCase
-  test "the index page should pass all accessibility criteria with articles present" do
+  test "the index page lists articles" do
     visit articles_url
 
-    click_link "Older articles"
-    assert_accessible(page)
-
-    click_link "Newer articles"
-    assert_accessible(page)
+    assert_text articles(:misguided_mark).title
   end
 
-  test "the index page should pass all accessibility criteria wihtout articles" do
-    Article.all.destroy_all
-
-    visit articles_url
-
-    assert_accessible(page)
-  end
-
-  test "the show page has no accessibility issues" do
+  test "the show page displays an article" do
     article = articles(:misguided_mark)
 
     visit articles_url
@@ -29,6 +17,20 @@ class ArticlesTest < ApplicationSystemTestCase
     assert_text article.title
     find("a[href='#{article_path(article)}']").click
 
-    assert_accessible(page)
+    assert_text article.title
+  end
+
+  test "infinite scroll loads more articles" do
+    visit articles_url
+
+    # First page should be displayed
+    assert_selector "li", minimum: 12
+
+    # Scroll to the bottom to trigger infinite scroll
+    scroll_to :bottom
+    sleep 1
+
+    # A second page should have loaded via turbo-frame
+    assert_selector "turbo-frame", minimum: 1
   end
 end

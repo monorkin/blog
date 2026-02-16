@@ -23,11 +23,6 @@ class ArticlesController < ApplicationController
     @entries = @page.records.map(&:entry)
 
     fresh_when(@page)
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   def show

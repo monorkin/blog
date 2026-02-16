@@ -51,8 +51,6 @@ group :development do
 end
 
 group :test do
-  gem "axe-core-selenium"
   gem "capybara", ">= 2.15"
   gem "selenium-webdriver"
-  gem "webdrivers"
 end

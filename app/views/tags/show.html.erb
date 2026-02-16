@@ -8,32 +8,30 @@
   ) %>
 <% end %>
 
-<div data-controller="infinite-scroll">
-  <section class="mb-4 px-2 md:px-0">
-    <h1 class="text-4xl font-semibold">#<%= @tag.name %></h1>
-    <p class="text-neutral-600 dark:text-neutral-400 mt-2">
-      <%= pluralize(@tag.published_entries_count, 'entry', 'entries') %> with this tag
-    </p>
+<section class="mb-4 px-2 md:px-0">
+  <h1 class="text-4xl font-semibold">#<%= @tag.name %></h1>
+  <p class="text-neutral-600 dark:text-neutral-400 mt-2">
+    <%= pluralize(@tag.published_entries_count, 'entry', 'entries') %> with this tag
+  </p>
+</section>
+
+<% if @related_tags.any? %>
+  <section class="mb-6 px-2 md:px-0">
+    <h2 class="text-lg font-medium mb-2">Related Tags</h2>
+    <div class="flex flex-wrap gap-2">
+      <% @related_tags.each do |tag| %>
+        <%= tag_bubble(tag) %>
+      <% end %>
+    </div>
   </section>
+<% end %>
 
-  <% if @related_tags.any? %>
-    <section class="mb-6 px-2 md:px-0">
-      <h2 class="text-lg font-medium mb-2">Related Tags</h2>
-      <div class="flex flex-wrap gap-2">
-        <% @related_tags.each do |tag| %>
-          <%= tag_bubble(tag) %>
-        <% end %>
-      </div>
-    </section>
-  <% end %>
-
-  <section>
-    <% if @entries.any? %>
-      <%= entry_list(@entries, id: "entries") %>
-    <% else %>
-      <p class="px-2 md:px-0">No content found with this tag</p>
+<section>
+  <% if @entries.any? %>
+    <%= with_automatic_pagination("tag_#{@tag.name}", @page) do %>
+      <%= entry_list(@entries) %>
     <% end %>
-  </section>
-
-  <%= paginate page: @page %>
-</div>
+  <% else %>
+    <p class="px-2 md:px-0">No content found with this tag</p>
+  <% end %>
+</section>

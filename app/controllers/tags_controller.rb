@@ -19,11 +19,6 @@ class TagsController < ApplicationController
     @related_tags = @tag.related_tags(limit: 10)
 
     fresh_when(@entries)
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   private

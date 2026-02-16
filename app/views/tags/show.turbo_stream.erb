@@ -1,7 +1,0 @@
-<%= turbo_stream.append "entries" do %>
-  <%= render @entries %>
-<% end %>
-
-<%= turbo_stream.replace "pagination" do %>
-  <%= paginate page: @page %>
-<% end %>

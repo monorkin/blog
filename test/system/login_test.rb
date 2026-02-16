@@ -51,9 +51,9 @@ class LoginTest < ApplicationSystemTestCase
 
   test "the lockout resets after a successful login" do
     2.times do
-      visit login_path
-
       (User::MAX_LOGIN_ATTEMPTS - 1).times do
+        visit login_path
+
         fill_in "Username", with: users(:alice).username
         fill_in "Password", with: "incorrect-password"
         click_button "Login"
@@ -61,6 +61,8 @@ class LoginTest < ApplicationSystemTestCase
         assert_current_path login_path
         assert_text "Password is invalid"
       end
+
+      visit login_path
 
       fill_in "Username", with: users(:alice).username
       fill_in "Password", with: "hunter2"

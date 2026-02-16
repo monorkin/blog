@@ -75,6 +75,10 @@
   margin-top: 2em;
 }
 
+ul + turbo-frame > ul {
+  border-top-width: 1px;
+}
+
 lexxy-toolbar {
   position: sticky;
   top: 0;

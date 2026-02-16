@@ -1,68 +1,87 @@
 import ApplicationController from "controllers/application_controller"
 
+const HIDDEN_CLASS = "hidden"
 const VIEWPORT_MARGIN = 8
 
 export default class extends ApplicationController {
-  HIDDEN_CLASS = "hidden"
-
   static values = {
     baseUrl: String,
     url: String,
     id: String
   }
 
+  // Lifecycle
+
   connect() {
-    this.shown = false
+    this.#shown = false
     if (!this.baseUrlValue) this.baseUrlValue = `${window.location.pathname}/link_previews`
     if (!this.hasUrlValue) this.urlValue = this.element.href
   }
 
   disconnect() {
-    this.shown = false
+    this.#shown = false
     if (this.#popupElement) this.#popupElement.remove()
   }
 
+  // Actions
+
   show() {
-    this.shown = true
-    this.showPopupIfContentExists()
+    this.#shown = true
+    this.#showPopupIfContentExists()
   }
 
   hide() {
-    this.shown = false
-    if (this.#popupElement) this.#popupElement.classList.add(this.HIDDEN_CLASS)
-  }
-
-  async showPopupIfContentExists() {
-    const contentExists = await this.cachedContentExists()
-
-    if (!contentExists || !this.shown) return
-    this.showPopup()
-  }
-
-  showPopup() {
-    if (!this.#popupElement) this.#createPopup()
-    this.#popupElement.classList.remove(this.HIDDEN_CLASS)
-    this.#position()
+    this.#shown = false
+    if (this.#popupElement) this.#popupElement.classList.add(HIDDEN_CLASS)
   }
 
   // Private
 
   #popupElement
+  #shown
+  #cachedContentExistsResult
+
+  async #showPopupIfContentExists() {
+    const contentExists = await this.#cachedContentExists()
+
+    if (!contentExists || !this.#shown) return
+    this.#showPopup()
+  }
+
+  #showPopup() {
+    if (!this.#popupElement) this.#createPopup()
+    this.#popupElement.classList.remove(HIDDEN_CLASS)
+    this.#position()
+  }
 
   #createPopup() {
     this.#popupElement = document.createElement("div")
-    this.#popupElement.classList.add(this.HIDDEN_CLASS)
-    this.#popupElement.classList.add("popup")
-    this.#popupElement.innerHTML = `
-      <div class="popup__container">
-        <div class="popup__container__arrow"></div>
-        <turbo-frame id="link_preview-${this.id}" class="popup__container__content" src="${this.previewUrl}">
-          <div class="popup__container__content__loading-indicator">
-            <span class="spinner"></span> Loading preview...
-          </div>
-        </turbo-frame>
-      </div>
-    `
+    this.#popupElement.classList.add(HIDDEN_CLASS, "popup")
+
+    const container = document.createElement("div")
+    container.classList.add("popup__container")
+
+    const arrow = document.createElement("div")
+    arrow.classList.add("popup__container__arrow")
+    container.appendChild(arrow)
+
+    const frame = document.createElement("turbo-frame")
+    frame.id = `link_preview-${this.#previewId}`
+    frame.classList.add("popup__container__content")
+    frame.src = this.#previewUrl
+
+    const loadingIndicator = document.createElement("div")
+    loadingIndicator.classList.add("popup__container__content__loading-indicator")
+
+    const spinner = document.createElement("span")
+    spinner.classList.add("spinner")
+    loadingIndicator.appendChild(spinner)
+    loadingIndicator.appendChild(document.createTextNode(" Loading preview..."))
+
+    frame.appendChild(loadingIndicator)
+    container.appendChild(frame)
+    this.#popupElement.appendChild(container)
+
     this.element.style.position = "relative"
     this.element.appendChild(this.#popupElement)
   }
@@ -112,15 +131,15 @@ export default class extends ApplicationController {
     })
   }
 
-  async cachedContentExists() {
-    if (typeof(this.cachedContentExistsResult) === "undefined") {
-      this.cachedContentExistsResult = await this.contentExists()
+  async #cachedContentExists() {
+    if (typeof(this.#cachedContentExistsResult) === "undefined") {
+      this.#cachedContentExistsResult = await this.#contentExists()
     }
 
-    return this.cachedContentExistsResult
+    return this.#cachedContentExistsResult
   }
 
-  async contentExists() {
+  async #contentExists() {
     let headers = {
       "Content-Type": "text/html"
     }
@@ -129,7 +148,7 @@ export default class extends ApplicationController {
     if (tokenElements.length >= 1) headers["X-CSRF-Token"] = tokenElements[0].content
 
     const response = await fetch(
-      this.previewUrl,
+      this.#previewUrl,
       {
         method: "HEAD",
         mode: "cors",
@@ -142,11 +161,11 @@ export default class extends ApplicationController {
     return (response.status >= 200 && response.status < 300)
   }
 
-  get previewUrl() {
-    return `${this.baseUrlValue}/${this.id}`
+  get #previewUrl() {
+    return `${this.baseUrlValue}/${this.#previewId}`
   }
 
-  get id() {
+  get #previewId() {
     if (!this.hasUrlValue) return null
 
     return btoa(this.urlValue).replace(/\//g, '_').replace(/\+/g, '-')

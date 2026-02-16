@@ -8,6 +8,8 @@ export default class extends ApplicationController {
     }
   }
 
+  // Lifecycle
+
   connect() {
     if (this.element.dataset.openOnConnect === "true") this.open()
   }
@@ -15,6 +17,8 @@ export default class extends ApplicationController {
   disconnect() {
     if (this.isOpen) this.handleClose()
   }
+
+  // Actions
 
   open() {
     this.element.showModal()
@@ -66,6 +70,8 @@ export default class extends ApplicationController {
 
     if (!clickInsideDialog) this.close()
   }
+
+  // Public
 
   get isOpen() {
     return this.element.open

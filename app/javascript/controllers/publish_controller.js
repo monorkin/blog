@@ -4,6 +4,8 @@ export default class extends ApplicationController {
   static targets = ["publishedInput", "publishAtInput", "scheduleDatetime", "schedulePopup", "draftControls", "publishedControls"]
   static values = { published: Boolean }
 
+  // Lifecycle
+
   publishedValueChanged() {
     if (this.publishedValue) {
       this.draftControlsTarget.hidden = true
@@ -13,6 +15,8 @@ export default class extends ApplicationController {
       this.publishedControlsTarget.hidden = true
     }
   }
+
+  // Actions
 
   publish() {
     this.publishedInputTarget.value = "true"

@@ -13,6 +13,8 @@ export default class extends ApplicationController {
     "loadingIndicator"
   ]
 
+  // Lifecycle
+
   initialize() {
     const observerOptions = {
       root: null,
@@ -20,7 +22,7 @@ export default class extends ApplicationController {
       threshold: 0
     }
 
-    this.intersectionObserver = new IntersectionObserver(entries => {
+    this.#intersectionObserver = new IntersectionObserver(entries => {
       if (entries.some(entry => entry.isIntersecting)) {
         return this.loadMore()
       }
@@ -28,16 +30,18 @@ export default class extends ApplicationController {
   }
 
   paginationControlsTargetConnected(target) {
-    this.intersectionObserver.observe(target)
+    this.#intersectionObserver.observe(target)
   }
 
   paginationControlsTargetDisconnected(target) {
-    this.intersectionObserver.unobserve(target)
+    this.#intersectionObserver.unobserve(target)
   }
 
   disconnect() {
-    this.intersectionObserver.disconnect()
+    this.#intersectionObserver.disconnect()
   }
+
+  // Actions
 
   loadMore(event) {
     event?.preventDefault()
@@ -54,7 +58,7 @@ export default class extends ApplicationController {
     // If there is a loading indicator template, replace the pagination controls
     // with it so that the person scrolling can't navigate pages, and so that
     // they know that the next page is loading.
-    this.showLoadingIndicator()
+    this.#showLoadingIndicator()
 
     // Fetch the next page of results
     fetch(this.nextButtonTarget.href, {
@@ -71,7 +75,11 @@ export default class extends ApplicationController {
     })
   }
 
-  showLoadingIndicator() {
+  // Private
+
+  #intersectionObserver
+
+  #showLoadingIndicator() {
     if (!this.hasLoadingIndicatorTarget || !this.hasPaginationControlsTarget) return
 
     this.paginationControlsTarget.style.display = "none"

@@ -23,7 +23,7 @@ module HeaderNavHelper
                 modal_action_frame_name_value: :search,
                 modal_action_class_value: "absolute top-5 left-5 md:top-24 lg:top-32 w-screen h-screen bg-transparent flex flex-col items-center backdrop:backdrop-blur-xs",
                 modal_action_data_attributes_value: { "closeButton" => true }.to_json,
-                action: "keydown.ctrl+k@document->hotkey#click keydown.meta+k@document->hotkey#click"
+                action: "click->modal-action#openModal keydown.ctrl+k@document->hotkey#click keydown.meta+k@document->hotkey#click"
               }
             ) do
               search_icon(class: "w-6 h-6") + content_tag(:span, "Search", class: "sr-only")
@@ -37,7 +37,8 @@ module HeaderNavHelper
                   controller: "modal-action",
                   modal_action_frame_name_value: :settings,
                   modal_action_class_value: "absolute top-5 left-5 md:top-24 lg:top-32 w-full h-full bg-transparent flex flex-col items-center backdrop:backdrop-blur-xs",
-                  modal_action_data_attributes_value: { "closeButton" => true }.to_json
+                  modal_action_data_attributes_value: { "closeButton" => true }.to_json,
+                  action: "click->modal-action#openModal"
                 }
               ) do
                 settings_icon(class: "group-hover:animate-spin w-6 h-6") +
@@ -75,7 +76,8 @@ module HeaderNavHelper
                     concat(header_nav_item(settings_path, data: {
                                              controller: "modal-action",
                                              modal_action_frame_name_value: :settings,
-                                             modal_action_class_value: "aboslute inset-5 w-full h-full bg-transparent backdrop:backdrop-blur-lg"
+                                             modal_action_class_value: "aboslute inset-5 w-full h-full bg-transparent backdrop:backdrop-blur-lg",
+                                             action: "click->modal-action#openModal"
                                            }) { t(".settings") })
                   end +
                   content_tag(:ul, class: "flex flex-col items-center gap-y-4 py-4 grow-0 dark:border-neutral-500") do

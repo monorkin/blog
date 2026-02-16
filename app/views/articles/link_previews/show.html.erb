@@ -3,11 +3,11 @@
     <%= cache(@link_preview) do %>
       <div class="flex flex-col gap-y-4">
         <div class="p-2">
-          <h6 class="font-semibold font-lg dark:text-white"><%= @link_preview.title %></h6>
-          <p class="text-sm"><%= @link_preview.description %></p>
+          <h6 class="font-semibold text-lg dark:text-white"><%= @link_preview.title %></h6>
+          <p class="text-sm text-stone-600 dark:text-slate-300"><%= @link_preview.description %></p>
         </div>
         <% if @link_preview.image? %>
-          <%= image_tag(@link_preview.image_url, class: "m-0") %>
+          <%= image_tag(@link_preview.image_url, class: "m-0 w-full aspect-2/1 object-cover!") %>
         <% end %>
       </div>
     <% end %>

@@ -8,8 +8,6 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
 pin "lexxy"
 pin "@rails/actiontext", to: "actiontext.esm.js"
 pin "@rails/activestorage", to: "activestorage.esm.js"
-# The Popper package is just broken unless it's loaded directly from JSPM
-pin "@popperjs/core", to: "https://ga.jspm.io/npm:@popperjs/core@2.11.5/dist/esm/index.js"
 pin "application", preload: true
 pin_all_from "app/javascript/initializers", under: "initializers"
 pin_all_from "app/javascript/controllers", under: "controllers"

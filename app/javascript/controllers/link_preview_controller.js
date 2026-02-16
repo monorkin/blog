@@ -1,10 +1,10 @@
-import { createPopper } from '@popperjs/core';
 import ApplicationController from "controllers/application_controller"
+
+const VIEWPORT_MARGIN = 8
 
 export default class extends ApplicationController {
   HIDDEN_CLASS = "hidden"
 
-  static targets = [ "popup" ]
   static values = {
     baseUrl: String,
     url: String,
@@ -19,7 +19,7 @@ export default class extends ApplicationController {
 
   disconnect() {
     this.shown = false
-    if (this.popup) this.popup.destroy()
+    if (this.#popupElement) this.#popupElement.remove()
   }
 
   show() {
@@ -29,8 +29,7 @@ export default class extends ApplicationController {
 
   hide() {
     this.shown = false
-    if (this.hasPopupTarget) this.popupTarget.classList.add(this.HIDDEN_CLASS)
-    if (this.popup) this.popup.update()
+    if (this.#popupElement) this.#popupElement.classList.add(this.HIDDEN_CLASS)
   }
 
   async showPopupIfContentExists() {
@@ -41,19 +40,22 @@ export default class extends ApplicationController {
   }
 
   showPopup() {
-    if (!this.popup) this.createPopup()
-    if (this.hasPopupTarget) this.popupTarget.classList.remove(this.HIDDEN_CLASS)
-    if (this.popup) this.popup.update()
+    if (!this.#popupElement) this.#createPopup()
+    this.#popupElement.classList.remove(this.HIDDEN_CLASS)
+    this.#position()
   }
 
-  createPopup() {
-    const popupContent = document.createElement("div")
-    popupContent.classList.add(this.HIDDEN_CLASS)
-    popupContent.classList.add("popup")
-    popupContent.dataset.linkPreviewTarget = "popup"
-    popupContent.innerHTML = `
+  // Private
+
+  #popupElement
+
+  #createPopup() {
+    this.#popupElement = document.createElement("div")
+    this.#popupElement.classList.add(this.HIDDEN_CLASS)
+    this.#popupElement.classList.add("popup")
+    this.#popupElement.innerHTML = `
       <div class="popup__container">
-        <div data-popper-arrow class="popup__container__arrow"></div>
+        <div class="popup__container__arrow"></div>
         <turbo-frame id="link_preview-${this.id}" class="popup__container__content" src="${this.previewUrl}">
           <div class="popup__container__content__loading-indicator">
             <span class="spinner"></span> Loading preview...
@@ -61,13 +63,53 @@ export default class extends ApplicationController {
         </turbo-frame>
       </div>
     `
-    this.element.appendChild(popupContent)
+    this.element.style.position = "relative"
+    this.element.appendChild(this.#popupElement)
+  }
 
-    if (!this.hasPopupTarget) return
+  #position() {
+    if (!this.#popupElement) return
 
-    this.popup = createPopper(this.element, this.popupTarget, {
-      placement: 'auto'
-    });
+    const popup = this.#popupElement
+    const arrow = popup.querySelector(".popup__container__arrow")
+    const linkRect = this.element.getBoundingClientRect()
+    const popupRect = popup.getBoundingClientRect()
+    const spaceBelow = window.innerHeight - linkRect.bottom
+    const placement = spaceBelow >= popupRect.height + VIEWPORT_MARGIN ? "bottom" : "top"
+
+    popup.style.position = "absolute"
+    popup.style.left = "50%"
+    popup.style.transform = "translateX(-50%)"
+    popup.dataset.placement = placement
+
+    if (placement === "bottom") {
+      popup.style.top = "100%"
+      popup.style.bottom = "auto"
+    } else {
+      popup.style.bottom = "100%"
+      popup.style.top = "auto"
+    }
+
+    // Reset arrow to center before clamping
+    arrow.style.left = "50%"
+    arrow.style.transform = "translateX(-50%)"
+
+    // Clamp popup within viewport, shifting the arrow to stay over the link
+    requestAnimationFrame(() => {
+      const rect = popup.getBoundingClientRect()
+      let shift = 0
+
+      if (rect.right > window.innerWidth - VIEWPORT_MARGIN) {
+        shift = window.innerWidth - VIEWPORT_MARGIN - rect.right
+      } else if (rect.left < VIEWPORT_MARGIN) {
+        shift = VIEWPORT_MARGIN - rect.left
+      }
+
+      if (shift !== 0) {
+        popup.style.transform = `translateX(calc(-50% + ${shift}px))`
+        arrow.style.transform = `translateX(calc(-50% - ${shift}px))`
+      }
+    })
   }
 
   async cachedContentExists() {

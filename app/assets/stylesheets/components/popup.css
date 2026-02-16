@@ -24,31 +24,18 @@
 }
 
 .popup__container__arrow {
-  @apply absolute z-10 w-4 h-4;
-}
-
-.popup__container__arrow::after {
-  @apply inline-block
-  w-4 h-4
+  @apply absolute z-10 w-4 h-4
+  left-1/2 -translate-x-1/2
   bg-white dark:bg-gray-800
   rotate-45
   rounded-sm
   shadow-lg;
-  content: " ";
 }
 
-.popup[data-popper-placement="right"] .popup__container__arrow {
-  @apply -left-2;
+.popup[data-placement="bottom"] .popup__container__arrow {
+  @apply -top-1;
 }
 
-.popup[data-popper-placement="bottom"] .popup__container__arrow {
-  @apply -top-2;
-}
-
-.popup[data-popper-placement="left"] .popup__container__arrow {
-  @apply -right-2;
-}
-
-.popup[data-popper-placement="top"] .popup__container__arrow {
-  @apply -bottom-2;
+.popup[data-placement="top"] .popup__container__arrow {
+  @apply -bottom-1;
 }

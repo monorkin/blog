@@ -1,9 +1,14 @@
 <div class="subscribe">
-  <%= link_to text_with_icon(:rss, t(".subscribe_rss"), position: :before, class: "subscribe__rss-icon icon-lg"), feed_path(types: :article), target: :_blank %>
+  <div class="subscribe__rss-row">
+    <div class="subscribe__rss-icon">
+      <%= rss_icon(class: "icon-lg") %>
+    </div>
+    <span><%= t(".subscribe_rss_before") %><%= link_to t(".subscribe_rss_link"), feed_path(types: :article), target: :_blank, class: "subscribe__rss-link" %><%= t(".subscribe_rss_after") %></span>
+  </div>
 
   <div class="subscribe__divider">
     <hr>
-    <span class="subscribe__divider-text"><%= t(".or") %></span>
+    <span class="subscribe__divider-text"><%= t(".and") %></span>
   </div>
 
   <form

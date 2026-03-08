@@ -171,6 +171,26 @@
     }
   }
 
+  .subscribe__rss-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .subscribe__rss-icon {
+    color: var(--color-subscribe-icon);
+    flex-shrink: 0;
+  }
+
+  .subscribe__rss-link {
+    color: var(--color-link);
+
+    &:hover {
+      color: var(--color-link-hover);
+    }
+  }
+
   .subscribe__divider {
     position: relative;
     margin-block: var(--space-4);
@@ -300,6 +320,14 @@
   .subscribe__powered-by {
     font-size: var(--text-xs);
     color: var(--color-ink-faint);
+
+    & a {
+      color: inherit;
+
+      &:hover {
+        color: var(--color-ink-muted);
+      }
+    }
   }
 
   /* Related articles */
@@ -315,6 +343,7 @@
   }
 
   .related-articles__title {
+    font-size: var(--text-xl);
     font-weight: 600;
     margin-block-end: var(--space-3);
   }

@@ -19,9 +19,11 @@ en:
         next_article: "Next"
 
       stay_updated_prompt:
-        subscribe_rss: "I have an RSS feed, if you want to receive future posts"
-        or: "or"
-        subscribe_newsletter: "And I have a newsletter, if you prefere to receive future posts via email"
+        subscribe_rss_before: "I have an "
+        subscribe_rss_link: "RSS feed"
+        subscribe_rss_after: ", if you want to receive future posts"
+        and: "and"
+        subscribe_newsletter: "I have a newsletter, if you prefere email over RSS"
 
       related_articles:
         popular_articles: "Popular Articles"

@@ -19,9 +19,11 @@
   <% end %>
 
   <% if @galleries.any? %>
-    <div class="photos-grid">
-      <%= render partial: "gallery", collection: @galleries, cached: true %>
-    </div>
+    <%= with_automatic_pagination("snaps", @page) do %>
+      <div class="photos-grid">
+        <%= render partial: "gallery", collection: @galleries, cached: true %>
+      </div>
+    <% end %>
   <% else %>
     <div class="article">
       <p class="txt-muted"><%= t(".no_snaps") %></p>

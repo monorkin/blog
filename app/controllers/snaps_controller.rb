@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class SnapsController < ApplicationController
+  ORDER = { created_at: :desc }.freeze
+  RATIOS = [12, 24, 48].freeze
+
   before_action only: %i[index show] do
     request.session_options[:skip] = true
   end
@@ -9,18 +12,16 @@ class SnapsController < ApplicationController
   ensure_authenticated only: %i[new create edit update destroy]
 
   def index
-    gallery_ids = Gallery.joins(snaps: :entry)
-      .merge(Entry.published)
-      .group("galleries.id")
-      .order(Arel.sql("MAX(entries.published_at) DESC"))
-      .pluck("galleries.id")
-
-    @galleries = Gallery.where(id: gallery_ids)
+    galleries = Gallery
+      .where(id: Snap.joins(:entry).merge(Entry.published).select(:gallery_id))
+      .order(ORDER)
       .preload(snaps: [:entry, { file_attachment: :blob }])
-      .index_by(&:id)
-      .values_at(*gallery_ids)
 
-    fresh_when(@galleries)
+    set_page_and_extract_portion_from(galleries, per_page: RATIOS)
+
+    @galleries = @page.records
+
+    fresh_when(@page)
   end
 
   def show

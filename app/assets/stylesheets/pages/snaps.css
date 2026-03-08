@@ -1,21 +1,5 @@
 @layer components {
   .photos-section {
-    --color-canvas: oklch(0% 0 0);
-    --color-surface: oklch(14.49% 0.004 285.82);
-    --color-ink: oklch(92.85% 0.006 286.32);
-    --color-ink-subtle: oklch(55.55% 0.014 285.5);
-    --color-ink-muted: oklch(55.55% 0.014 285.5);
-    --color-ink-faint: oklch(55.55% 0.014 285.5);
-    --color-link: oklch(79.5% 0.184 86.047);
-    --color-link-hover: oklch(85.2% 0.199 91.936);
-    --color-accent: oklch(79.5% 0.184 86.047);
-    --color-accent-hover: oklch(85.2% 0.199 91.936);
-    --color-border: oklch(55.55% 0.014 285.5);
-    --color-border-subtle: oklch(27.08% 0.006 285.84);
-    --color-btn-primary-bg: oklch(79.5% 0.184 86.047);
-    --color-btn-primary-bg-hover: oklch(85.2% 0.199 91.936);
-    --color-btn-primary-text: oklch(39.6% 0.082 73.941);
-
     color: var(--color-ink);
   }
 
@@ -254,7 +238,7 @@
 
   .batch-upload__remove:hover {
     color: var(--color-ink);
-    background-color: oklch(100% 0 0 / 0.1);
+    background-color: oklch(from var(--color-ink) l c h / 0.1);
   }
 
   @media (max-width: 639px) {

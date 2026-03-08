@@ -97,6 +97,20 @@ E.g. `/my-first-article-abc123`, `/another-prefix-abc123`, `/abc123` all resolve
 
 This is also a holdover from when the blog was hosted on Medium, which used this slug format.
 
+### Breakpoints
+
+The responsive breakpoints are defined in `app/assets/stylesheets/base.css` and follow a mobile-first approach:
+
+| Name | Width    |
+|------|----------|
+| sm   | 640px    |
+| md   | 768px    |
+| lg   | 1024px   |
+| xl   | 1280px   |
+| 2xl  | 1536px   |
+
+Use `@media (width >= <value>)` syntax in CSS.
+
 ## Coding style
 
 @STYLE.md

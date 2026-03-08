@@ -1,0 +1,51 @@
+<% content_for :head do %>
+  <title><%= Entry::SEO.titleize(@snap.title) %></title>
+<% end %>
+
+<%= turbo_frame_tag :snap_lightbox do %>
+  <div class="lightbox__content">
+    <button class="lightbox__close" data-action="dialog#close" aria-label="Close">&times;</button>
+
+    <% if @previous_snap %>
+      <%= link_to snap_path(@previous_snap),
+            class: "lightbox__nav lightbox__nav--prev",
+            data: { turbo_frame: :snap_lightbox, controller: "hotkey", action: "keydown.left@document->hotkey#click" },
+            aria: { label: "Previous" } do %>
+        &lsaquo;
+      <% end %>
+    <% end %>
+
+    <% if @snap.file.attached? %>
+      <% if @snap.file.image? %>
+        <%= image_tag @snap.file, alt: @snap.title, class: "lightbox__image" %>
+      <% elsif @snap.file.video? %>
+        <video class="lightbox__image" controls>
+          <source src="<%= url_for(@snap.file) %>" type="<%= @snap.file.content_type %>">
+        </video>
+      <% end %>
+    <% end %>
+
+    <% if @next_snap %>
+      <%= link_to snap_path(@next_snap),
+            class: "lightbox__nav lightbox__nav--next",
+            data: { turbo_frame: :snap_lightbox, controller: "hotkey", action: "keydown.right@document->hotkey#click" },
+            aria: { label: "Next" } do %>
+        &rsaquo;
+      <% end %>
+    <% end %>
+
+    <div class="lightbox__footer">
+      <span class="lightbox__caption"><%= @snap.title %></span>
+      <% if @snap.caption.present? %>
+        <span class="lightbox__caption"><%= @snap.caption %></span>
+      <% end %>
+    </div>
+
+    <% if Current.user.present? %>
+      <div class="lightbox__admin">
+        <%= link_to t(".edit"), edit_snap_path(@snap) %>
+        <%= button_to t(".delete"), snap_path(@snap), method: :delete, data: { turbo_confirm: t(".confirm_delete") } %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

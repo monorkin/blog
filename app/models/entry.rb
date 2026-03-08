@@ -3,7 +3,7 @@
 class Entry < ApplicationRecord
   include Publishable, Sluggable, Taggable
 
-  delegated_type :entryable, types: %w[Article Talk], dependent: :destroy
+  delegated_type :entryable, types: %w[Article Talk Snap], dependent: :destroy
 
   scope :with_types, ->(types) { where(entryable_type: types.map { it.to_s.classify }) }
   scope :by_recency, -> { order(published_at: :desc) }

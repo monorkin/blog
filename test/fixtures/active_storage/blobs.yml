@@ -1,0 +1,7 @@
+hiking_hut_blob: <%= ActiveStorage::FixtureSet.blob filename: "hiking_hut.jpg", service_name: "test", metadata: { identified: true, width: 1200, height: 1600, analyzed: true } %>
+hiking_moon_blob: <%= ActiveStorage::FixtureSet.blob filename: "hiking_moon.jpg", service_name: "test", metadata: { identified: true, width: 1200, height: 1600, analyzed: true } %>
+hiking_stream_blob: <%= ActiveStorage::FixtureSet.blob filename: "hiking_stream.MOV", service_name: "test", metadata: { identified: true, width: 1080, height: 1920, duration: 4.701667, angle: -90, audio: true, video: true, analyzed: true } %>
+flower_1_blob: <%= ActiveStorage::FixtureSet.blob filename: "flower_1.jpg", service_name: "test", metadata: { identified: true, width: 3024, height: 4032, analyzed: true } %>
+flower_2_blob: <%= ActiveStorage::FixtureSet.blob filename: "flower_2.jpg", service_name: "test", metadata: { identified: true, width: 3024, height: 4032, analyzed: true } %>
+sky_1_blob: <%= ActiveStorage::FixtureSet.blob filename: "sky_1.jpg", service_name: "test", metadata: { identified: true, width: 3024, height: 4032, analyzed: true } %>
+sky_2_blob: <%= ActiveStorage::FixtureSet.blob filename: "sky_2.jpg", service_name: "test", metadata: { identified: true, width: 3024, height: 4032, analyzed: true } %>

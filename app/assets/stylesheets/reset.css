@@ -62,6 +62,10 @@
     border: 0;
   }
 
+  [hidden] {
+    display: none !important;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

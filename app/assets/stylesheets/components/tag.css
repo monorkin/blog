@@ -38,12 +38,12 @@
   }
 
   .color-scheme.color-scheme--dark .tag-input__wrapper {
-    color: oklch(0% 0 0);
+    color: var(--color-ink);
   }
 
   @media (prefers-color-scheme: dark) {
     .color-scheme:not(.color-scheme--light) .tag-input__wrapper {
-      color: oklch(0% 0 0);
+      color: var(--color-ink);
     }
   }
 
@@ -81,7 +81,7 @@
     padding: var(--space-1-5) var(--space-3);
     cursor: pointer;
     font-size: var(--text-sm);
-    color: oklch(0% 0 0);
+    color: var(--color-ink);
   }
 
   .tag-input__suggestion[aria-selected="true"] {

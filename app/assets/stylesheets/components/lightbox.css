@@ -1,0 +1,136 @@
+@layer components {
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    background: oklch(0% 0 0 / 0.9);
+    color: oklch(100% 0 0);
+  }
+
+  .lightbox::backdrop {
+    background: transparent;
+  }
+
+  .lightbox .dialog__frame {
+    height: 100%;
+  }
+
+  .lightbox .dialog__loading {
+    background: transparent;
+    color: oklch(100% 0 0);
+    border: none;
+    text-align: center;
+    padding-block-start: 40vh;
+  }
+
+  .lightbox__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: var(--space-8);
+  }
+
+  .lightbox__close {
+    position: absolute;
+    inset-block-start: var(--space-4);
+    inset-inline-end: var(--space-4);
+    background: none;
+    border: none;
+    color: oklch(100% 0 0);
+    font-size: var(--text-2xl);
+    cursor: pointer;
+    padding: var(--space-2);
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+    z-index: 1;
+  }
+
+  .lightbox__close:hover {
+    opacity: 1;
+  }
+
+  .lightbox__image {
+    max-width: 100%;
+    max-height: calc(100vh - 8rem);
+    object-fit: contain;
+    border-radius: var(--radius);
+    user-select: none;
+  }
+
+  .lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: oklch(100% 0 0);
+    font-size: var(--text-4xl);
+    cursor: pointer;
+    padding: var(--space-4);
+    line-height: 1;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+    z-index: 1;
+    text-decoration: none;
+  }
+
+  .lightbox__nav:hover {
+    opacity: 1;
+  }
+
+  .lightbox__nav--prev {
+    inset-inline-start: 0;
+  }
+
+  .lightbox__nav--next {
+    inset-inline-end: 0;
+  }
+
+  .lightbox__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
+    padding-block-start: var(--space-3);
+    gap: var(--space-4);
+  }
+
+  .lightbox__caption {
+    font-size: var(--text-sm);
+    opacity: 0.8;
+  }
+
+  .lightbox__admin {
+    display: flex;
+    gap: var(--space-4);
+    padding-block-start: var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  .lightbox__admin a,
+  .lightbox__admin button {
+    color: oklch(100% 0 0 / 0.6);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .lightbox__admin a:hover,
+  .lightbox__admin button:hover {
+    color: oklch(100% 0 0);
+  }
+}

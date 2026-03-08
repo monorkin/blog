@@ -1,0 +1,37 @@
+<% content_for :head do %>
+  <title><%= Entry::SEO.titleize("Snaps") %></title>
+  <%= seo_meta_tags(
+    title: "Snaps",
+    description: "Photo galleries and photography",
+    url: snaps_url
+  ) %>
+<% end %>
+
+<div class="photos-section">
+  <div class="article margin-block-end-4">
+    <h1 class="txt-4xl font-semibold"><%= t(".title") %></h1>
+  </div>
+
+  <% if Current.user.present? %>
+    <div class="article flex flex-row gap-x-4 margin-block-end-4">
+      <%= link_to t(".new_snap"), new_snap_path, class: "btn btn--primary" %>
+    </div>
+  <% end %>
+
+  <% if @galleries.any? %>
+    <div class="photos-grid">
+      <% @galleries.each do |gallery| %>
+        <% if gallery.multi? %>
+          <%= render "gallery_stack", gallery: gallery %>
+        <% else %>
+          <% snap = gallery.snaps.first %>
+          <%= render "snap", snap: snap if snap %>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="article">
+      <p class="txt-muted"><%= t(".no_snaps") %></p>
+    </div>
+  <% end %>
+</div>

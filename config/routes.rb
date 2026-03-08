@@ -31,6 +31,12 @@ Rails.application.routes.draw do
 
   resources :talks
 
+  resources :snaps do
+    collection do
+      resources :galleries, only: :show, module: :snaps, param: :slug
+    end
+  end
+
   resources :articles, only: %i[index new create] do
     collection do
       # Legacy redirects - preserve tag param, add types=article filter

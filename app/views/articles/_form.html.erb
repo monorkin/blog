@@ -15,7 +15,7 @@
 
   <%= rich_text_field(form, :body) %>
 
-  <div data-controller="publish" data-publish-published-value="<%= article.published? %>">
+  <div data-controller="publish" data-publish-published-value="<%= article.published? %>" data-action="click@window->publish#closeScheduleOnClickOutside">
     <%= form.hidden_field :published, data: { publish_target: "publishedInput" } %>
     <%= form.hidden_field :publish_at, value: "", data: { publish_target: "publishAtInput" } %>
 
@@ -24,7 +24,7 @@
 
       <div class="relative flex flex-row">
         <%= form.submit "Publish", class: "btn btn--primary btn--split-left", data: { action: "publish#publish" } %>
-        <button type="button" class="btn btn--primary btn--split-right" data-action="publish#toggleSchedule">
+        <button type="button" class="btn btn--primary btn--split-right" data-action="publish#toggleSchedule" data-publish-target="scheduleToggle">
           &#128340;
         </button>
 

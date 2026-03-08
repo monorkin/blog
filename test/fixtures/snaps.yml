@@ -1,0 +1,38 @@
+hiking_hut:
+  title: "Mountain Hut"
+  caption: "A cozy hut tucked into the hillside"
+  gallery: hiking_gallery
+  position: 0
+
+hiking_moon:
+  title: "Moonrise Over the Ridge"
+  gallery: hiking_gallery
+  position: 1
+
+hiking_stream:
+  title: "Mountain Stream"
+  caption: "Cold water rushing over rocks"
+  gallery: hiking_gallery
+  position: 2
+
+flower_1:
+  title: "Wildflower Meadow"
+  gallery: flowers_gallery
+  position: 0
+
+flower_2:
+  title: "Spring Bloom"
+  caption: "First blooms of the season"
+  gallery: flowers_gallery
+  position: 1
+
+sky_1:
+  title: "Golden Hour"
+  caption: "The sky on fire"
+  gallery: sky_1_gallery
+  position: 0
+
+sky_2:
+  title: "Cloudy Afternoon"
+  gallery: sky_2_gallery
+  position: 0

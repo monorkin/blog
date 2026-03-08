@@ -1,0 +1,34 @@
+<%# locals: (snap:) -%>
+
+<%= form_for snap, html: { class: "form", multipart: true } do |form| %>
+  <%= validation_errors(form) if form.object.errors.any? %>
+
+  <label>
+    <%= form.object.class.human_attribute_name(:title) %>
+    <%= form.text_field :title, class: "input" %>
+  </label>
+
+  <label>
+    <%= form.object.class.human_attribute_name(:caption) %>
+    <%= form.text_area :caption, class: "input", rows: 3 %>
+  </label>
+
+  <label>
+    Gallery
+    <%= text_field_tag :gallery_title, snap.gallery&.title, name: "snap[gallery_title]", class: "input" %>
+  </label>
+
+  <label>
+    <%= form.object.class.human_attribute_name(:file) %>
+    <%= form.file_field :file, accept: "image/*,video/*", class: "input" %>
+  </label>
+
+  <div>
+    Tags
+    <%= tag_input_field(form, tags: snap.entry&.tags&.pluck(:name) || []) %>
+  </div>
+
+  <div class="form__actions">
+    <%= form.submit snap.persisted? ? "Update" : "Publish", class: "btn btn--primary flex-grow" %>
+  </div>
+<% end %>

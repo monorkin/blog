@@ -17,6 +17,7 @@
     <%= csp_meta_tag %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="view-transition" content="same-origin">
     <%= auto_discovery_link_tag(:atom, feed_path) %>
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
@@ -45,6 +46,7 @@
       <%= header_nav do %>
         <%= header_nav_item(articles_path) { t(".articles") } %>
         <%= header_nav_item(talks_path) { t(".talks") } %>
+        <%= header_nav_item(snaps_path) { t(".snaps") } %>
       <% end %>
     </header>
 
@@ -59,6 +61,7 @@
         <%= link_to t(".about"), root_url %>
         <%= link_to t(".articles"), articles_url %>
         <%= link_to t(".talks"), talks_url %>
+        <%= link_to t(".snaps"), snaps_url %>
         <%= link_to t(".source_code"), "https://github.com/monorkin/blog", target: :_blank %>
 
         <% if Current.user %>

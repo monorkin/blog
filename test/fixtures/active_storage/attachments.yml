@@ -1,0 +1,41 @@
+hiking_hut_file:
+  name: "file"
+  record: hiking_hut (Snap)
+  blob: hiking_hut_blob
+  created_at: 2022-05-01T12:00:00.000Z
+
+hiking_moon_file:
+  name: "file"
+  record: hiking_moon (Snap)
+  blob: hiking_moon_blob
+  created_at: 2022-05-01T12:00:00.000Z
+
+hiking_stream_file:
+  name: "file"
+  record: hiking_stream (Snap)
+  blob: hiking_stream_blob
+  created_at: 2022-05-01T12:00:00.000Z
+
+flower_1_file:
+  name: "file"
+  record: flower_1 (Snap)
+  blob: flower_1_blob
+  created_at: 2022-06-01T12:00:00.000Z
+
+flower_2_file:
+  name: "file"
+  record: flower_2 (Snap)
+  blob: flower_2_blob
+  created_at: 2022-06-01T12:00:00.000Z
+
+sky_1_file:
+  name: "file"
+  record: sky_1 (Snap)
+  blob: sky_1_blob
+  created_at: 2022-07-01T12:00:00.000Z
+
+sky_2_file:
+  name: "file"
+  record: sky_2 (Snap)
+  blob: sky_2_blob
+  created_at: 2022-07-01T12:00:00.000Z

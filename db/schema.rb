@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2026_01_26_095758) do
+ActiveRecord::Schema[8.2].define(version: 2026_03_01_100000) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -84,6 +84,24 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_26_095758) do
     t.index ["slug_id"], name: "index_entries_on_slug_id", unique: true
   end
 
+  create_table "galleries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "slug", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_galleries_on_slug", unique: true
+  end
+
+  create_table "snaps", force: :cascade do |t|
+    t.text "caption"
+    t.datetime "created_at", null: false
+    t.integer "gallery_id", null: false
+    t.integer "position", default: 0, null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["gallery_id"], name: "index_snaps_on_gallery_id"
+  end
+
   create_table "tag_taggings", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "tag_id", null: false
@@ -125,5 +143,6 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_26_095758) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "article_link_previews", "articles"
+  add_foreign_key "snaps", "galleries"
   add_foreign_key "tag_taggings", "tags"
 end

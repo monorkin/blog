@@ -1,7 +1,7 @@
 import ApplicationController from "controllers/application_controller"
 
 export default class extends ApplicationController {
-  static targets = ["publishedInput", "publishAtInput", "scheduleDatetime", "schedulePopup", "draftControls", "publishedControls"]
+  static targets = ["publishedInput", "publishAtInput", "scheduleDatetime", "schedulePopup", "scheduleToggle", "draftControls", "publishedControls"]
   static values = { published: Boolean }
 
   // Lifecycle
@@ -29,6 +29,13 @@ export default class extends ApplicationController {
 
   toggleSchedule() {
     this.schedulePopupTarget.hidden = !this.schedulePopupTarget.hidden
+  }
+
+  closeScheduleOnClickOutside({ target }) {
+    if (this.scheduleToggleTarget.contains(target)) return
+    if (!this.schedulePopupTarget.contains(target) && !this.schedulePopupTarget.hidden) {
+      this.schedulePopupTarget.hidden = true
+    }
   }
 
   publishAtTime() {

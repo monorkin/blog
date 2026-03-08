@@ -1,0 +1,29 @@
+<%# locals: (snap:) -%>
+<% cache snap do %>
+  <div class="photos-grid__item"
+       data-controller="snap--grid-item"
+       data-action="mousemove->snap--grid-item#rotate mouseleave->snap--grid-item#reset">
+    <%= link_to snap_path(snap),
+          class: "photos-grid__button",
+          data: {
+            controller: "modal-action",
+            action: "modal-action#openModal",
+            modal_action_frame_name_value: "snap_lightbox",
+            modal_action_class_value: "lightbox"
+          } do %>
+      <% if snap.file.image? %>
+        <%= image_tag snap.file.variant(resize_to_fill: [400, 400]),
+                      alt: snap.title,
+                      class: "photos-grid__image",
+                      loading: "lazy" %>
+      <% elsif snap.file.video? %>
+        <video class="photos-grid__image" muted preload="metadata">
+          <source src="<%= url_for(snap.file) %>" type="<%= snap.file.content_type %>">
+        </video>
+      <% end %>
+    <% end %>
+    <% if snap.file.video? && snap.file.blob.metadata["duration"] %>
+      <span class="photos-grid__duration"><%= format_duration(snap.file.blob.metadata["duration"]) %></span>
+    <% end %>
+  </div>
+<% end %>

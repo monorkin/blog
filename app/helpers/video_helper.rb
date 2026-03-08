@@ -19,4 +19,12 @@ module VideoHelper
   def html_video_embed_for(url, **options)
     content_tag(:video, nil, src: url, controls: true, **options)
   end
+
+  def format_duration(total_seconds)
+    seconds = total_seconds.round
+    minutes = seconds / 60
+    seconds = seconds % 60
+
+    "#{minutes}:#{seconds.to_s.rjust(2, "0")}"
+  end
 end

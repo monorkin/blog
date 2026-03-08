@@ -16,7 +16,7 @@
     gap: var(--space-4);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 640px) {
     .talk__video-links {
       flex-direction: row;
       column-gap: var(--space-4);

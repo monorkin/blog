@@ -86,7 +86,7 @@
     block-size: 100%;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 640px) {
     .dialog--overlay {
       inset-block-start: var(--space-24);
     }

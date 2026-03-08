@@ -28,12 +28,12 @@
   }
 
   .color-scheme.color-scheme--dark .input {
-    color: oklch(0% 0 0);
+    color: var(--color-ink);
   }
 
   @media (prefers-color-scheme: dark) {
     .color-scheme:not(.color-scheme--light) .input {
-      color: oklch(0% 0 0);
+      color: var(--color-ink);
     }
   }
 

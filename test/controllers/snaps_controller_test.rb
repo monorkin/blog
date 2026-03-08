@@ -18,14 +18,6 @@ class SnapsControllerTest < ActionDispatch::IntegrationTest
     assert_nil session[:session_id]
   end
 
-  test "GET gallery show renders gallery page" do
-    gallery = galleries(:hiking_gallery)
-
-    get gallery_path(gallery)
-
-    assert_response :success
-  end
-
   # Show
 
   test "GET show renders a snap" do
@@ -90,23 +82,6 @@ class SnapsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to snaps_path
-  end
-
-  test "POST create with gallery_title groups into gallery" do
-    login
-
-    assert_difference "Snap.count", 1 do
-      post snaps_path, params: {
-        snap: {
-          title: "New Hiking Snap",
-          gallery_title: "Hiking",
-          file: fixture_file_upload("photo.jpg", "image/jpeg")
-        }
-      }
-    end
-
-    snap = Snap.last
-    assert_equal "Hiking", snap.gallery.title
   end
 
   test "POST create renders form on validation error" do

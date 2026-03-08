@@ -31,11 +31,7 @@ Rails.application.routes.draw do
 
   resources :talks
 
-  resources :snaps do
-    collection do
-      resources :galleries, only: :show, module: :snaps, param: :slug
-    end
-  end
+  resources :snaps
 
   resources :articles, only: %i[index new create] do
     collection do

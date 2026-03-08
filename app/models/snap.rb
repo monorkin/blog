@@ -5,7 +5,6 @@ class Snap < ApplicationRecord
 
   content { ActionText::Content.new("") }
 
-  belongs_to :gallery
   has_one_attached :file
 
   validates :title, presence: true

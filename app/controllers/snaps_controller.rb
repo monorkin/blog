@@ -12,24 +12,25 @@ class SnapsController < ApplicationController
   ensure_authenticated only: %i[new create edit update destroy]
 
   def index
-    galleries = Gallery
-      .where(id: Snap.joins(:entry).merge(Entry.published).select(:gallery_id))
+    snaps = Snap
+      .joins(:entry).merge(Entry.published)
       .order(ORDER)
-      .preload(snaps: [:entry, { file_attachment: :blob }])
+      .preload(:entry, file_attachment: :blob)
 
-    set_page_and_extract_portion_from(galleries, per_page: RATIOS)
+    set_page_and_extract_portion_from(snaps, per_page: RATIOS)
 
-    @galleries = @page.records
+    @snaps = @page.records
 
     fresh_when(@page)
   end
 
   def show
-    siblings = @snap.gallery.snaps.preload(:entry)
-    index = siblings.index(@snap)
+    published_snaps = Snap.joins(:entry).merge(Entry.published).order(created_at: :desc)
+    ids = published_snaps.pluck(:id)
+    index = ids.index(@snap.id)
 
-    @previous_snap = siblings[index - 1] if index && index > 0
-    @next_snap = siblings[index + 1] if index
+    @previous_snap = Snap.find(ids[index - 1]) if index && index > 0
+    @next_snap = Snap.find(ids[index + 1]) if index && index + 1 < ids.size
 
     fresh_when(@snap)
   end
@@ -49,7 +50,7 @@ class SnapsController < ApplicationController
   def edit; end
 
   def update
-    if @snap.update(permitted_params.except(:gallery_title))
+    if @snap.update(permitted_params)
       redirect_to snaps_path, status: :see_other
     else
       render :edit, status: :unprocessable_entity
@@ -68,12 +69,11 @@ class SnapsController < ApplicationController
     end
 
     def permitted_params
-      params.require(:snap).permit(:title, :caption, :gallery_title, :file, :tags)
+      params.require(:snap).permit(:title, :caption, :file, :tags)
     end
 
     def create_single
-      @snap = Snap.new(permitted_params.except(:gallery_title))
-      @snap.gallery = find_or_create_gallery
+      @snap = Snap.new(permitted_params)
 
       if @snap.save
         redirect_to snaps_path, status: :see_other
@@ -83,18 +83,12 @@ class SnapsController < ApplicationController
     end
 
     def create_batch
-      shared_gallery_title = params[:gallery_title].presence
-
       ActiveRecord::Base.transaction do
         params[:snaps].each do |snap_attrs|
-          gallery_title = snap_attrs[:gallery_title].presence || shared_gallery_title || snap_attrs[:title]
-          gallery = Gallery.find_or_create_by!(title: gallery_title)
-
           snap = Snap.new(
             title: snap_attrs[:title],
             caption: snap_attrs[:caption],
-            file: snap_attrs[:file],
-            gallery: gallery
+            file: snap_attrs[:file]
           )
           snap.tags = snap_attrs[:tags] if snap_attrs[:tags].present?
           snap.save!
@@ -106,10 +100,5 @@ class SnapsController < ApplicationController
       @snap = Snap.new
       flash.now[:alert] = t(".create_failed")
       render :new, status: :unprocessable_entity
-    end
-
-    def find_or_create_gallery
-      title = params[:snap][:gallery_title].presence || @snap.title
-      Gallery.find_or_create_by!(title: title)
     end
 end

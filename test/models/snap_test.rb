@@ -9,12 +9,6 @@ class SnapTest < ActiveSupport::TestCase
     assert_equal snap.entry.to_param, snap.to_param
   end
 
-  test "belongs to gallery" do
-    snap = snaps(:hiking_hut)
-
-    assert_equal galleries(:hiking_gallery), snap.gallery
-  end
-
   test "validates title presence" do
     snap = Snap.new(title: "")
 
@@ -32,8 +26,7 @@ class SnapTest < ActiveSupport::TestCase
   end
 
   test "auto-publishes on create" do
-    gallery = galleries(:sky_1_gallery)
-    snap = Snap.new(title: "Test Snap", gallery: gallery)
+    snap = Snap.new(title: "Test Snap")
 
     snap.valid?
 

@@ -14,11 +14,6 @@
   </label>
 
   <label>
-    Gallery
-    <%= text_field_tag :gallery_title, snap.gallery&.title, name: "snap[gallery_title]", class: "input" %>
-  </label>
-
-  <label>
     <%= form.object.class.human_attribute_name(:file) %>
     <%= form.file_field :file, accept: "image/*,video/*", class: "input" %>
   </label>

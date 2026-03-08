@@ -11,11 +11,6 @@
   <%= form_tag snaps_path, multipart: true, class: "form flex flex-col gap-y-6 hidden",
     data: { snap__batch_upload_target: "batchForm" } do %>
 
-    <label>
-      <%= t(".shared_gallery_title") %>
-      <%= text_field_tag :gallery_title, nil, class: "input" %>
-    </label>
-
     <div data-snap--batch-upload-target="rows" class="flex flex-col gap-y-4"></div>
 
     <div class="form__actions">
@@ -47,10 +42,6 @@
         <label>
           <%= Snap.human_attribute_name(:caption) %>
           <textarea name="snaps[][caption]" class="input" rows="2"></textarea>
-        </label>
-        <label>
-          <%= t(".row_gallery_title") %>
-          <input type="text" name="snaps[][gallery_title]" class="input" placeholder="<%= t(".uses_shared_gallery") %>">
         </label>
         <label>
           Tags

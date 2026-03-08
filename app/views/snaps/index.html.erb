@@ -18,10 +18,10 @@
     </div>
   <% end %>
 
-  <% if @galleries.any? %>
+  <% if @snaps.any? %>
     <%= with_automatic_pagination("snaps", @page) do %>
       <div class="photos-grid">
-        <%= render partial: "gallery", collection: @galleries, cached: true %>
+        <%= render partial: "snap", collection: @snaps, cached: true %>
       </div>
     <% end %>
   <% else %>

@@ -23,7 +23,8 @@ en:
       title: "Edit Snap"
     form:
       save: "Save"
-    gallery_stack:
-      snaps_count:
-        one: "%{count} snap"
-        other: "%{count} snaps"
+    galleries:
+      stack:
+        snaps_count:
+          one: "%{count} snap"
+          other: "%{count} snaps"

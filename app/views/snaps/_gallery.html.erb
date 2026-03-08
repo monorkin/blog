@@ -1,0 +1,9 @@
+<%# locals: (gallery:) -%>
+<% cache gallery do %>
+  <% if gallery.multi? %>
+    <%= render "snaps/galleries/stack", gallery: gallery %>
+  <% else %>
+    <% snap = gallery.snaps.first %>
+    <%= render "snaps/snap", snap: snap if snap %>
+  <% end %>
+<% end %>

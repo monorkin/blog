@@ -20,14 +20,7 @@
 
   <% if @galleries.any? %>
     <div class="photos-grid">
-      <% @galleries.each do |gallery| %>
-        <% if gallery.multi? %>
-          <%= render "gallery_stack", gallery: gallery %>
-        <% else %>
-          <% snap = gallery.snaps.first %>
-          <%= render "snap", snap: snap if snap %>
-        <% end %>
-      <% end %>
+      <%= render partial: "gallery", collection: @galleries, cached: true %>
     </div>
   <% else %>
     <div class="article">

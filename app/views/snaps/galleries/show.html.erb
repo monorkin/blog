@@ -17,9 +17,7 @@
 
   <% if @snaps.any? %>
     <div class="photos-grid" style="view-transition-name: gallery-<%= @gallery.id %>">
-      <% @snaps.each do |snap| %>
-        <%= render "snaps/snap", snap: snap %>
-      <% end %>
+      <%= render partial: "snaps/snap", collection: @snaps, as: :snap, cached: true %>
     </div>
   <% end %>
 </div>

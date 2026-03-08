@@ -10,6 +10,15 @@ en:
       confirm_delete: "Are you sure you want to delete this snap?"
     new:
       title: "New Snap"
+      shared_gallery_title: "Shared gallery title"
+      drop_files: "Drop files here or click to select"
+      row_gallery_title: "Gallery title override"
+      tags_placeholder: "comma-separated"
+      uses_shared_gallery: "Uses shared gallery title"
+      remove: "Remove"
+      publish: "Publish All"
+    create:
+      create_failed: "Some snaps could not be saved. Please check the fields and try again."
     edit:
       title: "Edit Snap"
     form:

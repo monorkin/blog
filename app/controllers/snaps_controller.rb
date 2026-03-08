@@ -38,13 +38,10 @@ class SnapsController < ApplicationController
   end
 
   def create
-    @snap = Snap.new(permitted_params.except(:gallery_title))
-    @snap.gallery = find_or_create_gallery
-
-    if @snap.save
-      redirect_to snaps_path, status: :see_other
+    if params[:snaps].present?
+      create_batch
     else
-      render :new, status: :unprocessable_entity
+      create_single
     end
   end
 
@@ -71,6 +68,43 @@ class SnapsController < ApplicationController
 
     def permitted_params
       params.require(:snap).permit(:title, :caption, :gallery_title, :file, :tags)
+    end
+
+    def create_single
+      @snap = Snap.new(permitted_params.except(:gallery_title))
+      @snap.gallery = find_or_create_gallery
+
+      if @snap.save
+        redirect_to snaps_path, status: :see_other
+      else
+        render :new, status: :unprocessable_entity
+      end
+    end
+
+    def create_batch
+      shared_gallery_title = params[:gallery_title].presence
+
+      ActiveRecord::Base.transaction do
+        params[:snaps].each do |snap_attrs|
+          gallery_title = snap_attrs[:gallery_title].presence || shared_gallery_title || snap_attrs[:title]
+          gallery = Gallery.find_or_create_by!(title: gallery_title)
+
+          snap = Snap.new(
+            title: snap_attrs[:title],
+            caption: snap_attrs[:caption],
+            file: snap_attrs[:file],
+            gallery: gallery
+          )
+          snap.tags = snap_attrs[:tags] if snap_attrs[:tags].present?
+          snap.save!
+        end
+      end
+
+      redirect_to snaps_path, status: :see_other
+    rescue ActiveRecord::RecordInvalid
+      @snap = Snap.new
+      flash.now[:alert] = t(".create_failed")
+      render :new, status: :unprocessable_entity
     end
 
     def find_or_create_gallery

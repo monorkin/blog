@@ -1,5 +1,65 @@
-<div class="article flex flex-col gap-y-6">
+<div class="article flex flex-col gap-y-6"
+     data-controller="snap--batch-upload">
   <h1 class="txt-2xl font-bold"><%= t(".title") %></h1>
 
-  <%= render "form", snap: @snap %>
+  <%# Single-file form, hidden when batch rows are present %>
+  <div data-snap--batch-upload-target="singleForm">
+    <%= render "form", snap: @snap %>
+  </div>
+
+  <%# Batch form, shown when multiple files are added %>
+  <%= form_tag snaps_path, multipart: true, class: "form flex flex-col gap-y-6 hidden",
+    data: { snap__batch_upload_target: "batchForm" } do %>
+
+    <label>
+      <%= t(".shared_gallery_title") %>
+      <%= text_field_tag :gallery_title, nil, class: "input" %>
+    </label>
+
+    <div data-snap--batch-upload-target="rows" class="flex flex-col gap-y-4"></div>
+
+    <div class="form__actions">
+      <%= submit_tag t(".publish"), class: "btn btn--primary flex-grow" %>
+    </div>
+  <% end %>
+
+  <%# Drop zone is always visible %>
+  <div data-snap--batch-upload-target="dropZone"
+       data-action="dragover->snap--batch-upload#dragover dragenter->snap--batch-upload#dragenter dragleave->snap--batch-upload#dragleave drop->snap--batch-upload#drop"
+       class="batch-upload__drop-zone">
+    <p><%= t(".drop_files") %></p>
+    <input type="file" multiple accept="image/*,video/*"
+           data-snap--batch-upload-target="fileInput"
+           data-action="change->snap--batch-upload#addFiles"
+           class="batch-upload__file-input">
+  </div>
+
+  <template data-snap--batch-upload-target="template">
+    <div class="batch-upload__row" data-snap--batch-upload-target="row">
+      <div class="batch-upload__preview">
+        <img src="" alt="" data-preview>
+      </div>
+      <div class="batch-upload__fields">
+        <label>
+          <%= Snap.human_attribute_name(:title) %>
+          <input type="text" name="snaps[][title]" class="input" required>
+        </label>
+        <label>
+          <%= Snap.human_attribute_name(:caption) %>
+          <textarea name="snaps[][caption]" class="input" rows="2"></textarea>
+        </label>
+        <label>
+          <%= t(".row_gallery_title") %>
+          <input type="text" name="snaps[][gallery_title]" class="input" placeholder="<%= t(".uses_shared_gallery") %>">
+        </label>
+        <label>
+          Tags
+          <input type="text" name="snaps[][tags]" class="input" placeholder="<%= t(".tags_placeholder") %>">
+        </label>
+        <input type="file" name="snaps[][file]" accept="image/*,video/*" required class="hidden" data-file-input>
+      </div>
+      <button type="button" class="batch-upload__remove"
+              data-action="click->snap--batch-upload#removeRow"><%= t(".remove") %></button>
+    </div>
+  </template>
 </div>

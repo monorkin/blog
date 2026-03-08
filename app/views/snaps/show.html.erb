@@ -43,8 +43,8 @@
 
     <% if Current.user.present? %>
       <div class="lightbox__admin">
-        <%= link_to t(".edit"), edit_snap_path(@snap) %>
-        <%= button_to t(".delete"), snap_path(@snap), method: :delete, data: { turbo_confirm: t(".confirm_delete") } %>
+        <%= link_to t(".edit"), edit_snap_path(@snap), data: { turbo_frame: "_top" } %>
+        <%= button_to t(".delete"), snap_path(@snap), method: :delete, data: { turbo_confirm: t(".confirm_delete"), turbo_frame: "_top" } %>
       </div>
     <% end %>
   </div>

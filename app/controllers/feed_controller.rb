@@ -8,9 +8,12 @@ class FeedController < ApplicationController
   def show
     request.format = :atom
 
+    @types = params[:types]&.split(",")&.intersection(Entry.entryable_types.map(&:underscore)).presence
+    @tags = Tag.where(name: params[:tag]&.split(",")).pluck(:name).presence
+
     @entries = Entry.published.preload(:entryable).order(published_at: :desc)
-    @entries = @entries.with_types(params[:types].split(",")) if params[:types].present?
-    @entries = @entries.tagged_with(params[:tag].split(",")) if params[:tag].present?
+    @entries = @entries.with_types(@types) if @types
+    @entries = @entries.tagged_with(@tags) if @tags
 
     return if fresh_when(@entries)
 

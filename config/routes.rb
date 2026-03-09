@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get "/sitemap-articles.xml", to: "sitemaps#articles", as: :sitemap_articles, defaults: { format: :xml }
   get "/sitemap-talks.xml", to: "sitemaps#talks", as: :sitemap_talks, defaults: { format: :xml }
   get "/sitemap-tags.xml", to: "sitemaps#tags", as: :sitemap_tags, defaults: { format: :xml }
+  get "/sitemap-snaps.xml", to: "sitemaps#snaps", as: :sitemap_snaps, defaults: { format: :xml }
 
   get "login", to: "login#new", as: :login
   post "login", to: "login#create"

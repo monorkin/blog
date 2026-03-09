@@ -43,4 +43,12 @@ class SitemapsController < ApplicationController
       format.xml
     end
   end
+
+  def snaps
+    @snaps = Snap.published.order(updated_at: :desc)
+
+    respond_to do |format|
+      format.xml
+    end
+  end
 end

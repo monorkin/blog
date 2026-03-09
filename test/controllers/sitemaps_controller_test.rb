@@ -20,6 +20,7 @@ class SitemapsControllerTest < ActionDispatch::IntegrationTest
     assert_select "sitemapindex sitemap loc", text: sitemap_articles_url
     assert_select "sitemapindex sitemap loc", text: sitemap_talks_url
     assert_select "sitemapindex sitemap loc", text: sitemap_tags_url
+    assert_select "sitemapindex sitemap loc", text: sitemap_snaps_url
   end
 
   test "GET pages renders static pages sitemap" do
@@ -140,12 +141,33 @@ class SitemapsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET snaps renders snaps sitemap" do
+    get sitemap_snaps_path
+
+    assert_response :success
+    assert_equal "application/xml", response.media_type
+
+    sitemap = Nokogiri::XML(response.body)
+
+    assert_equal "urlset", sitemap.root.name
+
+    published_count = Snap.published.count
+    assert_equal published_count, sitemap.css("url").size
+
+    sitemap.css("url").each do |url_node|
+      assert url_node.css("loc").any?, "Each URL should have a loc"
+      assert url_node.css("lastmod").any?, "Each URL should have a lastmod"
+      assert url_node.css("priority").any?, "Each URL should have a priority"
+    end
+  end
+
   test "sitemap paths have .xml extension" do
     assert_equal "/sitemap.xml", sitemap_path
     assert_equal "/sitemap-pages.xml", sitemap_pages_path
     assert_equal "/sitemap-articles.xml", sitemap_articles_path
     assert_equal "/sitemap-talks.xml", sitemap_talks_path
     assert_equal "/sitemap-tags.xml", sitemap_tags_path
+    assert_equal "/sitemap-snaps.xml", sitemap_snaps_path
   end
 
   test "sitemaps do not create sessions" do

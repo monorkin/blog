@@ -16,4 +16,8 @@ xml.sitemapindex xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9" do
     xml.loc sitemap_tags_url
     xml.lastmod Tag.maximum(:updated_at)&.iso8601
   end
+  xml.sitemap do
+    xml.loc sitemap_snaps_url
+    xml.lastmod Snap.published.maximum(:updated_at)&.iso8601
+  end
 end

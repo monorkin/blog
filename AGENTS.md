@@ -137,8 +137,6 @@ Each public-facing resource must have all the search engine optimization (SEO) m
 
 Most of the SEO logic is handled by `Entry::SEO` (in `app/models/entry/seo.rb`). Every Entryable type should rely solely on `Entry#seo` for SEO metadata, and not implement any SEO logic of its own. The class generates titles (truncated at word boundaries to fit browser limits), descriptions (from the entry's excerpt, max 160 chars), canonical URLs, and OG image data.
 
-#### Rendering SEO tags in views
-
 Use `content_for :head` to inject SEO meta tags into the layout, and the `seo_meta_tags_for_entry` helper from `SeoHelper` to generate the full set of meta tags (description, canonical, Open Graph, and Twitter Card). Cache the SEO block in the view:
 
 ```erb
@@ -150,7 +148,7 @@ Use `content_for :head` to inject SEO meta tags into the layout, and the `seo_me
 <% end %>
 ```
 
-#### OG images
+Each page must have a visible H1 tag with its title. The H1 can be styled not to look like a header, but it must be present in the HTML for SEO purposes.
 
 Each Entryable must define a `cover_image` method that returns an image attachment (e.g. the first image in an article's rich text content, or a talk's attached cover image). `Entry::SEO::Image` resizes it to 512x512 for OG tags. If no image is present, a default fallback image is used (`app/assets/images/default_seo_image.jpg`).
 

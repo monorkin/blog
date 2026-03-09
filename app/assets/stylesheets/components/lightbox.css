@@ -108,9 +108,44 @@
     gap: var(--space-4);
   }
 
+  .lightbox__captions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
   .lightbox__caption {
     font-size: var(--text-sm);
     opacity: 0.8;
+  }
+
+  .lightbox__actions {
+    display: flex;
+    gap: var(--space-2);
+    flex-shrink: 0;
+  }
+
+  .lightbox__action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-2);
+    background: none;
+    border: none;
+    color: oklch(100% 0 0 / 0.6);
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: color 0.15s ease;
+    text-decoration: none;
+  }
+
+  .lightbox__action-btn:hover {
+    color: oklch(100% 0 0);
+  }
+
+  .lightbox__actions--copied .lightbox__action-btn[data-action*="clipboard"] {
+    color: oklch(85% 0.15 145);
   }
 
   .lightbox__admin {

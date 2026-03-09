@@ -20,7 +20,7 @@
 
     <% if @snap.file.attached? %>
       <% if @snap.file.image? %>
-        <%= image_tag @snap.file, alt: @snap.title, class: "lightbox__image" %>
+        <%= image_tag @snap.file.variant(resize_to_limit: [2000, 2000]), alt: @snap.title, class: "lightbox__image" %>
       <% elsif @snap.file.video? %>
         <video class="lightbox__image" controls>
           <source src="<%= url_for(@snap.file) %>" type="<%= @snap.file.content_type %>">
@@ -38,10 +38,34 @@
     <% end %>
 
     <div class="lightbox__footer">
-      <span class="lightbox__caption"><%= @snap.title %></span>
-      <% if @snap.caption.present? %>
-        <span class="lightbox__caption"><%= @snap.caption %></span>
-      <% end %>
+      <div class="lightbox__captions">
+        <span class="lightbox__caption"><%= @snap.title %></span>
+        <% if @snap.caption.present? %>
+          <span class="lightbox__caption"><%= @snap.caption %></span>
+        <% end %>
+      </div>
+
+      <div class="lightbox__actions"
+           data-controller="clipboard"
+           data-clipboard-text-value="<%= snap_url(@snap) %>"
+           data-clipboard-copied-class="lightbox__actions--copied">
+        <button class="lightbox__action-btn"
+                data-action="clipboard#copy"
+                aria-label="Copy link"
+                title="Copy link">
+          <%= link_icon(class: "icon-sm") %>
+        </button>
+
+        <% if @snap.file.attached? %>
+          <%= link_to rails_blob_path(@snap.file, disposition: :attachment),
+                class: "lightbox__action-btn",
+                aria: { label: "Download original" },
+                title: "Download original",
+                data: { turbo: false } do %>
+            <%= arrow_down_tray_icon(class: "icon-sm") %>
+          <% end %>
+        <% end %>
+      </div>
     </div>
 
     <% if Current.user.present? %>

@@ -16,10 +16,11 @@
                       alt: snap.title,
                       class: "photos-grid__image",
                       loading: "lazy" %>
-      <% elsif snap.file.video? %>
-        <video class="photos-grid__image" muted preload="metadata">
-          <source src="<%= url_for(snap.file) %>" type="<%= snap.file.content_type %>">
-        </video>
+      <% elsif snap.file.previewable? %>
+        <%= image_tag snap.file.preview(resize_to_fill: [400, 400]),
+                      alt: snap.title,
+                      class: "photos-grid__image",
+                      loading: "lazy" %>
       <% end %>
     <% end %>
     <% if snap.file.video? && snap.file.blob.metadata["duration"] %>

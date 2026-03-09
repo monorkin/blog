@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SnapsController < ApplicationController
-  ORDER = { created_at: :desc }.freeze
+  ORDER = { publish_at: :desc }.freeze
   RATIOS = [12, 24, 48].freeze
 
   before_action only: %i[index show] do
@@ -12,11 +12,6 @@ class SnapsController < ApplicationController
   ensure_authenticated only: %i[new create edit update destroy]
 
   def index
-    snaps = Snap
-      .joins(:entry).merge(Entry.published)
-      .order(ORDER)
-      .preload(:entry, file_attachment: :blob)
-
     set_page_and_extract_portion_from(snaps, per_page: RATIOS)
 
     @snaps = @page.records
@@ -25,12 +20,8 @@ class SnapsController < ApplicationController
   end
 
   def show
-    published_snaps = Snap.joins(:entry).merge(Entry.published).order(created_at: :desc)
-    ids = published_snaps.pluck(:id)
-    index = ids.index(@snap.id)
-
-    @previous_snap = Snap.find(ids[index - 1]) if index && index > 0
-    @next_snap = Snap.find(ids[index + 1]) if index && index + 1 < ids.size
+    @previous_snap = snaps.where(entries: { publish_at: (@snap.entry.publish_at..) }).where.not(id: @snap.id).last
+    @next_snap = snaps.where(entries: { publish_at: (...@snap.entry.publish_at) }).where.not(id: @snap.id).first
 
     fresh_when(@snap)
   end
@@ -47,7 +38,8 @@ class SnapsController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+  end
 
   def update
     if @snap.update(permitted_params)
@@ -64,6 +56,13 @@ class SnapsController < ApplicationController
   end
 
   private
+    def snaps
+      Snap
+        .joins(:entry).merge(Entry.published)
+        .order(ORDER)
+        .preload(:entry, file_attachment: :blob)
+    end
+
     def set_snap
       @snap = Entry.snaps.from_slug!(params[:id]).entryable
     end

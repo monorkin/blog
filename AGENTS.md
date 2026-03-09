@@ -131,6 +131,37 @@ Using both HTTP caching and view caching together yields by far the best results
 
 So always do both!
 
+### SEO
+
+Each public-facing resource must have all the search engine optimization (SEO) metadata properly filled out, including title, description, Open Graph tags, Twitter Card tags, canonical URL, and a sitemap entry.
+
+Most of the SEO logic is handled by `Entry::SEO` (in `app/models/entry/seo.rb`). Every Entryable type should rely solely on `Entry#seo` for SEO metadata, and not implement any SEO logic of its own. The class generates titles (truncated at word boundaries to fit browser limits), descriptions (from the entry's excerpt, max 160 chars), canonical URLs, and OG image data.
+
+#### Rendering SEO tags in views
+
+Use `content_for :head` to inject SEO meta tags into the layout, and the `seo_meta_tags_for_entry` helper from `SeoHelper` to generate the full set of meta tags (description, canonical, Open Graph, and Twitter Card). Cache the SEO block in the view:
+
+```erb
+<%= content_for :head do %>
+  <%= cache [@article.entry, :seo] do %>
+    <title><%= @article.entry.seo.title %></title>
+    <%= seo_meta_tags_for_entry(@article.entry) %>
+  <% end %>
+<% end %>
+```
+
+#### OG images
+
+Each Entryable must define a `cover_image` method that returns an image attachment (e.g. the first image in an article's rich text content, or a talk's attached cover image). `Entry::SEO::Image` resizes it to 512x512 for OG tags. If no image is present, a default fallback image is used (`app/assets/images/default_seo_image.jpg`).
+
+#### Sitemap
+
+The sitemap uses an index structure (`/sitemap.xml`) linking to sub-sitemaps per content type (pages, articles, talks, tags). When adding a new public content type, add a corresponding sub-sitemap. Each sub-sitemap uses Russian doll caching keyed on record count and max `updated_at`.
+
+#### General rules
+
+All images must have alt text, and all links must have descriptive text naturally woven into the sentence (not "click here", but "RSS feed").
+
 ## Coding style
 
 @STYLE.md

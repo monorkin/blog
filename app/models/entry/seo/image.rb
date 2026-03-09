@@ -22,17 +22,19 @@ class Entry::SEO::Image
   end
 
   def present?
-    attachment.present?
+    variant.present?
   end
 
   def variant
-    if present?
-      attachment.representation(resize_to_fill: SIZE, saver: { strip: true })
+    if attachment.present? && attachment.variable?
+      attachment.variant(resize_to_fill: SIZE, saver: { strip: true })
+    elsif attachment.present? && attachment.previewable?
+      attachment.preview(resize_to_fill: SIZE, saver: { strip: true })
     end
   end
 
   def url
-    url_helpers.url_for(variant) if variant
+    url_helpers.url_for(variant) if present?
   end
 
   def width

@@ -5,3 +5,4 @@ flower_1_blob: <%= ActiveStorage::FixtureSet.blob filename: "flower_1.jpg", serv
 flower_2_blob: <%= ActiveStorage::FixtureSet.blob filename: "flower_2.jpg", service_name: "test", metadata: { identified: true, width: 3024, height: 4032, analyzed: true } %>
 sky_1_blob: <%= ActiveStorage::FixtureSet.blob filename: "sky_1.jpg", service_name: "test", metadata: { identified: true, width: 3024, height: 4032, analyzed: true } %>
 sky_2_blob: <%= ActiveStorage::FixtureSet.blob filename: "sky_2.jpg", service_name: "test", metadata: { identified: true, width: 3024, height: 4032, analyzed: true } %>
+robin_blob: <%= ActiveStorage::FixtureSet.blob filename: "robin.mp4", service_name: "test", content_type: "video/mp4", metadata: { identified: true, width: 1920, height: 1080, duration: 12.5, audio: true, video: true, analyzed: true } %>

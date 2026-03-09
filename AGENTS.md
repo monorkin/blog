@@ -152,13 +152,15 @@ Each page must have a visible H1 tag with its title. The H1 can be styled not to
 
 Each Entryable must define a `cover_image` method that returns an image attachment (e.g. the first image in an article's rich text content, or a talk's attached cover image). `Entry::SEO::Image` resizes it to 512x512 for OG tags. If no image is present, a default fallback image is used (`app/assets/images/default_seo_image.jpg`).
 
-#### Sitemap
-
 The sitemap uses an index structure (`/sitemap.xml`) linking to sub-sitemaps per content type (pages, articles, talks, tags). When adding a new public content type, add a corresponding sub-sitemap. Each sub-sitemap uses Russian doll caching keyed on record count and max `updated_at`.
 
-#### General rules
-
 All images must have alt text, and all links must have descriptive text naturally woven into the sentence (not "click here", but "RSS feed").
+
+## Scripts and tasks
+
+When I ask for a script I sometimes mean a one-off script that I can copy-paste into the console and other times a utility script that goes into ./scripts.
+
+If I want a Rake task then I'll specifically ask for it.
 
 ## Coding style
 

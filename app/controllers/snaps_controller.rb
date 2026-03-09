@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SnapsController < ApplicationController
-  ORDER = { publish_at: :desc }.freeze
+  ORDER = { published_at: :desc }.freeze
   RATIOS = [12, 24, 48].freeze
 
   before_action only: %i[index show] do
@@ -20,8 +20,8 @@ class SnapsController < ApplicationController
   end
 
   def show
-    @previous_snap = snaps.where(entries: { publish_at: (@snap.entry.publish_at..) }).where.not(id: @snap.id).last
-    @next_snap = snaps.where(entries: { publish_at: (...@snap.entry.publish_at) }).where.not(id: @snap.id).first
+    @previous_snap = snaps.where(entries: { published_at: (@snap.entry.published_at..) }).where.not(id: @snap.id).last
+    @next_snap = snaps.where(entries: { published_at: (...@snap.entry.published_at) }).where.not(id: @snap.id).first
 
     fresh_when(@snap)
   end

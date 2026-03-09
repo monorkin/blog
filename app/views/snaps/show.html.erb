@@ -1,5 +1,8 @@
 <% content_for :head do %>
-  <title><%= Entry::SEO.titleize(@snap.title) %></title>
+  <%= cache [@snap.entry, :seo] do %>
+    <title><%= @snap.entry.seo.title %></title>
+    <%= seo_meta_tags_for_entry(@snap.entry) %>
+  <% end %>
 <% end %>
 
 <%= turbo_frame_tag :snap_lightbox do %>

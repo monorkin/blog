@@ -12,10 +12,18 @@
     margin-inline: auto;
   }
 
+  .photos-grid ~ turbo-frame .photos-grid {
+    margin-block-start: var(--space-2);
+  }
+
   @media (min-width: 640px) {
     .photos-grid {
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: var(--space-4);
+    }
+
+    .photos-grid ~ turbo-frame .photos-grid {
+      margin-block-start: var(--space-4);
     }
   }
 

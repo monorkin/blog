@@ -3,7 +3,7 @@
 class Snap < ApplicationRecord
   include Entryable
 
-  content { ActionText::Content.new("") }
+  content { ActionText::Content.new(caption.to_s) }
 
   has_one_attached :file
 

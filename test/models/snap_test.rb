@@ -16,8 +16,17 @@ class SnapTest < ActiveSupport::TestCase
     assert snap.errors[:title].any?, "Should have title validation error"
   end
 
-  test "#content returns empty ActionText::Content" do
+  test "#content returns caption as ActionText::Content" do
     snap = snaps(:sky_1)
+
+    content = snap.content
+
+    assert_kind_of ActionText::Content, content
+    assert_equal "The sky on fire", content.to_plain_text
+  end
+
+  test "#content returns empty ActionText::Content when caption is blank" do
+    snap = snaps(:sky_2)
 
     content = snap.content
 

@@ -15,4 +15,9 @@ xml.urlset xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9" do
     xml.lastmod Talk.maximum(:updated_at)&.iso8601
     xml.priority 0.9
   end
+  xml.url do
+    xml.loc snaps_url
+    xml.lastmod Snap.published.maximum(:updated_at)&.iso8601
+    xml.priority 0.9
+  end
 end

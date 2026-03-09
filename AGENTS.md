@@ -111,6 +111,26 @@ The responsive breakpoints are defined in `app/assets/stylesheets/base.css` and 
 
 Use `@media (width >= <value>)` syntax in CSS.
 
+### Caching
+
+It's important to cache rendered responses whenever possible both at the HTTP level using fresh_when or stale? and at the view level using the cache method.
+
+This ensures that responses, from this read-heavy site, are always offered quickly to visitors.
+
+In views, do Russian doll caching, i.e. cache the parent and then cache the children inside it.
+This ensures that when a child is updated, only the child and its parents need to be re-rendered, while the rest of the page can be served from cache - a huge performance boost.
+
+You can cache XML builder responses as well, e.g. the Atom feed, or the sitemap, but for that the cache method must be called from the same buffer as the builder template, i.e. from the builder template itself or from a partial rendered by it.
+If you do call it from a different buffer then the initial render will look fine, but subsequent renders will omit the cached content, which is obviously bad.
+
+If you have to cache something in the backend code then use Rails.cache - though use that sparingly, the view's cache method is way better at caching anything that will ever be rendered because it includes a digest of the view it was called from, so if that view changes then the cache is automatically invalidated, while with Rails.cache you have to manually manage cache keys and invalidation.
+
+Since this site is primarily read by browsers, RSS readers and bots, using HTTP caching yields amazing performance benefits.
+
+Using both HTTP caching and view caching together yields by far the best results - if the cache is still fresh then the response is served directly from the HTTP cache, if it's stale but the view cache is still valid then the response is rendered quickly from the view cache, and only if both caches are stale then the response needs to be fully rendered.
+
+So always do both!
+
 ## Coding style
 
 @STYLE.md

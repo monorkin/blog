@@ -36,6 +36,7 @@ export default class extends ApplicationController {
     frame.id = link.dataset.turboFrame
     frame.src = link.href
     frame.loading = "eager"
+    frame.setAttribute("target", "_top")
 
     link.replaceWith(frame)
   }

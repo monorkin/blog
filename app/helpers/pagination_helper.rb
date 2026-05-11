@@ -7,7 +7,7 @@ module PaginationHelper
         capture(&block) + pagination_link(name, page)
       end
     else
-      turbo_frame_tag(pagination_frame_id(name, page.number)) do
+      turbo_frame_tag(pagination_frame_id(name, page.number), target: "_top") do
         capture(&block) + pagination_link(name, page)
       end
     end

@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "~> 3.3"
 
 gem "httpx"
-gem "lexxy", "~> 0.7.4.beta"
+gem "lexxy", "~> 0.9.11.beta"
 gem "aws-sdk-s3", "~> 1.14"
 gem "bcrypt", "~> 3.1.7"
 gem "bootsnap"
@@ -46,7 +46,7 @@ group :development do
   gem "memory_profiler"
   gem "rack-mini-profiler", require: %w[enable_rails_patches rack-mini-profiler]
   gem "stackprof"
-  gem "web-console", ">= 3.3.0"
+  gem "web-console", ">= 4.3.0"
 end
 
 group :test do

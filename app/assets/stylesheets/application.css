@@ -7,3 +7,11 @@ lexxy-toolbar {
   background-color: oklch(from var(--lexxy-color-canvas) l c h / 0.8);
   backdrop-filter: blur(8px);
 }
+
+lexxy-toolbar .lexxy-editor__toolbar-dropdown-list button svg {
+  fill: currentColor;
+}
+
+lexxy-toolbar .lexxy-editor__toolbar-dropdown--chevron > summary {
+  grid-template-columns: var(--lexxy-toolbar-icon-size) auto;
+}

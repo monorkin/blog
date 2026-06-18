@@ -7,10 +7,10 @@ image: monorkin/blog
 # Deploy to these servers.
 servers:
   web:
-    - shire.stanko.io
+    - shire
   jobs:
     hosts:
-      - shire.stanko.io
+      - shire
     cmd: bin/jobs
 
 # Proxy settings

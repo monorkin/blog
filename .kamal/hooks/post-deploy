@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Records each successful deploy as a Grafana annotation so deploys show up as
+# markers on the app dashboards. Best-effort: never fails the deploy.
+set -euo pipefail
+
+if [ -z "${GRAFANA_ANNOTATION_TOKEN:-}" ]; then
+  echo "post-deploy: GRAFANA_ANNOTATION_TOKEN not set, skipping Grafana annotation"
+  exit 0
+fi
+
+curl -fsS -X POST "https://grafana.stanko.io/api/annotations" \
+  -H "Authorization: Bearer ${GRAFANA_ANNOTATION_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d "{\"time\": $(date +%s%3N), \"tags\": [\"deploy\", \"${KAMAL_SERVICE}\"], \"text\": \"${KAMAL_SERVICE} ${KAMAL_VERSION} by ${KAMAL_PERFORMER}\"}" \
+  >/dev/null 2>&1 \
+  && echo "post-deploy: Grafana annotation created for ${KAMAL_SERVICE} ${KAMAL_VERSION}" \
+  || echo "post-deploy: Grafana annotation failed (non-fatal)"

@@ -264,6 +264,18 @@
     }
   }
 
+  /* Kana ruby annotations */
+  lexxy-editor ruby,
+  .lexxy-content ruby {
+    ruby-align: center;
+
+    & rt {
+      font-size: 0.5em;
+      color: var(--lexxy-color-text-subtle, var(--color-ink-muted));
+      user-select: none;
+    }
+  }
+
   /* Lexxy dark mode variables */
   .color-scheme.color-scheme--dark lexxy-editor,
   .color-scheme.color-scheme--dark .lexxy-content {

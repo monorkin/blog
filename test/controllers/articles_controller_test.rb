@@ -58,6 +58,16 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_select "h1", text: article.title
   end
 
+  test "GET show preserves kana ruby annotations through sanitization" do
+    article = articles(:misguided_mark)
+    article.update!(body: "<p><ruby>こ<rt>ko</rt></ruby>ntent</p>")
+
+    get article_path(slug: article.to_param)
+
+    assert_response :success
+    assert_select ".lexxy-content ruby rt", text: "ko"
+  end
+
   test "GET show resolves article by slug suffix only" do
     article = articles(:misguided_mark)
     entry = article.entry

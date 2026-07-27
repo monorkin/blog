@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "~> 3.3"
 
 gem "httpx"
-gem "lexxy", "~> 0.9.11.beta"
+gem "lexxy", "~> 0.9.27"
 gem "aws-sdk-s3", "~> 1.14"
 gem "bcrypt", "~> 3.1.7"
 gem "bootsnap"

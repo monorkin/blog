@@ -134,6 +134,13 @@ class EntryableTest < ActiveSupport::TestCase
     assert_equal "Hello ", article.plain_text_content
   end
 
+  test "#plain_text_content strips kana ruby readings" do
+    article = articles(:misguided_mark)
+    article.body = "<p>Say <ruby>こ<rt>ko</rt></ruby><ruby>ん<rt>n</rt></ruby> to everyone</p>"
+
+    assert_equal "Say こん to everyone", article.plain_text_content
+  end
+
   test "#excerpt truncates plain text content" do
     article = articles(:misguided_mark)
     article.body = "Word " * 100

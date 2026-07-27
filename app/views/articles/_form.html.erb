@@ -15,8 +15,8 @@
 
   <%= rich_text_field(form, :body) %>
 
-  <div data-controller="publish" data-publish-published-value="<%= article.published? %>" data-action="click@window->publish#closeScheduleOnClickOutside">
-    <%= form.hidden_field :published, data: { publish_target: "publishedInput" } %>
+  <div data-controller="publish" data-publish-published-value="<%= !!article.published? %>" data-action="click@window->publish#closeScheduleOnClickOutside">
+    <%= form.hidden_field :published, value: !!article.published?, data: { publish_target: "publishedInput" } %>
     <%= form.hidden_field :publish_at, value: "", data: { publish_target: "publishAtInput" } %>
 
     <div data-publish-target="draftControls" class="form__actions">

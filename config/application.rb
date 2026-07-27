@@ -57,7 +57,10 @@ module Blog
         *ActionText::ContentHelper.sanitizer.class.allowed_tags,
         ActionText::Attachment.tag_name,
         "figure",
-        "figcaption"
+        "figcaption",
+        "ruby",
+        "rt",
+        "rp"
       ]
     end
   end

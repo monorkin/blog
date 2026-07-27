@@ -53,7 +53,7 @@ module Entryable
   end
 
   def plain_text_content
-    content&.to_plain_text&.gsub(/\[[^\]]*\]/, "") || ""
+    content_without_kana_readings&.to_plain_text&.gsub(/\[[^\]]*\]/, "") || ""
   end
 
   def excerpt(length: 300)
@@ -76,6 +76,14 @@ module Entryable
   end
 
   private
+    # Kana ruby annotations carry their reading in <rt> tags, which would leak
+    # into excerpts as stray romaji ("こんにちは" would become "こkoんnに...").
+    def content_without_kana_readings
+      if content
+        ActionText::Content.new(content.fragment.replace("rt, rp") { "" }, canonicalize: false)
+      end
+    end
+
     def ensure_entry
       build_entry(slug: slug, published_at: Time.current) unless entry.present?
     end

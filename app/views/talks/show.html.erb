@@ -31,7 +31,7 @@
   <% if Current.user.present? %>
     <div class="flex flex-row gap-x-4">
       <span class="font-semibold"><%= link_to t(".edit"), edit_talk_path(@talk) %></span>
-      <span class="font-semibold"><%= button_to t(".delete"), talk_path(@talk), method: :delete, data: { turbo_confirm: t(".confirm_delete") } %></span>
+      <span class="font-semibold"><%= button_to t(".delete"), talk_path(@talk), method: :delete, class: "btn btn--link", data: { turbo_confirm: t(".confirm_delete") } %></span>
     </div>
   <% end %>
 </div>

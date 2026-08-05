@@ -27,6 +27,17 @@
     }
   }
 
+  .btn--link {
+    padding: 0;
+    background: none;
+    font: inherit;
+    color: var(--color-link);
+
+    &:hover {
+      color: var(--color-link-hover);
+    }
+  }
+
   .btn--split-left {
     border-start-end-radius: 0;
     border-end-end-radius: 0;

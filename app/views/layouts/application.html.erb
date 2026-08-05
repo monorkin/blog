@@ -65,7 +65,7 @@
         <%= link_to t(".source_code"), "https://github.com/monorkin/blog", target: :_blank %>
 
         <% if Current.user %>
-          <%= button_to t(".sign_out"), login_path, method: :delete %>
+          <%= button_to t(".sign_out"), login_path, method: :delete, class: "btn btn--link" %>
         <% end %>
       </div>
       <div class="footer__copyright">

@@ -10,7 +10,7 @@
     <span><%= link_to text_with_icon(:arrow_long_left, t(".back")), articles_path, class: "article__back-link" %></span>
     <% if Current.user.present? %>
       <span class="font-semibold"><%= link_to t(".edit"), edit_article_path(@article) %></span>
-      <span class="font-semibold"><%= button_to t(".delete"), article_path(@article), method: :delete, data: { turbo_confirm: t(".confirm_delete") } %></span>
+      <span class="font-semibold"><%= button_to t(".delete"), article_path(@article), method: :delete, class: "btn btn--link", data: { turbo_confirm: t(".confirm_delete") } %></span>
     <% end %>
   </div>
 

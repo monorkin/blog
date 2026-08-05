@@ -47,6 +47,12 @@
     display: inline-block;
   }
 
+  /* Dialogs get color: CanvasText from the UA stylesheet, which ignores the
+     page's dark theme because it's class-based, not color-scheme based. */
+  dialog {
+    color: inherit;
+  }
+
   hr {
     border: 0;
     border-block-start: 1px solid var(--color-border);

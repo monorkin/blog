@@ -71,6 +71,7 @@
     position: fixed;
     inset-block-end: 2.25rem;
     inset-inline-end: 1rem;
+    z-index: var(--z-popup);
     padding: var(--space-2);
     display: block;
     background-color: var(--color-surface);

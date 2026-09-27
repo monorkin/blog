@@ -49,8 +49,8 @@ gets `public/404.html` with a 404.
 ## Redirects and headers
 
 `public/_redirects` holds the static redirects: `/articles/atom_style` to `/feed/style`,
-the numeric talk URLs (`/talks/1` to `/talks/15`) the Rails app redirected, and
-`/talks/page/*` to `/talks`, from when talks were paginated. Those IDs are
+the numeric talk URLs (`/talks/1` to `/talks/15`, and `/talks/1050011312`) the Rails app
+redirected, and `/talks/page/*` to `/talks`, from when talks were paginated. Those IDs are
 frozen; new talks don't get one.
 
 `public/_headers` gives `/feed/style` and `/up` their content types, since neither has an

@@ -4,49 +4,6 @@
     display: none;
   }
 
-  .dialog {
-    border-radius: var(--radius-lg);
-
-    &::backdrop {
-      backdrop-filter: blur(4px);
-    }
-  }
-
-  .dialog__close-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    inline-size: 2rem;
-    block-size: 2rem;
-    background-color: var(--color-surface);
-    border-radius: var(--radius-full);
-    box-shadow: var(--shadow);
-    transition: transform 0.15s ease;
-
-    &:hover {
-      transform: scale(1.1);
-    }
-
-    & svg {
-      inline-size: 1rem;
-      block-size: 1rem;
-      color: var(--color-ink-muted);
-    }
-  }
-
-  .dialog__close-btn-wrapper {
-    position: absolute;
-    inset-block-start: -1rem;
-    inset-inline-end: -1rem;
-    block-size: 2rem;
-    z-index: 20;
-  }
-
-  .dialog__panel {
-    position: relative;
-    margin: var(--space-5);
-  }
-
   .dialog__frame {
     display: block;
     inline-size: 100%;
@@ -68,52 +25,92 @@
     }
   }
 
-  .dialog--overlay {
-    position: absolute;
-    inset-block-start: var(--space-5);
-    inset-inline-start: var(--space-5);
-    inline-size: 100vw;
-    block-size: 100vh;
-    background-color: transparent;
+  /* A panel that drops in from above: the search, the phone menu and the appearance popover */
+  .sheet,
+  .appearance-popover {
+    color: var(--color-ink);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border-subtle);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    translate: 0 -0.5rem;
+    transition:
+      opacity 0.16s ease-out,
+      translate 0.16s ease-out,
+      display 0.16s allow-discrete,
+      overlay 0.16s allow-discrete;
+
+    &:is([open], :popover-open) {
+      opacity: 1;
+      translate: 0 0;
+
+      @starting-style {
+        opacity: 0;
+        translate: 0 -0.5rem;
+      }
+    }
+  }
+
+  .sheet {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    max-inline-size: none;
+    max-block-size: none;
+
+    &::backdrop {
+      background-color: transparent;
+      transition:
+        background-color 0.16s ease-out,
+        display 0.16s allow-discrete,
+        overlay 0.16s allow-discrete;
+    }
+
+    &[open]::backdrop {
+      background-color: var(--color-backdrop);
+
+      @starting-style {
+        background-color: transparent;
+      }
+    }
+  }
+
+  .sheet--search[open] {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    border: none;
-    padding: 0;
-
-    &::backdrop {
-      backdrop-filter: blur(2px);
-    }
-  }
-
-  .dialog--overlay-settings {
+    inset: 0;
     inline-size: 100%;
-    block-size: 100%;
+    block-size: 100dvh;
+    border: 0;
   }
 
-  @media (min-width: 640px) {
-    .dialog--overlay {
-      inset-block-start: var(--space-24);
+  @media (width >= 600px) {
+    .sheet--search[open] {
+      inset: 12vh 0 auto;
+      margin-inline: auto;
+      inline-size: min(32rem, 100vw - 2rem);
+      block-size: auto;
+      max-block-size: 76vh;
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
     }
   }
 
-  @media (min-width: 1024px) {
-    .dialog--overlay {
-      inset-block-start: var(--space-32);
-    }
-  }
-
-  .dialog--overlay-mobile {
-    position: absolute;
-    inset: var(--space-5);
+  .sheet--menu {
+    inset: 0 0 auto;
     inline-size: 100%;
-    block-size: 100%;
-    background-color: transparent;
-    border: none;
-    padding: 0;
+    border-width: 0 0 1px;
+    border-end-start-radius: var(--radius-lg);
+    border-end-end-radius: var(--radius-lg);
+  }
 
-    &::backdrop {
-      backdrop-filter: blur(8px);
+  @media (prefers-reduced-motion: reduce) {
+    .sheet,
+    .appearance-popover,
+    .sheet:is([open], :popover-open),
+    .appearance-popover:is([open], :popover-open) {
+      translate: none;
     }
   }
 }

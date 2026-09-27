@@ -6,6 +6,7 @@ import EntrySeoTags from "~/components/EntrySeoTags.astro"
 import Icon from "~/components/Icon.astro"
 import { publishedEntries, type Entry } from "~/lib/entries"
 import { findMedia, originalUrl, sources, variantAtLeast } from "~/lib/media"
+import { isoTimestamp } from "~/lib/site"
 
 export const getStaticPaths = (async () => {
   const snaps = await publishedEntries("snap")
@@ -86,8 +87,9 @@ if (data.video) {
       )}
 
       <div class="lightbox__footer">
-        <div class="lightbox__captions">
-          <h1 class="lightbox__caption">{snap.title}</h1>
+        <div class="lightbox__captions" data-pagefind-body data-pagefind-meta="type:Snap">
+          <h1 class="lightbox__caption" data-pagefind-meta="title">{snap.title}</h1>
+          <time hidden datetime={isoTimestamp(snap.publishedAt)} data-pagefind-meta="date[datetime]"></time>
           {data.caption && <span class="lightbox__caption">{data.caption}</span>}
         </div>
 

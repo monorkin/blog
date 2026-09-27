@@ -1,20 +1,36 @@
-const DEBOUNCE_DELAY = 300
-const RESULTS_PER_TYPE = 5
-const TYPES = [ "Article", "Talk", "Tag" ]
+const DIALOG_ID = "search-dialog"
+const DEBOUNCE_DELAY = 150
+const MAX_RESULTS = 12
 const PAGEFIND_URL = "/pagefind/pagefind.js"
+
+const MESSAGES = {
+  prompt: "Finds articles, talks and snaps. Start with # to find everything with a tag, like #ruby. Press / anywhere to search.",
+  unavailable: "Search works once the site is built. Run bin/preview to try it."
+}
+
+const DATE_FORMAT = new Intl.DateTimeFormat("en", { month: "short", year: "numeric", timeZone: "UTC" })
 
 interface Pagefind {
   search(term: string | null, options?: { filters?: Record<string, string> }): Promise<{ results: PagefindResult[] }>
 }
 
 interface PagefindResult {
-  data(): Promise<{ url: string, meta: { title: string, type: string } }>
+  data(): Promise<{ url: string, excerpt: string, meta: { title: string, type: string, date?: string } }>
+}
+
+interface Result {
+  title: string
+  kind: string
+  date?: string
+  excerpt: string
+  path: string
 }
 
 let pagefind: Promise<Pagefind> | undefined
 
 class SearchPanel {
   #input: HTMLInputElement
+  #status: HTMLElement
   #results: HTMLElement
   #template: HTMLTemplateElement
   #timer?: number
@@ -22,36 +38,47 @@ class SearchPanel {
 
   constructor(element: HTMLElement) {
     this.#input = element.querySelector("[data-search-input]")!
+    this.#status = element.querySelector("[data-search-status]")!
     this.#results = element.querySelector("[data-search-results]")!
     this.#template = element.querySelector("[data-search-result-template]")!
 
     this.#input.addEventListener("input", () => this.#searchLater())
     this.#input.addEventListener("keydown", (event) => this.#navigate(event))
+    this.#results.addEventListener("mousemove", (event) => this.#highlightUnderPointer(event))
     element.querySelector("[data-search-form]")!.addEventListener("submit", (event) => {
       event.preventDefault()
       this.search()
     })
+
+    this.#showMessage(MESSAGES.prompt)
+  }
+
+  focus() {
+    this.#input.focus()
+    this.#input.select()
+  }
+
+  fill(term: string) {
+    this.#input.value = term
+    this.search()
   }
 
   async search() {
     const term = this.#input.value.trim()
 
     if (term === "") {
-      this.#showMessage("Enter something in the field above and press enter")
-    } else if (import.meta.env.DEV) {
-      this.#showMessage("Search needs the Pagefind index, which only a build has")
+      this.#showMessage(MESSAGES.prompt)
     } else {
-      const results = await findResults(term)
+      try {
+        const results = await findResults(term)
 
-      if (this.#input.value.trim() === term) {
-        this.#showResults(results)
+        if (this.#input.value.trim() === term) {
+          this.#showResults(term, results)
+        }
+      } catch {
+        this.#showMessage(MESSAGES.unavailable)
       }
     }
-  }
-
-  fill(term: string) {
-    this.#input.value = term
-    this.search()
   }
 
   #searchLater() {
@@ -60,35 +87,37 @@ class SearchPanel {
   }
 
   #showMessage(message: string) {
-    const element = document.createElement("div")
-    element.className = "search__no-results"
-    element.textContent = message
-    this.#results.replaceChildren(element)
-    this.#selectedIndex = -1
+    this.#status.textContent = message
+    this.#results.replaceChildren()
+    this.#select(-1)
   }
 
-  #showResults(results: Array<{ title: string, type: string, path: string }>) {
+  #showResults(term: string, results: Result[]) {
     if (results.length === 0) {
-      this.#showMessage("No results found")
+      this.#showMessage(`Nothing matches “${term}”. Try fewer words, or a tag like #rails.`)
     } else {
-      const list = document.createElement("ul")
-      list.className = "search__results-list"
-      list.setAttribute("role", "listbox")
-      list.append(...results.map(result => this.#resultItem(result)))
-      this.#results.replaceChildren(list)
-      this.#selectedIndex = -1
+      this.#status.textContent = ""
+      this.#results.replaceChildren(...results.map((result, index) => this.#resultItem(result, index)))
+      this.#select(0)
     }
   }
 
-  #resultItem({ title, type, path }: { title: string, type: string, path: string }) {
+  #resultItem(result: Result, index: number) {
     const item = this.#template.content.firstElementChild!.cloneNode(true) as HTMLElement
-    const link = item.querySelector("a")!
+    const date = item.querySelector<HTMLTimeElement>("[data-date]")!
 
-    link.href = path
-    link.setAttribute("aria-label", title)
-    item.querySelector(".search__result-title")!.textContent = title
-    item.querySelector(".search__result-type")!.textContent = type
-    item.addEventListener("mouseenter", () => this.#highlight(this.#items.indexOf(item)))
+    item.id = `${this.#results.id}-${index}`
+    item.querySelector("a")!.href = result.path
+    item.querySelector("[data-title]")!.textContent = result.title
+    item.querySelector("[data-kind]")!.textContent = result.kind
+    item.querySelector("[data-excerpt]")!.append(...excerptNodes(result.excerpt))
+
+    if (result.date) {
+      date.dateTime = result.date
+      date.textContent = DATE_FORMAT.format(new Date(result.date))
+    } else {
+      date.remove()
+    }
 
     return item
   }
@@ -97,21 +126,30 @@ class SearchPanel {
     this.#keyHandlers[event.key]?.call(this, event)
   }
 
-  #keyHandlers: Record<string, (event: KeyboardEvent) => void> = {
-    ArrowDown(this: SearchPanel, event: KeyboardEvent) {
+  #keyHandlers: Record<string, (this: SearchPanel, event: KeyboardEvent) => void> = {
+    ArrowDown(event) {
       event.preventDefault()
       this.#moveSelection(1)
     },
-    ArrowUp(this: SearchPanel, event: KeyboardEvent) {
+    ArrowUp(event) {
       event.preventDefault()
       this.#moveSelection(-1)
     },
-    Enter(this: SearchPanel, event: KeyboardEvent) {
+    Enter(event) {
       const item = this.#items[this.#selectedIndex]
 
       if (item && !event.isComposing) {
         event.preventDefault()
         item.querySelector("a")!.click()
+      }
+    },
+    // A search field eats Escape to clear itself, so the dialog would stay open
+    Escape(event) {
+      const dialog = this.#input.closest("dialog")
+
+      if (dialog) {
+        event.preventDefault()
+        dialog.close()
       }
     }
   }
@@ -120,14 +158,29 @@ class SearchPanel {
     const count = this.#items.length
 
     if (count > 0) {
-      this.#highlight((this.#selectedIndex + step + count) % count)
+      this.#select((this.#selectedIndex + step + count) % count)
+      this.#items[this.#selectedIndex].scrollIntoView({ block: "nearest" })
     }
   }
 
-  #highlight(index: number) {
+  #highlightUnderPointer(event: MouseEvent) {
+    const item = (event.target as HTMLElement).closest<HTMLElement>(".search__result")
+
+    if (item) {
+      this.#select(this.#items.indexOf(item))
+    }
+  }
+
+  #select(index: number) {
     this.#items.forEach((item, itemIndex) => item.setAttribute("aria-selected", String(itemIndex === index)))
     this.#selectedIndex = index
-    this.#items[index]?.scrollIntoView({ block: "nearest" })
+    this.#input.setAttribute("aria-expanded", String(this.#items.length > 0))
+
+    if (index >= 0) {
+      this.#input.setAttribute("aria-activedescendant", this.#items[index].id)
+    } else {
+      this.#input.removeAttribute("aria-activedescendant")
+    }
   }
 
   get #items() {
@@ -145,25 +198,87 @@ async function findResults(term: string) {
     search = await index.search(term)
   }
 
-  const results = await Promise.all(search.results.slice(0, 30).map(result => result.data()))
+  const results = await Promise.all(search.results.slice(0, MAX_RESULTS).map(result => result.data()))
 
-  return TYPES.flatMap(type => {
-    return results
-      .filter(result => result.meta.type === type)
-      .slice(0, RESULTS_PER_TYPE)
-      .map(result => ({ title: result.meta.title, type, path: result.url.replace(/\.html$/, "") }))
-  })
+  return results.map(result => resultFrom(result))
 }
 
 function loadPagefind() {
   if (!pagefind) {
-    pagefind = import(/* @vite-ignore */ PAGEFIND_URL)
+    if (import.meta.env.DEV) {
+      pagefind = Promise.reject(new Error("The Pagefind index only exists in a build"))
+    } else {
+      pagefind = import(/* @vite-ignore */ PAGEFIND_URL)
+    }
   }
 
   return pagefind
 }
 
-const panels = [ ...document.querySelectorAll<HTMLElement>("[data-search]") ].map(element => new SearchPanel(element))
+function resultFrom({ url, excerpt, meta }: Awaited<ReturnType<PagefindResult["data"]>>): Result {
+  const path = url.replace(/\.html$/, "")
+
+  if (meta.type === "Tag") {
+    return { title: `#${meta.title}`, kind: "Tag", excerpt: "", path }
+  } else {
+    return { title: meta.title, kind: meta.type, date: meta.date, excerpt, path }
+  }
+}
+
+// Pagefind's excerpts are escaped text with <mark>s; only those two make it into the page
+function excerptNodes(excerpt: string) {
+  const parsed = new DOMParser().parseFromString(excerpt, "text/html")
+
+  return [ ...parsed.body.childNodes ].map(node => {
+    if (node.nodeName === "MARK") {
+      const mark = document.createElement("mark")
+      mark.textContent = node.textContent
+      return mark
+    } else {
+      return document.createTextNode(node.textContent ?? "")
+    }
+  })
+}
+
+function openSearch() {
+  const dialog = document.getElementById(DIALOG_ID) as HTMLDialogElement
+
+  if (!dialog.open) {
+    document.querySelectorAll<HTMLDialogElement>("dialog[open]").forEach(open => open.close())
+    dialog.showModal()
+  }
+
+  dialogPanel.focus()
+}
+
+function opensSearch(event: KeyboardEvent) {
+  const commandK = event.key === "k" && (event.ctrlKey || event.metaKey)
+  const slash = event.key === "/" && !event.ctrlKey && !event.metaKey && !event.altKey && !isTyping(event.target as HTMLElement)
+
+  return !event.defaultPrevented && !event.isComposing && (commandK || slash)
+}
+
+function isTyping(target: HTMLElement) {
+  return Boolean(target.closest("input, textarea, select, [contenteditable]"))
+}
+
+const panels = new Map([ ...document.querySelectorAll<HTMLElement>("[data-search]") ].map(element => [ element, new SearchPanel(element) ]))
+const dialogPanel = panels.get(document.querySelector<HTMLElement>(`#${DIALOG_ID} [data-search]`)!)!
+
+document.addEventListener("keydown", (event) => {
+  if (opensSearch(event)) {
+    event.preventDefault()
+    openSearch()
+  }
+})
+
+document.addEventListener("click", (event) => {
+  if ((event.target as HTMLElement).closest("[data-search-open]")) {
+    event.preventDefault()
+    openSearch()
+  }
+})
+
 const initialTerm = new URLSearchParams(window.location.search).get("search[term]")
 
 if (initialTerm && window.location.pathname === "/search") {

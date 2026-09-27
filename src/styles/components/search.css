@@ -1,137 +1,181 @@
 @layer components {
   .search {
-    position: relative;
     display: flex;
     flex-direction: column;
-    background-color: oklch(95.14% 0.005 286.07);
-    border-radius: var(--radius-lg);
-    z-index: var(--z-above);
-    box-shadow: var(--shadow-lg);
-
-    & > * + * {
-      border-block-start: 1px solid var(--color-border-subtle);
-    }
+    flex: 1 1 auto;
+    min-block-size: 0;
   }
 
-  .color-scheme.color-scheme--dark .search {
+  .search--page {
+    margin-block: var(--space-8);
     background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .color-scheme:not(.color-scheme--light) .search {
-      background-color: var(--color-surface);
-      border: 1px solid var(--color-border);
-    }
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
   }
 
   .search__bar {
-    flex-grow: 0;
-    position: relative;
-    padding: var(--space-2);
-  }
-
-  .search__form {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: var(--space-4);
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-block-end: 1px solid var(--color-border-subtle);
   }
 
-  .search__label {
-    cursor: pointer;
-
-    & svg {
-      inline-size: 1.5rem;
-      block-size: 1.5rem;
-      color: var(--color-accent);
-
-      &:hover {
-        color: var(--color-accent-hover);
-      }
-    }
+  .search__icon {
+    flex: none;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    color: var(--color-accent);
   }
 
   .search__input {
-    inline-size: 100%;
-    display: inline;
-    background-color: transparent;
-    border: 0;
-    padding: var(--space-2);
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    padding: var(--space-1) 0;
+    font-size: var(--text-lg);
     color: var(--color-ink);
+    background: none;
+    border: 0;
+    appearance: none;
 
-    &:focus {
+    &::placeholder {
+      color: var(--color-ink-faint);
+    }
+
+    &:focus-visible {
       outline: none;
-      box-shadow: none;
+    }
+
+    &::-webkit-search-cancel-button {
+      appearance: none;
+    }
+  }
+
+  .search__close {
+    flex: none;
+    padding: var(--space-1);
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .search__close-label {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .search__close-key {
+    display: none;
+  }
+
+  @media (width >= 600px) {
+    .search__close-key {
+      display: inline-block;
+    }
+
+    .search__close-label {
+      display: none;
+    }
+  }
+
+  .search__status {
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+
+    &:empty {
+      display: none;
     }
   }
 
   .search__results {
-    flex-grow: 1;
+    flex: 1 1 auto;
+    min-block-size: 0;
     padding: var(--space-2);
-  }
+    overflow-y: auto;
+    overscroll-behavior: contain;
 
-  .search__results-list {
-    display: flex;
-    flex-direction: column;
-
-    & > * + * {
-      border-block-start: 1px solid var(--color-border-subtle);
+    &:empty {
+      display: none;
     }
-  }
-
-  .search__result {
-    overflow: hidden;
-    padding: var(--space-1);
-  }
-
-  .search__result-inner {
-    position: relative;
-    padding: var(--space-1);
-    border-radius: var(--radius);
   }
 
   .search__result-link {
-    position: absolute;
-    inset: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-ink);
+    border-radius: var(--radius);
   }
 
-  .search__result[aria-selected="true"] .search__result-inner,
-  .search__result:hover .search__result-inner {
-    background-color: oklch(92.85% 0.006 286.32);
+  .search__result[aria-selected="true"] .search__result-link {
+    background-color: color-mix(in oklab, var(--color-accent) 9%, var(--color-surface));
   }
 
-  .color-scheme.color-scheme--dark .search__result[aria-selected="true"] .search__result-inner,
-  .color-scheme.color-scheme--dark .search__result:hover .search__result-inner {
-    background-color: oklch(37.14% 0.014 285.75);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .color-scheme:not(.color-scheme--light) .search__result[aria-selected="true"] .search__result-inner,
-    .color-scheme:not(.color-scheme--light) .search__result:hover .search__result-inner {
-      background-color: oklch(37.14% 0.014 285.75);
-    }
+  .search__result-heading {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--space-3);
   }
 
   .search__result-title {
+    flex: 1 1 auto;
+    min-inline-size: 0;
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .search__result-type {
+  @media (width < 600px) {
+    .search__result-title {
+      white-space: normal;
+    }
+  }
+
+  .search__result[aria-selected="true"] .search__result-title {
+    color: var(--color-accent);
+  }
+
+  .search__result-kind {
+    flex: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  .search__result-date {
+    flex: none;
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-ink-muted);
+  }
+
+  .search__result-excerpt {
+    display: -webkit-box;
     font-size: var(--text-sm);
-    color: var(--color-ink-muted);
-  }
+    line-height: 1.5;
+    color: var(--color-ink-subtle);
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 
-  .search__result[aria-selected="true"] .search__result-type,
-  .search__result:hover .search__result-type {
-    color: var(--color-ink-faint);
-  }
+    &:empty {
+      display: none;
+    }
 
-  .search__no-results {
-    padding: var(--space-2);
-    color: var(--color-ink-muted);
+    & mark {
+      color: inherit;
+      background-color: color-mix(in oklab, var(--color-accent) 22%, transparent);
+      border-radius: 2px;
+    }
   }
 }

@@ -45,8 +45,22 @@ palette in light and dark.
 The `color_scheme` cookie holds `auto`, `light` or `dark`, as it did in Rails, so a visitor's
 choice carried over. An inline script at the top of `<head>` reads it and puts
 `color-scheme--light` or `color-scheme--dark` on `<html>` before anything is drawn, and
-follows the system when it's `auto`. It exposes `window.colorScheme`, which the settings
-panel uses (`src/scripts/settings.ts`).
+follows the system when it's `auto`. It exposes `window.colorScheme`, which the appearance
+pickers use (`src/scripts/settings.ts`).
+
+## Header, menu and appearance
+
+The header isn't sticky; it scrolls away with the page. On a desktop it has the section
+links, a search icon (its tooltip and the empty search mention the `/` shortcut) and a cog
+that opens a small popover (`popover`, placed under the button by `settings.ts`). Under
+600px the links and the cog give way to the search icon and a `Menu` button, which opens
+`#menu`: a modal sheet from the top with the links and the appearance picker. The picker
+(`src/components/AppearancePicker.astro`) is a radio group, Light, System and Dark, used in
+the popover, the menu and on `/settings`, which is there for visitors without JavaScript.
+
+Panels that drop in (the search, the menu, the popover) share the `.sheet` styles in
+`dialog.css`: a fade and a short slide, dropped when reduced motion is on. They open in
+the top layer, so nothing on the page moves when they do.
 
 ## Scripts
 
@@ -55,9 +69,9 @@ elements through `data-*` attributes, so they also work on content added later.
 
 | Script | Does |
 |---|---|
-| `dialogs.ts` | Opens `[data-dialog-open="<id>"]` dialogs, closes on `[data-dialog-close]` and outside clicks, Ctrl/Cmd+K for search |
-| `settings.ts` | The color scheme radios |
-| `search.ts` | The search panels |
+| `dialogs.ts` | Opens `[data-dialog-open="<id>"]` dialogs, closes on `[data-dialog-close]` and outside clicks |
+| `settings.ts` | The appearance radios, and placing the appearance popover |
+| `search.ts` | The search panels, and opening search on `/`, Ctrl/Cmd+K or a `[data-search-open]` link |
 | `attachments.ts` | Marks images loaded (ends the placeholder pulse), expands tall images on a phone |
 | `gallery.ts` | Opens a gallery's images full size in a lightbox, with arrow keys |
 | `pagination.ts` | Loads the next page when "Load more" comes near, and puts its content in place of the link |
@@ -74,13 +88,20 @@ dark band between the header and the footer, so its white controls stay visible.
 ## Search
 
 [Pagefind](https://pagefind.app) indexes the built site after `astro build` (`npm run build`
-runs both). It indexes articles, talks and tag pages: the element marked
-`data-pagefind-body`, with `data-pagefind-meta` for the type and title and
-`data-pagefind-filter="tag"` for each tag. `src/scripts/search.ts` loads
-`/pagefind/pagefind.js` on the first search and shows up to five results each of articles,
-talks and tags, like the old search. A search starting with `#` lists what has that tag.
+runs both). It indexes articles, talks, snaps and tag pages: the element marked
+`data-pagefind-body`, with `data-pagefind-meta` for the type, the title and the date (read
+from a `<time>`'s `datetime`), and `data-pagefind-filter="tag"` for each tag.
+`src/scripts/search.ts` loads `/pagefind/pagefind.js` on the first search and shows the
+twelve best matches in Pagefind's order, each with its kind, month and an excerpt with the
+matches marked. Arrow keys move through them, Enter opens one, Escape closes. A search
+starting with `#` lists what has that tag.
 
-The index only exists in a build, so search works in `bin/preview` and not in `bin/dev`.
+The search is a modal `<dialog>`: a panel near the top on a desktop, the whole screen on a
+phone. `/search?search[term]=…` is the same panel as a page, for visitors without
+JavaScript.
+
+The index only exists in a build, so search works in `bin/preview`; in `bin/dev` the panel
+says so instead of searching.
 
 ## Layout shift
 

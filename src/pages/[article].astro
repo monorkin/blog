@@ -44,7 +44,7 @@ const html = await article.html()
     </div>
 
     <div class="article__meta" data-pagefind-ignore>
-      <time datetime={isoTimestamp(article.publishedAt)}>Published on {formatDate(article.publishedAt)}</time>
+      <time datetime={isoTimestamp(article.publishedAt)} data-pagefind-meta="date[datetime]">Published on {formatDate(article.publishedAt)}</time>
     </div>
 
     <div>
@@ -63,7 +63,7 @@ const html = await article.html()
           </div>
         </div>
       </div>
-      {article.tags.map(tag => <span hidden data-pagefind-filter="tag">{tag}</span>)}
+      {article.tags.map(tag => <span hidden data-pagefind-filter="tag" data-pagefind-ignore>{tag}</span>)}
     </div>
 
     <div data-link-previews>

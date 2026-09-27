@@ -1,6 +1,5 @@
 ---
 import Layout from "~/layouts/Layout.astro"
-import DialogPanel from "~/components/DialogPanel.astro"
 import SearchPanel from "~/components/SearchPanel.astro"
 import { titleize } from "~/lib/site"
 ---
@@ -11,7 +10,6 @@ import { titleize } from "~/lib/site"
     <meta name="robots" content="noindex, nofollow" />
   </Fragment>
 
-  <DialogPanel>
-    <SearchPanel withHeading />
-  </DialogPanel>
+  <h1 class="visually-hidden">Search</h1>
+  <SearchPanel />
 </Layout>

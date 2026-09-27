@@ -1,7 +1,6 @@
 ---
 import Layout from "~/layouts/Layout.astro"
-import DialogPanel from "~/components/DialogPanel.astro"
-import SettingsPanel from "~/components/SettingsPanel.astro"
+import AppearancePicker from "~/components/AppearancePicker.astro"
 import { titleize } from "~/lib/site"
 ---
 
@@ -11,7 +10,8 @@ import { titleize } from "~/lib/site"
     <meta name="robots" content="noindex, nofollow" />
   </Fragment>
 
-  <DialogPanel>
-    <SettingsPanel idPrefix="page" withHeading />
-  </DialogPanel>
+  <div class="settings-page">
+    <h1 class="settings-page__title">Settings</h1>
+    <AppearancePicker idPrefix="page" />
+  </div>
 </Layout>

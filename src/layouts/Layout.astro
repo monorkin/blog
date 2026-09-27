@@ -2,8 +2,6 @@
 import "~/styles/app.css"
 import Header from "~/components/Header.astro"
 import SearchPanel from "~/components/SearchPanel.astro"
-import SettingsPanel from "~/components/SettingsPanel.astro"
-import DialogPanel from "~/components/DialogPanel.astro"
 import { absoluteUrl, titleize } from "~/lib/site"
 
 const hasHead = Astro.slots.has("head")
@@ -112,22 +110,8 @@ const currentYear = new Date().getUTCFullYear()
       </div>
     </footer>
 
-    <dialog id="search-dialog" class="dialog--overlay" aria-label="search" data-dismissable>
-      <DialogPanel>
-        <SearchPanel />
-      </DialogPanel>
-    </dialog>
-
-    <dialog id="settings-dialog" class="dialog--overlay dialog--overlay-settings" aria-label="settings" data-dismissable>
-      <DialogPanel>
-        <SettingsPanel idPrefix="desktop" />
-      </DialogPanel>
-    </dialog>
-
-    <dialog id="settings-dialog-mobile" class="dialog--overlay-mobile" aria-label="settings" data-dismissable>
-      <DialogPanel>
-        <SettingsPanel idPrefix="mobile" />
-      </DialogPanel>
+    <dialog id="search-dialog" class="sheet sheet--search" aria-label="Search" data-dismissable>
+      <SearchPanel inDialog />
     </dialog>
 
     <script>

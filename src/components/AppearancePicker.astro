@@ -1,0 +1,28 @@
+---
+import Icon from "~/components/Icon.astro"
+
+interface Props {
+  idPrefix: string
+}
+
+const { idPrefix } = Astro.props
+
+const OPTIONS = [
+  { scheme: "light", label: "Light", icon: "sun" },
+  { scheme: "auto", label: "System", icon: "contrast" },
+  { scheme: "dark", label: "Dark", icon: "moon" }
+] as const
+---
+
+<fieldset class="appearance" data-appearance>
+  <legend class="appearance__legend">Appearance</legend>
+  <div class="appearance__options">
+    {OPTIONS.map(option => (
+      <label class="appearance__option">
+        <input type="radio" name={`${idPrefix}_color_scheme`} value={option.scheme} class="appearance__input" data-color-scheme={option.scheme} />
+        <Icon name={option.icon} class="appearance__icon" />
+        <span>{option.label}</span>
+      </label>
+    ))}
+  </div>
+</fieldset>

@@ -35,9 +35,9 @@ const html = await talk.html()
           {data.eventUrl && <a target="_blank" href={data.eventUrl}>{data.event}</a>}
           {!data.eventUrl && data.event}
         </h2>
-        <time datetime={isoTimestamp(data.heldAt)}>{formatDate(data.heldAt)}</time>
+        <time datetime={isoTimestamp(data.heldAt)} data-pagefind-meta="date[datetime]">{formatDate(data.heldAt)}</time>
       </div>
-      {talk.tags.map(tag => <span hidden data-pagefind-filter="tag">{tag}</span>)}
+      {talk.tags.map(tag => <span hidden data-pagefind-filter="tag" data-pagefind-ignore>{tag}</span>)}
     </div>
 
     {html.trim() !== "" && (

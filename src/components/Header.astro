@@ -1,7 +1,6 @@
 ---
 import Icon from "~/components/Icon.astro"
-import SearchPanel from "~/components/SearchPanel.astro"
-import DialogPanel from "~/components/DialogPanel.astro"
+import AppearancePicker from "~/components/AppearancePicker.astro"
 import portrait from "~/assets/images/portrait/small.jpg"
 
 const NAV_ITEMS = [
@@ -10,57 +9,62 @@ const NAV_ITEMS = [
   { href: "/snaps", label: "Snaps" },
   { href: "/projects", label: "Projects" }
 ]
+
+const section = NAV_ITEMS.find(item => Astro.url.pathname.startsWith(item.href))
+
+function currentFor(item: { href: string }) {
+  if (item === section) {
+    return "page"
+  }
+}
 ---
 
-<nav class="header__desktop">
-  <ul class="header__nav-list">
-    <li><a class="header__nav-item " href="/"><img class="header__profile-img profile-img " alt="Stanko K.R." src={portrait.src} /></a></li>
+<nav class="header" aria-label="Main">
+  <a class="header__home" href="/" aria-label="About">
+    <img class="header__profile-img profile-img" alt="Stanko K.R." src={portrait.src} />
+  </a>
+
+  <ul class="header__links">
     {NAV_ITEMS.map(item => (
-      <li><a class="header__nav-item " href={item.href}>{item.label}</a></li>
+      <li><a class="header__link" href={item.href} aria-current={currentFor(item)}>{item.label}</a></li>
     ))}
   </ul>
-  <div>
-    <ul class="header__nav-list">
-      <li>
-        <a class="header__nav-item header__nav-item--wide-gap" href="/search" data-dialog-open="search-dialog" data-search-hotkey>
-          <Icon name="search" class="icon" /><span class="visually-hidden">Search</span>
-        </a>
-      </li>
-    </ul>
-    <div class="header__settings-btn">
-      <a href="/settings" data-dialog-open="settings-dialog">
-        <Icon name="settings" class="icon" /><span class="visually-hidden">Settings</span>
-      </a>
-    </div>
+
+  <div class="header__actions">
+    <a class="header__action" href="/search" data-search-open aria-label="Search" title="Search (/)" aria-keyshortcuts="/ Control+K Meta+K">
+      <Icon name="search" class="header__icon" />
+    </a>
+
+    <button type="button" class="header__action header__appearance" popovertarget="appearance-popover" aria-label="Appearance">
+      <Icon name="settings" class="header__icon" />
+    </button>
+
+    <button type="button" class="header__action header__menu-toggle" data-dialog-open="menu" aria-haspopup="dialog">
+      Menu
+    </button>
   </div>
 </nav>
 
-<nav class="header__mobile">
-  <ul>
-    <li><a class="header__nav-item " href="/"><img class="header__profile-img profile-img " alt="Stanko K.R." src={portrait.src} /></a></li>
-  </ul>
-  <div>
-    <a class="header__menu-btn" href="#navigation-dialog" data-dialog-open="navigation-dialog" aria-label="Menu">
-      <Icon name="menu" class="icon" />
-    </a>
-    <dialog class="header__mobile-dialog" id="navigation-dialog" aria-label="Navigation menu">
-      <div class="header__mobile-menu">
-        <div class="header__mobile-search">
-          <DialogPanel>
-            <SearchPanel />
-          </DialogPanel>
-        </div>
-        <ul class="header__mobile-nav-list">
-          <li><a class="header__nav-item " href="/">About</a></li>
-          {NAV_ITEMS.map(item => (
-            <li><a class="header__nav-item " href={item.href}>{item.label}</a></li>
-          ))}
-          <li><a class="header__nav-item " href="/settings" data-dialog-open="settings-dialog-mobile">Settings</a></li>
-        </ul>
-        <ul class="header__mobile-footer">
-          <li><a class="header__nav-item " href="/" data-dialog-close>Close</a></li>
-        </ul>
-      </div>
-    </dialog>
+<div id="appearance-popover" class="appearance-popover" popover>
+  <AppearancePicker idPrefix="popover" />
+</div>
+
+<dialog id="menu" class="sheet sheet--menu" aria-label="Menu" data-dismissable>
+  <div class="menu">
+    <div class="menu__bar">
+      <a class="header__home" href="/" aria-label="About">
+        <img class="header__profile-img profile-img" alt="" src={portrait.src} />
+      </a>
+      <button type="button" class="header__action" data-dialog-close>Close</button>
+    </div>
+
+    <ul class="menu__links">
+      <li><a class="menu__link" href="/">About</a></li>
+      {NAV_ITEMS.map(item => (
+        <li><a class="menu__link" href={item.href} aria-current={currentFor(item)}>{item.label}</a></li>
+      ))}
+    </ul>
+
+    <AppearancePicker idPrefix="menu" />
   </div>
-</nav>
+</dialog>

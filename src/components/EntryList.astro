@@ -28,7 +28,12 @@ const items = await Promise.all(entries.map(async entry => {
 
           <div class="entry-list__meta">
             <time datetime={isoTimestamp(entry.publishedAt)}>Published on {formatDate(entry.publishedAt)}</time>
-            <span>{readingTime} min read</span>
+            {readingTime && (
+              <Fragment>
+                <span aria-hidden="true">·</span>
+                <span>{readingTime} min read</span>
+              </Fragment>
+            )}
           </div>
 
           <div class="entry-list__title">

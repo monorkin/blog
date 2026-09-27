@@ -10,9 +10,13 @@
     font-size: var(--text-sm);
 
     & h6 {
-      font-size: var(--text-xl);
+      font-size: var(--text-base);
       margin-block-start: 0;
       font-weight: 600;
+    }
+
+    & p {
+      margin-block: var(--space-1) 0;
     }
   }
 
@@ -26,10 +30,13 @@
     }
   }
 
+  /* Wide images fill the card; tall ones, like book covers, are shown whole */
   .link-preview .link-preview__image {
+    display: block;
     inline-size: 100%;
+    block-size: auto;
     aspect-ratio: 2 / 1;
-    object-fit: cover !important;
+    object-fit: contain;
     margin: 0;
     border-end-start-radius: var(--radius-lg);
     border-end-end-radius: var(--radius-lg);

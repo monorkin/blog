@@ -1,13 +1,16 @@
 // Shows a preview of a link's destination when hovering over links in an
 // article. The previews are fetched at build time and embedded in the page.
+//
+// A popup lives in the top layer, outside the article, so showing it never
+// changes the layout of the text around the link.
 
-const HIDDEN_CLASS = "hidden"
 const VIEWPORT_MARGIN = 8
+const ARROW_INSET = 16
 
 interface LinkPreview {
   title?: string
   description?: string
-  image?: string
+  image?: { src: string, width?: number, height?: number }
 }
 
 const data = document.getElementById("link-previews")
@@ -27,7 +30,7 @@ for (const container of document.querySelectorAll("[data-link-previews]")) {
     const link = linkFor(event)
 
     if (link && !link.contains((event as MouseEvent).relatedTarget as Node)) {
-      popups.get(link)?.classList.add(HIDDEN_CLASS)
+      hide(link)
     }
   })
 }
@@ -42,16 +45,28 @@ function linkFor(event: Event) {
 
 function show(link: HTMLAnchorElement) {
   if (!popups.has(link)) {
-    popups.set(link, createPopup(link, previews[link.getAttribute("href")!]))
+    popups.set(link, createPopup(previews[link.getAttribute("href")!]))
   }
 
   const popup = popups.get(link)!
-  popup.classList.remove(HIDDEN_CLASS)
-  position(link, popup)
+
+  if (!popup.matches(":popover-open")) {
+    popup.showPopover()
+  }
+
+  position(popup, link)
 }
 
-function createPopup(link: HTMLAnchorElement, preview: LinkPreview) {
-  const popup = element("div", "popup", HIDDEN_CLASS)
+function hide(link: HTMLAnchorElement) {
+  const popup = popups.get(link)
+
+  if (popup?.matches(":popover-open")) {
+    popup.hidePopover()
+  }
+}
+
+function createPopup(preview: LinkPreview) {
+  const popup = element("div", "popup")
   const container = element("div", "popup__container")
   const content = element("div", "popup__container__content")
   const linkPreview = element("div", "link-preview")
@@ -66,65 +81,53 @@ function createPopup(link: HTMLAnchorElement, preview: LinkPreview) {
 
   if (preview.image) {
     const image = element("img", "link-preview__image") as HTMLImageElement
-    image.src = preview.image
+    image.src = preview.image.src
     image.alt = ""
+
+    if (preview.image.width && preview.image.height) {
+      image.width = preview.image.width
+      image.height = preview.image.height
+    }
+
     linkPreview.append(image)
   }
 
   content.append(linkPreview)
   container.append(element("div", "popup__container__arrow"), content)
   popup.append(container)
-
-  link.style.position = "relative"
-  link.append(popup)
+  popup.popover = "manual"
+  document.body.append(popup)
 
   return popup
 }
 
-function position(link: HTMLAnchorElement, popup: HTMLElement) {
+// Below the link's last line or above its first, so a link that wraps is never covered
+function position(popup: HTMLElement, link: HTMLAnchorElement) {
+  const container = popup.querySelector<HTMLElement>(".popup__container")!
   const arrow = popup.querySelector<HTMLElement>(".popup__container__arrow")!
-  const linkRect = link.getBoundingClientRect()
-  const popupRect = popup.getBoundingClientRect()
-  const spaceBelow = window.innerHeight - linkRect.bottom
-  let placement = "top"
+  const lines = [ ...link.getClientRects() ]
+  const lastLine = lines[lines.length - 1]
 
-  if (spaceBelow >= popupRect.height + VIEWPORT_MARGIN) {
-    placement = "bottom"
-  }
-
-  popup.style.position = "absolute"
-  popup.style.left = "50%"
-  popup.style.transform = "translateX(-50%)"
-  popup.dataset.placement = placement
-
-  if (placement === "bottom") {
-    popup.style.top = "100%"
-    popup.style.bottom = "auto"
+  let line, top
+  if (window.innerHeight - lastLine.bottom >= popup.offsetHeight + VIEWPORT_MARGIN) {
+    popup.dataset.placement = "bottom"
+    line = lastLine
+    top = lastLine.bottom
   } else {
-    popup.style.bottom = "100%"
-    popup.style.top = "auto"
+    popup.dataset.placement = "top"
+    line = lines[0]
+    top = lines[0].top - popup.offsetHeight
   }
 
-  arrow.style.left = "50%"
-  arrow.style.translate = "-50%"
+  const viewportWidth = document.documentElement.clientWidth
+  const center = line.left + line.width / 2
+  const left = Math.min(Math.max(center - popup.offsetWidth / 2, 0), viewportWidth - popup.offsetWidth)
 
-  requestAnimationFrame(() => clampToViewport(popup, arrow))
-}
+  popup.style.left = `${left + window.scrollX}px`
+  popup.style.top = `${top + window.scrollY}px`
 
-function clampToViewport(popup: HTMLElement, arrow: HTMLElement) {
-  const rect = popup.getBoundingClientRect()
-  let shift = 0
-
-  if (rect.right > window.innerWidth - VIEWPORT_MARGIN) {
-    shift = window.innerWidth - VIEWPORT_MARGIN - rect.right
-  } else if (rect.left < VIEWPORT_MARGIN) {
-    shift = VIEWPORT_MARGIN - rect.left
-  }
-
-  if (shift !== 0) {
-    popup.style.transform = `translateX(calc(-50% + ${shift}px))`
-    arrow.style.translate = `calc(-50% - ${shift}px)`
-  }
+  const arrowLeft = center - left - container.offsetLeft
+  arrow.style.left = `${Math.min(Math.max(arrowLeft, ARROW_INSET), container.offsetWidth - ARROW_INSET)}px`
 }
 
 function element(tag: string, ...classes: string[]) {

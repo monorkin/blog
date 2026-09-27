@@ -58,7 +58,7 @@ elements through `data-*` attributes, so they also work on content added later.
 | `attachments.ts` | Marks images loaded (ends the placeholder pulse), expands tall images on a phone |
 | `gallery.ts` | Opens a gallery's images full size in a lightbox, with arrow keys |
 | `pagination.ts` | Loads the next page when "Load more" comes near, and puts its content in place of the link |
-| `link-previews.ts` | The link preview popups in articles |
+| `link-previews.ts` | The link preview popups in articles: popovers in the top layer, placed below or above the link, so they never move the text around it |
 | `snaps.ts` | The snap lightbox, its arrow keys, copying a link, the tilt on the grid |
 
 ## Snaps

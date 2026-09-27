@@ -1,6 +1,6 @@
 ---
 import linkPreviews from "~/data/link-previews.json"
-import { variantAtLeast } from "~/lib/media"
+import { findMedia, variantAtLeast } from "~/lib/media"
 
 interface Props {
   html: string
@@ -12,6 +12,12 @@ interface LinkPreview {
   image?: string
 }
 
+interface PreviewImage {
+  src: string
+  width?: number
+  height?: number
+}
+
 const PREVIEW_IMAGE_WIDTH = 768
 
 const previews = linkPreviews as Record<string, LinkPreview>
@@ -19,18 +25,20 @@ const previews = linkPreviews as Record<string, LinkPreview>
 const { html } = Astro.props
 const hrefs = new Set([ ...html.matchAll(/<a [^>]*href="([^"]+)"/g) ].map(match => decodeEntities(match[1])))
 
-const previewsForPage: Record<string, LinkPreview> = {}
+const previewsForPage: Record<string, { title?: string, description?: string, image?: PreviewImage }> = {}
 for (const href of hrefs) {
   const preview = previews[href]
 
   if (preview) {
-    previewsForPage[href] = { title: preview.title, description: preview.description, image: imageUrl(preview.image) }
+    previewsForPage[href] = { title: preview.title, description: preview.description, image: previewImage(preview.image) }
   }
 }
 
-function imageUrl(key?: string) {
+// The size lets the card lay out before the image loads, so it doesn't grow under the pointer
+function previewImage(key?: string) {
   if (key) {
-    return variantAtLeast(key, PREVIEW_IMAGE_WIDTH)
+    const { width, height } = findMedia(key)
+    return { src: variantAtLeast(key, PREVIEW_IMAGE_WIDTH), width, height }
   }
 }
 

@@ -3,10 +3,23 @@
     z-index: var(--z-popup);
   }
 
+  /* A popover in the top layer, placed over the page by src/scripts/link-previews.ts,
+     without the UA's centered, bordered, scrolling box */
+  .popup[popover] {
+    position: absolute;
+    inset: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    overflow: visible;
+  }
+
   .popup__container {
     position: relative;
     margin: var(--space-2);
-    inline-size: 24rem;
+    inline-size: min(24rem, 100vw - var(--space-2) * 2);
     border-radius: var(--radius-lg);
     background-color: var(--color-surface);
     box-shadow: var(--shadow-lg);

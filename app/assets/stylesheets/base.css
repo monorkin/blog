@@ -1,6 +1,8 @@
 @layer base {
+  /* Safari 26+ tints its toolbars from the root background, and falls back to white without one */
   html {
     height: 100%;
+    background-color: var(--color-canvas);
   }
 
   @media (width >= 640px) {

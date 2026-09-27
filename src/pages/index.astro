@@ -26,7 +26,7 @@ const latestArticles = (await publishedEntries("article")).slice(0, 3)
 const portraitSrcset = `${portraitSmall.src} 512w, ${portraitMedium.src} 1024w, ${portraitLarge.src} 2048w`
 ---
 
-<Layout>
+<Layout transitions>
   <Fragment slot="head">
     <title>{titleize("Blog")}</title>
     <SeoTags

@@ -1,0 +1,24 @@
+/* Navigations between the article lists (the home page, /articles, tag pages) and an article
+   animate, when both pages turn them on (Layout's `transitions`). An article's title and date
+   carry the same view-transition-name in the list and on its page, so they move from one to
+   the other; the rest of the page fades. Everything is quick, at most 100ms. */
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: 100ms;
+  animation-timing-function: ease-out;
+}
+
+/* The header is the same on both pages, so it stays still */
+body > header {
+  view-transition-name: site-header;
+}
+
+::view-transition-group(site-header),
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+::view-transition-old(site-header) {
+  display: none;
+}

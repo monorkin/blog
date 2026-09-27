@@ -1,6 +1,7 @@
 ---
 import type { Entry } from "~/lib/entries"
 import TalkLabels from "~/components/TalkLabels.astro"
+import { transitionStyles } from "~/lib/view-transitions"
 import { formatDate, isoTimestamp } from "~/lib/site"
 
 interface Props {
@@ -26,7 +27,7 @@ const items = await Promise.all(entries.map(async entry => {
         <li class="entry-list__item">
           <a href={entry.path} aria-label={entry.title}></a>
 
-          <div class="entry-list__meta">
+          <div class="entry-list__meta" style={transitionStyles(entry).meta}>
             <time datetime={isoTimestamp(entry.publishedAt)}>Published on {formatDate(entry.publishedAt)}</time>
             {readingTime && (
               <Fragment>
@@ -36,7 +37,7 @@ const items = await Promise.all(entries.map(async entry => {
             )}
           </div>
 
-          <div class="entry-list__title">
+          <div class="entry-list__title" style={transitionStyles(entry).title}>
             {entry.title}
           </div>
 

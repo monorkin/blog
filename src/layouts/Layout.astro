@@ -8,9 +8,14 @@ import { absoluteUrl, titleize } from "~/lib/site"
 interface Props {
   // The header's section to mark as current, for pages that belong to one
   section?: "articles" | "talks" | "snaps" | "projects"
+  // Animate navigations between this page and others that do (doc/front-end.md)
+  transitions?: boolean
 }
 
-const { section } = Astro.props
+// A navigation animates only when both pages opt in, and never with reduced motion
+const VIEW_TRANSITIONS = "@view-transition { navigation: auto; } @media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }"
+
+const { section, transitions = false } = Astro.props
 
 // A section's pages point feed readers at that section's feed, everything else at /feed
 const SECTION_KINDS: Record<string, string> = { articles: "article", talks: "talk", snaps: "snap" }
@@ -76,7 +81,7 @@ const currentYear = new Date().getUTCFullYear()
     )}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="view-transition" content="same-origin" />
+    {transitions && <style is:inline set:html={VIEW_TRANSITIONS} />}
     <link rel="alternate" type="application/atom+xml" title="ATOM" href={feedPath} />
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png" />

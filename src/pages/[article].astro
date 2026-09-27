@@ -9,6 +9,7 @@ import ArticleNavigation from "~/components/ArticleNavigation.astro"
 import StayUpdatedPrompt from "~/components/StayUpdatedPrompt.astro"
 import { publishedEntries, type Entry } from "~/lib/entries"
 import { formatDate, isoTimestamp } from "~/lib/site"
+import { transitionStyles } from "~/lib/view-transitions"
 
 export const getStaticPaths = (async () => {
   const articles = await publishedEntries("article")
@@ -35,7 +36,7 @@ const { article, previousArticle, nextArticle, popularArticles } = Astro.props
 const html = await article.html()
 ---
 
-<Layout section="articles">
+<Layout section="articles" transitions>
   <EntrySeoTags slot="head" entry={article} />
 
   <article class="article" data-pagefind-body data-pagefind-meta="type:Article">
@@ -43,12 +44,12 @@ const html = await article.html()
       <span><a class="article__back-link" href="/articles" data-pagefind-ignore><span class="inline-flex flex-row items-center gap-x-2 "><Icon name="arrow-long-left" />Back</span></a></span>
     </div>
 
-    <div class="article__meta" data-pagefind-ignore>
+    <div class="article__meta" style={transitionStyles(article).meta} data-pagefind-ignore>
       <time datetime={isoTimestamp(article.publishedAt)} data-pagefind-meta="date[datetime]">Published on {formatDate(article.publishedAt)}</time>
     </div>
 
     <div>
-      <h1 class="article__title" data-pagefind-meta="title">
+      <h1 class="article__title" style={transitionStyles(article).title} data-pagefind-meta="title">
         {article.title}
       </h1>
 

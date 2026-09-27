@@ -23,6 +23,7 @@
 @import "./components/tag.css";
 @import "./components/talk.css";
 @import "./components/timeline.css";
+@import "./components/view-transitions.css";
 @import "./layout.css";
 @import "./pages/about.css";
 @import "./pages/article.css";

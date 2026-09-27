@@ -1,13 +1,14 @@
 <%
-  dimensions = local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, nil ]
-  image_options = { resize_to_limit: dimensions, saver: { strip: true } }
+  size_limit = local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, nil ]
+  image_options = { resize_to_limit: size_limit, saver: { strip: true } }
+  width, height = blob.full_attributes.values_at("width", "height").map(&:to_i)
   classes = %w[attachment]
   data = {}
 
   classes << "attachment--#{blob.representable? ? "preview" : "file"}"
   classes << "attachment--#{blob.filename.extension}"
 
-  if blob.image? && !local_assigns[:in_gallery] && blob.metadata["height"].to_i > blob.metadata["width"].to_i
+  if blob.image? && !local_assigns[:in_gallery] && height > width
     classes << "attachment--expandable"
     data.merge!(controller: "toggle-class", action: "click->toggle-class#toggle", toggle_class_active_class: "attachment--expanded")
   end
@@ -25,13 +26,12 @@
   <% elsif blob.content_type == "application/pdf" %>
     <%= content_tag(:embed, src: rails_blob_url(blob), width: 800, height: 500, type: "application/pdf") %>
   <% elsif blob.representable? %>
-    <% if blob.filename.extension == "gif" %>
-      <%= image_tag url_for(blob), alt: blob.try(:caption).presence || blob.filename.base, loading: "lazy" %>
-    <% else %>
-      <% width, height = blob.metadata.values_at("width", "height") %>
-      <% style = (width && height) ? "aspect-ratio: #{width} / #{height};" : nil %>
+    <% alt = blob.try(:caption).presence || blob.filename.base %>
 
-      <%= image_tag blob.representation(image_options), alt: blob.try(:caption).presence || blob.filename.base, loading: "lazy", style: style %>
+    <% if blob.filename.extension == "gif" %>
+      <%= attachment_image_tag url_for(blob), alt: alt, size: [ width, height ] %>
+    <% else %>
+      <%= attachment_image_tag blob.representation(image_options), alt: alt, size: resized_image_size(width, height, size_limit) %>
     <% end %>
   <% else %>
     <%= link_to blob.filename, url_for(blob), download: true %>

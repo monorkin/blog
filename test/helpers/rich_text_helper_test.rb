@@ -41,4 +41,16 @@ class RichTextHelperTest < ActionView::TestCase
     assert_match(/line1/, text)
     assert_match(/line2/, text)
   end
+
+  test "#size_attachment_images_rich_text_transform turns image dimensions into custom properties" do
+    html = '<img class="attachment__image" width="1024" height="768" src="a.jpg"><img class="attachment__image" src="b.jpg"><img width="10" height="10" src="c.jpg">'
+    document = Nokogiri.HTML(html)
+
+    sized, unsized, other = size_attachment_images_rich_text_transform(document).css("img")
+
+    assert_equal "--attachment-width: 1024; --attachment-height: 768;", sized["style"]
+    assert_equal "attachment__image attachment__image--sized", sized["class"]
+    assert_nil unsized["style"], "Should skip attachment images without dimensions"
+    assert_nil other["style"], "Should skip images that aren't attachments"
+  end
 end

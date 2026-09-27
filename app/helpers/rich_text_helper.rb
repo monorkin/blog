@@ -39,6 +39,16 @@ module RichTextHelper
     document
   end
 
+  # Custom properties don't survive the sanitizer, so image sizes are set after it
+  def size_attachment_images_rich_text_transform(document)
+    document.css("img.attachment__image[width][height]").each do |image|
+      image["style"] = "--attachment-width: #{image["width"].to_i}; --attachment-height: #{image["height"].to_i};"
+      image["class"] = "#{image["class"]} attachment__image--sized"
+    end
+
+    document
+  end
+
   def rich_text_field(form, name)
     content_tag(
       :div,

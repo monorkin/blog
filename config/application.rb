@@ -41,6 +41,7 @@ module Blog
         "data-controller",
         "data-action",
         "data-toggle-class-active-class",
+        "data-image-loaded-class",
         "data-language",
         *ActionText::ContentHelper.sanitizer.class.allowed_attributes,
         *ActionText::Attachment::ATTRIBUTES

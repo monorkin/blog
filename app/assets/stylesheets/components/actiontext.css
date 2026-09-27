@@ -117,7 +117,6 @@
     & img {
       border-radius: 0.125rem;
       box-shadow: var(--shadow);
-      max-block-size: 70vh;
     }
 
     & video {
@@ -173,6 +172,20 @@
 
   .lexxy-content .attachment--expandable img {
     cursor: zoom-in;
+  }
+
+  .lexxy-content .attachment__image {
+    background-color: var(--color-border-subtle);
+    animation: attachment-image-pulse 1.5s ease-in-out infinite;
+  }
+
+  .lexxy-content .attachment__image--loaded {
+    background-color: transparent;
+    animation: none;
+  }
+
+  @keyframes attachment-image-pulse {
+    50% { background-color: var(--color-surface); }
   }
 
   .lexxy-content .attachment.attachment--file.attachment--mp4 {
@@ -334,8 +347,24 @@
   }
 }
 
-/* Unlayered because Lexxy's unlayered max-block-size on images beats anything inside a layer */
+/* Unlayered because Lexxy's unlayered image sizing beats anything inside a layer */
+.lexxy-content {
+  --attachment-max-block-size: 32rem;
+}
+
+.lexxy-content .attachment__image--sized {
+  aspect-ratio: var(--attachment-width) / var(--attachment-height);
+  inline-size: min(var(--attachment-width) * 1px, var(--attachment-max-block-size) * var(--attachment-width) / var(--attachment-height));
+  max-inline-size: 100%;
+  block-size: auto;
+  max-block-size: none;
+}
+
 .lexxy-content .attachment--expanded img {
   max-block-size: none;
   cursor: zoom-out;
+}
+
+.lexxy-content .attachment--expanded .attachment__image--sized {
+  inline-size: calc(var(--attachment-width) * 1px);
 }

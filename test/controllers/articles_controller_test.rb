@@ -83,6 +83,44 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_select "figure.attachment:not(.attachment--expandable)", text: /hiking_moon\.jpg/
   end
 
+  test "GET show sizes images before they load" do
+    article = articles(:misguided_mark)
+    article.update!(body: ActionText::Attachment.from_attachable(active_storage_blobs(:hiking_hut_blob)).to_html)
+
+    get article_path(slug: article.to_param)
+
+    assert_response :success
+    assert_select "img.attachment__image.attachment__image--sized[width='1024'][height='1365'][style='--attachment-width: 1024; --attachment-height: 1365;']", count: 1
+    assert_select "img.attachment__image[data-controller='image'][data-action='load->image#markLoaded error->image#markLoaded'][data-image-loaded-class='attachment__image--loaded']", count: 1
+  end
+
+  test "GET show sizes images from the editor's dimensions when the blob has no metadata" do
+    article = articles(:misguided_mark)
+    blob = active_storage_blobs(:hiking_hut_blob)
+    blob.update!(metadata: { analyzed: true })
+    attachment = ActionText::Attachment.from_attachable(blob).to_html.sub("<action-text-attachment ", '<action-text-attachment width="1200" height="1600" ')
+    article.update!(body: attachment)
+
+    get article_path(slug: article.to_param)
+
+    assert_response :success
+    assert_select "figure.attachment--expandable img.attachment__image--sized[width='1024'][height='1365']", count: 1
+  end
+
+  test "GET show sizes gallery images to the gallery's limit" do
+    article = articles(:misguided_mark)
+    attachments = [ :hiking_hut_blob, :hiking_moon_blob ].map do |name|
+      ActionText::Attachment.from_attachable(active_storage_blobs(name)).to_html.sub("<action-text-attachment ", '<action-text-attachment presentation="gallery" ')
+    end
+    article.update!(body: %(<div class="attachment-gallery attachment-gallery--2">#{attachments.join}</div>))
+
+    get article_path(slug: article.to_param)
+
+    assert_response :success
+    assert_select ".attachment-gallery img.attachment__image--sized[width='450'][height='600']", count: 2
+    assert_select ".attachment-gallery figure.attachment--expandable", count: 0
+  end
+
   test "GET show resolves article by slug suffix only" do
     article = articles(:misguided_mark)
     entry = article.entry
@@ -167,6 +205,17 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   test "GET edit renders form when authenticated" do
     login
     article = articles(:misguided_mark)
+
+    get edit_article_path(slug: article.to_param)
+
+    assert_response :success
+    assert_select "form"
+  end
+
+  test "GET edit renders an article with images" do
+    login
+    article = articles(:misguided_mark)
+    article.update!(body: ActionText::Attachment.from_attachable(active_storage_blobs(:hiking_hut_blob)).to_html)
 
     get edit_article_path(slug: article.to_param)
 

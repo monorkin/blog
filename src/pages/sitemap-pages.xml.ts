@@ -1,7 +1,8 @@
 import { publishedEntries } from "~/lib/entries"
+import { listedProjects } from "~/lib/projects"
 import { aboutPageUpdatedAt, lastUpdated, urlset } from "~/lib/sitemaps"
 
-const projects = Object.values(import.meta.glob<{ url: string }>("./projects/*.{md,mdx}", { eager: true }))
+const projects = listedProjects()
 
 export async function GET() {
   return urlset([

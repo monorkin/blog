@@ -9,6 +9,7 @@ bin/media variants         # and their variants
 bin/dev                    # astro dev at http://localhost:4321, reloading as you save
 bin/preview                # npm run build, then wrangler dev at http://localhost:8787
 bin/preview --skip-build   # serve the last build again
+bin/generate article "Title"   # a new draft article, talk, snap or project (doc/content.md)
 ```
 
 ## bin/setup
@@ -101,6 +102,6 @@ the manifest. Keep it that way when touching `src/components/content/`.
 | `src/styles/` | The CSS, `app.css` imports it all |
 | `src/data/` | Tags, link previews and the media manifest |
 | `public/` | Favicons, error pages, `_redirects`, `_headers` |
-| `bin/` | `setup`, `dev`, `preview`, `media` |
+| `bin/` | `setup`, `dev`, `preview`, `media`, `generate` |
 | `lib/` | Node code the scripts and the Astro config share |
 | `media/` | Uploaded media, not in git (`doc/images.md`) |

@@ -19,6 +19,22 @@ The `<id>` is 12 random letters and digits, like `AHcddmIf21lt`. It identifies t
 `/anything-AHcddmIf21lt` redirects to the entry's current URL (`doc/routes.md`), so the
 slug in front of it can say anything. A few old entries have Medium's hex IDs instead.
 
+### Creating one
+
+```bash
+bin/generate article "Title"
+bin/generate talk "Title"
+bin/generate snap "Title" [path/to/photo.jpg]
+bin/generate project "Title"
+```
+
+`bin/generate` makes the slug from the title the way Rails' `parameterize` did (accents and
+apostrophes dropped, every other run of non-alphanumerics one dash), picks a fresh ID no
+entry uses, and writes the file with `draft: true`, `publishedAt` and `updatedAt` set to now,
+and `tags: []`. Talks get placeholder `event` and `heldAt`. It also makes the entry's media
+folder, and for a snap copies the photo there and sets `image`. It prints the file and the
+URL the entry will have. Don't make IDs by hand.
+
 ### Frontmatter
 
 All three share these:
@@ -94,10 +110,14 @@ one. A new tag needs nothing but using it.
 
 ## Projects
 
-Projects aren't a collection. Each is a page in `src/pages/projects/`: an `.mdx` file with
+Projects aren't a collection. Each is a page in `src/pages/projects/`, named after its slug
+with no ID; `bin/generate project "Title"` writes one. An `.mdx` file with
 `layout: ~/layouts/ProjectLayout.astro`, a `title` and a `description` shows up on
 `/projects` by itself; an `.astro` page can be anything, but isn't listed unless it is
-added to `src/pages/projects/index.astro`. `blog.mdx` is a placeholder.
+added to `src/lib/projects.ts`. `blog.mdx` is a placeholder.
+
+A project with `draft: true` is still built, because every page in `src/pages` is, but it
+isn't listed on `/projects` or in the sitemap, and it's marked `noindex`.
 
 ## The export from Rails
 

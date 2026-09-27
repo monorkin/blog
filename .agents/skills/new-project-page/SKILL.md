@@ -1,6 +1,6 @@
 ---
 name: new-project-page
-description: Adding a page about a project under /projects — an MDX page with the project layout that lists itself, or a freeform Astro page — and replacing the placeholder. Use when asked to add, write up or showcase a project.
+description: Adding a page about a project under /projects — generating an MDX page with bin/generate, drafts, or a freeform Astro page — and replacing the placeholder. Use when asked to add, write up or showcase a project.
 ---
 
 # A new project page
@@ -10,11 +10,19 @@ name is its URL: `src/pages/projects/air-quality-box.mdx` is `/projects/air-qual
 
 ## The usual case: MDX
 
+```bash
+bin/generate project "Air Quality Box"
+```
+
+That writes `src/pages/projects/air-quality-box.mdx` (projects have no ID; the slug is the
+URL) and makes its media folder, `media/originals/projects/air-quality-box/`. Fill it in:
+
 ```mdx
 ---
 layout: ~/layouts/ProjectLayout.astro
-title: Air Quality Box
+title: "Air Quality Box"
 description: A small box that measures the air in a room and shows it on its screen.
+draft: true
 ---
 
 import Figure from "~/components/content/Figure.astro"
@@ -28,6 +36,10 @@ Text as in any article.
 so there is nothing to register. `ProjectLayout` gives it the SEO tags, the back link and
 the article typography.
 
+`draft: true` works differently from entries: every page in `src/pages` is built, so a draft
+project is at its URL, but it isn't listed on `/projects` or in the sitemap and asks search
+engines not to index it. Remove it when the page is ready.
+
 Photos and screenshots of a project are media, keyed under `projects/<page name>/`; the
 `new-media` skill is how to add them. Only something that is part of the page's own design,
 like an icon, goes in `src/assets/`.
@@ -36,8 +48,8 @@ like an icon, goes in `src/assets/`.
 
 When a project needs its own design, write an `.astro` page with `Layout` from
 `~/layouts/Layout.astro` and pass `SeoTags` through the `head` slot, as
-`src/pages/projects/index.astro` does. It isn't listed on `/projects` by itself; add it to the
-list in `index.astro`.
+`src/pages/projects/index.astro` does. It isn't listed on `/projects` by itself; add it to
+`listedProjects()` in `src/lib/projects.ts`.
 
 ## The placeholder
 
@@ -51,5 +63,5 @@ npm run check
 bin/preview
 ```
 
-Open `/projects` and the page, at 390px wide as well. It's in `/sitemap-pages.xml` without
-doing anything.
+Open `/projects` and the page, at 390px wide as well. Once it isn't a draft, it's in
+`/sitemap-pages.xml` without doing anything.

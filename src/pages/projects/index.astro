@@ -1,15 +1,10 @@
 ---
 import Layout from "~/layouts/Layout.astro"
 import SeoTags from "~/components/SeoTags.astro"
+import { listedProjects } from "~/lib/projects"
 import { absoluteUrl, titleize } from "~/lib/site"
 
-interface ProjectPage {
-  url: string
-  frontmatter: { title: string, description: string }
-}
-
-const pages = Object.values(import.meta.glob<ProjectPage>("./*.{md,mdx}", { eager: true }))
-const projects = pages.sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title))
+const projects = listedProjects()
 ---
 
 <Layout>

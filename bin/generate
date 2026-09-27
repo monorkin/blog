@@ -1,0 +1,210 @@
+#!/usr/bin/env node
+// Creates a new entry or project page as a draft, so nobody has to make up an ID.
+//
+//   bin/generate article "Title"
+//   bin/generate talk "Title"
+//   bin/generate snap "Title" [path/to/photo.jpg]
+//   bin/generate project "Title"
+//
+// Articles, talks and snaps get a folder named <slug>-<id> with a fresh 12-character ID, and a
+// folder of the same name under media/originals/ for their images. Projects are pages named
+// after the slug alone. Everything starts as a draft: drafts aren't built (projects aren't
+// listed), so remove `draft: true` when it's ready.
+import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs"
+import { randomInt } from "node:crypto"
+import { basename, dirname, extname, join, relative } from "node:path"
+import { fileURLToPath } from "node:url"
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
+const CONTENT = join(ROOT, "src/content")
+const PROJECTS = join(ROOT, "src/pages/projects")
+const ORIGINALS = join(ROOT, "media/originals")
+const DEV_URL = "http://localhost:4321"
+
+const NOW = new Date().toISOString().replace(/\.\d{3}Z$/, "Z")
+const ID_LENGTH = 12
+const ID_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+const PHOTO_EXTENSIONS = [ ".jpg", ".jpeg", ".png", ".webp", ".gif" ]
+
+const kinds = {
+  article: generateArticle,
+  talk: generateTalk,
+  snap: generateSnap,
+  project: generateProject
+}
+
+const [ kind, title, photo, ...extra ] = process.argv.slice(2)
+
+if (kinds[kind] && title?.trim() && slugFor(title) && extra.length === 0 && (kind === "snap" || !photo)) {
+  kinds[kind](title.trim(), photo)
+} else {
+  usage()
+}
+
+function generateArticle(title) {
+  const folder = newFolder(title)
+  const path = writeEntry("articles", folder, "index.mdx", frontmatter(title), "Write the article here.\n")
+
+  announce(path, `/${folder}`, mediaFolder("articles", folder))
+}
+
+function generateTalk(title) {
+  const folder = newFolder(title)
+  const fields = frontmatter(title, [ "event: Event name", `heldAt: '${NOW}'` ])
+  const path = writeEntry("talks", folder, "index.mdx", fields, "The talk's abstract.\n")
+
+  announce(path, `/talks/${folder}`, mediaFolder("talks", folder))
+}
+
+function generateSnap(title, photo) {
+  const folder = newFolder(title)
+  const media = mediaFolder("snaps", folder)
+  const fields = []
+
+  if (photo) {
+    fields.push(`image: ${copyPhoto(photo, media, folder)}`)
+  }
+
+  const path = writeEntry("snaps", folder, "index.md", frontmatter(title, fields), "")
+  announce(path, `/snaps/${folder}`, media)
+
+  if (photo) {
+    console.log("Then run bin/media variants to make its variants and add it to the manifest.")
+  } else {
+    console.log(`Add the photo to ${relative(ROOT, media)}/, set image: snaps/${folder}/<file>, and run bin/media variants.`)
+  }
+}
+
+function generateProject(title) {
+  const slug = slugFor(title)
+  const path = join(PROJECTS, `${slug}.mdx`)
+
+  if (existsSync(path)) {
+    fail(`${relative(ROOT, path)} already exists.`)
+  } else {
+    const fields = [ "layout: ~/layouts/ProjectLayout.astro", `title: ${yamlString(title)}`, "description: One sentence about the project.", "draft: true" ]
+    writeFileSync(path, `---\n${fields.join("\n")}\n---\n\nWrite about the project here.\n`)
+    console.log(`Created ${relative(ROOT, path)}`)
+    console.log(`Media goes in ${relative(ROOT, mediaFolder("projects", slug))}/`)
+    console.log(`It's at ${DEV_URL}/projects/${slug} in bin/dev, unlisted until draft: true is removed.`)
+  }
+}
+
+// Folders
+
+function newFolder(title) {
+  return `${slugFor(title)}-${unusedId()}`
+}
+
+// Rails' parameterize, which made every slug so far: accents dropped, apostrophes too, and
+// every run of anything else that isn't a letter or digit turned into one dash
+function slugFor(title) {
+  return title
+    .normalize("NFKD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+}
+
+function unusedId() {
+  const used = usedIds()
+  let id = randomId()
+
+  while (used.has(id)) {
+    id = randomId()
+  }
+
+  return id
+}
+
+function randomId() {
+  return Array.from({ length: ID_LENGTH }, () => ID_ALPHABET[randomInt(ID_ALPHABET.length)]).join("")
+}
+
+// An entry is found by the ID at the end of its folder name, in any collection
+function usedIds() {
+  const ids = new Set()
+
+  for (const collection of readdirSync(CONTENT)) {
+    for (const folder of readdirSync(join(CONTENT, collection))) {
+      ids.add(folder.split("-").at(-1))
+    }
+  }
+
+  return ids
+}
+
+function mediaFolder(collection, folder) {
+  const path = join(ORIGINALS, collection, folder)
+  mkdirSync(path, { recursive: true })
+  return path
+}
+
+function copyPhoto(photo, media, folder) {
+  const extension = extname(photo).toLowerCase()
+
+  if (!existsSync(photo)) {
+    fail(`There's no file at ${photo}.`)
+  } else if (!PHOTO_EXTENSIONS.includes(extension)) {
+    fail(`${photo} isn't a photo bin/media can use (${PHOTO_EXTENSIONS.join(", ")}).`)
+  } else {
+    const name = `${slugFor(basename(photo, extname(photo))) || "photo"}${extension}`
+    copyFileSync(photo, join(media, name))
+    return `snaps/${folder}/${name}`
+  }
+}
+
+// Files
+
+function frontmatter(title, extraFields = []) {
+  return [
+    `title: ${yamlString(title)}`,
+    `publishedAt: '${NOW}'`,
+    `updatedAt: '${NOW}'`,
+    "draft: true",
+    "tags: []",
+    ...extraFields
+  ]
+}
+
+function writeEntry(collection, folder, file, fields, body) {
+  const directory = join(CONTENT, collection, folder)
+  const path = join(directory, file)
+
+  mkdirSync(directory, { recursive: true })
+  writeFileSync(path, `---\n${fields.join("\n")}\n---\n${body && `\n${body}`}`)
+
+  return path
+}
+
+function yamlString(text) {
+  return JSON.stringify(text)
+}
+
+// Output
+
+function announce(path, urlPath, media) {
+  console.log(`Created ${relative(ROOT, path)}`)
+  console.log(`Media goes in ${relative(ROOT, media)}/`)
+  console.log(`Once draft: true is removed, it's at ${DEV_URL}${urlPath} in bin/dev.`)
+}
+
+function usage() {
+  console.error([
+    "Usage:",
+    "  bin/generate article \"Title\"",
+    "  bin/generate talk \"Title\"",
+    "  bin/generate snap \"Title\" [path/to/photo.jpg]",
+    "  bin/generate project \"Title\"",
+    "",
+    "The title needs at least one letter or digit, and only snaps take a photo."
+  ].join("\n"))
+  process.exit(1)
+}
+
+function fail(message) {
+  console.error(message)
+  process.exit(1)
+}

@@ -10,7 +10,7 @@ interface Props {
 const KIND_LABELS = { conference: "Conference", meetup: "Meetup" }
 
 const data = Astro.props.talk.source.data as CollectionEntry<"talks">["data"]
-const hasVideo = Boolean(data.videoMirrorUrl)
+const hasVideo = Boolean(data.video || data.videoMirrorUrl)
 ---
 
 <span class="talk-labels">

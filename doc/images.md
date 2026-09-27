@@ -94,7 +94,12 @@ one while the original's size hasn't changed. Video sizes come from `ffprobe`, w
 
 Only widths smaller than the original are made, plus the original's own width when it's
 under 2400, so nothing is upscaled. GIFs and SVGs get no variants and are served as they are,
-so animations keep playing. Videos are served as they are too.
+so animations keep playing. Videos are served as they are too: there are no smaller
+versions, so a phone gets the full file. A talk's recording (`talks/<folder>/talk.mp4`, up
+to 330 MB at 1080p) plays with `preload="none"`, so nothing downloads until someone
+presses play, and then the browser fetches it in ranges as it plays. A video must have its
+index (the `moov` atom) at the front to start before it has all downloaded; ffmpeg's
+`-movflags +faststart` puts it there, and the remux that strips metadata keeps it there.
 
 `sync` only copies; it never deletes from the bucket, and uploads with a year-long
 `Cache-Control`, so a changed file needs a new name. It compares files by size and

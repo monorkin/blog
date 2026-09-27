@@ -1,20 +1,57 @@
 ---
+import type { CollectionEntry } from "astro:content"
+import type { Entry } from "~/lib/entries"
+import { findMedia, originalUrl, placeholderStyle, variantAtLeast } from "~/lib/media"
+
 interface Props {
-  mirrorUrl?: string
+  talk: Entry
 }
 
-const { mirrorUrl } = Astro.props
+const POSTER_WIDTH = 1600
+
+const { talk } = Astro.props
+const data = talk.source.data as CollectionEntry<"talks">["data"]
+const mirrorUrl = data.videoMirrorUrl
 const youtubeId = mirrorUrl?.match(/v=([^&]+)/)?.[1]
+
+// Our own recording when there is one; a mirror is then only a link
+let video
+if (data.video) {
+  const key = talk.mediaKey(data.video)
+  const { width, height, type } = findMedia(key)
+  let poster
+  let placeholder
+
+  if (data.poster) {
+    const posterKey = talk.mediaKey(data.poster)
+    poster = variantAtLeast(posterKey, POSTER_WIDTH)
+    placeholder = placeholderStyle(posterKey)
+  }
+
+  video = { src: originalUrl(key), type, width, height, poster, placeholder }
+}
 ---
 
 <div class="talk__video-section">
-  {mirrorUrl && mirrorUrl.includes("youtube") && (
+  {video && (
+    <video
+      controls
+      preload="none"
+      poster={video.poster}
+      width={video.width}
+      height={video.height}
+      class:list={[ "talk__video", { placeholder: video.placeholder } ]}
+      style={`aspect-ratio: ${video.width} / ${video.height}; ${video.placeholder ?? ""}`}
+    >
+      <source src={video.src} type={video.type} />
+    </video>
+  )}
+  {!video && youtubeId && (
     <iframe src={`https://www.youtube.com/embed/${youtubeId}`} frameborder="0" allowfullscreen class="talk__video"></iframe>
   )}
-  {mirrorUrl && !mirrorUrl.includes("youtube") && (
-    <video src={mirrorUrl} controls class="talk__video"></video>
+  {mirrorUrl && (
+    <div class="talk__video-links">
+      <a href={mirrorUrl} class="txt-link" target="_blank" rel="noopener noreferrer">View via mirror</a>
+    </div>
   )}
-  <div class="talk__video-links">
-    {mirrorUrl && <a href={mirrorUrl} class="txt-link" target="_blank" rel="noopener noreferrer">View via mirror</a>}
-  </div>
 </div>

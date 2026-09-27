@@ -5,7 +5,10 @@
     gap: var(--space-4);
   }
 
+  /* A video sets its own aspect ratio from the manifest; YouTube's player is 16:9 */
   .talk__video {
+    inline-size: 100%;
+    block-size: auto;
     aspect-ratio: 16 / 9;
     border-radius: var(--radius-lg);
   }

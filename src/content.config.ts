@@ -32,6 +32,9 @@ const talks = defineCollection({
     kind: z.enum([ "conference", "meetup" ]),
     eventUrl: z.url().optional(),
     heldAt: z.coerce.date(),
+    // Media keys, relative to the talk (src/lib/media.ts): the recording and its poster
+    video: z.string().optional(),
+    poster: z.string().optional(),
     videoMirrorUrl: z.url().optional()
   })
 })

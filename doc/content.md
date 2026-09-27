@@ -50,11 +50,13 @@ draft: true                         # optional; drafts aren't built
 feedId: Article/46                  # migrated entries only, see below
 ```
 
-Talks add `event`, `kind`, `eventUrl`, `heldAt` and `videoMirrorUrl`. `kind` is
-`conference` or `meetup`, and is required; the talks list and the talk's page label it. The
-URLs are optional: a YouTube mirror is embedded, anything else becomes a `<video>`, and a
-talk with a `videoMirrorUrl` is the one marked as having a video. The body is the talk's
-abstract.
+Talks add `event`, `kind`, `eventUrl`, `heldAt`, `video`, `poster` and `videoMirrorUrl`.
+`kind` is `conference` or `meetup`, and is required; the talks list and the talk's page
+label it. The rest are optional. `video` and `poster` are media keys, named by file like an
+entry's figures (`video: talk.mp4`, `poster: poster.jpg`): the recording we host, which the
+talk's page plays with a native player. `videoMirrorUrl` is a copy elsewhere, on YouTube:
+with a `video` it's only the "View via mirror" link, without one its player is embedded. A
+talk with either is marked as having a video. The body is the talk's abstract.
 
 Snaps have no body. They add `caption`, then `image`, or `video`, `videoType`, `duration`
 and `poster`. The media are named by file, like `image: 1000054880.jpg` (see below).

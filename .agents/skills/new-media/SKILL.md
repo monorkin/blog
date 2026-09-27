@@ -59,6 +59,12 @@ A video needs a poster image beside it; grab a frame with
 In a snap's frontmatter: `image: <file>`, or `video`, `videoType` and `poster` for a video
 snap.
 
+A talk's recording goes in the talk's folder as `talk.mp4`, with `video: talk.mp4` and
+`poster: poster.jpg` in its frontmatter. Take the poster from a frame that shows the talk,
+not the black first one, e.g. `ffmpeg -ss 300 -i talk.mp4 -vf thumbnail=150 -frames:v 1
+-q:v 3 poster.jpg`, and check the video's index is at the front so it streams
+(`doc/images.md`).
+
 Another entry's media takes its full key, the path under `media/originals/`:
 `<Figure media="snaps/soca-valley-C4wEfGoWTXNS/1000054880.jpg" />`.
 

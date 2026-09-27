@@ -49,8 +49,9 @@ tags: []
 - Leave `feedId` out. Only migrated entries have one.
 - Tags are lowercase with dashes. A new tag needs nothing else.
 - A talk gets placeholder `event` and `heldAt` to replace, and `kind: meetup`; set it to
-  `conference` for a conference. It optionally takes `eventUrl`, and `videoMirrorUrl` when
-  there's a recording, which also marks the talk as having a video.
+  `conference` for a conference. It optionally takes `eventUrl`; a recording goes in as
+  `video: talk.mp4` and `poster: poster.jpg` (the new-media skill), with the YouTube copy,
+  if any, as `videoMirrorUrl`. Either marks the talk as having a video.
 - A snap has `image: <file>` when you gave it a photo; run `bin/media variants` so the
   manifest knows it. It takes an optional `caption`, and has no body.
 - Keep the order: title, the dates, tags, what the kind adds, `draft` last.

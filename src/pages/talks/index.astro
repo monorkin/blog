@@ -1,0 +1,29 @@
+---
+import Layout from "~/layouts/Layout.astro"
+import SeoTags from "~/components/SeoTags.astro"
+import EntryList from "~/components/EntryList.astro"
+import { publishedTalks } from "~/lib/entries"
+import { absoluteUrl, titleize } from "~/lib/site"
+
+// All talks on one page: there are few enough, and the timeline reads as a whole
+const talks = await publishedTalks()
+---
+
+<Layout section="talks">
+  <Fragment slot="head">
+    <title>{titleize("Talks")}</title>
+    <SeoTags
+      title="Talks"
+      description="Conference talks and presentations about Ruby, Rails, and web development"
+      url={absoluteUrl("/talks")}
+    />
+  </Fragment>
+
+  <div class="flex flex-col gap-y-6">
+    <section class="article margin-block-end-4">
+      <h1 class="txt-4xl font-semibold">Talks</h1>
+    </section>
+
+    <EntryList entries={talks} class="flex flex-col timeline--first timeline--last" />
+  </div>
+</Layout>

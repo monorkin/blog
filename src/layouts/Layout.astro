@@ -4,6 +4,12 @@ import Header from "~/components/Header.astro"
 import SearchPanel from "~/components/SearchPanel.astro"
 import { absoluteUrl, titleize } from "~/lib/site"
 
+interface Props {
+  // The header's section to mark as current, for pages that belong to one
+  section?: "articles" | "talks" | "snaps" | "projects"
+}
+
+const { section } = Astro.props
 const hasHead = Astro.slots.has("head")
 const canonicalUrl = absoluteUrl(Astro.url.pathname)
 const currentYear = new Date().getUTCFullYear()
@@ -88,7 +94,7 @@ const currentYear = new Date().getUTCFullYear()
 
   <body>
     <header>
-      <Header />
+      <Header section={section} />
     </header>
 
     <main class="main" role="main">

@@ -3,17 +3,21 @@ import Icon from "~/components/Icon.astro"
 import AppearancePicker from "~/components/AppearancePicker.astro"
 import portrait from "~/assets/images/portrait/small.jpg"
 
+interface Props {
+  section?: string
+}
+
 const NAV_ITEMS = [
-  { href: "/articles", label: "Articles" },
-  { href: "/talks", label: "Talks" },
-  { href: "/snaps", label: "Snaps" },
-  { href: "/projects", label: "Projects" }
+  { section: "articles", href: "/articles", label: "Articles" },
+  { section: "talks", href: "/talks", label: "Talks" },
+  { section: "snaps", href: "/snaps", label: "Snaps" },
+  { section: "projects", href: "/projects", label: "Projects" }
 ]
 
-const section = NAV_ITEMS.find(item => Astro.url.pathname.startsWith(item.href))
+const { section } = Astro.props
 
-function currentFor(item: { href: string }) {
-  if (item === section) {
+function currentFor(item: { section: string }) {
+  if (item.section === section) {
     return "page"
   }
 }

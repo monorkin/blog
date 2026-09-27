@@ -13,7 +13,7 @@ The build uses `build.format: "file"` and `trailingSlash: "never"`, so `/article
 | `/` | `src/pages/index.astro` | About, with the three latest articles |
 | `/articles`, `/articles/page/N` | `src/pages/articles/[...page].astro` | |
 | `/:slug-:id` | `src/pages/[article].astro` | An article |
-| `/talks`, `/talks/page/N` | `src/pages/talks/[...page].astro` | Sorted by when they were held |
+| `/talks` | `src/pages/talks/index.astro` | All of them, sorted by when they were held; `/talks/page/N` redirects here |
 | `/talks/:slug-:id` | `src/pages/talks/[talk].astro` | |
 | `/snaps`, `/snaps/page/N` | `src/pages/snaps/[...page].astro` | Clicking opens the lightbox |
 | `/snaps/:slug-:id` | `src/pages/snaps/[snap].astro` | Also what the lightbox loads |
@@ -25,7 +25,8 @@ The build uses `build.format: "file"` and `trailingSlash: "never"`, so `/article
 
 ### Pagination
 
-Indexes show 12 entries a page and load the next page as you scroll (`doc/front-end.md`).
+Articles, snaps and tag pages show 12 entries a page and load the next page as you scroll,
+or when "Load more" is clicked (`doc/front-end.md`). Talks aren't paginated.
 Later pages are `/<index>/page/N`, not `/<index>/N`: `/talks/2` is an old talk URL that still
 redirects. The Rails app paginated with `?page=N`; those URLs still answer, with the first
 page, because static files ignore the query string.
@@ -47,8 +48,9 @@ gets `public/404.html` with a 404.
 
 ## Redirects and headers
 
-`public/_redirects` holds the static redirects: `/articles/atom_style` to `/feed/style`, and
-the numeric talk URLs (`/talks/1` to `/talks/15`) the Rails app redirected. Those IDs are
+`public/_redirects` holds the static redirects: `/articles/atom_style` to `/feed/style`,
+the numeric talk URLs (`/talks/1` to `/talks/15`) the Rails app redirected, and
+`/talks/page/*` to `/talks`, from when talks were paginated. Those IDs are
 frozen; new talks don't get one.
 
 `public/_headers` gives `/feed/style` and `/up` their content types, since neither has an

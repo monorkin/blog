@@ -22,7 +22,7 @@ const data = talk.source.data as CollectionEntry<"talks">["data"]
 const html = await talk.html()
 ---
 
-<Layout>
+<Layout section="talks">
   <EntrySeoTags slot="head" entry={talk} />
 
   <div class="article flex flex-col gap-y-4" data-pagefind-body data-pagefind-meta="type:Talk">

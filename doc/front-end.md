@@ -58,6 +58,10 @@ that opens a small popover (`popover`, placed under the button by `settings.ts`)
 (`src/components/AppearancePicker.astro`) is a radio group, Light, System and Dark, used in
 the popover, the menu and on `/settings`, which is there for visitors without JavaScript.
 
+A page that belongs to a section passes it to the layout (`<Layout section="articles">`),
+and the header and menu underline that link. The URL doesn't decide it, since articles live
+at the root.
+
 Panels that drop in (the search, the menu, the popover) share the `.sheet` styles in
 `dialog.css`: a fade and a short slide, dropped when reduced motion is on. They open in
 the top layer, so nothing on the page moves when they do.

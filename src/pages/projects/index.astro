@@ -7,7 +7,7 @@ import { absoluteUrl, titleize } from "~/lib/site"
 const projects = listedProjects()
 ---
 
-<Layout>
+<Layout section="projects">
   <Fragment slot="head">
     <title>{titleize("Projects")}</title>
     <SeoTags title="Projects" description="Things I've built" url={absoluteUrl("/projects")} />

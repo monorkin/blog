@@ -15,7 +15,7 @@ interface Props {
 const { frontmatter } = Astro.props
 ---
 
-<Layout>
+<Layout section="projects">
   <Fragment slot="head">
     <title>{titleize(frontmatter.title)}</title>
     <SeoTags title={frontmatter.title} description={frontmatter.description} url={absoluteUrl(Astro.url.pathname)} />

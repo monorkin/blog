@@ -130,12 +130,16 @@
     }
   }
 
-  /* Pagination */
+  /* Pagination: the next page usually loads before this comes into view, but it stays a
+     link to click should that not happen */
   .pagination__trigger {
     display: block;
-    block-size: 1px;
-    overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
+    inline-size: fit-content;
+    margin: var(--space-6) auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-accent);
   }
 }

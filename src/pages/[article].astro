@@ -35,7 +35,7 @@ const { article, previousArticle, nextArticle, popularArticles } = Astro.props
 const html = await article.html()
 ---
 
-<Layout>
+<Layout section="articles">
   <EntrySeoTags slot="head" entry={article} />
 
   <article class="article" data-pagefind-body data-pagefind-meta="type:Article">

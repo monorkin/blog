@@ -6,7 +6,7 @@
     padding-inline: var(--space-2);
   }
 
-  @media (width >= 640px) {
+  @media (width >= 600px) {
     .about__hero {
       flex-direction: row;
       column-gap: var(--space-8);
@@ -19,7 +19,7 @@
     padding: var(--space-4);
   }
 
-  @media (width >= 640px) {
+  @media (width >= 600px) {
     .about__portrait {
       padding: 0;
     }
@@ -59,7 +59,7 @@
     padding-inline: var(--space-2);
   }
 
-  @media (width >= 640px) {
+  @media (width >= 600px) {
     .about__contacts {
       grid-template-columns: repeat(5, 1fr);
       gap: var(--space-1);
@@ -71,7 +71,7 @@
     grid-column: span 2;
   }
 
-  @media (width >= 640px) {
+  @media (width >= 600px) {
     .about__contacts > :first-child {
       grid-column: span 1;
     }
@@ -89,7 +89,7 @@
     transition: all 0.3s ease-out;
   }
 
-  @media (width >= 640px) {
+  @media (width >= 600px) {
     .about__contact-glow {
       display: block;
     }
@@ -128,7 +128,7 @@
     drop-shadow: none;
   }
 
-  @media (width >= 640px) {
+  @media (width >= 600px) {
     .about__contact-icon {
       filter: saturate(0);
       opacity: 0.6;

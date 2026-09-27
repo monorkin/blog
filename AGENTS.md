@@ -111,6 +111,8 @@ The responsive breakpoints are defined in `app/assets/stylesheets/base.css` and 
 
 Use `@media (width >= <value>)` syntax in CSS.
 
+The header and the about page switch from the phone to the desktop layout at 600px instead of `sm`, so that the unfolded iPhone Duo (626pt wide) and the iPad mini get the desktop layout.
+
 ### Caching
 
 It's important to cache rendered responses whenever possible both at the HTTP level using fresh_when or stale? and at the view level using the cache method.

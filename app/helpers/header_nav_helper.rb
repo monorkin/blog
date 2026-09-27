@@ -87,12 +87,8 @@ module HeaderNavHelper
   end
 
   def header_about_nav_item
-    header_nav_item(root_path, class: "header__nav-item--wide-gap") do
-      profile_image_tag(class: "header__profile-img", version: :small, srcset: false) +
-        content_tag(:div, class: "inline") do
-          content_tag(:span, "Stanko") +
-            content_tag(:span, "K.R.", class: "header__profile-name-suffix")
-        end
+    header_nav_item(root_path) do
+      profile_image_tag(class: "header__profile-img", version: :small, srcset: false)
     end
   end
 

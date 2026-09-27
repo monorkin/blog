@@ -8,7 +8,7 @@
     justify-content: space-between;
   }
 
-  @media (width >= 768px) {
+  @media (width >= 640px) {
     .header__desktop {
       display: flex;
     }
@@ -29,7 +29,7 @@
     justify-content: space-between;
   }
 
-  @media (width >= 768px) {
+  @media (width >= 640px) {
     .header__mobile {
       display: none;
     }
@@ -58,11 +58,6 @@
     .header__nav-item--wide-gap {
       gap: var(--space-4);
     }
-  }
-
-  .header__profile-name-suffix {
-    margin-inline-start: var(--space-1);
-    font-size: var(--text-xs);
   }
 
   .header__profile-img {

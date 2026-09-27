@@ -1,0 +1,8 @@
+---
+const figures = await Astro.slots.render("default")
+const count = figures.match(/<figure\b/g)?.length ?? 0
+---
+
+<div class={`attachment-gallery attachment-gallery--${count}`}>
+  <Fragment set:html={figures} />
+</div>

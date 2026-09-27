@@ -1,0 +1,77 @@
+---
+title: Tech debt for non-techies
+publishedAt: '2022-11-13T12:00:00Z'
+updatedAt: '2026-03-09T08:42:12Z'
+tags:
+- technology
+feedId: Article/24
+---
+
+import Figure from "~/components/content/Figure.astro"
+import Video from "~/components/content/Video.astro"
+
+Tech dept doesn’t occur by accident. You go into it intentionally - it is a loan like any other, but instead of loaning money you loan time.
+
+When you want to “save time” by implementing a hack (something that goes against the grain of the software’s architecture) you are making an intentional bad decision - you don’t have the time to come up with a better architecture so you defer the problem to future you (or, with any luck, someone else). Essentially, you are borrowing time you don’t have now from the future.
+
+Like with a regular loan, you have to pay that time back. But without a bank to remind you that your installment is due, it’s easy to forget about this loan. Forgetting the loan sometimes works out, and other times it doesn’t.
+
+Tech debt won’t cause you problems if everybody on the team understands what it is and what its trade-offs are - how time is traded for functionality, and how to manage this kind of loan. Technical team members are painfully aware of tech debt because they are the ones that have to manage it and pay it back if necessary, but non-technical team members are usually oblivious to it.
+
+And I don’t blame them, it’s a concept that can be hard to fully grasp. Sure, most people will think they understand it from reading the loan analogy from before. But they won’t be able to see it even when it’s happening in front of their eyes.
+
+But I found a way to illustrate the problems and processes that cause tech debt through Factorio.
+
+<Video media="articles/tech-debt-for-non-techies-4rQhGJdxiMuY/factorio_blogpost_intro-2400.webm" poster="articles/tech-debt-for-non-techies-4rQhGJdxiMuY/factorio_blogpost_intro-2400.jpg" type="video/webm" caption="Montage that demonstrates the basics of Factorio - gathering resources, fighting aliens, building factories and finally launching the rocket" />
+
+Factorio is a game in which you play as an engineer stranded on an alien planet. Surrounded by nothing but trees, rocks, minerals, and a hoard of aggressive aliens. Your goal is to make shelter, fight or co-exist with the aliens, and get off the planet by building and launching a rocket.
+
+The problem is obvious - how do you make a rocket and rocket fuel from sticks and stones? The answer is simple - step by step.
+
+In Factorio, more complex devices can be made out of simpler ones or out of raw materials like rock, iron, copper, coal, oil and uranium.
+
+In the beginning you can only gather and build things. So you do exactly that. You gather rocks to make a furnace, then you gather Iron ore to smelt it into plates.
+
+<Video media="articles/tech-debt-for-non-techies-4rQhGJdxiMuY/factorio_blogpost_crafting.webm" poster="articles/tech-debt-for-non-techies-4rQhGJdxiMuY/factorio_blogpost_crafting.jpg" type="video/webm" caption="Gathering of 5 stone to craft a furnace, and then smelting an iron plate in it by feeding it iron ore and coal" />
+
+Iron plates enable you to build drills and conveyor belts. Now you don’t have to dig and walk so much anymore.
+
+Soon you can build robotic arms that can pick up things from the conveyor belts and feed them to other machines. Now you can automate whole processes like smelting iron and copper.
+
+<Video media="articles/tech-debt-for-non-techies-4rQhGJdxiMuY/factorio_blogpost_automation.webm" poster="articles/tech-debt-for-non-techies-4rQhGJdxiMuY/factorio_blogpost_automation.jpg" type="video/webm" caption="A basic automated coal and iron mining setup" />
+
+And that is the basic loop of the game - gather, build, automate. But it gets complicated. Over time you will build a rocket building factory. There will be machines making iron, turning it into electronics, building other machines that are parts of other machines that are part of your rocket, and all of them will be connected with conveyor belts and robotic arms.
+
+<Video media="articles/tech-debt-for-non-techies-4rQhGJdxiMuY/untitled.webm" poster="articles/tech-debt-for-non-techies-4rQhGJdxiMuY/untitled.jpg" type="video/webm" caption="Running through one part of a bigger factory" />
+
+Building such a factory is no easy task if you can’t manage tech debt. And you will run into tech debt pretty quickly.
+
+Your first encounter with tech debt will be through conveyor belts. In the beginning you will place parts of your factory wherever they are easiest to fit. Probably close to the resources required to build the parts
+
+You will build conveyors close to where you smelt iron. That’s only logical since conveyor belts are expensive and you just spent a lot of resources on an assembler to make the gears and conveyors.
+
+<Figure media="articles/tech-debt-for-non-techies-4rQhGJdxiMuY/untitled.png" caption="A furnace and two assemblers connected with conveyors, building new conveyors" />
+
+This kind of thinking and behavior is known as “greedy behavior” in software. Greedy behavior is usually short-sighted, highly rewarding short-term, but it can be much worse than other approaches long-term.
+
+And that is exactly what will happen here. If you now want to create an assembler that builds robotic arms, you will run into an issue - the gears that you need to make them are in a box right between the two assemblers and are fully surrounded by conveyor belts. There is no space left to add a robotic arm to extract them from the box and put them on another conveyor.
+
+Now you have two choices - tear everything down and rebuild it better, or squeeze in a few conveyors.
+
+Rebuilding is the better choice now that you know that you want to automate the assembly of robotic arms. But some people will choose to squeeze in conveyors because of the sunk cost fallacy - they can’t let go of the time and effort they have already invested - or because they don’t have the time to rebuild the factory - in which case they are entering tech debt by intentionally making a bad decision to save some time now.
+
+Over time, squeezing in more and more conveyor belts will result in conveyor belt spaghetti. The factory will get so densely covered with conveyor belts that it will become difficult to keep track of which resources are going where. And even worse, it will become hard to add new conveyors and grow the factory - you will have to duplicate parts of your factory to be able to cart the resources to another part of the factory.
+
+<Figure media="articles/tech-debt-for-non-techies-4rQhGJdxiMuY/untitled_1.png" caption="What it looks like when you squeeze in conveyors and duplicate parts of the factory. There are two assemblers making gears, and two furnaces making iron plates. And everything is covered in conveyor belts." />
+
+Short-term, squeezing in conveyors will solve your problem. Long-term, it will cause you bigger problems. But there is a third solution - squeeze in the conveyor belts today, and reorganize the factory tomorrow. That is, enter tech debt today and pay it tomorrow.
+
+To long term players this is obvious. They would build the factory with expansion in mind from the start. But to new players this isn’t obvious at all.
+
+<Figure media="articles/tech-debt-for-non-techies-4rQhGJdxiMuY/untitled_2.png" caption="The same factory as before, but built with expansion in mind. Production of raw resources and parts is centralized and then the resources are carted around the factory on conveyor belts. There is plenty room to add more machines or expand existing ones." />
+
+That’s why developers complain and moan about hacks and tech debt, while managers usually struggle to understand the problem. Developers know that, eventually, the code they write today will become the foundation of a new feature tomorrow and they want to prepare for it. While managers are concerned with delivering something today.
+
+That is also why tech debt rarely gets addressed in some organizations. When a manager - the person deciding what the developer or designer will build - has to choose between working on a feature or maintenance they will always choose the feature. It is a feature today, they understand that. They don’t understand that maintenance will be a feature tomorrow.
+
+In their eyes one is fact, the other is a hypothetical. While in the builder’s eyes both are fact.

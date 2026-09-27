@@ -1,0 +1,132 @@
+---
+title: The humble ActiveModel
+publishedAt: '2022-09-22T12:00:00Z'
+updatedAt: '2026-02-15T09:37:07Z'
+tags:
+- ruby
+feedId: Article/17
+---
+
+ActiveModel is one of my most used tools in Rails applications. I use it in service objects, form objects and objects that represent external entities.
+
+Why? Because it provides a nice interface for validating inputs and results, it can have callbacks for pre and post-processing data, and it integrates well into various Rails conventions.
+
+A simple login form is my go to example for explaining how nice ActiveModel is to work with.
+
+I have seen people do login flows in controllers, in User models and in interactors. But no other approach is as straightforward as creating a Login model.
+
+```ruby
+# /app/models/login.rb
+class Login
+  include ActiveModel::Model
+  include ActiveModel::Validations::Callbacks
+
+  attr_accessor :username, :password
+
+  validates :username, presence: true
+  validates :password, presence: true
+  validate :validate_user_exists!
+  validate :validate_password_for_user!
+
+  before_validation do
+    @user = nil
+  end
+
+  def validate_user_exists!
+    return if user.present?
+
+    errors.add(:username, "not found")
+  end
+
+  def validate_password_for_user!
+    # `authenticate` comes from Rails
+    # Reference:  https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password
+    return if user&.authenticate(password)
+
+    errors.add(:password, "is invalid")
+  end
+
+  def user
+    @user ||= User.find_by(username: username)
+  end
+end
+```
+
+Which can then be used in a controller like any other model:
+
+```ruby
+class LoginsController < ApplicationController
+  def new
+    @login = Login.new
+  end
+
+  def create
+    permitted_params = params.require(:login).permit(:username, :password)
+    @login = Login.new(permitted_param)
+
+    if @login.valid?
+      session[:current_user_id] = @login.user.id
+      redirect_to root_path, notice: "Welcome back!"
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+end
+```
+
+You can use **form_for** without extra arguments or configuration, **I18n** works for the attributes and error messages just like it does for ActiveRecord models, and if the login fails the fields get repopulated.
+
+It looks and feels like you are working with an ActiveRecord model, which most of us know and love.
+
+When it comes to Service objects, the ActiveModel approach offers a way to communicate success and failure through validations. You can check the inputs with **valid?**, or you can check the result, and return a nice error message.
+
+```ruby
+class Device::WarehouseReservator < ApplicationModel
+  attr_accessor :device, :user
+
+  validates :device, presence: true
+  validates :user, presence: true
+
+  after_initialize do
+    self.user ||= device.creator
+  end
+
+  def reserve!
+    return false if invalid?
+
+    response = HTTP.post("http://device.inventory.com/api/v1/register", data: payload)
+
+    if response.ok?
+      errors.add(:device, “failed to register”)
+      return false
+    end
+
+    self.warehouse_reference = device.create_warehouse_reference(reservation_id: JSON.parse(response.body).fetch(:id))
+  end
+
+  def payload
+    { device_id: device.id, name: device.name, reservation_holder: user.name }
+  end
+end
+
+reservator = Device::WarehouseReservator.new(user: User.all.sample, device: Device.all.sample.reserver!
+reservator.valid? # => true
+reservator.reserver!
+Reservator.warehouse_reference.id # => 1
+
+reservator = Device::WarehouseReservator.new(user: nil, device: nil)
+reservator.valid? # => false
+reservator.reserver! # => false
+reservator.errors.full_messages # => ["User missing", "Device missing"]
+```
+
+This is a much nicer way to communicate what went wrong than raising and catching errors, returning symbols or custom Error objects.
+
+- validate and coerce inputs by type through [ActiveModel::Attributes](https://api.rubyonrails.org/classes/ActiveModel/Attributes/ClassMethods.html)
+- handle password storage and checking through [has_secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password)
+- add custom callbacks with [ActiveModel::Callbacks](https://api.rubyonrails.org/classes/ActiveModel/Callbacks.html) (I usually implement an **after_initialize_callback** in **ApplicationModel**)
+- track changes to attributes using [ActiveModel::Dirty](https://api.rubyonrails.org/classes/ActiveModel/Dirty.html)
+
+ActiveModel is quite a versatile tool for that alone, but there is much more that it can do like:
+
+P.S. Many thanks to [Hrvoje S.](https://shime.sh/) For reviwing this article.

@@ -1,0 +1,87 @@
+---
+import Layout from "~/layouts/Layout.astro"
+import SeoTags from "~/components/SeoTags.astro"
+import EntryList from "~/components/EntryList.astro"
+import Icon from "~/components/Icon.astro"
+import { publishedEntries } from "~/lib/entries"
+import { absoluteUrl, titleize } from "~/lib/site"
+import portraitSmall from "~/assets/images/portrait/small.jpg"
+import portraitMedium from "~/assets/images/portrait/medium.jpg"
+import portraitLarge from "~/assets/images/portrait/large.jpg"
+import heyLogo from "~/assets/images/others_logos/hey.svg"
+import githubLogo from "~/assets/images/others_logos/github.svg"
+import mastodonLogo from "~/assets/images/others_logos/mastodon.svg"
+import twitterLogo from "~/assets/images/others_logos/twitter.svg"
+import linkedinLogo from "~/assets/images/others_logos/linkedin.png"
+
+const CONTACTS = [
+  { title: "Email", logo: heyLogo, href: "mailto:hey@stanko.io", target: undefined },
+  { title: "GitHub", logo: githubLogo, href: "https://github.com/monorkin", target: "_blank" },
+  { title: "Mastodon", logo: mastodonLogo, href: "https://mastodon.social/@monorkin", target: "_blank" },
+  { title: "Twitter", logo: twitterLogo, href: "https://twitter.com/monorkin", target: "_blank" },
+  { title: "LinkedIn", logo: linkedinLogo, href: "https://www.linkedin.com/in/stanko-krtalic/", target: "_blank" }
+]
+
+const latestArticles = (await publishedEntries("article")).slice(0, 3)
+const portraitSrcset = `${portraitSmall.src} 512w, ${portraitMedium.src} 1024w, ${portraitLarge.src} 2048w`
+---
+
+<Layout>
+  <Fragment slot="head">
+    <title>{titleize("Blog")}</title>
+    <SeoTags
+      title="Blog"
+      description="Programmer from Zagreb making products with Ruby on Rails, Hotwired and Tailwind"
+      url={absoluteUrl("/")}
+    />
+  </Fragment>
+
+  <div class="flex flex-col gap-y-8">
+    <section class="about__hero">
+      <div class="about__portrait">
+        <img srcset={portraitSrcset} alt="Stanko K.R." class=" profile-img " src={portraitMedium.src} width={portraitMedium.width} height={portraitMedium.height} />
+      </div>
+      <div class="about__bio">
+        <h1 class="txt-3xl font-bold">
+          Hi, I'm Stanko
+        </h1>
+        <p>
+          I'm a programmer from Zagreb making products with
+          <a target="_blank" href="https://rubyonrails.org/">Ruby on Rails</a>,
+          <a target="_blank" href="https://hotwired.dev/">Hotwired</a> and
+          <a target="_blank" href="https://tailwindcss.com/">Tailwind</a>.
+        </p>
+      </div>
+    </section>
+
+    <section class="pad-inline-2">
+      <div class="about__contacts">
+        {CONTACTS.map(contact => (
+          <a href={contact.href} target={contact.target}>
+            <div class="about__contact">
+              <div class="about__contact-glow"></div>
+              <div class="about__contact-inner">
+                <img class="about__contact-icon" alt={contact.title} src={contact.logo.src} />
+                <div class="about__contact-label">{contact.title}</div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="article flex flex-col gap-y-4">
+      <h2 class="txt-2xl font-bold">
+        Latest Articles
+      </h2>
+
+      <EntryList entries={latestArticles} />
+
+      <div>
+        <a href="/articles" class="txt-lg txt-link">
+          <span class="inline-flex flex-row items-center gap-x-2 ">See all<Icon name="arrow-long-right" /></span>
+        </a>
+      </div>
+    </section>
+  </div>
+</Layout>

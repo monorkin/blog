@@ -1,0 +1,53 @@
+---
+import type { GetStaticPaths } from "astro"
+import type { CollectionEntry } from "astro:content"
+import Layout from "~/layouts/Layout.astro"
+import EntrySeoTags from "~/components/EntrySeoTags.astro"
+import TalkVideo from "~/components/TalkVideo.astro"
+import { publishedEntries, type Entry } from "~/lib/entries"
+import { formatDate, isoTimestamp } from "~/lib/site"
+
+export const getStaticPaths = (async () => {
+  const talks = await publishedEntries("talk")
+  return talks.map(talk => ({ params: { talk: talk.id }, props: { talk } }))
+}) satisfies GetStaticPaths
+
+interface Props {
+  talk: Entry
+}
+
+const { talk } = Astro.props
+const data = talk.source.data as CollectionEntry<"talks">["data"]
+const html = await talk.html()
+---
+
+<Layout>
+  <EntrySeoTags slot="head" entry={talk} />
+
+  <div class="article flex flex-col gap-y-4" data-pagefind-body data-pagefind-meta="type:Talk">
+    <div class="flex flex-col gap-y-4">
+      <h1 class="txt-2xl font-semibold" data-pagefind-meta="title">
+        {talk.title}
+      </h1>
+
+      <div class="flex flex-col gap-y-1 txt-muted">
+        <h2 class="font-semibold">
+          {data.eventUrl && <a target="_blank" href={data.eventUrl}>{data.event}</a>}
+          {!data.eventUrl && data.event}
+        </h2>
+        <time datetime={isoTimestamp(data.heldAt)}>{formatDate(data.heldAt)}</time>
+      </div>
+      {talk.tags.map(tag => <span hidden data-pagefind-filter="tag">{tag}</span>)}
+    </div>
+
+    {html.trim() !== "" && (
+      <div>
+        <div class="lexxy-content" set:html={html} />
+      </div>
+    )}
+
+    <div>
+      <TalkVideo mirrorUrl={data.videoMirrorUrl} />
+    </div>
+  </div>
+</Layout>

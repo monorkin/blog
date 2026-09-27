@@ -1,0 +1,41 @@
+---
+import type { CollectionEntry } from "astro:content"
+import type { Entry } from "~/lib/entries"
+import { findMedia, squareUrl } from "~/lib/media"
+
+interface Props {
+  snap: Entry
+}
+
+const THUMBNAIL_SIZE = 400
+const THUMBNAIL_SIZES = "(width >= 640px) 300px, 33vw"
+
+const { snap } = Astro.props
+const data = snap.source.data as CollectionEntry<"snaps">["data"]
+const cover = (data.image ?? data.poster)!
+const squares = findMedia(cover).squares ?? []
+const srcset = squares.map(size => `${squareUrl(cover, size, "webp")} ${size}w`).join(", ")
+
+function formatDuration(totalSeconds: number) {
+  const seconds = Math.round(totalSeconds)
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`
+}
+---
+
+<div class="photos-grid__item" data-snap-tilt>
+  <a href={snap.path} class="photos-grid__button" data-snap-lightbox>
+    <img
+      src={squareUrl(cover, THUMBNAIL_SIZE, "webp")}
+      srcset={srcset}
+      sizes={THUMBNAIL_SIZES}
+      width={THUMBNAIL_SIZE}
+      height={THUMBNAIL_SIZE}
+      alt={snap.title}
+      class="photos-grid__image"
+      loading="lazy"
+    />
+  </a>
+  {data.video && data.duration && (
+    <span class="photos-grid__duration">{formatDuration(data.duration)}</span>
+  )}
+</div>

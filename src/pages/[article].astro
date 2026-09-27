@@ -1,0 +1,96 @@
+---
+import type { GetStaticPaths } from "astro"
+import Layout from "~/layouts/Layout.astro"
+import EntrySeoTags from "~/components/EntrySeoTags.astro"
+import Icon from "~/components/Icon.astro"
+import TagBubble from "~/components/TagBubble.astro"
+import LinkPreviews from "~/components/LinkPreviews.astro"
+import ArticleNavigation from "~/components/ArticleNavigation.astro"
+import StayUpdatedPrompt from "~/components/StayUpdatedPrompt.astro"
+import { publishedEntries, type Entry } from "~/lib/entries"
+import { formatDate, isoTimestamp } from "~/lib/site"
+
+export const getStaticPaths = (async () => {
+  const articles = await publishedEntries("article")
+
+  return articles.map(article => ({
+    params: { article: article.id },
+    props: {
+      article,
+      previousArticle: articles.find(candidate => candidate.publishedAt < article.publishedAt),
+      nextArticle: articles.findLast(candidate => candidate.publishedAt.getTime() >= article.publishedAt.getTime() + 1000),
+      popularArticles: articles.filter(candidate => candidate !== article).slice(0, 3)
+    }
+  }))
+}) satisfies GetStaticPaths
+
+interface Props {
+  article: Entry
+  previousArticle?: Entry
+  nextArticle?: Entry
+  popularArticles: Entry[]
+}
+
+const { article, previousArticle, nextArticle, popularArticles } = Astro.props
+const html = await article.html()
+---
+
+<Layout>
+  <EntrySeoTags slot="head" entry={article} />
+
+  <article class="article" data-pagefind-body data-pagefind-meta="type:Article">
+    <div class="flex flex-row gap-x-4">
+      <span><a class="article__back-link" href="/articles" data-pagefind-ignore><span class="inline-flex flex-row items-center gap-x-2 "><Icon name="arrow-long-left" />Back</span></a></span>
+    </div>
+
+    <div class="article__meta" data-pagefind-ignore>
+      <time datetime={isoTimestamp(article.publishedAt)}>Published on {formatDate(article.publishedAt)}</time>
+    </div>
+
+    <div>
+      <h1 class="article__title" data-pagefind-meta="title">
+        {article.title}
+      </h1>
+
+      <div class="article__tags" data-pagefind-ignore>
+        <div class="article__tags-fade-right"></div>
+        <div class="article__tags-fade-left"></div>
+        <div class="article__tags-scroll">
+          <div class="article__tags-inner">
+            <div class="article__tags-list">
+              {article.tags.map(tag => <TagBubble name={tag} />)}
+            </div>
+          </div>
+        </div>
+      </div>
+      {article.tags.map(tag => <span hidden data-pagefind-filter="tag">{tag}</span>)}
+    </div>
+
+    <div data-link-previews>
+      <div class="lexxy-content" set:html={html} />
+    </div>
+  </article>
+
+  <section class="flex flex-col gap-y-8 margin-block-4">
+    <ArticleNavigation previousArticle={previousArticle} nextArticle={nextArticle} />
+    <StayUpdatedPrompt />
+    {popularArticles.length > 0 && (
+      <div class="related-articles">
+        <h2 class="related-articles__title">Popular Articles</h2>
+        <ul class="related-articles__list">
+          {popularArticles.map(popular => (
+            <li>
+              <a href={popular.path} class="related-articles__link">{popular.title}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </section>
+
+  <LinkPreviews html={html} />
+
+  <script>
+    import "~/scripts/gallery"
+  </script>
+</Layout>

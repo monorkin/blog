@@ -1,0 +1,30 @@
+{
+  "name": "blog",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "MEDIA_URL=/media astro dev",
+    "build": "astro build && pagefind --site dist/client",
+    "preview": "wrangler dev",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^14.3.3",
+    "@astrojs/markdown-satteri": "^0.4.2",
+    "@astrojs/mdx": "^8.0.2",
+    "astro": "^7.3.5",
+    "node-html-parser": "^9.0.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^26.6.3",
+    "pagefind": "^1.5.2",
+    "sharp": "^0.35.4",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.141.0"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "workerd": true
+  }
+}

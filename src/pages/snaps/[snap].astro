@@ -1,0 +1,111 @@
+---
+import type { GetStaticPaths } from "astro"
+import type { CollectionEntry } from "astro:content"
+import Layout from "~/layouts/Layout.astro"
+import EntrySeoTags from "~/components/EntrySeoTags.astro"
+import Icon from "~/components/Icon.astro"
+import { publishedEntries, type Entry } from "~/lib/entries"
+import { findMedia, originalUrl, sources, variantAtLeast } from "~/lib/media"
+
+export const getStaticPaths = (async () => {
+  const snaps = await publishedEntries("snap")
+
+  return snaps.map((snap, index) => ({
+    params: { snap: snap.id },
+    props: { snap, previousSnap: snaps[index - 1], nextSnap: snaps[index + 1] }
+  }))
+}) satisfies GetStaticPaths
+
+interface Props {
+  snap: Entry
+  previousSnap?: Entry
+  nextSnap?: Entry
+}
+
+const LIGHTBOX_SIZES = "100vw"
+const LIGHTBOX_FALLBACK_WIDTH = 1600
+
+const { snap, previousSnap, nextSnap } = Astro.props
+const data = snap.source.data as CollectionEntry<"snaps">["data"]
+
+let image
+let original
+if (data.image) {
+  const imageSources = sources(data.image)
+  image = { entry: findMedia(data.image), extraSources: imageSources.slice(0, -1), fallback: imageSources.at(-1), src: variantAtLeast(data.image, LIGHTBOX_FALLBACK_WIDTH) }
+  original = originalUrl(data.image)
+} else if (data.video) {
+  original = originalUrl(data.video)
+}
+
+let video
+if (data.video) {
+  const videoMedia = findMedia(data.video)
+  video = { url: originalUrl(data.video), width: videoMedia.width, height: videoMedia.height, poster: data.poster && variantAtLeast(data.poster, LIGHTBOX_FALLBACK_WIDTH) }
+}
+---
+
+<Layout>
+  <EntrySeoTags slot="head" entry={snap} />
+
+  <div id="snap_lightbox" class="snap-page">
+    <div class="lightbox__content">
+      <a href="/snaps" class="lightbox__close" data-dialog-close aria-label="Close">&times;</a>
+
+      {previousSnap && (
+        <a href={previousSnap.path} class="lightbox__nav lightbox__nav--prev" data-snap-previous aria-label="Previous">
+          &lsaquo;
+        </a>
+      )}
+
+      {image && (
+        <picture>
+          {image.extraSources.map(source => <source type={source.type} srcset={source.srcset} sizes={LIGHTBOX_SIZES} />)}
+          <img
+            src={image.src}
+            srcset={image.fallback?.srcset}
+            sizes={LIGHTBOX_SIZES}
+            width={image.entry.width}
+            height={image.entry.height}
+            alt={snap.title}
+            class="lightbox__image"
+          />
+        </picture>
+      )}
+      {video && (
+        <video class="lightbox__image" controls poster={video.poster} width={video.width} height={video.height}>
+          <source src={video.url} type={data.videoType} />
+        </video>
+      )}
+
+      {nextSnap && (
+        <a href={nextSnap.path} class="lightbox__nav lightbox__nav--next" data-snap-next aria-label="Next">
+          &rsaquo;
+        </a>
+      )}
+
+      <div class="lightbox__footer">
+        <div class="lightbox__captions">
+          <h1 class="lightbox__caption">{snap.title}</h1>
+          {data.caption && <span class="lightbox__caption">{data.caption}</span>}
+        </div>
+
+        <div class="lightbox__actions" data-snap-actions>
+          <button class="lightbox__action-btn" data-copy-link={snap.url} aria-label="Copy link" title="Copy link">
+            <Icon name="link" class="icon-sm" />
+          </button>
+
+          {original && (
+            <a href={original} class="lightbox__action-btn" aria-label="Download original" title="Download original" download>
+              <Icon name="arrow-down-tray" class="icon-sm" />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import "~/scripts/snaps"
+  </script>
+</Layout>

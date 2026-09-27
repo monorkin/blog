@@ -1,0 +1,74 @@
+---
+import type { GetStaticPaths } from "astro"
+import Layout from "~/layouts/Layout.astro"
+import SeoTags from "~/components/SeoTags.astro"
+import EntryList from "~/components/EntryList.astro"
+import Paginated from "~/components/Paginated.astro"
+import TagBubble from "~/components/TagBubble.astro"
+import type { Entry } from "~/lib/entries"
+import { paginateIndex, type IndexPage } from "~/lib/pagination"
+import { allTags, relatedTags, type Tag } from "~/lib/tags"
+import { absoluteUrl, titleize } from "~/lib/site"
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const tags = await allTags()
+
+  return tags.flatMap(tag => {
+    return paginateIndex(paginate, tag.entries, `/tags/${tag.name}`, { name: tag.name }).map(path => ({
+      ...path,
+      props: { ...path.props, tag, related: relatedTags(tag, tags) }
+    }))
+  })
+}) satisfies GetStaticPaths
+
+interface Props {
+  page: IndexPage<Entry>
+  tag: Tag
+  related: Tag[]
+}
+
+const { page, tag, related } = Astro.props
+const count = tag.entries.length
+
+let searchIndexAttributes = {}
+if (page.first) {
+  searchIndexAttributes = { "data-pagefind-body": "", "data-pagefind-meta": "type:Tag" }
+}
+---
+
+<Layout>
+  <Fragment slot="head">
+    <title>{titleize(tag.name)}</title>
+    <SeoTags
+      title={`#${tag.name}`}
+      description={`Content tagged with ${tag.name}`}
+      url={absoluteUrl(`/tags/${tag.name}`)}
+    />
+  </Fragment>
+
+  <section class="article margin-block-end-4" {...searchIndexAttributes}>
+    <h1 class="txt-4xl font-semibold">#{tag.name}</h1>
+    <span hidden data-pagefind-meta={`title:${tag.name}`}></span>
+    <p class="txt-subtle margin-block-start-2" data-pagefind-ignore>
+      {count} {count === 1 && "entry"}{count !== 1 && "entries"} with this tag
+    </p>
+  </section>
+
+  {related.length > 0 && (
+    <section class="article margin-block-end-6">
+      <h2 class="txt-lg font-medium margin-block-end-2">Related Tags</h2>
+      <div class="flex flex-wrap gap-2">
+        {related.map(relatedTag => <TagBubble name={relatedTag.name} />)}
+      </div>
+    </section>
+  )}
+
+  <section>
+    {page.data.length > 0 && (
+      <Paginated page={page}>
+        <EntryList entries={page.data} />
+      </Paginated>
+    )}
+    {page.data.length === 0 && <p class="article">No content found with this tag</p>}
+  </section>
+</Layout>

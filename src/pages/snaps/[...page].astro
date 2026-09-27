@@ -1,0 +1,54 @@
+---
+import type { GetStaticPaths } from "astro"
+import Layout from "~/layouts/Layout.astro"
+import SeoTags from "~/components/SeoTags.astro"
+import Paginated from "~/components/Paginated.astro"
+import SnapGridItem from "~/components/SnapGridItem.astro"
+import { publishedEntries, type Entry } from "~/lib/entries"
+import { paginateIndex, type IndexPage } from "~/lib/pagination"
+import { absoluteUrl, titleize } from "~/lib/site"
+
+export const getStaticPaths = (async ({ paginate }) => {
+  return paginateIndex(paginate, await publishedEntries("snap"), "/snaps")
+}) satisfies GetStaticPaths
+
+const { page } = Astro.props as { page: IndexPage<Entry> }
+---
+
+<Layout>
+  <Fragment slot="head">
+    <title>{titleize("Snaps")}</title>
+    <SeoTags
+      title="Snaps"
+      description="Photo galleries and photography"
+      url={absoluteUrl("/snaps")}
+    />
+  </Fragment>
+
+  <div class="photos-section">
+    <div class="article margin-block-end-4">
+      <h1 class="txt-4xl font-semibold">Snaps</h1>
+    </div>
+
+    {page.data.length > 0 && (
+      <Paginated page={page}>
+        <div class="photos-grid">
+          {page.data.map(snap => <SnapGridItem snap={snap} />)}
+        </div>
+      </Paginated>
+    )}
+    {page.data.length === 0 && (
+      <div class="article">
+        <p class="txt-muted">No snaps yet</p>
+      </div>
+    )}
+  </div>
+
+  <dialog id="snap-lightbox" class="lightbox" aria-label="snap_lightbox">
+    <div class="dialog__frame"></div>
+  </dialog>
+
+  <script>
+    import "~/scripts/snaps"
+  </script>
+</Layout>

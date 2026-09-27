@@ -1,0 +1,17 @@
+---
+import Layout from "~/layouts/Layout.astro"
+import DialogPanel from "~/components/DialogPanel.astro"
+import SettingsPanel from "~/components/SettingsPanel.astro"
+import { titleize } from "~/lib/site"
+---
+
+<Layout>
+  <Fragment slot="head">
+    <title>{titleize("Settings")}</title>
+    <meta name="robots" content="noindex, nofollow" />
+  </Fragment>
+
+  <DialogPanel>
+    <SettingsPanel idPrefix="page" withHeading />
+  </DialogPanel>
+</Layout>

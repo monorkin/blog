@@ -1,0 +1,159 @@
+---
+title: Licensing software
+publishedAt: '2018-10-20T00:00:00Z'
+updatedAt: '2026-02-15T09:37:07Z'
+tags:
+- legal
+feedId: Article/6
+---
+
+import Figure from "~/components/content/Figure.astro"
+
+<Figure media="articles/licensing-software-b13d043e2a93/oqbl7rd0y9yfn92dskv1uw.jpeg" caption="My messy desk" />
+
+Recently I've started working on a small Ruby library. While I was sketching the architecture of it to I was listening to some lectures from Richard M. Stallman which got me thinking about how I should license my library.
+
+Note: I'm by no means a legal expert. Everything written here is what I've found while researching the issue. Some things may not apply to the region you live in.
+
+## Why is licensing important?
+
+**Unless you provide a license with your code, the code (legally) can't be redistributed by others.** It falls under your personal copyright, and only you are allowed to redistribute it, authorize copies, modify it, etc.
+
+I wasn't aware of this until, one day, I got an email from a complete stranger asking if I could add a license to an old project of mine so that his company could fork and modify it to their liking.
+
+This caught me off-guard, I always thought that public, unlicensed, code is free for the taking. Much like things in the public domain. But, it turns out that code (just like essays, books, poems, songs, …) belong to the person who wrote them unless there is a contract specifying otherwise (e.g. a license or a contract with the company you work for). This same issue was covered by Jeff Antwood back in 2007 with the post "[Pick a License, Any License](https://blog.codinghorror.com/pick-a-license-any-license/)".
+
+For that reason you'll often hear something along the lines of *"Experienced developers won't touch unlicensed code because they have no legal right to use it."*
+
+## How to choose a license for your project?
+
+Choosing the right license four your project can be a daunting task. **A license determines which rights you hold/give up as the author and under what conditions others can use your project** — you can think of it as your business model, of sorts.
+
+Licenses are often written in a confusing to read, but legally correct, manner which means it takes a couple of readings before you understand the full legal implications of the text. Since I've seen at least 20 different software licenses over the years, and I didn't want to spend the time to read all of them through **I've decided to narrow my efforts to the most popular ones and research those.**
+
+## What to choose?
+
+To find out which licenses are most popular in the community I decided to look at GitHub's data on Google's BigQuery platform. GitHub catalogs all repositories by the license they use. It's far from perfect as some projects have multiple-licenses (e.g. [Rust](https://github.com/rust-lang/rust/blob/c57deb923e56e04634b7e4b3fdc0f84ea0d41ed4/COPYRIGHT)) and some have custom licenses (e.g. [Ruby](https://github.com/ruby/ruby/blob/9cbe4553f4e25d0a9beb4b6393b601c1d0ab3a17/COPYING)) which will be catalogued as unlicensed, but the data should be indicative of a trend.
+
+<Figure media="articles/licensing-software-b13d043e2a93/d03sraeqi3hzgi0v_18dig.png" caption="Representation of licenses in all GitHub projects as a percentage" />
+
+**The above graph represents the percentage of repositories using a particular license.**
+
+To get that data from BigQuery I've used the following query to extract the count of projects using a particular license for C, C++, Elixir, Haskell, Java, JavaScript, Kotlin, PHP, Python, Ruby & Rust to construct the data-set.
+
+```
+SELECT licenses.license AS license, COUNT(licenses.repo_name) AS count
+FROM [bigquery-public-data:github_repos.licenses] AS licenses
+JOIN [bigquery-public-data:github_repos.languages] AS languages ON licenses.repo_name = languages.repo_name
+WHERE languages.language.name = ''
+GROUP BY license
+```
+
+It's visible form the graph that **the five most popular licenses are (in order) MIT, Apache-2.0, GPLv2, GPLv3 and BSD-3-clauses.** It's also visible that there is a relatively small amount of unlicensed, custom-licensed and multi-licensed repositories.
+
+Now that our search has been narrowed down to only five licenses I can read and research each one of them and specify a use-case for each.
+
+## MIT
+
+[The MIT license](https://opensource.org/licenses/MIT) is by far **the most popular license with about 48% of all repositories on GitHub adopting it**. It's also the simplest of the five.
+
+[DHH](https://twitter.com/dhh) (David Heinemeier Hansson) once translated it nicely as "[**I don't owe you shit**](https://www.flickr.com/photos/rooreynolds/243810133/)".
+
+The license states that the person using the project has to include the license in any derivative work (e.g. forks — like in the case of [Roda](https://github.com/jeremyevans/roda/blob/d36844117a6dc33794826b92c6e24f4151bc34cb/MIT-LICENSE) which is a fork of [Cuba](https://github.com/soveran/cuba)), that they are free to do what ever they like with your code and that you as the author can't be held liable for any bugs or unintended side-effects.
+
+That means that people are free to include your code in their projects (provided the copyright/license notice), you can't be held liable for any kind of unwanted behavior, and that nobody is required to upstream or open-source any bug fixes or changes they make.
+
+**This license is extremely permissive making it an excellent choice for libraries, as well as applications.** It's mostly catered to open-source projects. Though, in my opinion and depending on your desires, GPL may be better for applications. Note that with MIT any one can make a closed-source derivative work, this makes MIT really popular as it doesn't force the end-user's choice.
+
+**There is a gotcha' when working with the MIT license**, [one exploited by Microsoft's Visual Studio Code](https://github.com/VSCodium/vscodium#why-does-this-exist). **MIT only covers the source code, not the compiled or binary version** which enabled developers to add additional clauses to the release version of the app/library.
+
+<Figure media="articles/licensing-software-b13d043e2a93/y6vd5b6zkq9da6jxq6tbbw.png" caption={"License popularity by language, expressed as a percentage; EDIT: \"Unlicensed\" is actually the Unlicense license"} />
+
+The MIT license is extremely popular in all of the languages I sampled but Java, Kotlin & Haskell where Apache-2.0 and BSD-3-clauses were more popular. And even in those languages, MIT was on second place. **I'd attribute it's popularity to it's do-what-you-want approach to licensing.**
+
+## Apache-2.0
+
+[**Apache 2.0**](https://opensource.org/licenses/Apache-2.0) **is more complicated in legal terms than MIT, but basically sets the same expectations.** The license must be provided with each copy of the source. The author(s) can't be held liable in any way, shape or form. It grants the end-user full rights regarding patenting on any contributed code given it doesn't infringe on any patents.
+
+The biggest difference from MIT is that **any modifications done to the original project have to be redistributed with a notice that the files have been modified.** And **a warranty can be applied** to the project (e.g. for a fee).
+
+**It's quite permissive making it an excellent choice for both libraries and applications.** Especially given the patents and warrant clause, which makes it more suitable for commercial use.
+
+Same as with MIT, Apache-2.0 allows end-users to modify your project and redistribute it under minimal terms, without the need to open-source or upstream modification.
+
+<Figure media="articles/licensing-software-b13d043e2a93/pe72mku20owlcgsftvfxvw.png" caption="License popularity in Java & Kotlin projects, expressed as a percentage" />
+
+Interestingly enough, Apache-2.0 is the most popular license for Java and Kotlin projects. I'd guess that because [the Apache Foundation predominately uses Java for their projects](https://github.com/apache) this drives up the number of Java projects with that license. But' I can't explain exactly why these two languages are the outliers.
+
+## GPLv2 & GPLv3
+
+Here **I'm going to cover only** [**GPLv3**](https://www.gnu.org/licenses/rms-why-gplv3.html), [as v2 and v3 are much the same (yet incompatible) expect for patents and a loop hole](https://www.gnu.org/licenses/rms-why-gplv3.html).
+
+The GPL family of licenses comes from the [Free Software Foundation](https://en.wikipedia.org/wiki/Free_Software_Foundation), an organization started by Richard M. Stallman after an, now famous, [incident with a printer that often jammed](https://en.wikipedia.org/wiki/Richard_Stallman#Events_leading_to_GNU).
+
+This family of licenses is simultaneously loved & frowned upon by many in the Free/Libre and OpenSource community. **It's controversial because it requires the end user to open-source, as well as provide build and installation instructions for their project** if they use any GPL licensed code in it. Else, the license is quite similar to Apache-2.0. The author(s) can't be held liable, you can patent your work, redistribute and modify the original work (with a notice).
+
+**The point of the license is to guarantee the** [**four basic freedoms of software**](https://en.wikipedia.org/wiki/Free_software#Definition_and_the_Four_Freedoms)**:** 1. The freedom to run the program for any purpose 2. The freedom to study how the program works, and change it to make it do what you wish 3. The freedom to redistribute and make copies 4. The freedom to improve the program, and release your improvements to the public
+
+The GPL licenses are also known as [Copyleft licenses](https://en.wikipedia.org/wiki/Copyleft) because they give permission to the end-user to freely distribute and modify the intellectual property but require that the same rights be preserved in any derivative works. Meaning that any software licensed under it preserves the four freedoms for the end-user and any of their derivative works and their end-users as well.
+
+**Some people don't agree with the clause that your code has to be open-sourced.** This is a topic for another post. **This boils down to the difference between free and open-source software.** In a nutshell, free software protects and upholds the 4 basic freedoms of software, while open-source software only makes the software's source publicly accessible. In other words, you can view the code of an open-source, but you can't necessarily use, modify, or redistribute it. While free software allows you to do what you want as long as the result is again free software.
+
+**A common misconception is that this license prohibits commercial use.** The opposite is true, it encourages it, though you have to change your conception of commercial software. Instead of selling the compiled program, you can refocus on selling support, patches, new versions, etc. The essay "The Magic Cauldron" from the book "[The Cathedral & the Bazaar](https://en.wikipedia.org/wiki/The_Cathedral_and_the_Bazaar)" covers the commercial aspect of free & open-source development in great detail, for anyone interested.
+
+**The GPLv3 is best applicable for applications. This doesn't mean that it's bad for libraries!** Applications can greatly profit from this license as it encourages upstreaming of fixes and distribution of modifications. **Libraries can also enjoy all the benefits that applications can**, but, because of it's Copyleft nature allications using such libraries must dynamically load them, which may make some end-users reluctant. It depends on your goal and beliefs whether the GPL is for your library. [The FSF covers this decision in this article](https://www.gnu.org/licenses/why-not-lgpl.html).
+
+**The GPL has a** [**semi-permissive license called LGPLv3**](https://opensource.org/licenses/LGPL-3.0). It's much the same as MIT, but with the limitation that prominent attribution has to be given to your project in any combined work, that all modification have to be open-sourced (under some conditions) and clearly marked. It still can force the end-user to open-source the whole combined worked if it's statically linked into the derivative, but it can be dynamically linked without repercussions.
+
+<Figure media="articles/licensing-software-b13d043e2a93/kpekttpshuuyan0aixrcdq.png" caption="License popularity in C & C++ projects, expressed as a percentage" />
+
+## BSD-3-clauses
+
+[**BSD-3-clauses**](https://opensource.org/licenses/BSD-3-Clause) **is a permissive license.** **It's quite similar to the MIT license** in the sense that the author(s) hold no liability, the license has to be included in all derivative work and similarly to Apache-2.0 it **allows a warranty to be applied**.
+
+The biggest difference from the other licenses is that **it forbids the end user to promote their project based on the use of the licensed project or it's author(s)** (without prior permission).
+
+Note that [there exists a **-patents** version of the license](https://opensource.org/licenses/BSDplusPatent) which grants the end user the ability to patent their work, same as Apache 2.0. But this license is somewhat controversial after [Facebook added very strict patent clauses to their BSD license in the React project](https://hackernoon.com/facebooks-bsd-patents-license-and-how-it-affects-you-66088e052845), escalating so far that the project got re-licensed to MIT.
+
+**BSD-3-clauses is excellent for both libraries and applications**. It's not as verbose or popular as Apache-2.0, yet it's as permissive as MIT, the biggest differentiating factor is it's restriction on marketing.
+
+<Figure media="articles/licensing-software-b13d043e2a93/a4mjwc-vb9ekcwvyd_kvmq.png" caption="License popularity in Haskell projects, expressed as a percentage" />
+
+It's interesting that out of all the sampled languages that Haskell's most popular license is BSD. A friend of mine indicated to me that this could be caused by the fact that their project generator uses it by default.
+
+## Clauses
+
+**Software licenses can come with clauses which can change the base license**. The most recent example of this is the addition of [the Commons Clause](https://commonsclause.com/) to some Redis Labs modules/products.
+
+**Clauses are envisioned to fulfill the author's additional wishes or change some behavior of the base license.**
+
+Perhaps the most well known example is GPL and LGPL. Where LGPL is basically a clause, and requires, the full GPL.
+
+## Conclusion
+
+Picking a license is hard. It boils down to what you want other people to do with your work.
+
+**If you really don't care and just want to get your project out there for people to use however they wish**, even if they choose to sell basically your project — then MIT is for you.
+
+**If you also want to grant your users the ability to make patents off your derivative work**, Apache-2.0 is the way to go.
+
+**If in addition you want to protect the authors'/contributors' privacy and control how people can use your project to market theirs**, then BSD is the choice for you.
+
+**If you want to protect the users' freedom or you want your project to forever stay free & open-source**. Then the GPL family is your best choice.
+
+**I usually use the MIT license only for libraries** and GPLv3 for applications, as I don't want to force people to open-source their projects, but after doing this research I think I'll choose LGPL for my Ruby library. In my opinion it's a good compromise between staying free & open-source while still giving the user the ability not to open-source their work.
+
+While reasearching this topic I've found a hand full of useful resources to do quick checks, they can't really replace reading the license text, but they give an insightful overview:
+
+I have also stumbled upon a few hilarious (yet functional) licenses:
+
+The data used to generate the statistics can be found here. It was gathered on the 25th of April, 2018 — it shouldn't be affected by the recent migration of projects from GitHub after the acquisition from Microsoft.
+
+## Epilogue
+
+- [https://opensource.org/licenses/alphabetical](https://opensource.org/licenses/alphabetical) — list of all known licenses
+- [https://tldrlegal.com/](https://tldrlegal.com/) — quick bullet-point overview of most licenses
+- [https://choosealicense.com/](https://choosealicense.com/) — license picking decision tree
+- [BeerWare](https://spdx.org/licenses/Beerware.html) — If you think the software is good, and you meet the author, you can repay them with beer
+- [Do What the Fuck You Want](http://www.wtfpl.net/) — the name says it all...
+- [The Unlicense](https://spdx.org/licenses/Unlicense.html) — ironically enough, it's a license that aims to abolish any license and copyright clauses

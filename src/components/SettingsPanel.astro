@@ -1,0 +1,46 @@
+---
+import Icon from "~/components/Icon.astro"
+
+interface Props {
+  idPrefix: string
+  withHeading?: boolean
+}
+
+const { idPrefix, withHeading = false } = Astro.props
+
+const OPTIONS = [
+  { scheme: "auto", value: "system", label: "System", icon: "computer" },
+  { scheme: "light", value: "light", label: "Light", icon: "sun" },
+  { scheme: "dark", value: "dark", label: "Dark", icon: "moon" }
+] as const
+---
+
+<div class="settings" data-settings>
+  {withHeading && <h1 class="visually-hidden">Settings</h1>}
+  <h2 class="settings__title">Settings</h2>
+
+  <dl class="settings__grid">
+    <dt class="settings__label">Color scheme</dt>
+    <dd class="settings__value">
+      <div class="settings__color-picker">
+        {OPTIONS.map(option => (
+          <Fragment>
+            <input
+              type="radio"
+              name={`${idPrefix}_color_scheme`}
+              value={option.value}
+              id={`${idPrefix}_${option.value}_color_scheme`}
+              class="settings__option-input"
+              data-color-scheme={option.scheme}
+            />
+            <label for={`${idPrefix}_${option.value}_color_scheme`} class="settings__option-label">
+              <span class="inline-flex flex-row items-center gap-x-2 ">
+                <Icon name={option.icon} class="icon-sm" />{option.label}
+              </span>
+            </label>
+          </Fragment>
+        ))}
+      </div>
+    </dd>
+  </dl>
+</div>

@@ -1,0 +1,15 @@
+---
+import Icon from "~/components/Icon.astro"
+---
+
+<div class="dialog__frame">
+  <div class="dialog__panel">
+    <div class="dialog__close-btn-wrapper">
+      <a href="/" class="dialog__close-btn" data-dialog-close>
+        <Icon name="close" class="icon-sm" />
+      </a>
+    </div>
+
+    <slot />
+  </div>
+</div>

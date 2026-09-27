@@ -1,0 +1,66 @@
+---
+import Icon from "~/components/Icon.astro"
+import SearchPanel from "~/components/SearchPanel.astro"
+import DialogPanel from "~/components/DialogPanel.astro"
+import portrait from "~/assets/images/portrait/small.jpg"
+
+const NAV_ITEMS = [
+  { href: "/articles", label: "Articles" },
+  { href: "/talks", label: "Talks" },
+  { href: "/snaps", label: "Snaps" },
+  { href: "/projects", label: "Projects" }
+]
+---
+
+<nav class="header__desktop">
+  <ul class="header__nav-list">
+    <li><a class="header__nav-item " href="/"><img class="header__profile-img profile-img " alt="Stanko K.R." src={portrait.src} /></a></li>
+    {NAV_ITEMS.map(item => (
+      <li><a class="header__nav-item " href={item.href}>{item.label}</a></li>
+    ))}
+  </ul>
+  <div>
+    <ul class="header__nav-list">
+      <li>
+        <a class="header__nav-item header__nav-item--wide-gap" href="/search" data-dialog-open="search-dialog" data-search-hotkey>
+          <Icon name="search" class="icon" /><span class="visually-hidden">Search</span>
+        </a>
+      </li>
+    </ul>
+    <div class="header__settings-btn">
+      <a href="/settings" data-dialog-open="settings-dialog">
+        <Icon name="settings" class="icon" /><span class="visually-hidden">Settings</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<nav class="header__mobile">
+  <ul>
+    <li><a class="header__nav-item " href="/"><img class="header__profile-img profile-img " alt="Stanko K.R." src={portrait.src} /></a></li>
+  </ul>
+  <div>
+    <a class="header__menu-btn" href="#navigation-dialog" data-dialog-open="navigation-dialog" aria-label="Menu">
+      <Icon name="menu" class="icon" />
+    </a>
+    <dialog class="header__mobile-dialog" id="navigation-dialog" aria-label="Navigation menu">
+      <div class="header__mobile-menu">
+        <div class="header__mobile-search">
+          <DialogPanel>
+            <SearchPanel />
+          </DialogPanel>
+        </div>
+        <ul class="header__mobile-nav-list">
+          <li><a class="header__nav-item " href="/">About</a></li>
+          {NAV_ITEMS.map(item => (
+            <li><a class="header__nav-item " href={item.href}>{item.label}</a></li>
+          ))}
+          <li><a class="header__nav-item " href="/settings" data-dialog-open="settings-dialog-mobile">Settings</a></li>
+        </ul>
+        <ul class="header__mobile-footer">
+          <li><a class="header__nav-item " href="/" data-dialog-close>Close</a></li>
+        </ul>
+      </div>
+    </dialog>
+  </div>
+</nav>

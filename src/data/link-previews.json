@@ -1,0 +1,1878 @@
+{
+  "http://copenhacks.com/": {
+    "title": "Page not found"
+  },
+  "http://edgeapi.rubyonrails.org/classes/ActionController/Live/SSE.html": {
+    "title": "ActionController::Live::SSE",
+    "description": "Action Controller Live Server Sent Events¶ ↑  This class provides the ability to write an SSE (Server Sent Event) to an IO stream."
+  },
+  "http://github.com/janko-m/shrine": {
+    "title": "GitHub - shrinerb/shrine: File Attachment toolkit for Ruby applications",
+    "description": "File Attachment toolkit for Ruby applications. Contribute to shrinerb/shrine development by creating an account on GitHub.",
+    "image": "link-previews/1476-shrine.png"
+  },
+  "http://ruby-doc.org/core-2.5.0/Queue.html": {
+    "title": "Class: Queue (Ruby 2.5.0)"
+  },
+  "http://ruby-doc.org/core-2.5.0/Thread.html": {
+    "title": "Class: Thread (Ruby 2.5.0)"
+  },
+  "http://rubyonrails.org/": {
+    "title": "Ruby on Rails: Compress the complexity of modern web apps",
+    "description": "A full-stack web application framework written in Ruby, following the Model View Controller pattern, that includes everything you need to build modern database-backed web apps.",
+    "image": "link-previews/1461-opengraph.png"
+  },
+  "http://shrinerb.com/": {
+    "title": "Home | Shrine",
+    "image": "link-previews/1478-logo.png"
+  },
+  "http://www.webspell.org/": {
+    "title": "webSPELL.org CMS » Free Content Management System"
+  },
+  "http://www.wtfpl.net/": {
+    "title": "WTFPL — Do What the Fuck You Want to Public License",
+    "description": "The WTFPL is a very permissive license for software and other scientific or artistic works that offers a great degree of freedom. In fact, it is probably the",
+    "image": "link-previews/1444-freedom.jpeg"
+  },
+  "http://zookeeper.apache.org/": {
+    "title": "Apache ZooKeeper"
+  },
+  "https://2022.euruko.org/videos/": {
+    "title": "Euruko 2022 videos",
+    "description": "The Euruko 2022 recordings",
+    "image": "link-previews/1520-social-video.jpg"
+  },
+  "https://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file": {
+    "title": "ActionController::DataStreaming",
+    "description": "Action Controller Data Streaming¶ ↑  Methods for sending arbitrary data and for streaming files to the browser, instead of rendering."
+  },
+  "https://api.rubyonrails.org/classes/ActionController/Helpers.html": {
+    "title": "ActionController::Helpers",
+    "description": "Action Controller Helpers¶ ↑  The Rails framework provides a large number of helpers for working with assets, dates, forms, numbers and model objects, to name a few."
+  },
+  "https://api.rubyonrails.org/classes/ActionView/Helpers/CaptureHelper.html#method-i-capture": {
+    "title": "ActionView::Helpers::CaptureHelper",
+    "description": "Action View Capture Helpers¶ ↑  CaptureHelper exposes methods to let you extract generated markup which can be used in other parts of a template or layout file."
+  },
+  "https://api.rubyonrails.org/classes/ActiveModel/Attributes/ClassMethods.html": {
+    "title": "ActiveModel::Attributes::ClassMethods"
+  },
+  "https://api.rubyonrails.org/classes/ActiveModel/Callbacks.html": {
+    "title": "ActiveModel::Callbacks",
+    "description": "Active Model Callbacks¶ ↑  Provides an interface for any class to have Active Record like callbacks."
+  },
+  "https://api.rubyonrails.org/classes/ActiveModel/Dirty.html": {
+    "title": "ActiveModel::Dirty",
+    "description": "Active Model Dirty¶ ↑  Provides a way to track changes in your object in the same way as Active Record does."
+  },
+  "https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password": {
+    "title": "ActiveModel::SecurePassword::ClassMethods"
+  },
+  "https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/AbstractAdapter.html#method-i-disable_referential_integrity": {
+    "title": "ActiveRecord::ConnectionAdapters::AbstractAdapter",
+    "description": "Active Record Abstract Adapter¶ ↑  Active Record supports multiple database systems. AbstractAdapter and related classes form the abstraction layer which makes this possible."
+  },
+  "https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-preload": {
+    "title": "ActiveRecord::QueryMethods"
+  },
+  "https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-strict_loading": {
+    "title": "ActiveRecord::QueryMethods"
+  },
+  "https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-explain": {
+    "title": "ActiveRecord::Relation",
+    "description": "Active Record Relation¶ ↑."
+  },
+  "https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html": {
+    "title": "ActiveSupport::CurrentAttributes",
+    "description": "Current Attributes¶ ↑  Abstract super class that provides a thread-isolated attributes singleton, which resets automatically before and after each request."
+  },
+  "https://api.rubyonrails.org/classes/ActiveSupport/Notifications.html": {
+    "title": "ActiveSupport::Notifications",
+    "description": "Notifications¶ ↑  ActiveSupport::Notifications provides an instrumentation API for Ruby."
+  },
+  "https://api.rubyonrails.org/classes/Class.html#method-i-descendants": {
+    "title": "Class"
+  },
+  "https://aws.amazon.com/about-aws/whats-new/2022/10/amazon-aurora-postgresql-14-4-version/": {
+    "title": "Amazon Aurora supports PostgreSQL 14.4 version - AWS"
+  },
+  "https://aws.amazon.com/s3/": {
+    "title": "Amazon S3 - Cloud Object Storage  - AWS",
+    "description": "Amazon S3 is cloud object storage with industry-leading scalability, data availability, security, and performance. S3 is ideal for data lakes, mobile applications, backup and restore, archival, IoT devices, ML, AI, and analytics."
+  },
+  "https://aws.amazon.com/solutions/implementations/serverless-image-handler/": {
+    "title": "Dynamic Image Transformation for Amazon CloudFront",
+    "description": "Dynamic Image Transformation for Amazon CloudFront (formerly Serverless Image Handler) enables real-time image processing through the global content delivery network (CDN) of Amazon CloudFront."
+  },
+  "https://blog.codinghorror.com/pick-a-license-any-license/": {
+    "title": "Pick a License, Any License",
+    "description": "I hate software licenses. When I read a software license, what I see is a bunch of officious, mind-numbing lawyerly doublespeak. Blah, blah, blah... kill me now.\n\nIf I had my way, everything would be released under the WTFPL. Over time, I’ve begrudgingly come to the conclusion that, like",
+    "image": "link-previews/1417-image-248.png"
+  },
+  "https://blog.google/inside-google/message-ceo/january-update/": {
+    "title": "A difficult decision to set us up for the future",
+    "description": "As an almost 25-year-old company, we’re bound to go through difficult economic cycles.",
+    "image": "link-previews/1537-social_share_google_small_-_color-width-1300.jpg"
+  },
+  "https://caniuse.com/#feat=websockets": {
+    "title": "Can I use... Support tables for HTML5, CSS3, etc"
+  },
+  "https://caniuse.com/#search=server%20sent%20events": {
+    "title": "Can I use... Support tables for HTML5, CSS3, etc"
+  },
+  "https://choosealicense.com/": {
+    "title": "Choose an open source license",
+    "description": "Non-judgmental guidance on choosing a license for your open source project"
+  },
+  "https://claude.ai/download": {
+    "title": "Download Claude | Claude",
+    "description": "Download Claude for desktop and mobile. Access AI assistance natively on Mac, Windows, iOS, and Android across all your devices.",
+    "image": "link-previews/1734-68c469d23594abeb9ab6ee48_og-claude-generic.jpg"
+  },
+  "https://cobra.dev/#getting-started": {
+    "title": "The CLI Framework Developers Love",
+    "description": "Build Modern CLIs That Users Love. AI-Ready, Beautiful by Default, Observable from Day One. Used by 173,000+ projects worldwide including Kubernetes, Docker, …"
+  },
+  "https://commonsclause.com/": {
+    "title": "Commons Clause License",
+    "image": "link-previews/1439-glyph.png"
+  },
+  "https://curity.io/resources/learn/self-contained-jwts/": {
+    "title": "Self-contained JWTs | Curity",
+    "description": "Design patterns to allow JWTs to be validated using extended header fields and Public Key Infrastructure.",
+    "image": "link-previews/1760-jwt-tokens-curity.jpg"
+  },
+  "https://datatracker.ietf.org/doc/html/rfc2616#section-10.1.2": {
+    "title": "RFC 2616: Hypertext Transfer Protocol -- HTTP/1.1",
+    "description": "HTTP has been in use by the World-Wide Web global information initiative since 1990. This specification defines the protocol referred to as \"HTTP/1.1\", and is an update to RFC 2068. [STANDARDS-TRACK]",
+    "image": "link-previews/1600-ietf-logo-card.png"
+  },
+  "https://dev.37signals.com/kamal-prometheus/": {
+    "title": "Prometheus metrics with Rails and Kamal",
+    "description": "How we use Prometheus metrics with Rails and Kamal.",
+    "image": "link-previews/1673-kamal-prometheus.png"
+  },
+  "https://developer.chrome.com/blog/timer-throttling-in-chrome-88/": {
+    "title": "Heavy throttling of chained JS timers beginning in Chrome 88  |  Blog  |  Chrome for Developers",
+    "description": "Intensive throttling takes effect when the page has been hidden for more than 5 minutes, the page has been silent for at least 30 seconds, WebRTC is not in use, and the chain of timers is 5 or greater."
+  },
+  "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox": {
+    "title": "Flexbox - Learn web development | MDN"
+  },
+  "https://developer.mozilla.org/en-US/docs/Web/API/DOMParser": {
+    "title": "DOMParser - Web APIs | MDN"
+  },
+  "https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API": {
+    "title": "IndexedDB API - Web APIs | MDN"
+  },
+  "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events": {
+    "title": "Using server-sent events - Web APIs | MDN"
+  },
+  "https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers": {
+    "title": "Using Service Workers - Web APIs | MDN"
+  },
+  "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket": {
+    "title": "WebSocket - Web APIs | MDN"
+  },
+  "https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API": {
+    "title": "Using the Web Animations API - Web APIs | MDN"
+  },
+  "https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API": {
+    "title": "Web Audio API - Web APIs | MDN"
+  },
+  "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/ruby": {
+    "title": "<ruby>: The Ruby Annotation element - HTML | MDN"
+  },
+  "https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism#sec-websocket-protocol": {
+    "title": "Protocol upgrade mechanism - HTTP | MDN"
+  },
+  "https://developer.mozilla.org/en-US/docs/Web/Security/CSP": {
+    "title": "Content Security Policy (CSP) - HTTP | MDN"
+  },
+  "https://discord.com/": {
+    "title": "Discord - Group Chat That’s All Fun & Games",
+    "description": "Discord is great for playing games and chilling with friends, or even building a worldwide community. Customize your own space to talk, play, and hang out.",
+    "image": "link-previews/1529-665643dd8c7ac752237b5cef_discord-og-1200x630.jpg"
+  },
+  "https://distribution.github.io/distribution/": {
+    "title": "CNCF Distribution",
+    "description": "High-level overview of the Registry"
+  },
+  "https://docs.anthropic.com/en/docs/claude-code/overview": {
+    "title": "Claude Code overview - Claude Code Docs",
+    "description": "Claude Code is an agentic coding tool that reads your codebase, edits files, runs commands, and integrates with your development tools. Available in your terminal, IDE, desktop app, and browser.",
+    "image": "link-previews/1788-image.png"
+  },
+  "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api-route-keys-connect-disconnect.html#apigateway-websocket-api-routes-about-disconnect": {
+    "title": "Manage connected users and client apps: $connect and $disconnect routes - Amazon API Gateway"
+  },
+  "https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html#apigateway-execution-service-websocket-limits-table": {
+    "title": "Amazon API Gateway quotas - Amazon API Gateway"
+  },
+  "https://en.wikipedia.org/wiki/.su": {
+    "title": ".su",
+    "description": ".su is an Internet country code top-level domain (ccTLD) that was designated for the Soviet Union on 19 September 1990. Even though the Soviet Union itself was dissolved 15 months later, the .su top-level domain remains in use to the present day. It is administered by the Russian Institute for Public Networks.",
+    "image": "link-previews/1768-330px-dotsu_domain_logo-svg.png"
+  },
+  "https://en.wikipedia.org/wiki/1963_Skopje_earthquake": {
+    "title": "1963_Skopje_earthquake",
+    "description": "The 1963 Skopje earthquake was a 6.1 moment magnitude earthquake which occurred in Skopje, SR Macedonia, then part of the SFR Yugoslavia, on July 26, 1963, which killed over 1,070 people, injured between 3,000 and 4,000 and left more than 200,000 people homeless. About 80 percent of the city was destroyed.",
+    "image": "link-previews/1552-330px-osnovnoto_njegos-2c_po_zemjotresot.jpg"
+  },
+  "https://en.wikipedia.org/wiki/Attention_restoration_theory": {
+    "title": "Attention_restoration_theory",
+    "description": "Attention Restoration Theory (ART) proposes that spending time in natural settings or even viewing natural scenes helps people recover from directed attention fatigue (mental tiredness that occurs when sustaining deliberate focus on tasks). Natural environments often evoke a state known as soft fascination that allows the mind to rest and reflect, supporting later task performance. ART is frequently discussed alongside Stress Reduction Theory (SRT), which emphasizes emotional and physiological stress recovery; together they describe complementary pathways through which nature may benefit wellbeing.",
+    "image": "link-previews/1500-330px-noun_brain_nithinan_2452319-svg.png"
+  },
+  "https://en.wikipedia.org/wiki/B%C3%A9zier_curve": {
+    "title": "Bézier_curve",
+    "description": "A Bézier curve is a parametric curve used in computer graphics and related fields. A set of discrete \"control points\" defines a smooth, continuous curve by means of a formula. Usually the curve is intended to approximate a real-world shape that otherwise has no mathematical representation or whose representation is unknown or too complicated. The Bézier curve is named after French engineer Pierre Bézier (1910–1999), who used it in the 1960s for designing curves for the bodywork of Renault cars. Other uses include the design of computer fonts and animation. Bézier curves can be combined to form a Bézier spline, or generalized to higher dimensions to form Bézier surfaces. The Bézier triangle is a special case of the latter.",
+    "image": "link-previews/1713-330px-bezier_curve-svg.png"
+  },
+  "https://en.wikipedia.org/wiki/B-tree": {
+    "title": "B-tree",
+    "description": "In computer science, a B-tree is a self-balancing tree data structure that maintains sorted data and allows searches, sequential access, insertions, and deletions in logarithmic time. The B-tree generalizes the binary search tree, allowing nodes to have more than two children."
+  },
+  "https://en.wikipedia.org/wiki/Christopher_Alexander": {
+    "title": "Christopher_Alexander",
+    "description": "Christopher Wolfgang John Alexander was an Austrian-born British-American architect and design theorist. He was an emeritus professor at the University of California, Berkeley. His theories about the nature of human-centered design have affected fields beyond architecture, including urban design, software design, and sociology. Alexander designed and personally built over 100 buildings, both as an architect and a general contractor.",
+    "image": "link-previews/1706-330px-christopheralexander2012_cropped.jpg"
+  },
+  "https://en.wikipedia.org/wiki/Composition_over_inheritance": {
+    "title": "Composition_over_inheritance",
+    "description": "In object-oriented programming, composition over inheritance is a common design pattern that tries to achieve code reuse without requiring inheritance. Instead of having two child classes inherit functionality from a common parent, composition simulates inheritance by having the children include a copy of a \"pseudo-parent\" class as a field, which implements the functionality common to the two classes. Then, methods that would have been called on the child are instead called on the pseudo-parent, a technique called method forwarding.",
+    "image": "link-previews/1488-330px-uml_diagram_of_composition_over_inheritance-svg.png"
+  },
+  "https://en.wikipedia.org/wiki/Copyleft": {
+    "title": "Copyleft",
+    "description": "Copyleft is the legal technique of granting certain freedoms over copies of copyrighted works with the requirement that the same rights be preserved in derivative works. In this sense, freedoms refers to the use of the work for any purpose, and the ability to modify, copy, share, and redistribute the work, with or without a fee. Licenses which implement copyleft can be used to maintain copyright conditions for works ranging from computer software, to documents, art, and scientific discoveries. Similar approaches have been applied to certain patents.",
+    "image": "link-previews/1432-330px-copyleft-svg.png"
+  },
+  "https://en.wikipedia.org/wiki/Dependency_injection": {
+    "title": "Dependency_injection",
+    "description": "In software engineering, dependency injection is a programming technique in which an object or function receives other objects or functions that it requires, as opposed to creating them internally. Dependency injection aims to separate the concerns of constructing objects and using them, leading to loosely coupled programs. The pattern ensures that an object or function that wants to use a given service should not have to know how to construct those services. Instead, the receiving \"client\" is provided with its dependencies by external code, which it is not aware of. Dependency injection makes implicit dependencies explicit and helps solve the following problems:How can a class be independent from the creation of the objects it depends on?\nHow can an application and the objects it uses support different configurations?",
+    "image": "link-previews/1487-330px-dependencyinjectionserviceprovider.png"
+  },
+  "https://en.wikipedia.org/wiki/Domain-driven_design": {
+    "title": "Domain-driven_design",
+    "description": "Domain-driven design (DDD) is a software design approach that focuses on modeling software to match a domain according to input from that domain's experts. DDD is against the idea of having a single unified model; instead it divides a large system into bounded contexts, each of which have their own model."
+  },
+  "https://en.wikipedia.org/wiki/Duplex_(telecommunications)#Full_duplex": {
+    "title": "Duplex_(telecommunications)",
+    "description": "A duplex communication system is a point-to-point system composed of two or more connected parties or devices that can communicate with one another in both directions. Duplex systems are employed in many communications networks, either to allow for simultaneous communication in both directions between two connected parties or to provide a reverse path for the monitoring and remote adjustment of equipment in the field. There are two types of duplex communication systems: full-duplex (FDX) and half-duplex (HDX)."
+  },
+  "https://en.wikipedia.org/wiki/Epoll": {
+    "title": "Epoll",
+    "description": "epoll is a Linux kernel system call for a scalable I/O event notification mechanism, first introduced in version 2.5.45 of the Linux kernel in October, 2002. Its function is to monitor multiple file descriptors to see whether I/O is possible on any of them. It is meant to replace the older POSIX select(2) and poll(2) system calls, to achieve better performance in more demanding applications, where the number of watched file descriptors is large (unlike the older system calls, which operate in O(n) time, epoll operates in O(1) time)."
+  },
+  "https://en.wikipedia.org/wiki/Event_loop": {
+    "title": "Event_loop",
+    "description": "In software, an event loop is an algorithm that continually dispatches control flow for events. The loop requests the next event from an event provider, and when an event is received, invokes its associated event handler. When the event loop is the central event dispatcher of a program, as it often is, it is called the main loop or main event loop."
+  },
+  "https://en.wikipedia.org/wiki/Free_Software_Foundation": {
+    "title": "Free_Software_Foundation",
+    "description": "The Free Software Foundation (FSF) is a 501(c)(3) non-profit organization founded by Richard Stallman on October 4, 1985. The organization supports the free software movement, with its preference for software being distributed under copyleft terms, such as with its own GNU General Public License. The FSF was incorporated in Boston where it is also based."
+  },
+  "https://en.wikipedia.org/wiki/Free_software#Definition_and_the_Four_Freedoms": {
+    "title": "Free_software",
+    "description": "Free software, libre software, libreware sometimes known as freedom-respecting software is computer software distributed under terms that allow users to run the software for any purpose as well as to study, change, and distribute it and any adapted versions. Free software is a matter of liberty, not price; all users are legally free to do what they want with their copies of free software regardless of how much is paid to obtain the program. Computer programs are deemed \"free\" if they give end-users ultimate control over the software and, subsequently, over their devices.",
+    "image": "link-previews/1431-330px-example_of_gnu_guix-27s_desktop_environment.png"
+  },
+  "https://en.wikipedia.org/wiki/Function_composition_(computer_science)": {
+    "title": "Function_composition_(computer_science)",
+    "description": "In computer science, function composition is an act or mechanism to combine simple functions to build more complex ones. Like the usual composition of functions in mathematics, the result of each function is passed as the argument of the next, and the result of the last one is the result of the whole."
+  },
+  "https://en.wikipedia.org/wiki/Gaj%27s_Latin_alphabet": {
+    "title": "Gaj's_Latin_alphabet",
+    "description": "Gaj's Latin alphabet is the form of the Latin script used for writing all four standard varieties of Serbo-Croatian: Bosnian, Croatian, Montenegrin, and Serbian. It contains 27 individual letters and 3 digraphs. Each letter represents one Serbo-Croatian phoneme, yielding a highly phonemic orthography. It closely corresponds to the Serbian Cyrillic alphabet.",
+    "image": "link-previews/1774-330px-serbo-croatian_latin_alphabet_-28gaj-27s_latin_alphabet-29-svg.png"
+  },
+  "https://en.wikipedia.org/wiki/GraphQL": {
+    "title": "GraphQL",
+    "description": "GraphQL is a data query and manipulation language that allows specifying what data is to be retrieved or modified. A GraphQL server can process a client query using data from separate sources and present the results in a unified graph. The language is not tied to any specific database or storage engine. There are several open-source runtime engines for GraphQL."
+  },
+  "https://en.wikipedia.org/wiki/Greedy_algorithm": {
+    "title": "Greedy_algorithm",
+    "description": "A greedy algorithm is any algorithm that follows the problem-solving heuristic of making the locally optimal choice at each stage. In many problems, a greedy strategy does not produce an optimal solution, but a greedy heuristic can yield locally optimal solutions that approximate a globally optimal solution in a reasonable amount of time.",
+    "image": "link-previews/1790-330px-greedy_algorithm_36_cents-svg.png"
+  },
+  "https://en.wikipedia.org/wiki/HTML#HTML4_variations": {
+    "title": "HTML",
+    "description": "Hypertext Markup Language (HTML) is the standard markup language for documents designed to be displayed in a web browser. It defines the content and structure of web content. It is often assisted by technologies such as Cascading Style Sheets (CSS) and scripting languages such as JavaScript.",
+    "image": "link-previews/1772-330px-html5_logo_and_wordmark-svg.png"
+  },
+  "https://en.wikipedia.org/wiki/HTML5": {
+    "title": "HTML5",
+    "description": "HTML5 is a markup language used for structuring and presenting hypertext documents on the World Wide Web. It was the fifth and final major HTML version that is now a retired World Wide Web Consortium (W3C) recommendation. The current specification is known as the HTML Living Standard. It is maintained by the Web Hypertext Application Technology Working Group (WHATWG), a consortium of the major browser vendors.",
+    "image": "link-previews/1771-330px-html5_logo_and_wordmark-svg.png"
+  },
+  "https://en.wikipedia.org/wiki/History_of_email": {
+    "title": "History_of_email",
+    "description": "The history of email entails an evolving set of technologies and standards that culminated in the email systems in use today."
+  },
+  "https://en.wikipedia.org/wiki/ISO/IEC_8859-1": {
+    "title": "ISO/IEC_8859-1",
+    "description": "ISO/IEC 8859-1:1998, Information technology—8-bit single-byte coded graphic character sets—Part 1: Latin alphabet No. 1, is part of the ISO/IEC 8859 series of ASCII-based standard character encodings, first edition published in 1987. ISO/IEC 8859-1 encodes what it refers to as \"Latin alphabet no. 1\", consisting of 191 characters from the Latin script. This character-encoding scheme is used throughout the Americas, Western Europe, Oceania, and much of Africa. It is the basis for some popular 8-bit character sets and the first two blocks of characters in Unicode.",
+    "image": "link-previews/1773-330px-latin-1-infobox-svg.png"
+  },
+  "https://en.wikipedia.org/wiki/John_Gruber": {
+    "title": "John_Gruber",
+    "description": "John Gruber is a technology blogger, UI designer, and creator of the Markdown markup language. Gruber writes the Apple enthusiast blog Daring Fireball and hosts its accompanying podcast, The Talk Show.",
+    "image": "link-previews/1551-john_gruber-2c_2009_-28cropped-29.jpg"
+  },
+  "https://en.wikipedia.org/wiki/Kqueue": {
+    "title": "Kqueue",
+    "description": "Kqueue is a scalable event notification interface introduced in FreeBSD 4.1 in July 2000, also supported in NetBSD, OpenBSD, DragonFly BSD, and macOS. Kqueue was originally authored in 2000 by Jonathan Lemon, then involved with the FreeBSD Core Team. Kqueue makes it possible for software like nginx to solve the c10k problem. The term \"kqueue\" refers to its function as a \"kernel event queue\""
+  },
+  "https://en.wikipedia.org/wiki/Lamport_timestamp": {
+    "title": "Lamport_timestamp",
+    "description": "The Lamport timestamp algorithm is a simple logical clock algorithm used to determine the order of events in a distributed computer system. As different nodes or processes will typically not be perfectly synchronized, this algorithm is used to provide a partial ordering of events with minimal overhead, and conceptually provide a starting point for the more advanced vector clock method. The algorithm is named after its creator, Leslie Lamport."
+  },
+  "https://en.wikipedia.org/wiki/Little%27s_law": {
+    "title": "Little's_law",
+    "description": "In mathematical queueing theory, Little's law (also result, theorem, lemma, or formula) is a theorem by John Little which states that the long-term average number of customers (L) in a stationary system is equal to the long-term average effective arrival rate (λ) multiplied by the average time that a customer spends in the system (W). Expressed algebraically the law is"
+  },
+  "https://en.wikipedia.org/wiki/Mental_model": {
+    "title": "Mental_model",
+    "description": "A mental model is an internal representation of external reality: that is, a way of representing reality within the mind. Such models are hypothesized to play a major role in cognition, reasoning and decision-making. The term for this concept was coined in 1943 by Kenneth Craik, who suggested that the mind constructs \"small-scale models\" of reality that it uses to anticipate events. Mental models can help shape behaviour, including approaches to solving problems and performing tasks.",
+    "image": "link-previews/1498-330px-detail_of_tree_of_knowledge_after_diderot_-26_d-27alembert-27s_encyclop-c3-a9die-2c_by_chr-c3-a9tien_fr-c3-a9d-c3-a9ric_guillaume_roth.jpg"
+  },
+  "https://en.wikipedia.org/wiki/Message_queue": {
+    "title": "Message_queue",
+    "description": "In computer science, message queues and mailboxes are software-engineering components typically used for inter-process communication (IPC), or for inter-thread communication within the same process. They use a queue for messaging – the passing of control or of content. Group communication systems provide similar kinds of functionality."
+  },
+  "https://en.wikipedia.org/wiki/Moomins": {
+    "title": "Moomins",
+    "description": "The Moomins are the central characters in a series of novels, short stories, picture books, and a comic strip by the Finnish writer and illustrator Tove Jansson, originally published in Swedish by the Finnish publisher Schildts. They are a family of white, round fairy-tale characters with large snouts that make them resemble the hippopotamus. However, despite this resemblance, the Moomin family are trolls who live in a house in Moominvalley.",
+    "image": "link-previews/1526-330px-moomin_kuva.jpg"
+  },
+  "https://en.wikipedia.org/wiki/Omakase": {
+    "title": "Omakase",
+    "description": "Omakase  is a Japanese word meaning \"I'll leave it up to you\", derived from the Japanese \"to entrust\" . It is most commonly used at Japanese restaurants as a form of gourmet dining in which the customer does not order from a menu and instead lets the chef decide which seasonal specialties to serve."
+  },
+  "https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle": {
+    "title": "Open–closed_principle",
+    "description": "In object-oriented programming, the open–closed principle (OCP) states \"software entities should be open for extension, but closed for modification\";\nthat is, such an entity can allow its behaviour to be extended without modifying its source code.",
+    "image": "link-previews/1485-330px-bertrand_meyer_recent.jpg"
+  },
+  "https://en.wikipedia.org/wiki/Paasitorni": {
+    "title": "Paasitorni",
+    "description": "Paasitorni, also known as the Helsinki Workers' House, is a conference and congress centre of exceptional value in terms of its architecture and cultural history. The historic building is located in Hakaniemi, Helsinki, Finland. It was designed in Art Nouveau style by architect Karl Lindahl, opened in 1908 as conference and leisure premises for the working class, and for a long time, served actively as a workers' house. As a professional congress centre Paasitorni's functions have been developed since the mid-1990s. Today Paasitorni houses almost 30 spaces for meetings and events for 8–800 people, four restaurants and hotel Scandic Paasi with 170 hotel rooms. A floating restaurant pavilion, Meripaviljonki, seating 200 was also opened in 2015 in front of Paasitorni, by the Eläintarhanlahti bay.",
+    "image": "link-previews/1519-330px-folkets_hus_bergh-c3-a4ll.jpg"
+  },
+  "https://en.wikipedia.org/wiki/Pareto_principle": {
+    "title": "Pareto_principle",
+    "description": "The Pareto principle states that, for many outcomes, roughly 80% of consequences come from 20% of causes.",
+    "image": "link-previews/1493-330px-pareto_principle.png"
+  },
+  "https://en.wikipedia.org/wiki/Polling_(computer_science)": {
+    "title": "Polling_(computer_science)",
+    "description": "Polling, or interrogation, refers to actively sampling the status of an external device by a client program as a synchronous activity. Polling is most often used in terms of input/output, and is also referred to as polled I/O or software-driven I/O. A good example of hardware implementation is a watchdog timer."
+  },
+  "https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern": {
+    "title": "Publish–subscribe_pattern",
+    "description": "In software architecture, the publish–subscribe pattern (pub/sub) is a messaging pattern in which message senders, called publishers, categorize messages into classes, and send them without needing to know which components will receive them. Message recipients, called subscribers, express interest in one or more classes and only receive messages in those classes, without needing to know the identity of the publishers."
+  },
+  "https://en.wikipedia.org/wiki/Push_technology#Long_polling": {
+    "title": "Push_technology",
+    "description": "Push technology, also known as server push, is a communication method where the communication is initiated by a server rather than a client. This approach is different from the \"pull\" method where the communication is initiated by a client."
+  },
+  "https://en.wikipedia.org/wiki/QML": {
+    "title": "QML",
+    "description": "QML is a user interface markup language. It is a declarative language for designing user interface–centric applications. Inline JavaScript code handles imperative aspects. It is associated with Qt Quick, the UI creation kit originally developed by Nokia within the Qt framework. Qt Quick is used for mobile applications where touch input, fluid animations and user experience are crucial. QML is also used with Qt3D to describe a 3D scene and a \"frame graph\" rendering methodology. A QML document describes a hierarchical object tree. QML modules shipped with Qt include primitive graphical building blocks, modeling components, behavioral components, and more complex controls. These elements can be combined to build components ranging in complexity from simple buttons and sliders, to complete internet-enabled programs."
+  },
+  "https://en.wikipedia.org/wiki/Race_condition": {
+    "title": "Race_condition",
+    "description": "A race condition or race hazard is the condition of an electronics, software, or other system where the system's substantive behavior is dependent on the sequence or timing of other uncontrollable events, leading to unexpected or inconsistent results. It becomes a bug when one or more of the possible behaviors is undesirable.",
+    "image": "link-previews/1589-330px-race_condition-svg.png"
+  },
+  "https://en.wikipedia.org/wiki/Richard_Stallman#Events_leading_to_GNU": {
+    "title": "Richard_Stallman",
+    "description": "Richard Matthew Stallman, also known by his initials, rms, is an American free software movement activist and programmer. He campaigns for software to be distributed in such a manner that its users have the freedom to use, study, distribute, and modify that software. Software which ensures these freedoms is termed free software. Stallman launched the GNU Project, founded the Free Software Foundation (FSF) in October 1985, developed the GNU Compiler Collection and GNU Emacs, and wrote all versions of the GNU General Public License.",
+    "image": "link-previews/1430-330px-richard_stallman_bologna_2024_abc1.jpg"
+  },
+  "https://en.wikipedia.org/wiki/Server-sent_events": {
+    "title": "Server-sent_events",
+    "description": "Server-Sent Events (SSE) is a server push technology enabling a client to receive automatic updates from a server via an HTTP connection, and describes how servers can initiate data transmission towards clients once an initial client connection has been established. They are commonly used to send message updates or continuous data streams to a browser client and designed to enhance native, cross-browser streaming through a JavaScript API called EventSource, through which a client requests a particular URL in order to receive an event stream. The EventSource API is standardized as part of HTML Living Standard by the WHATWG. The media type for SSE is text/event-stream."
+  },
+  "https://en.wikipedia.org/wiki/Soulslike": {
+    "title": "Soulslike",
+    "description": "A Soulslike is a subgenre of action role-playing games known for high difficulty level, large worlds filled with enemies and emphasis on environmental storytelling, typically in a dark fantasy setting. Japanese developer and publisher FromSoftware and director Hidetaka Miyazaki are largely considered to have created and established the genre, pioneering it with Demon's Souls (2009) and further popularizing it with similar subsequent games, including the popular Dark Souls trilogy (2011–2016), from which the genre's name is derived. These games and subsequent FromSoftware releases are often called Soulsborne games, a portmanteau of their Souls-titled games and Bloodborne (2015)."
+  },
+  "https://en.wikipedia.org/wiki/Spaghetti_code": {
+    "title": "Spaghetti_code",
+    "description": "Spaghetti code is computer source code that encodes control flow that is convoluted, and therefore, hard to understand.\nControl statements direct program execution in ways that instead of having a quality of structure, resembles cooked spaghetti, twisted and tangled.\nThe code tends to be hard to maintain.",
+    "image": "link-previews/1791-330px-1816filipino_spaghetti_03.jpg"
+  },
+  "https://en.wikipedia.org/wiki/Strategy_pattern": {
+    "title": "Strategy_pattern",
+    "description": "In computer programming, the strategy pattern is a behavioral software design pattern that enables selecting an algorithm at runtime. Instead of implementing a single algorithm directly, code receives runtime instructions as to which in a family of algorithms to use."
+  },
+  "https://en.wikipedia.org/wiki/Suomenlinna": {
+    "title": "Suomenlinna",
+    "description": "Suomenlinna, or Sveaborg, is a sea fortress composed of eight islands, of which six have been fortified. Located about four kilometres (2.5 mi) southeast of the city center of Helsinki, Finland, Suomenlinna is a popular destination for both tourists and locals, who enjoy it as a picturesque picnic site.",
+    "image": "link-previews/1525-330px-suomenlinna_aerial.jpg"
+  },
+  "https://en.wikipedia.org/wiki/TCP_half-open": {
+    "title": "TCP_half-open",
+    "description": "The term half-open refers to TCP connections whose state is out of synchronization between the two communicating hosts, possibly due to a crash of one side. A connection which is in the process of being established is also known as embryonic connection. The lack of synchronization could be due to malicious intent."
+  },
+  "https://en.wikipedia.org/wiki/Text-based_user_interface": {
+    "title": "Text-based_user_interface",
+    "description": "In computing, text-based user interfaces (TUI), is a retronym describing a type of user interface (UI) common as an early form of human–computer interaction, before the advent of bitmapped displays and modern conventional graphical user interfaces (GUIs). Like modern GUIs, they can use the entire screen area and may accept mouse and other inputs. They may also use color and often structure the display using box-drawing characters such as ┌ and ╣. The modern context of use is usually a terminal emulator.",
+    "image": "link-previews/1752-330px-midnight_commander_-282005-29_en.png"
+  },
+  "https://en.wikipedia.org/wiki/The_Cathedral_and_the_Bazaar": {
+    "title": "The_Cathedral_and_the_Bazaar",
+    "description": "The Cathedral and the Bazaar: Musings on Linux and Open Source by an Accidental Revolutionary is an essay, and later a book, by Eric S. Raymond on software engineering methods, based on his observations of the Linux kernel development process and his experiences managing an open source project, fetchmail. It examines the struggle between top-down and bottom-up design. The essay was first presented by Raymond at the Linux Kongress on May 27, 1997, in Würzburg, Germany, and was published as the second chapter of the same‑titled book in 1999.",
+    "image": "link-previews/1433-cathedral-and-the-bazaar-book-cover.jpg"
+  },
+  "https://en.wikipedia.org/wiki/Thread_pool": {
+    "title": "Thread_pool",
+    "description": "In computer programming, a thread pool is a software design pattern for achieving concurrency of execution in a computer program. Often also called a replicated workers or worker-crew model, a thread pool maintains multiple threads waiting for tasks to be allocated for concurrent execution by the supervising program. By maintaining a pool of threads, the model increases performance and avoids latency in execution due to frequent creation and destruction of threads for short-lived tasks. Another good property - the ability to limit system load, when we use fewer threads than available. The number of available threads is tuned to the computing resources available to the program, such as a parallel task queue after completion of execution.",
+    "image": "link-previews/1626-330px-thread_pool-svg.png"
+  },
+  "https://en.wikipedia.org/wiki/UTF-8": {
+    "title": "UTF-8",
+    "description": "UTF-8 is a character encoding standard used for electronic communication. Defined by the Unicode Standard, the name is derived from Unicode Transformation Format – 8-bit. As of 2026, almost every webpage (99%) is transmitted as UTF-8."
+  },
+  "https://en.wikipedia.org/wiki/Windows_98": {
+    "title": "Windows_98",
+    "description": "Windows 98 is a consumer-oriented operating system developed by Microsoft as part of its Windows 9x line of Microsoft Windows, a family of operating systems. It was the second operating system in the 9x line, as the successor to Windows 95. It was released to manufacturing on May 15, 1998, and generally to retail on June 25, 1998. Like its predecessor, it is a hybrid 16-bit and 32-bit monolithic product with the boot stage based on MS-DOS.",
+    "image": "link-previews/1776-330px-windows98.png"
+  },
+  "https://en.wikipedia.org/wiki/XHTML": {
+    "title": "XHTML",
+    "description": "Extensible HyperText Markup Language (XHTML) is part of the family of XML markup languages which mirrors or extends versions of the widely used HyperText Markup Language (HTML), the language in which Web pages are formulated."
+  },
+  "https://endel.io/": {
+    "title": "Endel - Focus, Relax and Sleep",
+    "description": "Personalized soundscapes to help you focus, relax, and sleep. Backed by neuroscience.",
+    "image": "link-previews/1708-opengraph.jpg"
+  },
+  "https://euruko.org/": {
+    "title": "Euruko: Europe's biggest Ruby conference"
+  },
+  "https://fly.io/": {
+    "title": "Deploy app servers close to your users\n     · Fly"
+  },
+  "https://geraldmweinberg.com/Site/AYLO.html": {
+    "title": "Are Your Lights On?",
+    "description": "Are Your Lights On? How to Figure Out What the Problem Really Is",
+    "image": "link-previews/1494-are-your-lights-on.jpg"
+  },
+  "https://getbem.com/introduction/": {
+    "title": "BEM — Introduction"
+  },
+  "https://gist.github.com/monorkin/7e1a597afb0ad295d5b8ecfb951d60af": {
+    "title": "draft_composition_utilities.rb",
+    "description": "GitHub Gist: instantly share code, notes, and snippets.",
+    "image": "link-previews/1489-gist-og-image-54fd7dc0713e.png"
+  },
+  "https://gist.github.com/rkh/1476463": {
+    "title": "Simple Chat Application using the Sinatra Streaming API",
+    "description": "Simple Chat Application using the Sinatra Streaming API - chat.rb",
+    "image": "link-previews/1391-gist-og-image-54fd7dc0713e.png"
+  },
+  "https://github.com/SUSE/Portus": {
+    "title": "GitHub - SUSE/Portus: Authorization service and frontend for Docker registry (v2)",
+    "description": "Authorization service and frontend for Docker registry (v2) - SUSE/Portus",
+    "image": "link-previews/1759-portus.png"
+  },
+  "https://github.com/Shopify/autotuner": {
+    "title": "GitHub - Shopify/autotuner: Get suggestions to tune Ruby's garbage collector",
+    "description": "Get suggestions to tune Ruby's garbage collector. Contribute to Shopify/autotuner development by creating an account on GitHub.",
+    "image": "link-previews/1567-8085.png"
+  },
+  "https://github.com/Shopify/ruby-lsp": {
+    "title": "GitHub - Shopify/ruby-lsp: An opinionated language server for Ruby",
+    "description": "An opinionated language server for Ruby. Contribute to Shopify/ruby-lsp development by creating an account on GitHub.",
+    "image": "link-previews/1573-8085.png"
+  },
+  "https://github.com/Shopify/ruby-lsp-rails": {
+    "title": "GitHub - Shopify/ruby-lsp-rails: A Ruby LSP add-on for Rails",
+    "description": "A Ruby LSP add-on for Rails. Contribute to Shopify/ruby-lsp-rails development by creating an account on GitHub.",
+    "image": "link-previews/1572-8085.png"
+  },
+  "https://github.com/VSCodium/vscodium#why-does-this-exist": {
+    "title": "GitHub - VSCodium/vscodium: binary releases of VS Code without MS branding/telemetry/licensing",
+    "description": "binary releases of VS Code without MS branding/telemetry/licensing - VSCodium/vscodium",
+    "image": "link-previews/1425-vscodium.png"
+  },
+  "https://github.com/ViewComponent/view_component": {
+    "title": "GitHub - ViewComponent/view_component: A framework for building reusable, testable & encapsulated view components in Ruby on Rails.",
+    "description": "A framework for building reusable, testable & encapsulated view components in Ruby on Rails. - ViewComponent/view_component",
+    "image": "link-previews/1540-view_component.png"
+  },
+  "https://github.com/Yaffle/EventSource": {
+    "title": "GitHub - Yaffle/EventSource: a polyfill for http://www.w3.org/TR/eventsource/",
+    "description": "a polyfill for http://www.w3.org/TR/eventsource/. Contribute to Yaffle/EventSource development by creating an account on GitHub.",
+    "image": "link-previews/1388-eventsource.png"
+  },
+  "https://github.com/apache": {
+    "title": "The Apache Software Foundation",
+    "description": "The Apache Software Foundation has 2852 repositories available. Follow their code on GitHub.",
+    "image": "link-previews/1427-47359.png"
+  },
+  "https://github.com/aws/aws-sdk-ruby": {
+    "title": "GitHub - aws/aws-sdk-ruby: The official AWS SDK for Ruby",
+    "description": "The official AWS SDK for Ruby. Contribute to aws/aws-sdk-ruby development by creating an account on GitHub.",
+    "image": "link-previews/1455-aws-sdk-ruby.png"
+  },
+  "https://github.com/basecamp/activerecord-tenanted": {
+    "title": "GitHub - basecamp/activerecord-tenanted: Enable a Rails application to have separate databases for each tenant.",
+    "description": "Enable a Rails application to have separate databases for each tenant. - basecamp/activerecord-tenanted",
+    "image": "link-previews/1799-activerecord-tenanted.png"
+  },
+  "https://github.com/basecamp/fizzy/pull/1389": {
+    "title": "Remove Fizzy Ask by jorgemanrubia · Pull Request #1389 · basecamp/fizzy",
+    "description": "Since we are not going to ship it in v1",
+    "image": "link-previews/1797-1389.png"
+  },
+  "https://github.com/basecamp/fizzy/pull/857": {
+    "title": "Fizzy Ask by monorkin · Pull Request #857 · basecamp/fizzy",
+    "description": "Fizzy Ask is an interactive way to  explore your Fizzy cards and comments through a conversation.\n\n  \n    \n    \n\n    output.mp4\n    \n  \n\n  \n\n  \n\n\nHow the chat works\nThe LLM can access your Fizzy ca...",
+    "image": "link-previews/1796-857.png"
+  },
+  "https://github.com/basecamp/kamal-proxy": {
+    "title": "GitHub - basecamp/kamal-proxy: Lightweight proxy server for Kamal",
+    "description": "Lightweight proxy server for Kamal. Contribute to basecamp/kamal-proxy development by creating an account on GitHub.",
+    "image": "link-previews/1767-kamal-proxy.png"
+  },
+  "https://github.com/basecamp/thruster": {
+    "title": "GitHub - basecamp/thruster",
+    "description": "Contribute to basecamp/thruster development by creating an account on GitHub.",
+    "image": "link-previews/1765-thruster.png"
+  },
+  "https://github.com/basecamp/trix#inserting-a-content-attachment": {
+    "title": "GitHub - basecamp/trix: A rich text editor for everyday writing",
+    "description": "A rich text editor for everyday writing. Contribute to basecamp/trix development by creating an account on GitHub.",
+    "image": "link-previews/1549-trix.png"
+  },
+  "https://github.com/basecamp/trix/issues/202#issuecomment-461166895": {
+    "title": "Use p tag instead of div for regular block content · Issue #202 · basecamp/trix",
+    "description": "Currently regular blocks are a <div> with newlines added as a <br> (unless you convert a line to another type and back). It would allow more flexible styling (and arguably be more semantic) to defa...",
+    "image": "link-previews/1547-202.png"
+  },
+  "https://github.com/basecamp/trix/issues/539": {
+    "title": "Support Tables · Issue #539 · basecamp/trix",
+    "description": "Can you add support for tables",
+    "image": "link-previews/1548-539.png"
+  },
+  "https://github.com/basecamp/trix/issues/626#issuecomment-800338265": {
+    "title": "Add markdown support or state that it will not be added · Issue #626 · basecamp/trix",
+    "description": "Trix doesn't support Markdown in and out, and while for many uses that's just fine, for my use-case that's a showstopper. I'd like to see support for Markdown (specifically CommonMark) added to Tri...",
+    "image": "link-previews/1550-626.png"
+  },
+  "https://github.com/basecamp/yabeda-activejob": {
+    "title": "GitHub - basecamp/yabeda-activejob: Yabeda Instrumentation for some metrics around rails activejobs",
+    "description": "Yabeda Instrumentation for some metrics around rails activejobs - basecamp/yabeda-activejob",
+    "image": "link-previews/1682-yabeda-activejob.png"
+  },
+  "https://github.com/bensheldon/good_job": {
+    "title": "GitHub - bensheldon/good_job: Multithreaded, Postgres-based, Active Job backend for Ruby on Rails.",
+    "description": "Multithreaded, Postgres-based, Active Job backend for Ruby on Rails. - bensheldon/good_job",
+    "image": "link-previews/1564-good_job.png"
+  },
+  "https://github.com/bigskysoftware/idiomorph": {
+    "title": "GitHub - bigskysoftware/idiomorph: A DOM-merging algorithm",
+    "description": "A DOM-merging algorithm. Contribute to bigskysoftware/idiomorph development by creating an account on GitHub.",
+    "image": "link-previews/1557-idiomorph.png"
+  },
+  "https://github.com/carrierwaveuploader/carrierwave": {
+    "title": "GitHub - carrierwaveuploader/carrierwave: Classier solution for file uploads for Rails, Sinatra and other Ruby web frameworks",
+    "description": "Classier solution for file uploads for Rails, Sinatra and other Ruby web frameworks - carrierwaveuploader/carrierwave",
+    "image": "link-previews/1482-carrierwave.png"
+  },
+  "https://github.com/charmbracelet/bubbletea": {
+    "title": "GitHub - charmbracelet/bubbletea: A powerful little TUI framework 🏗",
+    "description": "A powerful little TUI framework 🏗. Contribute to charmbracelet/bubbletea development by creating an account on GitHub.",
+    "image": "link-previews/1756-6998dce8-ea07-44d4-8d8a-4329bfea3ef4.jpg"
+  },
+  "https://github.com/deuxfleurs-org/garage": {
+    "title": "GitHub - deuxfleurs-org/garage: (Mirror) S3-compatible object store for small self-hosted geo-distributed deployments. Main repo: https://git.deuxfleurs.fr/Deuxfleurs/garage",
+    "description": "(Mirror) S3-compatible object store for small self-hosted geo-distributed deployments. Main repo: https://git.deuxfleurs.fr/Deuxfleurs/garage - deuxfleurs-org/garage",
+    "image": "link-previews/1695-garage.png"
+  },
+  "https://github.com/faye/websocket-driver-ruby/tree/main": {
+    "title": "GitHub - faye/websocket-driver-ruby: WebSocket protocol handler with pluggable I/O",
+    "description": "WebSocket protocol handler with pluggable I/O. Contribute to faye/websocket-driver-ruby development by creating an account on GitHub.",
+    "image": "link-previews/1631-websocket-driver-ruby.png"
+  },
+  "https://github.com/fxn/zeitwerk": {
+    "title": "GitHub - fxn/zeitwerk: Efficient and thread-safe code loader for Ruby",
+    "description": "Efficient and thread-safe code loader for Ruby. Contribute to fxn/zeitwerk development by creating an account on GitHub.",
+    "image": "link-previews/1561-zeitwerk.png"
+  },
+  "https://github.com/geelen/mcp-remote": {
+    "title": "GitHub - geelen/mcp-remote",
+    "description": "Contribute to geelen/mcp-remote development by creating an account on GitHub.",
+    "image": "link-previews/1737-mcp-remote.png"
+  },
+  "https://github.com/goharbor/harbor": {
+    "title": "GitHub - goharbor/harbor: An open source trusted cloud native registry project that stores, signs, and scans content.",
+    "description": "An open source trusted cloud native registry project that stores, signs, and scans content. - goharbor/harbor",
+    "image": "link-previews/1758-70e44abd-500f-46e0-8ff4-98745949dba8.png"
+  },
+  "https://github.com/hotwired/turbo/pull/1019": {
+    "title": "Page refreshes by afcapel · Pull Request #1019 · hotwired/turbo",
+    "description": "This PR introduces the concept of page refresh. A page refresh happens when Turbo renders the current page again. We will offer two new options to control behavior when a page refresh happens:\n\n\nTh...",
+    "image": "link-previews/1556-1019.png"
+  },
+  "https://github.com/janko-m/image_processing": {
+    "title": "GitHub - janko-m/image_processing",
+    "description": "Contribute to janko-m/image_processing development by creating an account on GitHub.",
+    "image": "link-previews/1472-image_processing.png"
+  },
+  "https://github.com/jaydenseric": {
+    "title": "jaydenseric - Overview",
+    "description": "Full stack JS engineer, GraphQL multipart request (file uploads) spec author. - jaydenseric",
+    "image": "link-previews/1458-1754873.jpg"
+  },
+  "https://github.com/jaydenseric/graphql-multipart-request-spec": {
+    "title": "GitHub - jaydenseric/graphql-multipart-request-spec: A spec for GraphQL multipart form requests (file uploads).",
+    "description": "A spec for GraphQL multipart form requests (file uploads). - jaydenseric/graphql-multipart-request-spec",
+    "image": "link-previews/1459-8178a900-61c9-11e9-9705-eea55c2ca516.png"
+  },
+  "https://github.com/jcupitt/ruby-vips": {
+    "title": "GitHub - libvips/ruby-vips: Ruby extension for the libvips image processing library.",
+    "description": "Ruby extension for the libvips image processing library. - libvips/ruby-vips",
+    "image": "link-previews/1473-ruby-vips.png"
+  },
+  "https://github.com/jeremyevans/roda/blob/d36844117a6dc33794826b92c6e24f4151bc34cb/MIT-LICENSE": {
+    "title": "roda/MIT-LICENSE at d36844117a6dc33794826b92c6e24f4151bc34cb · jeremyevans/roda",
+    "description": "Routing Tree Web Toolkit. Contribute to jeremyevans/roda development by creating an account on GitHub.",
+    "image": "link-previews/1423-roda.png"
+  },
+  "https://github.com/jeremyevans/roda/blob/master/lib/roda/plugins/streaming.rb": {
+    "title": "roda/lib/roda/plugins/streaming.rb at master · jeremyevans/roda",
+    "description": "Routing Tree Web Toolkit. Contribute to jeremyevans/roda development by creating an account on GitHub.",
+    "image": "link-previews/1390-roda.png"
+  },
+  "https://github.com/jeremyevans/sequel": {
+    "title": "GitHub - jeremyevans/sequel: Sequel: The Database Toolkit for Ruby",
+    "description": "Sequel: The Database Toolkit for Ruby. Contribute to jeremyevans/sequel development by creating an account on GitHub.",
+    "image": "link-previews/1475-sequel.png"
+  },
+  "https://github.com/jhawthorn/vernier": {
+    "title": "GitHub - jhawthorn/vernier: 📏 next generation CRuby profiler",
+    "description": "📏 next generation CRuby profiler. Contribute to jhawthorn/vernier development by creating an account on GitHub.",
+    "image": "link-previews/1571-vernier.png"
+  },
+  "https://github.com/jondot/sneakers": {
+    "title": "GitHub - jondot/sneakers: A fast background processing framework for Ruby and RabbitMQ",
+    "description": "A fast background processing framework for Ruby and RabbitMQ - jondot/sneakers",
+    "image": "link-previews/1402-sneakers.png"
+  },
+  "https://github.com/jondot/sneakers/wiki/How-To:-Rails-Background-Jobs-with-ActiveJob": {
+    "title": "How To: Rails Background Jobs with ActiveJob",
+    "description": "A fast background processing framework for Ruby and RabbitMQ - jondot/sneakers",
+    "image": "link-previews/1416-sneakers.png"
+  },
+  "https://github.com/markevans/dragonfly": {
+    "title": "GitHub - markevans/dragonfly: A Ruby gem for on-the-fly processing - suitable for image uploading in Rails, Sinatra and much more!",
+    "description": "A Ruby gem for on-the-fly processing - suitable for image uploading in Rails, Sinatra and much more! - markevans/dragonfly",
+    "image": "link-previews/1484-dragonfly.png"
+  },
+  "https://github.com/minimagick/minimagick": {
+    "title": "GitHub - minimagick/minimagick: mini replacement for RMagick",
+    "description": "mini replacement for RMagick. Contribute to minimagick/minimagick development by creating an account on GitHub.",
+    "image": "link-previews/1471-minimagick.png"
+  },
+  "https://github.com/minio/minio": {
+    "title": "GitHub - minio/minio: MinIO is a high-performance, S3 compatible object store, open sourced under GNU AGPLv3 license.",
+    "description": "MinIO is a high-performance, S3 compatible object store, open sourced under GNU AGPLv3 license. - minio/minio",
+    "image": "link-previews/1696-ff41a900-6bfa-11e9-95fe-aa27fe8b337b.png"
+  },
+  "https://github.com/monorkin/actioncable-presence-detection-demo/commit/a3e4e682f93cdadf59fc532d19f1b30f5bd192da": {
+    "title": "Use half-open as the name of the state the connection is in · monorkin/actioncable-presence-detection-demo@a3e4e68",
+    "image": "link-previews/1594-a3e4e682f93cdadf59fc532d19f1b30f5bd192da.png"
+  },
+  "https://github.com/monorkin/actioncable-presence-detection-demo/commit/e52488751c25dc4c2707835d5a6b60ff2d792c10": {
+    "title": "Expose latency through notifications · monorkin/actioncable-presence-detection-demo@e524887",
+    "image": "link-previews/1593-e52488751c25dc4c2707835d5a6b60ff2d792c10.png"
+  },
+  "https://github.com/monorkin/actioncable-presence-detection-demo/commit/e6d090199db396a9fcd5ef70d633068216692d2c": {
+    "title": "Consider any received message to be a sign that the connection is open · monorkin/actioncable-presence-detection-demo@e6d0901",
+    "image": "link-previews/1595-e6d090199db396a9fcd5ef70d633068216692d2c.png"
+  },
+  "https://github.com/monorkin/actioncable-presence-detection-demo/tree/7d239de992654ec944784a02c55a3dd69823aa75": {
+    "title": "GitHub - monorkin/actioncable-presence-detection-demo at 7d239de992654ec944784a02c55a3dd69823aa75",
+    "description": "Contribute to monorkin/actioncable-presence-detection-demo development by creating an account on GitHub.",
+    "image": "link-previews/1580-actioncable-presence-detection-demo.png"
+  },
+  "https://github.com/monorkin/actioncable-presence-detection-demo/tree/82a851f0de0f8db414e3c8055fa28be4031ffd90": {
+    "title": "GitHub - monorkin/actioncable-presence-detection-demo at 82a851f0de0f8db414e3c8055fa28be4031ffd90",
+    "description": "Contribute to monorkin/actioncable-presence-detection-demo development by creating an account on GitHub.",
+    "image": "link-previews/1585-actioncable-presence-detection-demo.png"
+  },
+  "https://github.com/monorkin/actioncable-presence-detection-demo/tree/9da4ce9df09de2b51e681f24df090aafe5949016": {
+    "title": "GitHub - monorkin/actioncable-presence-detection-demo at 9da4ce9df09de2b51e681f24df090aafe5949016",
+    "description": "Contribute to monorkin/actioncable-presence-detection-demo development by creating an account on GitHub.",
+    "image": "link-previews/1591-actioncable-presence-detection-demo.png"
+  },
+  "https://github.com/monorkin/actioncable-presence-detection-demo/tree/b86c5b02b4e411c5f43cd006629a8549dbbabd65": {
+    "title": "GitHub - monorkin/actioncable-presence-detection-demo at b86c5b02b4e411c5f43cd006629a8549dbbabd65",
+    "description": "Contribute to monorkin/actioncable-presence-detection-demo development by creating an account on GitHub.",
+    "image": "link-previews/1577-actioncable-presence-detection-demo.png"
+  },
+  "https://github.com/monorkin/air_quality_box": {
+    "title": "GitHub - monorkin/air_quality_box",
+    "description": "Contribute to monorkin/air_quality_box development by creating an account on GitHub.",
+    "image": "link-previews/1779-air_quality_box.png"
+  },
+  "https://github.com/monorkin/copenhacks-2016": {
+    "title": "GitHub - monorkin/copenhacks-2016: End-to-end encryption on Messenger.com",
+    "description": "End-to-end encryption on Messenger.com. Contribute to monorkin/copenhacks-2016 development by creating an account on GitHub.",
+    "image": "link-previews/1357-copenhacks-2016.png"
+  },
+  "https://github.com/monorkin/croatia/": {
+    "title": "GitHub - monorkin/croatia: A Ruby Gem with various Croatia-specific utilities",
+    "description": "A Ruby Gem with various Croatia-specific utilities - monorkin/croatia",
+    "image": "link-previews/1792-croatia.png"
+  },
+  "https://github.com/monorkin/gnome-desktop-air-monitor": {
+    "title": "GitHub - monorkin/gnome-desktop-air-monitor",
+    "description": "Contribute to monorkin/gnome-desktop-air-monitor development by creating an account on GitHub.",
+    "image": "link-previews/1789-gnome-desktop-air-monitor.png"
+  },
+  "https://github.com/monorkin/rails/tree/add-pong-response-to-heartbeat-ping-messages": {
+    "title": "GitHub - monorkin/rails at add-pong-response-to-heartbeat-ping-messages",
+    "description": "Ruby on Rails. Contribute to monorkin/rails development by creating an account on GitHub.",
+    "image": "link-previews/1597-rails.png"
+  },
+  "https://github.com/monorkin/simpliki": {
+    "title": "GitHub - monorkin/simpliki: Simpliki is an app for practicing diaphragmatic breathing",
+    "description": "Simpliki is an app for practicing diaphragmatic breathing - monorkin/simpliki",
+    "image": "link-previews/1705-simpliki.png"
+  },
+  "https://github.com/monorkin/simpliki/blob/main/Gemfile": {
+    "title": "simpliki/Gemfile at main · monorkin/simpliki",
+    "description": "Simpliki is an app for practicing diaphragmatic breathing - monorkin/simpliki",
+    "image": "link-previews/1731-simpliki.png"
+  },
+  "https://github.com/monorkin/simpliki/blob/main/app/helpers/circle_helper.rb#L16": {
+    "title": "simpliki/app/helpers/circle_helper.rb at main · monorkin/simpliki",
+    "description": "Simpliki is an app for practicing diaphragmatic breathing - monorkin/simpliki",
+    "image": "link-previews/1716-simpliki.png"
+  },
+  "https://github.com/monorkin/simpliki/blob/main/app/javascript/controllers/circle_animation_controller.js#L88-L92": {
+    "title": "simpliki/app/javascript/controllers/circle_animation_controller.js at main · monorkin/simpliki",
+    "description": "Simpliki is an app for practicing diaphragmatic breathing - monorkin/simpliki",
+    "image": "link-previews/1714-simpliki.png"
+  },
+  "https://github.com/monorkin/simpliki/blob/main/app/javascript/controllers/exercise_controller.js": {
+    "title": "simpliki/app/javascript/controllers/exercise_controller.js at main · monorkin/simpliki",
+    "description": "Simpliki is an app for practicing diaphragmatic breathing - monorkin/simpliki",
+    "image": "link-previews/1718-simpliki.png"
+  },
+  "https://github.com/monorkin/simpliki/blob/main/app/javascript/controllers/pagination_controller.js": {
+    "title": "simpliki/app/javascript/controllers/pagination_controller.js at main · monorkin/simpliki",
+    "description": "Simpliki is an app for practicing diaphragmatic breathing - monorkin/simpliki",
+    "image": "link-previews/1729-simpliki.png"
+  },
+  "https://github.com/monorkin/simpliki/blob/main/app/javascript/models/sound_player.js": {
+    "title": "simpliki/app/javascript/models/sound_player.js at main · monorkin/simpliki",
+    "description": "Simpliki is an app for practicing diaphragmatic breathing - monorkin/simpliki",
+    "image": "link-previews/1721-simpliki.png"
+  },
+  "https://github.com/monorkin/simpliki/blob/main/app/models/exercise/searchable.rb": {
+    "title": "simpliki/app/models/exercise/searchable.rb at main · monorkin/simpliki",
+    "description": "Simpliki is an app for practicing diaphragmatic breathing - monorkin/simpliki",
+    "image": "link-previews/1726-simpliki.png"
+  },
+  "https://github.com/monorkin/simpliki/blob/main/test/fixtures/action_text/rich_texts.yml": {
+    "title": "simpliki/test/fixtures/action_text/rich_texts.yml at main · monorkin/simpliki",
+    "description": "Simpliki is an app for practicing diaphragmatic breathing - monorkin/simpliki",
+    "image": "link-previews/1722-simpliki.png"
+  },
+  "https://github.com/monorkin/simpliki/blob/main/test/fixtures/exercise/steps.yml": {
+    "title": "simpliki/test/fixtures/exercise/steps.yml at main · monorkin/simpliki",
+    "description": "Simpliki is an app for practicing diaphragmatic breathing - monorkin/simpliki",
+    "image": "link-previews/1711-simpliki.png"
+  },
+  "https://github.com/monorkin/simpliki/blob/main/test/fixtures/exercises.yml": {
+    "title": "simpliki/test/fixtures/exercises.yml at main · monorkin/simpliki",
+    "description": "Simpliki is an app for practicing diaphragmatic breathing - monorkin/simpliki",
+    "image": "link-previews/1710-simpliki.png"
+  },
+  "https://github.com/monorkin/twice": {
+    "title": "GitHub - monorkin/twice: A clone of the Once distribution system - a license key based distribution system for Docker containers.",
+    "description": "A clone of the Once distribution system - a license key based distribution system for Docker containers. - monorkin/twice",
+    "image": "link-previews/1748-twice.png"
+  },
+  "https://github.com/monorkin/twice/blob/c22d6361becc4b5c66947762e5dc7d09090da576/auth/app/models/docker_registry/token.rb": {
+    "title": "twice/auth/app/models/docker_registry/token.rb at c22d6361becc4b5c66947762e5dc7d09090da576 · monorkin/twice",
+    "description": "A clone of the Once distribution system - a license key based distribution system for Docker containers. - monorkin/twice",
+    "image": "link-previews/1761-twice.png"
+  },
+  "https://github.com/monorkin/twice/blob/c22d6361becc4b5c66947762e5dc7d09090da576/cli/internal/api/license.go": {
+    "title": "twice/cli/internal/api/license.go at c22d6361becc4b5c66947762e5dc7d09090da576 · monorkin/twice",
+    "description": "A clone of the Once distribution system - a license key based distribution system for Docker containers. - monorkin/twice",
+    "image": "link-previews/1754-twice.png"
+  },
+  "https://github.com/monorkin/twice/blob/c22d6361becc4b5c66947762e5dc7d09090da576/cli/internal/docker/check.go": {
+    "title": "twice/cli/internal/docker/check.go at c22d6361becc4b5c66947762e5dc7d09090da576 · monorkin/twice",
+    "description": "A clone of the Once distribution system - a license key based distribution system for Docker containers. - monorkin/twice",
+    "image": "link-previews/1753-twice.png"
+  },
+  "https://github.com/monorkin/twice/blob/c22d6361becc4b5c66947762e5dc7d09090da576/cli/internal/docker/pull.go": {
+    "title": "twice/cli/internal/docker/pull.go at c22d6361becc4b5c66947762e5dc7d09090da576 · monorkin/twice",
+    "description": "A clone of the Once distribution system - a license key based distribution system for Docker containers. - monorkin/twice",
+    "image": "link-previews/1755-twice.png"
+  },
+  "https://github.com/mperham/sidekiq": {
+    "title": "GitHub - sidekiq/sidekiq: Simple, efficient background processing for Ruby",
+    "description": "Simple, efficient background processing for Ruby. Contribute to sidekiq/sidekiq development by creating an account on GitHub.",
+    "image": "link-previews/1393-9c297005-12fc-49fd-853e-67bba879a6f2.png"
+  },
+  "https://github.com/netflix/chaosmonkey": {
+    "title": "GitHub - Netflix/chaosmonkey: Chaos Monkey is a resiliency tool that helps applications tolerate random instance failures.",
+    "description": "Chaos Monkey is a resiliency tool that helps applications tolerate random instance failures. - Netflix/chaosmonkey",
+    "image": "link-previews/1508-chaosmonkey.png"
+  },
+  "https://github.com/pry/pry": {
+    "title": "GitHub - pry/pry: A runtime developer console and IRB alternative with powerful introspection capabilities.",
+    "description": "A runtime developer console and IRB alternative with powerful introspection capabilities. - pry/pry",
+    "image": "link-previews/1398-pry.png"
+  },
+  "https://github.com/puma/puma": {
+    "title": "GitHub - puma/puma: A Ruby/Rack web server built for parallelism",
+    "description": "A Ruby/Rack web server built for parallelism. Contribute to puma/puma development by creating an account on GitHub.",
+    "image": "link-previews/1627-7510b380-cfe5-11e9-8391-85577ac28ede.png"
+  },
+  "https://github.com/rails/propshaft": {
+    "title": "GitHub - rails/propshaft: Deliver assets for Rails",
+    "description": "Deliver assets for Rails. Contribute to rails/propshaft development by creating an account on GitHub.",
+    "image": "link-previews/1562-propshaft.png"
+  },
+  "https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02a38a/actioncable/lib/action_cable/channel/base.rb#L214": {
+    "title": "rails/actioncable/lib/action_cable/channel/base.rb at 3d132b855541c35236e93b3a676a3ee80d02a38a · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1616-rails.png"
+  },
+  "https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02a38a/actioncable/lib/action_cable/channel/periodic_timers.rb#L67": {
+    "title": "rails/actioncable/lib/action_cable/channel/periodic_timers.rb at 3d132b855541c35236e93b3a676a3ee80d02a38a · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1648-rails.png"
+  },
+  "https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02a38a/actioncable/lib/action_cable/connection/base.rb#L87": {
+    "title": "rails/actioncable/lib/action_cable/connection/base.rb at 3d132b855541c35236e93b3a676a3ee80d02a38a · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1641-rails.png"
+  },
+  "https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02a38a/actioncable/lib/action_cable/connection/internal_channel.rb#L22": {
+    "title": "rails/actioncable/lib/action_cable/connection/internal_channel.rb at 3d132b855541c35236e93b3a676a3ee80d02a38a · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1644-rails.png"
+  },
+  "https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02a38a/actioncable/lib/action_cable/connection/internal_channel.rb#L29": {
+    "title": "rails/actioncable/lib/action_cable/connection/internal_channel.rb at 3d132b855541c35236e93b3a676a3ee80d02a38a · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1645-rails.png"
+  },
+  "https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02a38a/actioncable/lib/action_cable/connection/stream.rb#L104": {
+    "title": "rails/actioncable/lib/action_cable/connection/stream.rb at 3d132b855541c35236e93b3a676a3ee80d02a38a · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1646-rails.png"
+  },
+  "https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02a38a/actioncable/lib/action_cable/connection/stream.rb#L110": {
+    "title": "rails/actioncable/lib/action_cable/connection/stream.rb at 3d132b855541c35236e93b3a676a3ee80d02a38a · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1647-rails.png"
+  },
+  "https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02a38a/actioncable/lib/action_cable/connection/stream_event_loop.rb#L109": {
+    "title": "rails/actioncable/lib/action_cable/connection/stream_event_loop.rb at 3d132b855541c35236e93b3a676a3ee80d02a38a · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1639-rails.png"
+  },
+  "https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02a38a/actioncable/lib/action_cable/connection/stream_event_loop.rb#L116": {
+    "title": "rails/actioncable/lib/action_cable/connection/stream_event_loop.rb at 3d132b855541c35236e93b3a676a3ee80d02a38a · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1640-rails.png"
+  },
+  "https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02a38a/actioncable/lib/action_cable/connection/stream_event_loop.rb#L95": {
+    "title": "rails/actioncable/lib/action_cable/connection/stream_event_loop.rb at 3d132b855541c35236e93b3a676a3ee80d02a38a · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1638-rails.png"
+  },
+  "https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02a38a/actioncable/lib/action_cable/server/connections.rb#L29": {
+    "title": "rails/actioncable/lib/action_cable/server/connections.rb at 3d132b855541c35236e93b3a676a3ee80d02a38a · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1643-rails.png"
+  },
+  "https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02a38a/actioncable/lib/action_cable/server/worker.rb#L10": {
+    "title": "rails/actioncable/lib/action_cable/server/worker.rb at 3d132b855541c35236e93b3a676a3ee80d02a38a · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1642-rails.png"
+  },
+  "https://github.com/rails/rails/blob/c7551d08fc572655105da38394d8672b8259c22f/actioncable/app/javascript/action_cable/connection.js#L147": {
+    "title": "rails/actioncable/app/javascript/action_cable/connection.js at c7551d08fc572655105da38394d8672b8259c22f · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1621-rails.png"
+  },
+  "https://github.com/rails/rails/blob/c7551d08fc572655105da38394d8672b8259c22f/actioncable/app/javascript/action_cable/connection.js#L154": {
+    "title": "rails/actioncable/app/javascript/action_cable/connection.js at c7551d08fc572655105da38394d8672b8259c22f · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1619-rails.png"
+  },
+  "https://github.com/rails/rails/blob/c7551d08fc572655105da38394d8672b8259c22f/actioncable/app/javascript/action_cable/connection.js#L172": {
+    "title": "rails/actioncable/app/javascript/action_cable/connection.js at c7551d08fc572655105da38394d8672b8259c22f · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1622-rails.png"
+  },
+  "https://github.com/rails/rails/blob/c7551d08fc572655105da38394d8672b8259c22f/actioncable/app/javascript/action_cable/subscription.js#L82": {
+    "title": "rails/actioncable/app/javascript/action_cable/subscription.js at c7551d08fc572655105da38394d8672b8259c22f · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1625-rails.png"
+  },
+  "https://github.com/rails/rails/blob/c7551d08fc572655105da38394d8672b8259c22f/actioncable/app/javascript/action_cable/subscription.js#L83": {
+    "title": "rails/actioncable/app/javascript/action_cable/subscription.js at c7551d08fc572655105da38394d8672b8259c22f · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1611-rails.png"
+  },
+  "https://github.com/rails/rails/blob/c7551d08fc572655105da38394d8672b8259c22f/actioncable/app/javascript/action_cable/subscription.js#L86": {
+    "title": "rails/actioncable/app/javascript/action_cable/subscription.js at c7551d08fc572655105da38394d8672b8259c22f · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1624-rails.png"
+  },
+  "https://github.com/rails/rails/blob/c7551d08fc572655105da38394d8672b8259c22f/actioncable/app/javascript/action_cable/subscriptions.js#L34": {
+    "title": "rails/actioncable/app/javascript/action_cable/subscriptions.js at c7551d08fc572655105da38394d8672b8259c22f · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1620-rails.png"
+  },
+  "https://github.com/rails/rails/blob/c7551d08fc572655105da38394d8672b8259c22f/actioncable/app/javascript/action_cable/subscriptions.js#L50": {
+    "title": "rails/actioncable/app/javascript/action_cable/subscriptions.js at c7551d08fc572655105da38394d8672b8259c22f · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1623-rails.png"
+  },
+  "https://github.com/rails/rails/blob/c7551d08fc572655105da38394d8672b8259c22f/actioncable/app/javascript/action_cable/subscriptions.js#L88": {
+    "title": "rails/actioncable/app/javascript/action_cable/subscriptions.js at c7551d08fc572655105da38394d8672b8259c22f · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1608-rails.png"
+  },
+  "https://github.com/rails/rails/blob/cc633481602daf004eaab845c3780c6d885f882c/actioncable/lib/action_cable/channel/base.rb#L167C11-L167C25": {
+    "title": "rails/actioncable/lib/action_cable/channel/base.rb at cc633481602daf004eaab845c3780c6d885f882c · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1612-rails.png"
+  },
+  "https://github.com/rails/rails/blob/cc633481602daf004eaab845c3780c6d885f882c/actioncable/lib/action_cable/channel/base.rb#L223": {
+    "title": "rails/actioncable/lib/action_cable/channel/base.rb at cc633481602daf004eaab845c3780c6d885f882c · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1617-rails.png"
+  },
+  "https://github.com/rails/rails/blob/cc633481602daf004eaab845c3780c6d885f882c/actioncable/lib/action_cable/channel/base.rb#L301": {
+    "title": "rails/actioncable/lib/action_cable/channel/base.rb at cc633481602daf004eaab845c3780c6d885f882c · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1609-rails.png"
+  },
+  "https://github.com/rails/rails/blob/cc633481602daf004eaab845c3780c6d885f882c/actioncable/lib/action_cable/channel/streams.rb#L103": {
+    "title": "rails/actioncable/lib/action_cable/channel/streams.rb at cc633481602daf004eaab845c3780c6d885f882c · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1615-rails.png"
+  },
+  "https://github.com/rails/rails/blob/cc633481602daf004eaab845c3780c6d885f882c/actioncable/lib/action_cable/channel/streams.rb#L78": {
+    "title": "rails/actioncable/lib/action_cable/channel/streams.rb at cc633481602daf004eaab845c3780c6d885f882c · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1614-rails.png"
+  },
+  "https://github.com/rails/rails/blob/cc633481602daf004eaab845c3780c6d885f882c/actioncable/lib/action_cable/connection/base.rb": {
+    "title": "rails/actioncable/lib/action_cable/connection/base.rb at cc633481602daf004eaab845c3780c6d885f882c · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1601-rails.png"
+  },
+  "https://github.com/rails/rails/blob/cc633481602daf004eaab845c3780c6d885f882c/actioncable/lib/action_cable/connection/base.rb#L110": {
+    "title": "rails/actioncable/lib/action_cable/connection/base.rb at cc633481602daf004eaab845c3780c6d885f882c · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1607-rails.png"
+  },
+  "https://github.com/rails/rails/blob/cc633481602daf004eaab845c3780c6d885f882c/actioncable/lib/action_cable/connection/base.rb#L135": {
+    "title": "rails/actioncable/lib/action_cable/connection/base.rb at cc633481602daf004eaab845c3780c6d885f882c · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1606-rails.png"
+  },
+  "https://github.com/rails/rails/blob/cc633481602daf004eaab845c3780c6d885f882c/actioncable/lib/action_cable/connection/base.rb#L186": {
+    "title": "rails/actioncable/lib/action_cable/connection/base.rb at cc633481602daf004eaab845c3780c6d885f882c · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1602-rails.png"
+  },
+  "https://github.com/rails/rails/blob/cc633481602daf004eaab845c3780c6d885f882c/actioncable/lib/action_cable/connection/base.rb#L204": {
+    "title": "rails/actioncable/lib/action_cable/connection/base.rb at cc633481602daf004eaab845c3780c6d885f882c · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1603-rails.png"
+  },
+  "https://github.com/rails/rails/blob/cc633481602daf004eaab845c3780c6d885f882c/actioncable/lib/action_cable/connection/base.rb#L211": {
+    "title": "rails/actioncable/lib/action_cable/connection/base.rb at cc633481602daf004eaab845c3780c6d885f882c · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1605-rails.png"
+  },
+  "https://github.com/rails/rails/blob/cc633481602daf004eaab845c3780c6d885f882c/actioncable/lib/action_cable/connection/identification.rb#L20": {
+    "title": "rails/actioncable/lib/action_cable/connection/identification.rb at cc633481602daf004eaab845c3780c6d885f882c · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1604-rails.png"
+  },
+  "https://github.com/rails/rails/blob/main/actioncable/lib/action_cable/channel/base.rb#L316": {
+    "title": "rails/actioncable/lib/action_cable/channel/base.rb at main · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1610-rails.png"
+  },
+  "https://github.com/rails/rails/blob/main/actioncable/lib/action_cable/channel/periodic_timers.rb#L31": {
+    "title": "rails/actioncable/lib/action_cable/channel/periodic_timers.rb at main · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1649-rails.png"
+  },
+  "https://github.com/rails/rails/blob/main/actioncable/lib/action_cable/connection/stream.rb#L96": {
+    "title": "rails/actioncable/lib/action_cable/connection/stream.rb at main · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1630-rails.png"
+  },
+  "https://github.com/rails/rails/blob/main/actioncable/lib/action_cable/connection/stream_event_loop.rb#L95": {
+    "title": "rails/actioncable/lib/action_cable/connection/stream_event_loop.rb at main · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1634-rails.png"
+  },
+  "https://github.com/rails/rails/blob/main/actioncable/lib/action_cable/remote_connections.rb#L36": {
+    "title": "rails/actioncable/lib/action_cable/remote_connections.rb at main · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1653-rails.png"
+  },
+  "https://github.com/rails/rails/blob/main/actioncable/lib/action_cable/remote_connections.rb#L56": {
+    "title": "rails/actioncable/lib/action_cable/remote_connections.rb at main · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1654-rails.png"
+  },
+  "https://github.com/rails/rails/issues/24908": {
+    "title": "Actioncable latency/client side ping feature.   · Issue #24908 · rails/rails",
+    "description": "I have been looking at the actioncable stuff and it appears that the connection monitor relies on ping which is server -> client. I am wondering if any thought has been made to have a client ping v...",
+    "image": "link-previews/1581-24908.png"
+  },
+  "https://github.com/rails/rails/issues/29307": {
+    "title": "ActionCable::Connection::Base#disconnect not called if cable client lost network connection · Issue #29307 · rails/rails",
+    "description": "Steps to reproduce Start Rails server with action cable enabled, then have any client connect to the cable server, and make the client lose network connection (eg. airplane your phone with websocke...",
+    "image": "link-previews/1582-29307.png"
+  },
+  "https://github.com/rails/rails/issues/31656": {
+    "title": "ActiveStorage attachment validations not working · Issue #31656 · rails/rails",
+    "description": "Steps to reproduce class User < ActiveRecord::Base has_one_attached :avatar validates_each :avatar do |record, attr, value| record.errors.add attr unless record.avatar.attachment.blob.content_type....",
+    "image": "link-previews/1481-31656.png"
+  },
+  "https://github.com/rails/rails/issues/32236": {
+    "title": "Activestorage: S3 presigned url get expired before access. · Issue #32236 · rails/rails",
+    "description": "I am using active storage to store the files on AWS s3. and override the ActiveStorage::Service.url_expires_in = 24.hours default 300sec. Sometimes while accessing the file is not loaded due to URL...",
+    "image": "link-previews/1470-32236.png"
+  },
+  "https://github.com/rails/rails/issues/45112": {
+    "title": "Action Cable: Client-initiated heartbeats · Issue #45112 · rails/rails",
+    "description": "Tracking issue for a new feature we're extracting from Basecamp: Relying on clients to send heartbeats. Motivation: Preventing defunct session cruft from building up on WebSockets load balancers / ...",
+    "image": "link-previews/1583-45112.png"
+  },
+  "https://github.com/rails/rails/issues/50479": {
+    "title": "Add Thruster to Docker setup to get HTTP/2, X-Sendfile, Caching by default in Rails 8 · Issue #50479 · rails/rails",
+    "description": "Puma does not support HTTP/2 out of the box, and there does not seem to be a short-term path to that changing. That means most people have to either stick nginx or a CDN in front of their app, whic...",
+    "image": "link-previews/1660-50479.png"
+  },
+  "https://github.com/rails/rails/pull/49168": {
+    "title": "Record ping on every actioncable message by yauhenininjia · Pull Request #49168 · rails/rails",
+    "description": "Motivation / Background\nThis PR is a fix for this issue described and closed due to inactivity here #42336\nIt still happens in apps with rails 7.0.7.2, ruby 3.2.2 and @rails/actioncable 7.0.4: when...",
+    "image": "link-previews/1596-49168.png"
+  },
+  "https://github.com/rails/rails/pull/50039": {
+    "title": "Add ability to detect a half-open connection by monorkin · Pull Request #50039 · rails/rails",
+    "description": "Motivation / Background\nI have IoT devices connecting to my Rails app via ActionCable, and I want to log when a device connects or disconnects.\nThis is already doable via Cahnnel#subscribed and Cha...",
+    "image": "link-previews/1599-50039.png"
+  },
+  "https://github.com/rails/rails/pull/56288": {
+    "title": "Add SecureRandom.base32 by monorkin · Pull Request #56288 · rails/rails",
+    "description": "Motivation / Background\nFor one-time codes that are meant to be typed in by hand, we want to generate codes that are easy to read, easy to say out loud, and hard to confuse.\nCrockford&#39;s Base32 ...",
+    "image": "link-previews/1801-56288.png"
+  },
+  "https://github.com/rails/rails/tree/master/activerecord": {
+    "title": "rails/activerecord at main · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1469-rails.png"
+  },
+  "https://github.com/rails/rails/tree/master/activestorage": {
+    "title": "rails/activestorage at main · rails/rails",
+    "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
+    "image": "link-previews/1467-rails.png"
+  },
+  "https://github.com/rails/solid_cache": {
+    "title": "GitHub - rails/solid_cache: A database-backed ActiveSupport::Cache::Store",
+    "description": "A database-backed ActiveSupport::Cache::Store. Contribute to rails/solid_cache development by creating an account on GitHub.",
+    "image": "link-previews/1565-solid_cache.png"
+  },
+  "https://github.com/refile/refile": {
+    "title": "GitHub - refile/refile: Ruby file uploads, take 3",
+    "description": "Ruby file uploads, take 3. Contribute to refile/refile development by creating an account on GitHub.",
+    "image": "link-previews/1483-refile.png"
+  },
+  "https://github.com/rom-rb/rom": {
+    "title": "GitHub - rom-rb/rom: Data mapping and persistence toolkit for Ruby",
+    "description": "Data mapping and persistence toolkit for Ruby. Contribute to rom-rb/rom development by creating an account on GitHub.",
+    "image": "link-previews/1474-rom.png"
+  },
+  "https://github.com/ruby-amqp/bunny": {
+    "title": "GitHub - ruby-amqp/bunny: Bunny is a popular, easy to use, mature Ruby client for RabbitMQ",
+    "description": "Bunny is a popular, easy to use, mature Ruby client for RabbitMQ - ruby-amqp/bunny",
+    "image": "link-previews/1413-bunny.png"
+  },
+  "https://github.com/ruby/ruby/blob/9cbe4553f4e25d0a9beb4b6393b601c1d0ab3a17/COPYING": {
+    "title": "ruby/COPYING at 9cbe4553f4e25d0a9beb4b6393b601c1d0ab3a17 · ruby/ruby",
+    "description": "The Ruby Programming Language. Contribute to ruby/ruby development by creating an account on GitHub.",
+    "image": "link-previews/1419-ruby.png"
+  },
+  "https://github.com/ruby/webrick": {
+    "title": "GitHub - ruby/webrick: HTTP server toolkit",
+    "description": "HTTP server toolkit. Contribute to ruby/webrick development by creating an account on GitHub.",
+    "image": "link-previews/1628-webrick.png"
+  },
+  "https://github.com/rubysherpas/paranoia": {
+    "title": "GitHub - rubysherpas/paranoia: acts_as_paranoid for Rails 5, 6 and 7",
+    "description": "acts_as_paranoid for Rails 5, 6 and 7. Contribute to rubysherpas/paranoia development by creating an account on GitHub.",
+    "image": "link-previews/1514-paranoia.png"
+  },
+  "https://github.com/rust-lang/rust/blob/c57deb923e56e04634b7e4b3fdc0f84ea0d41ed4/COPYRIGHT": {
+    "title": "rust/COPYRIGHT at c57deb923e56e04634b7e4b3fdc0f84ea0d41ed4 · rust-lang/rust",
+    "description": "Empowering everyone to build reliable and efficient software. - rust-lang/rust",
+    "image": "link-previews/1418-rust.png"
+  },
+  "https://github.com/shrinerb/shrine": {
+    "title": "GitHub - shrinerb/shrine: File Attachment toolkit for Ruby applications",
+    "description": "File Attachment toolkit for Ruby applications. Contribute to shrinerb/shrine development by creating an account on GitHub.",
+    "image": "link-previews/1468-shrine.png"
+  },
+  "https://github.com/shrinerb/shrine/blob/3c14113ce2fb77d1f3e96bd4e4ff10416651fc7c/doc/direct_s3.md": {
+    "title": "shrine/doc/direct_s3.md at 3c14113ce2fb77d1f3e96bd4e4ff10416651fc7c · shrinerb/shrine",
+    "description": "File Attachment toolkit for Ruby applications. Contribute to shrinerb/shrine development by creating an account on GitHub.",
+    "image": "link-previews/1453-shrine.png"
+  },
+  "https://github.com/shrinerb/shrine/blob/a8ba2510bf01981175eb2abe7421c1a86c1bcc9d/lib/shrine/plugins/data_uri.rb": {
+    "title": "shrine/lib/shrine/plugins/data_uri.rb at a8ba2510bf01981175eb2abe7421c1a86c1bcc9d · shrinerb/shrine",
+    "description": "File Attachment toolkit for Ruby applications. Contribute to shrinerb/shrine development by creating an account on GitHub.",
+    "image": "link-previews/1457-shrine.png"
+  },
+  "https://github.com/shrinerb/shrine/blob/master/lib/shrine/plugins/presign_endpoint.rb": {
+    "title": "shrine/lib/shrine/plugins/presign_endpoint.rb at master · shrinerb/shrine",
+    "description": "File Attachment toolkit for Ruby applications. Contribute to shrinerb/shrine development by creating an account on GitHub.",
+    "image": "link-previews/1454-shrine.png"
+  },
+  "https://github.com/shrinerb/shrine/blob/master/lib/shrine/plugins/upload_endpoint.rb": {
+    "title": "shrine/lib/shrine/plugins/upload_endpoint.rb at master · shrinerb/shrine",
+    "description": "File Attachment toolkit for Ruby applications. Contribute to shrinerb/shrine development by creating an account on GitHub.",
+    "image": "link-previews/1456-shrine.png"
+  },
+  "https://github.com/shrinerb/shrine/issues/244": {
+    "title": "Any hint / doc / guide / recipe / tutorial for graphql (with graphql-ruby gem)? · Issue #244 · shrinerb/shrine",
+    "description": "Any hint / doc / guide / recipe / tutorial for graphql (with graphql-ruby gem)? I found nothing here (in the issues) and nothing here: http://shrinerb.com. Why?",
+    "image": "link-previews/1448-244.png"
+  },
+  "https://github.com/socketio/socket.io/issues/2769#issuecomment-639300952": {
+    "title": "Socket.io disconnect with ping timeout randomly · Issue #2769 · socketio/socket.io",
+    "description": "we have a real time chat application, that uses socket.io, node.js, mongodb etc. Chat is working very fine except one issue & that is as follows Some time in between while chatting user are getting...",
+    "image": "link-previews/1587-2769.png"
+  },
+  "https://github.com/socketry/falcon": {
+    "title": "GitHub - socketry/falcon: A high-performance web server for Ruby, supporting HTTP/1, HTTP/2 and TLS.",
+    "description": "A high-performance web server for Ruby, supporting HTTP/1, HTTP/2 and TLS. - socketry/falcon",
+    "image": "link-previews/1629-falcon.png"
+  },
+  "https://github.com/socketry/nio4r": {
+    "title": "GitHub - socketry/nio4r: Cross-platform asynchronous I/O primitives for scalable network clients and servers.",
+    "description": "Cross-platform asynchronous I/O primitives for scalable network clients and servers. - socketry/nio4r",
+    "image": "link-previews/1633-nio4r.png"
+  },
+  "https://github.com/soveran/cuba": {
+    "title": "GitHub - soveran/cuba: Rum based microframework for web development.",
+    "description": "Rum based microframework for web development. Contribute to soveran/cuba development by creating an account on GitHub."
+  },
+  "https://github.com/spf13/cobra": {
+    "title": "GitHub - spf13/cobra: A Commander for modern Go CLI interactions",
+    "description": "A Commander for modern Go CLI interactions. Contribute to spf13/cobra development by creating an account on GitHub.",
+    "image": "link-previews/1745-cobra.png"
+  },
+  "https://github.com/stankec/lectures/tree/master/19-rabbitmq_is_more_than_a_sidekiq_replacement": {
+    "title": "lectures/19-rabbitmq_is_more_than_a_sidekiq_replacement at master · monorkin/lectures",
+    "description": "A repository for all the lectures I gave. Contribute to monorkin/lectures development by creating an account on GitHub.",
+    "image": "link-previews/1394-lectures.png"
+  },
+  "https://github.com/tamatebako/tebako": {
+    "title": "GitHub - tamatebako/tebako: Tebako: an executable packager (for Ruby programs)",
+    "description": "Tebako: an executable packager (for Ruby programs) - tamatebako/tebako",
+    "image": "link-previews/1750-tebako.png"
+  },
+  "https://github.com/thoughtbot/paperclip": {
+    "title": "GitHub - thoughtbot/paperclip: Easy file attachment management for ActiveRecord",
+    "description": "Easy file attachment management for ActiveRecord. Contribute to thoughtbot/paperclip development by creating an account on GitHub.",
+    "image": "link-previews/1480-paperclip.png"
+  },
+  "https://github.com/traefik/traefik/issues/6076": {
+    "title": "X-Forwarded-For unset when forwarding websocket handshake · Issue #6076 · traefik/traefik",
+    "description": "Do you want to request a feature or report a bug? Bug What did you do? I established a websocket connection to a capable backend. What did you expect to see? I expected the X-Forwarded-For header t...",
+    "image": "link-previews/1662-6076.png"
+  },
+  "https://github.com/trailblazer/cells": {
+    "title": "GitHub - trailblazer/cells: View components for Ruby and Rails.",
+    "description": "View components for Ruby and Rails. Contribute to trailblazer/cells development by creating an account on GitHub.",
+    "image": "link-previews/1541-cells.png"
+  },
+  "https://github.com/yabeda-rb/yabeda": {
+    "title": "GitHub - yabeda-rb/yabeda: Extendable framework for collecting and exporting metrics from your Ruby application",
+    "description": "Extendable framework for collecting and exporting metrics from your Ruby application - yabeda-rb/yabeda",
+    "image": "link-previews/1674-80260100-c8a7-11eb-8d74-a362e60704ad.png"
+  },
+  "https://github.com/yabeda-rb/yabeda-prometheus": {
+    "title": "GitHub - yabeda-rb/yabeda-prometheus: Adapter to expose metrics collected by Yabeda plugins to Prometheus",
+    "description": "Adapter to expose metrics collected by Yabeda plugins to Prometheus - yabeda-rb/yabeda-prometheus",
+    "image": "link-previews/1676-32191680-c9e9-11eb-8eee-02d408515bc9.png"
+  },
+  "https://github.com/yabeda-rb/yabeda-prometheus-mmap": {
+    "title": "GitHub - yabeda-rb/yabeda-prometheus-mmap: Yabeda Prometheus exporter based on prometheus-client-mmap",
+    "description": "Yabeda Prometheus exporter based on prometheus-client-mmap - yabeda-rb/yabeda-prometheus-mmap",
+    "image": "link-previews/1675-yabeda-prometheus-mmap.png"
+  },
+  "https://github.com/yabeda-rb/yabeda-puma-plugin": {
+    "title": "GitHub - yabeda-rb/yabeda-puma-plugin: Collects Puma web-server metrics from puma control panel",
+    "description": "Collects Puma web-server metrics from puma control panel - yabeda-rb/yabeda-puma-plugin",
+    "image": "link-previews/1680-de55ff80-c9df-11eb-89aa-85415412a7ea.png"
+  },
+  "https://github.com/yabeda-rb/yabeda-rails": {
+    "title": "GitHub - yabeda-rb/yabeda-rails: Yabeda plugin to collect basic metrics for Rails applications",
+    "description": "Yabeda plugin to collect basic metrics for Rails applications - yabeda-rb/yabeda-rails",
+    "image": "link-previews/1681-04c16e00-c9d3-11eb-9a7e-6cfca20fb3a3.png"
+  },
+  "https://github.com/yammer/circuitbox": {
+    "title": "GitHub - yammer/circuitbox: Circuit breaker built with large Ruby apps in mind.",
+    "description": "Circuit breaker built with large Ruby apps in mind. - yammer/circuitbox",
+    "image": "link-previews/1509-circuitbox.png"
+  },
+  "https://github.com/yjacquin/fast-mcp": {
+    "title": "GitHub - yjacquin/fast-mcp: A Ruby Implementation of the Model Context Protocol",
+    "description": "A Ruby Implementation of the Model Context Protocol - yjacquin/fast-mcp",
+    "image": "link-previews/1733-fast-mcp.png"
+  },
+  "https://github.com/ysugimoto/aws-lambda-image": {
+    "title": "GitHub - ysugimoto/aws-lambda-image: Automatic image resize/reduce on AWS Lambda",
+    "description": "Automatic image resize/reduce on AWS Lambda. Contribute to ysugimoto/aws-lambda-image development by creating an account on GitHub.",
+    "image": "link-previews/1451-aws-lambda-image.png"
+  },
+  "https://go.dev/": {
+    "title": "The Go Programming Language",
+    "image": "link-previews/1785-gopherbelly300.jpg"
+  },
+  "https://grafana.com/": {
+    "title": "Grafana: The open and composable observability platform | Grafana Labs",
+    "description": "Grafana is the open source analytics & monitoring solution for every database.",
+    "image": "link-previews/1677-grafana-labs-meta-default_1200x630.png"
+  },
+  "https://guides.rubyonrails.org/action_cable_overview.html": {
+    "title": "Action Cable Overview — Ruby on Rails Guides",
+    "description": "In this guide, you will learn how Action Cable works and how to use WebSockets to incorporate real-time features into your Rails application.After reading this guide, you will know: What Action Cable is and its integration backend and frontend How to set up Action Cable How to set up channels Deployment and Architecture setup for running Action Cable",
+    "image": "link-previews/1576-4223.png"
+  },
+  "https://guides.rubyonrails.org/action_cable_overview.html#example-1-user-appearances": {
+    "title": "Action Cable Overview — Ruby on Rails Guides",
+    "description": "In this guide, you will learn how Action Cable works and how to use WebSockets to incorporate real-time features into your Rails application.After reading this guide, you will know: What Action Cable is and its integration backend and frontend How to set up Action Cable How to set up channels Deployment and Architecture setup for running Action Cable",
+    "image": "link-previews/1578-4223.png"
+  },
+  "https://guides.rubyonrails.org/association_basics.html#polymorphic-associations": {
+    "title": "Active Record Associations — Ruby on Rails Guides",
+    "description": "This guide covers the association features of Active Record.After reading this guide, you will know how to: Understand the various types of associations. Declare associations between Active Record models. Choose the right association type for your models. Use Single Table Inheritance. Setting up and using Delegated Types.",
+    "image": "link-previews/1663-4223.png"
+  },
+  "https://guides.rubyonrails.org/association_basics.html#single-table-inheritance-sti": {
+    "title": "Active Record Associations — Ruby on Rails Guides",
+    "description": "This guide covers the association features of Active Record.After reading this guide, you will know how to: Understand the various types of associations. Declare associations between Active Record models. Choose the right association type for your models. Use Single Table Inheritance. Setting up and using Delegated Types.",
+    "image": "link-previews/1763-4223.png"
+  },
+  "https://guides.rubyonrails.org/contributing_to_ruby_on_rails.html": {
+    "title": "Contributing to Ruby on Rails — Ruby on Rails Guides",
+    "description": "This guide covers how you can become a part of the ongoing development of Ruby on Rails.After reading this guide, you will know: How to use GitHub to report issues. How to clone main and run the test suite. How to help resolve existing issues. How to contribute to the Ruby on Rails documentation. How to contribute to the Ruby on Rails code. Ruby on Rails is not \"someone else's framework\". Over the years, thousands of people have contributed to Ruby on Rails ranging from a single character to massive architectural changes or significant documentation - all to make Ruby on Rails better for everyone. Even if you don't feel up to writing code or documentation yet, there are various other ways that you can contribute, from reporting issues to testing patches.As mentioned in Rails' README, everyone interacting in Rails and its sub-projects' codebases, issue trackers, chat rooms, discussion boards, and mailing lists is expected to follow the Rails code of conduct.",
+    "image": "link-previews/1598-4223.png"
+  },
+  "https://guides.rubyonrails.org/layouts_and_rendering.html#using-partials": {
+    "title": "Layouts and Rendering in Rails — Ruby on Rails Guides",
+    "description": "This guide covers the basic layout features of Action Controller and Action View.After reading this guide, you will know: How to use the various rendering methods built into Rails. How to create layouts with multiple content sections. How to use partials to DRY up your views. How to use nested layouts (sub-templates).",
+    "image": "link-previews/1543-4223.png"
+  },
+  "https://guides.rubyonrails.org/security.html#authentication": {
+    "title": "Securing Rails Applications — Ruby on Rails Guides",
+    "description": "This guide describes common security problems in web applications and how to avoid them with Rails.After reading this guide, you will know: How to use the built-in authentication generator. All countermeasures that are highlighted. The concept of sessions in Rails, what to put in there and popular attack methods. How just visiting a site can be a security problem (with CSRF). What you have to pay attention to when working with files or providing an administration interface. How to manage users: Logging in and out and attack methods on all layers. And the most popular injection attack methods.",
+    "image": "link-previews/1730-4223.png"
+  },
+  "https://hackernoon.com/facebooks-bsd-patents-license-and-how-it-affects-you-66088e052845": {
+    "title": "Facebook’s BSD+Patents License and how it affects your company or side-project | HackerNoon",
+    "description": "TL;DR First let me say I’m not a lawyer and only a lawyer can figure out your situation.",
+    "image": "link-previews/1438-fallback-feat.png"
+  },
+  "https://hotwire.io": {
+    "title": "Hotwire.io · Hotwire.io",
+    "description": "Community-driven documentation and resource Hub for Hotwire.",
+    "image": "link-previews/1558-og-image.png"
+  },
+  "https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events": {
+    "title": "HTML Standard"
+  },
+  "https://infinum.co/the-capsized-eight/best-rails-image-uploader-paperclip-carrierwave-refile": {
+    "title": "Best Rails Image Uploader Paperclip vs. Carrierwave vs. Refile",
+    "description": "Everybody that has ever implemented file upload by hand in a Rails app knows that it’s no cakewalk, not to mention a major security risk.",
+    "image": "link-previews/1460-best-rails-image-uploader-paperclip-carrierwave-refile-0.png"
+  },
+  "https://janko.io/the-plugin-system-of-sequel-and-roda/": {
+    "title": "The plugin system of Sequel and Roda",
+    "description": "When developing gems, often one of the difficult problems to solve is creating a good ratio between simplicity, convenience and flexibility."
+  },
+  "https://kamal-deploy.org/": {
+    "title": "Deploy web apps anywhere",
+    "description": "From bare metal to cloud VMs using Docker, deploy web apps anywhere with zero downtime.",
+    "image": "link-previews/1766-opengraph.png"
+  },
+  "https://letsencrypt.org/": {
+    "title": "Let's Encrypt",
+    "description": "Let's Encrypt is a free, automated, and open Certificate Authority brought to you by the nonprofit Internet Security Research Group (ISRG). Read all about our nonprofit work this year in our 2025 Annual Report.",
+    "image": "link-previews/1659-letsencrypt-socialshare.png"
+  },
+  "https://m.youtube.com/watch?v=TKulocPqV38": {
+    "title": "RailsConf 2023 - Keynote by Eileen Uchitelle",
+    "description": "Keynote by Eileen Uchitelle",
+    "image": "link-previews/1563-maxresdefault.jpg"
+  },
+  "https://mailbrew.com/": {
+    "title": "Mailbrew - Your personal email digest",
+    "description": "Create beautiful, automated newsletters with content from the sites and apps you love.",
+    "image": "link-previews/1532-card.jpg"
+  },
+  "https://mariadb.com/kb/en/rowid-filtering-optimization/": {
+    "title": "Rowid Filtering Optimization | Server | MariaDB Documentation",
+    "image": "link-previews/1516-image.jpg"
+  },
+  "https://markobozac.com/": {
+    "title": "Marko Božac",
+    "description": "Bok, ja sam Marko. 👨‍💻 Ekonomist zaokupljen digitalnim transformacijama, inovacijama i analizom podataka. Radio sam na projektima digitalizacije poslovanja, začetcima e-Governmenta u Hrvatskoj, pokrenuo i razvio nekoliko mobilnih i web aplikacija te vodio udrugu Financijski klub i sudjelovao na međunarodnim hackathonima. Trenutno sam product manager U Cenoscu. U slobodno vrijeme pišem o zapažanjima u svojim […]",
+    "image": "link-previews/1350-img_8996-scaled.jpg"
+  },
+  "https://mastodon.social/about": {
+    "title": "Mastodon",
+    "description": "The original server operated by the Mastodon gGmbH non-profit",
+    "image": "link-previews/1412-57c12f441d083cde.png"
+  },
+  "https://modelcontextprotocol.io/introduction": {
+    "title": "What is the Model Context Protocol (MCP)? - Model Context Protocol",
+    "image": "link-previews/1732-og-image.png"
+  },
+  "https://ohmyz.sh/": {
+    "title": "Oh My Zsh - a delightful & open source framework for Zsh",
+    "description": "Oh My Zsh is a popular open-source Zsh configuration framework loved by developers worldwide. It includes 300+ plugins, themes, and tweaks to supercharge your terminal experience.",
+    "image": "link-previews/1566-omzlogo_opengraph.jpg"
+  },
+  "https://opensource.org/licenses/Apache-2.0": {
+    "title": "Apache License, Version 2.0",
+    "description": "TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION 1. Definitions. “License” shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of…",
+    "image": "link-previews/1426-osi_approved_license.png"
+  },
+  "https://opensource.org/licenses/BSD-3-Clause": {
+    "title": "The 3-Clause BSD License",
+    "description": "Note: This license has also been called the “New BSD License” or “Modified BSD License”. See also the 2-clause BSD License. Copyright <YEAR> <COPYRIGHT HOLDER> Redistribution and use in source…"
+  },
+  "https://opensource.org/licenses/BSDplusPatent": {
+    "title": "BSD+Patent",
+    "description": "Note: This license is designed to provide: a) a simple permissive license; b) that is compatible with the GNU General Public License (GPL), version 2; and c) which also has…"
+  },
+  "https://opensource.org/licenses/LGPL-3.0": {
+    "title": "GNU Lesser General Public License version 3",
+    "description": "GNU LESSER GENERAL PUBLIC LICENSE Version 3, 29 June 2007 Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/> Everyone is permitted to copy and distribute verbatim copies of this license…",
+    "image": "link-previews/1435-osi_approved_license.png"
+  },
+  "https://opensource.org/licenses/MIT": {
+    "title": "The MIT License",
+    "description": "Copyright <YEAR> <COPYRIGHT HOLDER> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the…"
+  },
+  "https://opensource.org/licenses/alphabetical": {
+    "title": "COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL)"
+  },
+  "https://pkg.go.dev/fmt": {
+    "title": "fmt package - fmt - Go Packages"
+  },
+  "https://plaid.com/blog/exploring-performance-differences-between-amazon-aurora-and-vanilla-mysql/": {
+    "title": "Exploring performance differences between Amazon Aurora and vanilla MySQL | Plaid",
+    "description": "Amazon’s Aurora MySQL is Plaid’s primary relational database.",
+    "image": "link-previews/1688-blog_social_engineering-blog__1_.png"
+  },
+  "https://prometheus.io/docs/introduction/overview/": {
+    "title": "Overview | Prometheus",
+    "description": "Prometheus project documentation for Overview",
+    "image": "link-previews/1672-twitter-image.png"
+  },
+  "https://psegina.com/": {
+    "title": "Petar Šegina"
+  },
+  "https://redis.io/": {
+    "title": "Redis - The Real-time Data Platform",
+    "description": "Developers love Redis. Unlock the full potential of the Redis database with Redis Enterprise and start building blazing fast apps.",
+    "image": "link-previews/1399-open-graph-13a19f38.png"
+  },
+  "https://redis.io/topics/persistence": {
+    "title": "Develop with Redis",
+    "description": "Learn how to develop with Redis"
+  },
+  "https://remoteruby.com": {
+    "title": "Remote Ruby",
+    "description": "Rubyists having conversations and interviewing others about Ruby and web development.",
+    "image": "link-previews/1575-full_1559164364-artwork.jpg"
+  },
+  "https://ruby-doc.org/3.2.2/IO.html#method-c-select": {
+    "title": "class IO - RDoc Documentation"
+  },
+  "https://ruby-doc.org/stdlib-2.5.0/libdoc/tempfile/rdoc/Tempfile.html": {
+    "title": "Class: Tempfile (Ruby 2.5.0)"
+  },
+  "https://rubyapi.org/3.4/o/thread/mutex#method-i-synchronize": {
+    "title": "Thread::Mutex | Ruby API (v3.4)"
+  },
+  "https://rubyapi.org/3.4/o/thread/mutex#method-i-try_lock": {
+    "title": "Thread::Mutex | Ruby API (v3.4)"
+  },
+  "https://rubyapi.org/3.4/o/thread/mutex#method-i-unlock": {
+    "title": "Thread::Mutex | Ruby API (v3.4)"
+  },
+  "https://rubyonrails.org/foundation": {
+    "title": "The Rails Foundation",
+    "description": "Learn about the Rails Foundation's mission, current work, members, and how you can support the Rails community.",
+    "image": "link-previews/1555-opengraph.png"
+  },
+  "https://shime.sh/": {
+    "title": "Hrvoje Šimić"
+  },
+  "https://shopify.dev/docs/api/webhooks?reference=toml#list-of-topics-orders/create": {
+    "title": "Webhooks",
+    "description": "The list of all webhook topics you can subscribe to. You can use webhook subscriptions to receive notifications about particular events in a shop. \n\n> Caution:\nIf your app is distributed through the Shopify App Store, it must be subscribed to Shopify's [mandatory compliance topics](/docs/apps/build/privacy-law-compliance). You can create mandatory compliance webhook subscriptions either using your Partner Dashboard or by updating your [app configuration file](/docs/apps/build/cli-for-apps/app-configuration#app-configuration-file-example).",
+    "image": "link-previews/1747-social-share-24de3afa0326f705b84a0a98714acc192611e5a21ade3b7c8f2bd12ba7d1457f.jpg"
+  },
+  "https://shrinerb.com/rdoc/files/doc/processing_md.html#label-On-the-fly+processing": {
+    "title": "processing.md"
+  },
+  "https://simpliki.app/": {
+    "title": "Simpliki"
+  },
+  "https://slack.com/": {
+    "title": "AI Work Management & Productivity Tools",
+    "description": "Slack is where work happens. Bring your people, projects, tools, and AI together on the worldâs most beloved work operating system.",
+    "image": "link-previews/1528-hp-revamp-unfurl-en-gb.jpg"
+  },
+  "https://socket.io/": {
+    "title": "Socket.IO"
+  },
+  "https://spdx.org/licenses/Beerware.html": {
+    "title": "Beerware License | Software Package Data Exchange (SPDX)"
+  },
+  "https://spdx.org/licenses/Unlicense.html": {
+    "title": "The Unlicense | Software Package Data Exchange (SPDX)"
+  },
+  "https://stackoverflow.com/questions/985431/max-parallel-http-connections-in-a-browser": {
+    "title": "Max parallel HTTP connections in a browser?",
+    "description": "I am creating some suspended connections to an HTTP server (comet, reverse AJAX, etc). It works ok, but I see the browser only allows two suspended connections to a given domain simultaneously. So ...",
+    "image": "link-previews/1385-apple-touch-icon-2.png"
+  },
+  "https://stanko.io/building-simpl-77CAzym51p5a": {
+    "title": "Building Simplæ¯ - Stanko K.R.",
+    "description": "This week I went for a coffee with a friend. As we talked the topic of hobbies came up. I mentioned that I was having a lot of fun working on a toy project...",
+    "image": "link-previews/1749-image.png"
+  },
+  "https://stanko.io/building-twice-a-clone-of-once-gJKxLYCe26Ak": {
+    "title": "Building Twice: A clone of Once - Stanko K.R.",
+    "description": "When Campfire - the first Once product - came out, a few of us at Ruby Zagreb pitched in to buy a copy.\n\nPrometheus had brought fire from Mount Olympus, and...",
+    "image": "link-previews/1794-once_overview.png"
+  },
+  "https://stanko.io/deconstructing-action-cable-DC7F33OsjGmK": {
+    "title": "Deconstructing Action Cable | Stanko K.R.",
+    "description": "I knew what Action Cable was about and roughly how it worked since it was released. But lately I've developed a much deeper understanding of it because I had...",
+    "image": "link-previews/1667-00011-2829697632.png"
+  },
+  "https://stanko.io/fight-perfection-roooUsSEfduw": {
+    "title": "Fight perfection | Stanko K.R.",
+    "description": "Seeking perfection is a foolâs errand.\n\nPerfection is a fading spark that can only be achieved for oneself - never when working with others - and as soon as..."
+  },
+  "https://stanko.io/hacking-privacy-into-facebook-s-messenger-in-24-hours-3da239baf6c5": {
+    "title": "Hacking privacy into Facebookâs Messenger... - Stanko K.R.",
+    "description": "Hackathons are great. When a friend of mine asked me if I wanted to go with him to Copenhacks I had no idea that we would spend 24 hours reverse engineering...",
+    "image": "link-previews/1392-952-nqgy3pkez3-h7i-7ea.jpeg"
+  },
+  "https://stanko.io/how-i-stumbled-upon-strada-while-forwarding-an-email-3W8mbS5KSKXs": {
+    "title": "How I stumbled upon Strada while forwarding... - Stanko K.R.",
+    "description": "I wanted to forward an email one evening, so I opened up the Hey app on my phone, found the email, tapped on the âMoreâ button, and just before I hit...",
+    "image": "link-previews/1727-strada_demo.gif"
+  },
+  "https://stanko.io/monitoring-actioncable-GdeaeHfIU4Yk": {
+    "title": "Monitoring ActionCable | Stanko K.R.",
+    "description": "A few weeks ago I was woken up with the following message \"Hey, devices are randomly disconnecting from WebSockets can you come online and help?\".\nUsually,...",
+    "image": "link-previews/1684-xzanf4cblu763otbgio0n8touz58.png"
+  },
+  "https://stanko.io/running-campfire-behind-traefik-LrGQM0GE0FVd": {
+    "title": "Running Campfire behind traefik | Stanko K.R.",
+    "description": "I rent a bare metal server from Scaleway where I host all my apps. For me, that's much more economical than running multiple small VPS boxes. 50â¬ a month..."
+  },
+  "https://stanko.io/tracking-online-presence-with-actioncable-ukEi6sUZ98Bz": {
+    "title": "Tracking online presence with ActionCable | Stanko K.R.",
+    "description": "This month I worked on tracking when a device connected and disconnected to a WebSocket backed with ActionCable. At first, this seemed like a simple problem..."
+  },
+  "https://tailwindcss.com": {
+    "title": "Tailwind CSS - Rapidly build modern websites without ever leaving your HTML.",
+    "description": "Tailwind CSS is a utility-first CSS framework for rapidly building modern websites without ever leaving your HTML.",
+    "image": "link-previews/1570-opengraph-image.jpg"
+  },
+  "https://tailwindcss.com/docs/scroll-snap-align": {
+    "title": "scroll-snap-align - Interactivity",
+    "description": "Utilities for controlling the scroll snap alignment of an element.",
+    "image": "link-previews/1724-og.png"
+  },
+  "https://tailwindcss.com/docs/scroll-snap-type": {
+    "title": "scroll-snap-type - Interactivity",
+    "description": "Utilities for controlling how strictly snap points are enforced in a snap container.",
+    "image": "link-previews/1723-og.png"
+  },
+  "https://tailwindcss.com/docs/typography-plugin": {
+    "title": "GitHub - tailwindlabs/tailwindcss-typography: Beautiful typographic defaults for HTML you don't control.",
+    "description": "Beautiful typographic defaults for HTML you don't control. - tailwindlabs/tailwindcss-typography",
+    "image": "link-previews/1546-tailwindcss-typography.png"
+  },
+  "https://tldrlegal.com/": {
+    "title": "TLDRLegal - Software Licenses Explained in Plain English",
+    "description": "Lookup open source licenses summarized & explained in plain English.",
+    "image": "link-previews/1441-63e15282dd0e973898fedc58_open-graph.png"
+  },
+  "https://tools.ietf.org/html/rfc6455#section-5.2": {
+    "title": "RFC 6455: The WebSocket Protocol",
+    "description": "The WebSocket Protocol enables two-way communication between a client running untrusted code in a controlled environment to a remote host that has opted-in to communications from that code. The security model used for this is the origin-based security model commonly used by web browsers. The protocol consists of an opening handshake followed by basic message framing, layered over TCP. The goal of this technology is to provide a mechanism for browser-based applications that need two-way communication with servers that does not rely on opening multiple HTTP connections (e.g., using XMLHttpRequest or <iframe>s and long polling). [STANDARDS-TRACK]",
+    "image": "link-previews/1379-ietf-logo-card.png"
+  },
+  "https://traefik.io/traefik/": {
+    "title": "Traefik, The Cloud Native Application Proxy | Traefik Labs",
+    "description": "Traefik is the leading open-source reverse proxy and load balancer for HTTP and TCP-based applications that is easy, dynamic and full-featured.",
+    "image": "link-previews/1658-traefik-labs-cover.png"
+  },
+  "https://translate.google.com/?sl=hr&tl=en&text=lako%20je%20tu%C4%91im%20kurcem%20po%20koprivama%20mlatiti&op=translate": {
+    "title": "Google Translate"
+  },
+  "https://turbo.hotwired.dev/handbook/drive#view-transitions": {
+    "title": "Turbo Handbook"
+  },
+  "https://twistapp.com/": {
+    "title": "Twist: Organized work communication for flexible teams",
+    "description": "See how much more efficient your teamwork can be (even across time zones). Named a World Changing Idea by Fast Company.",
+    "image": "link-previews/1533-og-image-default.jpg"
+  },
+  "https://twitter.com/dhh": {
+    "title": "DHH (@dhh) on X",
+    "description": "Father of three, Creator of Ruby on Rails + Omarchy, Co-owner & CTO of 37signals, Shopify director, NYT best-selling author, and Le Mans 24h class-winner.",
+    "image": "link-previews/1421-fg9fj4k__200x200.jpg"
+  },
+  "https://web.archive.org/web/20171013094615/http://api.rubyonrails.org/classes/ActionDispatch/Http/UploadedFile.html": {
+    "title": "ActionDispatch::Http::UploadedFile"
+  },
+  "https://wiki.archlinux.org/title/D-Bus": {
+    "title": "D-Bus - ArchWiki"
+  },
+  "https://wiki.archlinux.org/title/GNOME": {
+    "title": "GNOME - ArchWiki"
+  },
+  "https://wiki.archlinux.org/title/GTK": {
+    "title": "GTK - ArchWiki"
+  },
+  "https://wiki.archlinux.org/title/Qt": {
+    "title": "Qt - ArchWiki"
+  },
+  "https://wiki.greasespot.net/GM_xmlhttpRequest": {
+    "title": "GM.xmlHttpRequest - Greasespot Wiki"
+  },
+  "https://world.hey.com/bb/new-product-mode-48a43806": {
+    "title": "New product mode",
+    "description": "We just launched Fizzy! It’s Kanban as it should be—a fun, simple way to make progress on anything from vacation planning to building an app. Fizzy is our first SaaS product that’s also open source! You can run it yourself and help make it better. When we open sourced the codebase, we retained the full history so you can relive all the...",
+    "image": "link-previews/1805-fizzy-stalled-pitch.png"
+  },
+  "https://world.hey.com/jason/like-a-squirrel-bd821787": {
+    "title": "Like a squirrel",
+    "description": "Stick with me on this one. I've been spending more time watching birds, squirrels, and insects lately. Nature has always fascinated me, and the longer I observe, the more I notice. And one thing I've noticed in general is that birds, squirrels, and insects stop and start a lot. They're headed somewhere, but context plays an enormous ro...",
+    "image": "link-previews/1804-avatar-9f11ce77d31e68e834c564594ee0bc32a005ee8d.png"
+  },
+  "https://world.hey.com/jorge/delightful-or-nothing-56d86b31": {
+    "title": "Delightful, or nothing",
+    "description": "“Any AI-powered feature we add will either be amazing or it won’t. Let’s explore.” I’ve lived this 37signals stance on AI from the inside, as a programmer. Putting this into practice is harder than it looks. Half-baked AI features that don’t solve any problem are everywhere. Sometimes, it’s just so a company can slap an AI label on its...",
+    "image": "link-previews/1798-avatar-d08cb3ee63ecbd49736f76ee2caffa4c99a1c0fd.png"
+  },
+  "https://www.backblaze.com/cloud-storage": {
+    "title": "Low Cost, High Performance S3 Compatible Object Storage",
+    "description": "Backblaze B2 provides unlimited data storage in the cloud at 1/5th the cost of Amazon S3, Microsoft Azure, and Google Cloud.",
+    "image": "link-previews/1690-64b1b1605e73b516e5712f82_backblaze_social-card.webp"
+  },
+  "https://www.bbc.com/worklife/article/20180406-what-monkeys-can-teach-us-about-money": {
+    "title": "What monkeys can teach us about money",
+    "description": "In experiments, monkeys make some ‘financial’ decisions which are remarkably similar to those made by humans.",
+    "image": "link-previews/1740-p063hjbs.jpg"
+  },
+  "https://www.cloudflare.com/": {
+    "title": "Connect, protect, and build everywhere",
+    "description": "Make employees, applications and networks faster and more secure everywhere, while reducing complexity and cost.",
+    "image": "link-previews/1466-cf_logo_horizontal_singlecolor_wht.svg"
+  },
+  "https://www.cloudflare.com/developer-platform/products/r2/": {
+    "title": "Cloudflare R2 | Zero Egress Fee Object Storage",
+    "description": "Cloudflare R2 is an S3-compatible, zero egress-fee, object storage. Move data freely and build the multi-cloud architecture you desire.",
+    "image": "link-previews/1691-cloudflare-og-image.png"
+  },
+  "https://www.digitalocean.com/": {
+    "title": "DigitalOcean: AI-Powered Unified Inference Cloud Infrastructure",
+    "description": "Build on DigitalOcean's unified agentic AI cloud infrastructure. AI-powered development, instant deployment, easy management. Simple and affordable.",
+    "image": "link-previews/1697-social-share-default-e8530e9e.jpeg"
+  },
+  "https://www.digitalocean.com/products/spaces": {
+    "title": "DigitalOcean Spaces | S3-Compatible Object Storage",
+    "description": "S3-compatible object storage with a built-in CDN that makes scaling easy, reliable, and affordable. $5/mo.",
+    "image": "link-previews/1689-social-share-default-e8530e9e.jpeg"
+  },
+  "https://www.digitalocean.com/products/spaces/": {
+    "title": "DigitalOcean Spaces | S3-Compatible Object Storage",
+    "description": "S3-compatible object storage with a built-in CDN that makes scaling easy, reliable, and affordable. $5/mo.",
+    "image": "link-previews/1465-social-share-default-e8530e9e.jpeg"
+  },
+  "https://www.facebook.com/notes/protect-the-graph/securing-email-communications-from-facebook/1611941762379302/": {
+    "title": "Se connecter à Facebook"
+  },
+  "https://www.fizzy.do/": {
+    "title": "Kanban as it should be. Not as it has been.",
+    "description": "A refreshing take on cards, columns, and kanban.",
+    "image": "link-previews/1795-opengraph.png"
+  },
+  "https://www.flickr.com/photos/rooreynolds/243810133/": {
+    "title": "Rails license - DHH's translation",
+    "description": "DHH's translation of the Rails license. He doesn't mind a bit of swearing."
+  },
+  "https://www.gnu.org/licenses/rms-why-gplv3.html": {
+    "title": "Why Upgrade to GPLv3\n- GNU Project - Free Software Foundation"
+  },
+  "https://www.gnu.org/licenses/why-not-lgpl.html": {
+    "title": "Why you shouldn't use the Lesser GPL for your next library\n- GNU Project - Free Software Foundation"
+  },
+  "https://www.headspace.com/": {
+    "title": "Mental Health App for Meditation & Sleep - Headspace",
+    "description": "Live a healthier, happier, more well-rested life in just a few minutes a day. Get the science-backed mental health app for every moment. Try for free.",
+    "image": "link-previews/1709-headspace_opengraph.png"
+  },
+  "https://www.heroku.com/": {
+    "title": "Home",
+    "description": "Heroku is an AI platform as a service (AI PaaS) that enables developers to build, run, and scale applications entirely in the cloud.",
+    "image": "link-previews/1701-home-hero.webp"
+  },
+  "https://www.hetzner.com/": {
+    "title": "Günstige Dedicated Server, Cloud & Hosting aus Deutschland"
+  },
+  "https://www.hetzner.com/storage/object-storage/": {
+    "title": "S3 storage solution: Object Storage by Hetzner"
+  },
+  "https://www.hey.com/": {
+    "title": "A delightfully fresh take on email + calendar, from 37signals",
+    "description": "Gmail, Outlook, and Apple got complacent and took their eye off the ball. Then along came HEY.",
+    "image": "link-previews/1530-opengraph.png"
+  },
+  "https://www.ifixit.com/products/macbook-air-original-mid-2009-replacement-battery?variant=39371742150759": {
+    "title": "MacBook Air (Original-Mid 2009) Battery",
+    "description": "Replace the 5560 mAh battery compatible with MacBook Air (Original-Mid 2009). 40 Watt Hours (Wh), 7.2 Volts (V).",
+    "image": "link-previews/1527-g1z2elhs2i3rmrfa.jpg"
+  },
+  "https://www.man7.org/linux/man-pages/man1/strings.1.html": {
+    "title": "strings(1) - Linux manual page"
+  },
+  "https://www.martinfowler.com/bliki/CQRS.html": {
+    "title": "bliki: CQRS",
+    "description": "CQRS (Command Query Responsibility Segregation) is the notion that you can use a different model to update information than the model you use to read information",
+    "image": "link-previews/1358-cqrs.png"
+  },
+  "https://www.meetup.com/rubyzg/": {
+    "title": "Ruby Zagreb | Meetup",
+    "description": "A group for anyone interested in Ruby. If you're classy like Sinatra or hyped like Rails, we speak your language.",
+    "image": "link-previews/1395-600_517452853.jpeg"
+  },
+  "https://www.messenger.com/": {
+    "title": "Messenger",
+    "description": "Partagez ce que vous voulez, quand vous voulez ! Grâce à Messenger, restez en contact tout simplement.",
+    "image": "link-previews/1348-7xjmm2fq5xh.png"
+  },
+  "https://www.nginx.com/blog/service-discovery-in-a-microservices-architecture/": {
+    "title": "F5 NGINX Products",
+    "image": "link-previews/1359-50491ec88aefbf2b237e9bae8ce66ac8fac75c3d-1200x675.png"
+  },
+  "https://www.nginx.com/blog/websocket-nginx/": {
+    "title": "F5 NGINX Products",
+    "image": "link-previews/1382-50491ec88aefbf2b237e9bae8ce66ac8fac75c3d-1200x675.png"
+  },
+  "https://www.ovhcloud.com/en-gb/": {
+    "title": "OVHcloud customer"
+  },
+  "https://www.ovhcloud.com/en/public-cloud/object-storage/": {
+    "title": "Object Storage"
+  },
+  "https://www.postgresql.org/docs/current/indexes-multicolumn.html": {
+    "title": "11.3. Multicolumn Indexes",
+    "description": "11.3.&nbsp;Multicolumn Indexes # An index can be defined on more than one column of a table. For example, if you …",
+    "image": "link-previews/1665-elephant.png"
+  },
+  "https://www.postgresql.org/docs/current/sql-notify.html": {
+    "title": "NOTIFY",
+    "description": "NOTIFY NOTIFY — generate a notification Synopsis NOTIFY channel [ , payload ] Description The NOTIFY command sends a notification …",
+    "image": "link-previews/1655-elephant.png"
+  },
+  "https://www.rabbitmq.com/ae.html": {
+    "title": "Alternate Exchanges | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1408-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rabbitmq.com/consumer-priority.html": {
+    "title": "Consumer Priorities | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1410-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rabbitmq.com/direct-reply-to.html": {
+    "title": "Direct Reply-To | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1406-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rabbitmq.com/dlx.html": {
+    "title": "Dead Letter Exchanges | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1407-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rabbitmq.com/documentation.html": {
+    "title": "RabbitMQ Documentation | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1415-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rabbitmq.com/plugins.html": {
+    "title": "Plugins | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1375-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rabbitmq.com/priority.html": {
+    "title": "Priority Support in Queues | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1409-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rabbitmq.com/ttl.html": {
+    "title": "Time-To-Live and Expiration | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1411-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rabbitmq.com/tutorials/amqp-concepts.html": {
+    "title": "AMQP 0-9-1 Model Explained | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1414-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-direct": {
+    "title": "AMQP 0-9-1 Model Explained | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1403-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-fanout": {
+    "title": "AMQP 0-9-1 Model Explained | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1367-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-headers": {
+    "title": "AMQP 0-9-1 Model Explained | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1405-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-topic": {
+    "title": "AMQP 0-9-1 Model Explained | RabbitMQ",
+    "description": "<!--",
+    "image": "link-previews/1404-rabbitmq-social-media-card.svg"
+  },
+  "https://www.rust-lang.org/": {
+    "title": "Rust Programming Language",
+    "description": "A language empowering everyone to build reliable and efficient software.",
+    "image": "link-previews/1782-rust-social-wide.jpg"
+  },
+  "https://www.scaleway.com/en/": {
+    "title": "European. Cloud. AI. | Scaleway",
+    "description": "Build, train, deploy and scale AI models and intelligent applications on a resilient and sustainable cloud ecosystem.",
+    "image": "link-previews/1700-scaleway_3_d_logo_57e7fb833f.png"
+  },
+  "https://www.scaleway.com/en/object-storage/": {
+    "title": "Object Storage | Scaleway",
+    "description": "Scalable Amazon-S3 compatible Object Storage solution that combines simple data lifecycle management with fair and transparent pricing",
+    "image": "link-previews/1694-object_storage_for_strapi_925072fb5a.webp"
+  },
+  "https://www.sciencedirect.com/science/article/abs/pii/S0749597809000399": {
+    "title": "Why is it so hard to do my work? The challenge of attention residue when switching between work tasks",
+    "description": "In many jobs, employees must manage multiple projects or tasks at the same time. A typical workday often entails switching between several work activiâ¦",
+    "image": "link-previews/1501-1-s2-0-s0749597809x0004x-cov150h.gif"
+  },
+  "https://www.teloslabs.co/post/full-text-search-with-rails-and-sqlite": {
+    "title": "Full-text search with Rails and SQLite",
+    "description": "Learn how to use SQLite to do a full-text search with FTS5 and Rails 8",
+    "image": "link-previews/1725-670da11bff4dd5f46b731baa_img-20241014-wa0001.jpg"
+  },
+  "https://www.w3.org/TR/websockets/": {
+    "title": "WebSockets Standard"
+  },
+  "https://www.youtube.com/@TenderlovesCoolStuff/streams": {
+    "title": "Tenderlove's Cool Stuff",
+    "description": "This is my channel for stuff that I think is fun and cool. Thanks for coming!",
+    "image": "link-previews/1574-qldxxknxoxk8p6chre-ekgzew46ct9hdhah1w-jxlrahu6-mauxys2eguyiwgxhjhexb1kgt-s900-c-k-c0x00ffffff-no-rj.jpg"
+  },
+  "https://www.youtube.com/watch?v=2aVyTtxs0GU": {
+    "title": "Implementing Object Shapes in CRuby by Jemma Issroff",
+    "description": "Object Shapes are a technique for representing objects' properties that can increase cache hits in instance variable lookups, decrease runtime checks, and im...",
+    "image": "link-previews/1522-maxresdefault.jpg"
+  },
+  "https://www.youtube.com/watch?v=FA3LN4vqtlM": {
+    "title": "Monkeys have used stone tools for hundreds of years",
+    "description": "New archaeological evidence suggests that Brazilian capuchins have been using stone tools to crack open cashew nuts for at least 700 years. Researchers say, ...",
+    "image": "link-previews/1739-maxresdefault.jpg"
+  },
+  "https://www.youtube.com/watch?v=MtweO89OsUM": {
+    "title": "How music works, using Ruby by Thijs Cadier",
+    "description": "Musicians and sound engineers have found many ways of creating music, and making music sound good when played from a record. Some of their methods have becom...",
+    "image": "link-previews/1521-maxresdefault.jpg"
+  },
+  "https://www.youtube.com/watch?v=OAsTq5SKnEw": {
+    "title": "Making Bells in the Web Audio API",
+    "description": "Making bell sounds in the Web Audio APIAdditive synthesis and sinusoidal modelingThis is part of a series of videos about the Web Audio API. It accompanies t...",
+    "image": "link-previews/1720-maxresdefault.jpg"
+  },
+  "https://www.youtube.com/watch?v=cNLscH0sGz4": {
+    "title": "The Technical and Organizational Infrastructure of the Ruby Community by Adarsh Pandit",
+    "description": "This is a talk which reviews all of the things which enable Ruby developers to use a secure programming language with easy package management in a supportive...",
+    "image": "link-previews/1523-maxresdefault.jpg"
+  },
+  "https://www.youtube.com/watch?v=gnX1o8GBed0": {
+    "title": "Looking Into Peephole Optimizations by Maple Ong",
+    "description": "Let's learn about various peephole optimizations used to make bytecode generated by the Ruby compiler more performant. Do these small changes make any impact...",
+    "image": "link-previews/1524-maxresdefault.jpg"
+  },
+  "https://www.youtube.com/watch?v=lcved9uEV5U": {
+    "title": "Kevin McConnell - SQLite Replication with Beamer",
+    "description": "SQLite is an increasingly popular choice for powering Rails applications. It's fast, simple to use, and has an impressive feature set. But without a conventi...",
+    "image": "link-previews/1800-maxresdefault.jpg"
+  },
+  "https://www.youtube.com/watch?v=qObzgUfCl28": {
+    "title": "Kaiser Chiefs - Ruby (Official Video)",
+    "description": "Kaiser Chiefs - Ruby (Official Video)Our new album DUCK is out in the wild.Grab it here â https://kaiserchiefs.lnk.to/DuckID Follow https://www.instagram.com...",
+    "image": "link-previews/1778-maxresdefault.jpg"
+  },
+  "https://x.com/noahflk/status/1795758603577545035?s=46": {
+    "title": "Noah Falk (@noahflk) on X",
+    "description": "If you want to know why an app *needs* JavaScript on the client and can’t just do it all on the server, just look at Hey or any other Hotwrite app",
+    "image": "link-previews/1666-govq40cwsaaxfuh.jpg"
+  },
+  "https://youtu.be/S-LVSCIzip0": {
+    "title": "- YouTube"
+  },
+  "https://zed.dev/": {
+    "title": "Zed — Love your editor again",
+    "description": "Zed is a high-performance, multiplayer code editor from the creators of Atom and Tree-sitter.",
+    "image": "link-previews/1735-og.webp"
+  },
+  "https://zed.dev/ai/agent": {
+    "title": "Zed — Agentic Editing",
+    "description": "Collaborate with agents at 120fps in a natively multiplayer IDE.",
+    "image": "link-previews/1736-og.png"
+  }
+}

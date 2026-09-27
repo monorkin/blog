@@ -1,0 +1,20 @@
+# Legacy feed stylesheet. /articles/rss and /articles/atom keep their `tag`
+# parameter, which needs the Worker, so they live in src/pages/articles/
+/articles/atom_style /feed/style 301
+
+# Talks used to be addressed by their numeric database ID
+/talks/1 /talks/do-you-really-need-websockets-huEURtr2Oclt 301
+/talks/2 /talks/developing-a-safer-web-with-rust-DfhyvPw3yruT 301
+/talks/3 /talks/stubs-mocks-spies-MdyHowlg0PqN 301
+/talks/4 /talks/ruby-extensions-Uma3TYttk1tT 301
+/talks/5 /talks/docker-for-rubyists-dEUwfw2w6EYv 301
+/talks/6 /talks/stubs-mocks-spies-7GHQbNHP6vdJ 301
+/talks/7 /talks/steganography-2qujhKxhy9ow 301
+/talks/8 /talks/graphql-oKdA0gYkLdZq 301
+/talks/9 /talks/helix-Bb3vvarckPXR 301
+/talks/10 /talks/rabbitmq-is-more-than-a-sidekiq-replacement-9sL5VI530eMo 301
+/talks/11 /talks/http2-rb-TwXtcnCN2yxI 301
+/talks/12 /talks/mruby-crash-course-nBLLyxmHhURS 301
+/talks/13 /talks/hotwired-postKGrYxj1F 301
+/talks/14 /talks/deconstructing-action-cable-uM1SflOFpRUk 301
+/talks/15 /talks/developing-a-faster-and-safer-web-with-rust-aX7rlu4J81Cv 301

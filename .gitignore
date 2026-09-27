@@ -1,56 +1,21 @@
-# Ignore dependency manager configuration
-/.bundle
-.yarn-integrity
-
-# Ignore installed dependencies
+# Dependencies
 /node_modules
-/.cache
-/.mozilla
-/.webdrivers
 
-# Ignore logfiles
-/log/*
-!/log/.keep
-/yarn-error.log
-.byebug_history
-yarn-debug.log*
+# Build output
+/dist
+/.astro
+/.wrangler
 
-# Ignore tempfiles
-/public/uploads/*
-!/public/uploads/.keep
-/tmp/*
-!/tmp/.keep
-/tmp/pids/*
-!/tmp/pids/
-!/tmp/pids/.keep
-/storage/*
-!/storage/.keep
+# Uploaded media: originals and their variants, synced to R2 by bin/media (doc/images.md)
+/media
 
-# Ignore build artefacts
-/public/assets
-/public/packs
-/public/packs-test
-/app/assets/builds/*
-!/app/assets/builds/.keep
-
-# Ignore deployment artefacts
-/REVISION
-
-# Ignore encryption secrets
+# Environment and secrets
 .env
 .env.*
-!.env.erb
-!.env.*.erb
-/config/master.key
-/config/credentials/*.key
-!/config/credentials/development.key
-!/config/credentials/test.key
+# 1Password references only, no secrets
+!.env.1password
+.dev.vars*
 
-# Ignore OS specific files
+# OS and editor artefacts
 .DS_Store
-
-# Ignore editor artefacts and configuration
 *.swap
-/tags
-/talks
-

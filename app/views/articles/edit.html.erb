@@ -1,9 +1,0 @@
-<article class="article flex flex-col gap-y-4">
-  <div class="flex flex-row gap-x-4">
-    <span><%= link_to text_with_icon(:arrow_long_left, t(".back")), article_path(@article), class: "article__back-link" %></span>
-  </div>
-
-  <div>
-    <%= render "form", article: @article %>
-  </div>
-</article>

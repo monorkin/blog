@@ -1,0 +1,14 @@
+---
+import type { IndexPage } from "~/lib/pagination"
+
+interface Props {
+  page: IndexPage<unknown>
+}
+
+const { page } = Astro.props
+---
+
+<div data-pagination-page>
+  <slot />
+  {page.nextUrl && <a href={page.nextUrl} class="pagination__trigger">Load more</a>}
+</div>

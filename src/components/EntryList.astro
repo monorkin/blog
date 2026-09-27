@@ -1,0 +1,71 @@
+---
+import type { Entry } from "~/lib/entries"
+import { formatDate, isoTimestamp } from "~/lib/site"
+
+interface Props {
+  entries: Entry[]
+  class?: string
+}
+
+const { entries, class: className = "entry-list" } = Astro.props
+
+const items = await Promise.all(entries.map(async entry => {
+  if (entry.kind === "article") {
+    return { entry, excerpt: await entry.excerpt(), readingTime: await entry.readingTime() }
+  } else {
+    return { entry }
+  }
+}))
+---
+
+<ul class={className}>
+  {items.map(({ entry, excerpt, readingTime }) => {
+    if (entry.kind === "article") {
+      return (
+        <li class="entry-list__item">
+          <a href={entry.path} aria-label={entry.title}></a>
+
+          <div class="entry-list__meta">
+            <time datetime={isoTimestamp(entry.publishedAt)}>Published on {formatDate(entry.publishedAt)}</time>
+            <span>{readingTime} min read</span>
+          </div>
+
+          <div class="entry-list__title">
+            {entry.title}
+          </div>
+
+          <div class="entry-list__excerpt">
+            {excerpt}
+          </div>
+        </li>
+      )
+    } else if (entry.source.collection === "talks") {
+      return (
+        <li class="timeline__item">
+          <div class="timeline__inner">
+            <a href={entry.path} class="timeline__link" aria-label={entry.title}></a>
+
+            <div class="timeline__content">
+              <div class="timeline__title">
+                {entry.title}
+              </div>
+
+              <div class="timeline__meta">
+                <div class="timeline__meta-event">
+                  {entry.source.data.event}
+                </div>
+                <div>
+                  {formatDate(entry.source.data.heldAt)}
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline__dot"></div>
+
+            <div class="timeline__line"></div>
+          </div>
+        </li>
+      )
+    }
+  })}
+</ul>

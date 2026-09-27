@@ -1,0 +1,47 @@
+---
+import Icon from "~/components/Icon.astro"
+---
+
+<div class="subscribe">
+  <div class="subscribe__rss-row">
+    <div class="subscribe__rss-icon">
+      <Icon name="rss" class="icon-lg" />
+    </div>
+    <span>I have an <a href="/feed?types=article" target="_blank" class="subscribe__rss-link">RSS feed</a>, if you want to receive future posts</span>
+  </div>
+
+  <div class="subscribe__divider">
+    <hr />
+    <span class="subscribe__divider-text">and</span>
+  </div>
+
+  <form
+    action="https://buttondown.email/api/emails/embed-subscribe/monorkin"
+    method="post"
+    target="popupwindow"
+    onsubmit="window.open('https://buttondown.email/monorkin', 'popupwindow')"
+  >
+    <div class="subscribe__email-row">
+      <div class="subscribe__email-icon">
+        <Icon name="mail" class="w-full" />
+      </div>
+      <div class="subscribe__email-content">
+        <div>
+          I have a newsletter, if you prefere email over RSS
+        </div>
+        <div class="subscribe__email-form">
+          <input
+            type="email"
+            name="email"
+            placeholder="Type in your email"
+            class="subscribe__email-input"
+          />
+          <input type="submit" value="Subscribe" class="subscribe__email-submit" />
+        </div>
+        <div class="subscribe__powered-by">
+          <a href="https://buttondown.email/refer/monorkin" target="_blank">Powered by Buttondown.</a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

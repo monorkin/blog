@@ -1,0 +1,42 @@
+---
+import Layout from "~/layouts/Layout.astro"
+import SeoTags from "~/components/SeoTags.astro"
+import { absoluteUrl, titleize } from "~/lib/site"
+
+interface ProjectPage {
+  url: string
+  frontmatter: { title: string, description: string }
+}
+
+const pages = Object.values(import.meta.glob<ProjectPage>("./*.{md,mdx}", { eager: true }))
+const projects = pages.sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title))
+---
+
+<Layout>
+  <Fragment slot="head">
+    <title>{titleize("Projects")}</title>
+    <SeoTags title="Projects" description="Things I've built" url={absoluteUrl("/projects")} />
+  </Fragment>
+
+  <section class="article margin-block-end-4">
+    <h1 class="txt-4xl font-semibold">Projects</h1>
+  </section>
+
+  <section>
+    <ul class="entry-list">
+      {projects.map(project => (
+        <li class="entry-list__item">
+          <a href={project.url} aria-label={project.frontmatter.title}></a>
+
+          <div class="entry-list__title">
+            {project.frontmatter.title}
+          </div>
+
+          <div class="entry-list__excerpt">
+            {project.frontmatter.description}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Layout>

@@ -1,0 +1,48 @@
+---
+import { findMedia, sources, variantAtLeast } from "~/lib/media"
+
+interface Props {
+  media: string
+  caption?: string
+  alt?: string
+  inGallery?: boolean
+}
+
+// How wide the image shows: the article column on a wide screen, the whole screen on a phone
+const ARTICLE_SIZES = "(width >= 768px) 1040px, 100vw"
+const GALLERY_SIZES = "(width >= 768px) 520px, 50vw"
+const LIGHTBOX_WIDTH = 2400
+
+const { media, caption = "", alt = caption, inGallery = false } = Astro.props
+const entry = findMedia(media)
+const extension = media.split(".").pop()!.toLowerCase()
+const expandable = !inGallery && entry.height! > entry.width!
+const classes = [ "attachment", "attachment--preview", `attachment--${extension}`, expandable && "attachment--expandable" ]
+
+let sizes = ARTICLE_SIZES
+if (inGallery) {
+  sizes = GALLERY_SIZES
+}
+
+const imageSources = sources(media)
+const fallback = imageSources.at(-1)
+---
+
+<figure class:list={classes} data-full-src={variantAtLeast(media, LIGHTBOX_WIDTH)}>
+  <picture>
+    {imageSources.slice(0, -1).map(source => <source type={source.type} srcset={source.srcset} sizes={sizes} />)}
+    <img
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      class="attachment__image attachment__image--sized"
+      width={entry.width}
+      height={entry.height}
+      src={variantAtLeast(media, 1200)}
+      srcset={fallback?.srcset}
+      sizes={fallback && sizes}
+      style={`--attachment-width: ${entry.width}; --attachment-height: ${entry.height};`}
+    />
+  </picture>
+  <figcaption class="attachment__caption">{caption}</figcaption>
+</figure>

@@ -1,0 +1,119 @@
+---
+title: 140 million rows later
+publishedAt: '2022-10-07T12:00:00Z'
+updatedAt: '2026-02-15T09:37:07Z'
+tags:
+- ruby
+- today-i-learned
+feedId: Article/19
+---
+
+At work, as part of a project I’m working on, I wanted to add a new reference to a table. ”Simple enough” - I thought. Spoiler alert, it wasn’t.
+
+Adding a reference from one table to another is straight forward in Rails.
+
+You create a migration using **rails generate** and then write in it something like **add_reference :device_event_logs, :door, foreign_key: true, null: true**. And then you run **rails migrate**. Boom. Done!
+
+This is where my problems began.
+
+The table I was adding the reference to holds event logs for all devices. Each event represents some kind of user interaction with the device. I know that there are a decent number of devices in the field, and a decent number of users in the system.
+
+Since adding a reference can lock the table (prevent reading or writing to it) until the migration is done I wanted to be sure that it wouldn’t cause any problems.
+
+I opened the DB console, entered **SELECT COUNT(1) FROM device_event_logs** and hit enter. A few seconds passed and nothing happened - “there must be a lot of records in the table” I thought. Then 30 more seconds passed and still no result - this was a bad omen. After 45 sec the query returned a count of 140 million rows.
+
+Yikes. This means that adding the reference would take quite a while and use up a decent chunk of storage space.
+
+Next I went to check how often this table is written to - to determine how big of an impact a few minutes of downtime would have. So I checked the statistics tables in MariaDB and the number of requests to the controller that the devices call to log events. There were around 30 inserts per second.
+
+Yikes again. This meant that 5 min of downtime would cause 9000 failed requests - potentially 9000 unhappy customers.
+
+I wanted to find a way to add this reference quickly, without locking the table and without using too much storage space.
+
+Digging through the Rails documentation for **add_reference** I didn’t find anything that could help me solve this, so I resorted to adding the reference manually, step by step.
+
+In Rails, a reference like **add_reference :device_event_logs, :door, foreign_key: true, null: true** creates a column to store the ID of the row being referenced in the other table, creates and index on that column and adds a foreign key constraint from that column to the referenced table’s primary key.
+
+Now I read through MariaDB’s documentation to see how I could optimize each of these three steps.
+
+Turns out that adding the column is already optimized out of the box so I could just add it through **add_column :device_event_logs, :door_id, :integer, null: true**. That would create the column in less than a second and wouldn’t lock the table.
+
+When creating an index, the MariaDB docs say that one can specify an algorithm with which the index is generated. Some algorithms are locking, some aren’t, some create a copy of the whole table, some don’t. But if you don’t pass an algorithm MariaDB will try to use the fastest, least locking, and most space efficient one possible.
+
+Sounds great, but as I have been burned before by documentation leading to incorrect assumptions I decided to verify this.
+
+So I ran **CREATE INDEX foobar ON device_event_logs (door_id)** on our staging database. It took about 20 min to complete, increased the database’s size by nearly double and I couldn’t insert or select from the table while the index was being created.
+
+Good thing I checked.
+
+Then I tired specifying the algorithm explicitly with **CREATE INDEX foobar ON device_event_logs (door_id) ALGORITHM inplace** and it erred out with a message saying that **INPLACE** isn’t supported on this table. I also tried all other algorithms none of which were supported, except for the slow and locking one - **COPY**.
+
+This threw me down a rabbit hole. I spent a day trying to figure out why the better algorithms weren’t supported until I finally found a paragraph in MariaDB’s documentation explaining that tables created prior to MariaDB version 10.something.something can’t use the newer algorithms. So I checked when the staging table was created, and sure enough, it was way before that version was released.
+
+Since the staging environment was setup after the production environment I’d surely run into the same problem there. What now?
+
+After some more digging I found out that this problem can be solved by running **OPTIMIZE TABLE device_event_logs**. Which will do all sorts of magic, fairly quickly and with a lock on the table, to get the table working with all features of the current MariaDB version. So I ran it, and a second later it was done.
+
+Now I could add the index with **add_index :device_event_logs, :door_id, algorithm: :inplace**. The algorithm option isn’t necessary, but I wanted the migration to fail if it would lock the table - in case I forgot to optimize it.
+
+When creating a foreign key constraint, the MariaDB docs say that, you can pass an algorithm (just like with an index), and a **LOCK=NONE** option. But **add_foreign_key** in rails accepts neither of these options, so I had to resort to writing SQL.
+
+But when I tried to run the migration it failed, stating that an index on the **doors** table’s **id** column was missing. What? How? It’s the primary key!
+
+After some more digging I found out that the column types in a foreign key have to match, else you get that error.
+
+I added an integer column to **device_event_logs** thinking it would automatically use **bigint** which is the default primary key type in Rails, but it didn’t. So I went back and changed the add column to **add_column :device_event_logs, :door_id, :bigint, null: true**.
+
+Finally I could add the foreign key, but it was very slow. I had a hunch that it was due to MariaDB checking if the key actually exists in the other table.
+
+To speed it up I disabled referential integrity by wrapping the SQL command in a [**disable_referential_integrity** block](https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/AbstractAdapter.html#method-i-disable_referential_integrity) after which the foreign key was added in less than a second.
+
+The downside of disabling referential integrity is that a foreign key might point to something that doesn’t exist, but that wasn’t a problem in this migration since the column the foreign key was added to was completely empty.
+
+My migration looked like this in the end
+
+The production migration took 15 min, caused no locks or downtime, and increased the size of the database by a gigabyte.
+
+All in all, a big win and learning experience.
+
+```ruby
+# `add_reference :device_event_logs, :door, foreign_key: true, null: true` is equuivalent to
+add_column :device_event_logs, :door_id, :bigint, null: true
+add_index :device_event_types, :door_id
+add_foreign_key :device_event_types, :doors
+
+
+execute(
+  <<~SQL
+    ALTER TABLE device_event_logs
+    ADD CONSTRAINT fk_rails_53a1f7c81d
+      FOREIGN KEY IF NOT EXISTS (door_id)
+      REFERENCES doors (id),
+      ALGORITHM = INPLACE ,
+      LOCK = NONE;
+  SQL
+)
+
+
+add_column :device_event_logs, :door_id, :bigint, null: true
+
+add_index :device_event_logs, :door_id, algorithm: :inplace
+
+# https://api.rubyonrails.org/classes/ActiveRecord/Migration.html#method-i-reversible
+reversible do |dir|
+  dir.up do
+    disable_referential_integrity do
+      execute(
+        <<~SQL
+          ALTER TABLE device_event_logs
+          ADD CONSTRAINT fk_rails_53a1f7c81d
+            FOREIGN KEY IF NOT EXISTS (door_id)
+            REFERENCES doors (id),
+            ALGORITHM = INPLACE,
+            LOCK = NONE;
+        SQL
+      )
+    end
+  end
+end
+```

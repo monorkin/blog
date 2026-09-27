@@ -4,102 +4,60 @@ This file provides guidance to AI coding agents working with this repository.
 
 ## What is this project?
 
-This is my personal blog. 
+This is my personal blog, a static [Astro](https://astro.build) site hosted on Cloudflare Workers.
+
+It used to be a Rails app. The content was exported from it once, and URLs, markup and CSS were kept the same.
 
 ## Development Commands
 
-### Setup and Server
 ```bash
-bin/setup              # Initial setup (installs gems, creates DB, loads schema)
-bin/dev                # Start development server (runs on port 3000)
+npm install
+npm run dev        # Development server with live reload, media served from media/ at /media
+npm run build      # astro build, then Pagefind indexes dist/client for search
+npm run preview    # wrangler dev, serves the build like production does
+npm run check      # Type-checks the project
 ```
 
-Development URL: http://localhost:3000
-Login at /login with username "alice" and password "hunter2", this user is defined in the test fixtures which get loaded in development.
-
-### Testing
-```bash
-bin/rails test                    # Run unit tests (fast)
-bin/rails test test/path/file_test.rb  # Run single test file
-bin/rails test:system             # Run system tests (Capybara + Selenium)
-
-# For parallel test execution issues, use:
-PARALLEL_WORKERS=1 bin/rails test
-```
-
-### Database
-```bash
-bin/rails db:fixtures:load   # Load fixture data
-bin/rails db:migrate          # Run migrations
-bin/rails db:reset            # Drop, create, and load schema
-```
-
-### Other Utilities
-```bash
-bin/rails dev:profiler       # Toggle Rack Mini Profiler
-bin/rails dev:cache          # Toggle caching in development
-bin/jobs                     # Manage Solid Queue jobs
-bin/kamal deploy             # Deploy (requires 1Password CLI for secrets)
-```
+Rebuild before `npm run preview`, and restart it after every build.
 
 ## Architecture Overview
 
-### Pages & models
+### Content
 
-#### About
+Content lives in content collections, defined in `src/content.config.ts`. Each entry is a folder named after its URL, holding an `index.mdx` (or `index.md`) and its media.
 
-The blog has a single page about me at the root `/`.
+- **Articles** (`src/content/articles/`) are served from the root as `/:slug-:id`.
+- **Talks** (`src/content/talks/`) are served from `/talks/:slug-:id`. The body is the talk's abstract.
+- **Snaps** (`src/content/snaps/`) are photos, served from `/snaps/:slug-:id`. They're frontmatter only.
+- **Projects** are freeform `.astro`/`.mdx` pages in `src/pages/projects/`. The index lists every `.md`/`.mdx` page there.
 
-#### Articles
+Images in article bodies use the `<Figure>`, `<Gallery>` and `<Video>` components from `src/components/content/`, naming the media by its key, e.g. `<Figure media="articles/<folder>/photo.jpeg" />`.
 
-The main point of this app is to create, update and show articles.
-
-Articles are served from the root like so `/:slug`, this is to keep URLs short and rememberable.
-There is also a "legacy" reason - originally my blog was hosted at blog.stanko.io on Medium
-which served articles from `/:slug`.
-
-An article has a title, content, and publish time and publish flag.
-The publish time and flag are used for scheduling posts.
-
-Articles also have link previews, which are shown when someone hovers over a ling in an articles.
-
-#### Talks
-
-Talks represent talks and presentations I gave.
-A talk has a title, description (abstract), name of the event it was held at, the URL of the event (optional),
-the time it was held at, a video (optional), and a URL to the mirror of the video (optional).
-
-#### Entries
-
-Entry is the base model that represents any kind of entry (or post) on the blog - Article or Talk.
-It's responsible for the publishing logic, slug generation and lookup, SEO metadata, and other common functionality.
-
-#### Feed
-
-The feed is served from `/feed` as an Atom feed consisting of all published Entries.
-Usually these feeds aren't user-firendly, but this one has an XSL file that makes it look like a regular web page when opened in a browser.
-
-### Authentication & Authorization
-
-This blog uses a simple authentication system that, upon log in, writes the current user ID into the session.
-Since this is intended to be a single-user app being authenticated is the same as being authorized.
-Mutations require authorized access, while reads are public.
+`src/lib/entries.ts` wraps entries of all three collections in an `Entry` with the shared logic: paths, publishing, excerpts, reading time and cover images.
 
 ### Slugs
 
-Slugs are used primarily for SEO.
+A slug has a free-form, URL-safe prefix and an alphanumeric suffix, e.g. `/my-first-article-abc123`. The suffix identifies the entry. The on-demand catch-all route (`src/pages/[...path].ts`) redirects URLs with an outdated prefix, like `/another-prefix-abc123` or `/abc123`, to the current one. This is a holdover from when the blog was hosted on Medium, which used this slug format.
 
-A slug contains a free-form, URL-safe, prefix and an alpha-numeric suffix.
-E.g. `/my-first-article-abc123`, here `my-first-article` is the free-form prefix and `abc123` is the ID suffix.
+### Publishing
 
-A slug is converted to an Entry solely based on the suffix.
-E.g. `/my-first-article-abc123`, `/another-prefix-abc123`, `/abc123` all resolve to the same Entry.
+Entries with `draft: true` aren't built. Entries whose `publishedAt` is in the future aren't built either, until a build runs after that time. A daily scheduled rebuild publishes them.
 
-This is also a holdover from when the blog was hosted on Medium, which used this slug format.
+### Feed
+
+The Atom feed at `/feed` is the only route rendered on demand. At build time `/feed/entries.json` is generated with every published entry; the Worker filters it by `?types=` and `?tag=` (both comma-separated). `/feed/style` is an XSL stylesheet that makes the feed look like a web page in a browser.
+
+### Search
+
+Search uses [Pagefind](https://pagefind.app), which indexes articles, talks and tag pages after `astro build`. `#tag` searches by tag.
+
+### Media
+
+Uploaded images and videos aren't in git. The originals live in R2 (bucket `stanko-io`, served at `https://media.stanko.io`) and locally in the gitignored `media/originals/`, named by key: the path under that directory. `media/variants/` holds their resized versions, and `src/data/media.json`, which is committed, describes each original's size and variants, so the build never needs the files. Components build URLs from `MEDIA_URL`, which `npm run dev` points at the local `media/`.
 
 ### Breakpoints
 
-The responsive breakpoints are defined in `app/assets/stylesheets/base.css` and follow a mobile-first approach:
+The responsive breakpoints follow a mobile-first approach:
 
 | Name | Width    |
 |------|----------|
@@ -113,56 +71,21 @@ Use `@media (width >= <value>)` syntax in CSS.
 
 The header and the about page switch from the phone to the desktop layout at 600px instead of `sm`, so that the unfolded iPhone Duo (626pt wide) and the iPad mini get the desktop layout.
 
-### Caching
-
-It's important to cache rendered responses whenever possible both at the HTTP level using fresh_when or stale? and at the view level using the cache method.
-
-This ensures that responses, from this read-heavy site, are always offered quickly to visitors.
-
-In views, do Russian doll caching, i.e. cache the parent and then cache the children inside it.
-This ensures that when a child is updated, only the child and its parents need to be re-rendered, while the rest of the page can be served from cache - a huge performance boost.
-
-You can cache XML builder responses as well, e.g. the Atom feed, or the sitemap, but for that the cache method must be called from the same buffer as the builder template, i.e. from the builder template itself or from a partial rendered by it.
-If you do call it from a different buffer then the initial render will look fine, but subsequent renders will omit the cached content, which is obviously bad.
-
-If you have to cache something in the backend code then use Rails.cache - though use that sparingly, the view's cache method is way better at caching anything that will ever be rendered because it includes a digest of the view it was called from, so if that view changes then the cache is automatically invalidated, while with Rails.cache you have to manually manage cache keys and invalidation.
-
-Since this site is primarily read by browsers, RSS readers and bots, using HTTP caching yields amazing performance benefits.
-
-Using both HTTP caching and view caching together yields by far the best results - if the cache is still fresh then the response is served directly from the HTTP cache, if it's stale but the view cache is still valid then the response is rendered quickly from the view cache, and only if both caches are stale then the response needs to be fully rendered.
-
-So always do both!
-
 ### SEO
 
-Each public-facing resource must have all the search engine optimization (SEO) metadata properly filled out, including title, description, Open Graph tags, Twitter Card tags, canonical URL, and a sitemap entry.
+Each public-facing page must have all the search engine optimization (SEO) metadata properly filled out, including title, description, Open Graph tags, Twitter Card tags, canonical URL, and a sitemap entry.
 
-Most of the SEO logic is handled by `Entry::SEO` (in `app/models/entry/seo.rb`). Every Entryable type should rely solely on `Entry#seo` for SEO metadata, and not implement any SEO logic of its own. The class generates titles (truncated at word boundaries to fit browser limits), descriptions (from the entry's excerpt, max 160 chars), canonical URLs, and OG image data.
-
-Use `content_for :head` to inject SEO meta tags into the layout, and the `seo_meta_tags_for_entry` helper from `SeoHelper` to generate the full set of meta tags (description, canonical, Open Graph, and Twitter Card). Cache the SEO block in the view:
-
-```erb
-<%= content_for :head do %>
-  <%= cache [@article.entry, :seo] do %>
-    <title><%= @article.entry.seo.title %></title>
-    <%= seo_meta_tags_for_entry(@article.entry) %>
-  <% end %>
-<% end %>
-```
+Pages pass their tags to the layout's `head` slot. Entries use `EntrySeoTags`, which derives the title (truncated at word boundaries to fit browser limits), the description (the entry's excerpt, max 160 chars), the canonical URL and a 512x512 image from the entry's cover image, falling back to `src/assets/images/default_seo_image.jpg`. Other pages use `SeoTags` directly.
 
 Each page must have a visible H1 tag with its title. The H1 can be styled not to look like a header, but it must be present in the HTML for SEO purposes.
 
-Each Entryable must define a `cover_image` method that returns an image attachment (e.g. the first image in an article's rich text content, or a talk's attached cover image). `Entry::SEO::Image` resizes it to 512x512 for OG tags. If no image is present, a default fallback image is used (`app/assets/images/default_seo_image.jpg`).
-
-The sitemap uses an index structure (`/sitemap.xml`) linking to sub-sitemaps per content type (pages, articles, talks, tags). When adding a new public content type, add a corresponding sub-sitemap. Each sub-sitemap uses Russian doll caching keyed on record count and max `updated_at`.
+The sitemap uses an index structure (`/sitemap.xml`) linking to sub-sitemaps per content type (pages, articles, talks, tags, snaps). When adding a new public content type, add a corresponding sub-sitemap.
 
 All images must have alt text, and all links must have descriptive text naturally woven into the sentence (not "click here", but "RSS feed").
 
-## Scripts and tasks
+### JavaScript
 
-When I ask for a script I sometimes mean a one-off script that I can copy-paste into the console and other times a utility script that goes into ./scripts.
-
-If I want a Rake task then I'll specifically ask for it.
+There is no framework. Behavior lives in small modules in `src/scripts/` that Astro bundles, and in one inline script in the layout that applies the color scheme before the page paints.
 
 ## Coding style
 

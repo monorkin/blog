@@ -1,0 +1,167 @@
+---
+title: Function composition >> Ruby
+publishedAt: '2018-12-25T00:00:00Z'
+updatedAt: '2026-02-15T09:37:07Z'
+tags:
+- ruby
+feedId: Article/9
+---
+
+import Figure from "~/components/content/Figure.astro"
+
+<Figure media="articles/function-composition-ruby-8f91aea21e5f/1den4tfex_0ccqbh8iq1mqg.png" caption="Ruby's new function composition syntax" />
+
+Last week **`Proc#<<`** and **`Proc#>>`** got merged into Ruby 2.6. This opens the door for function composition. Here’s my opinion as to why this is a great leap forward for Ruby and what needs to improve.
+
+## Composition vs. inheritance
+
+**Ruby is an object-oriented language** (among others), meaning it has the concept of an object and the class of an objects — which has the concept of inheritance.
+
+**With inheritance we are able to create objects with specialized behavior by inheriting the behavior of a more generalized object (the parent) and specializing it.** Let’s build a client for an API that consumes both JSON and XML encoded data. It could look like this.
+
+```ruby
+# Wrapper around a HTTP library
+class ApiClient; ... end
+
+# Knows how to decode JSON responses from the API
+class JSONApiClient < ApiClient; ... end
+
+# Knows how to decode XML responses from the API
+class XMLApiClient < ApiClient; ... end
+
+# Exposes an API's endpoints as methods on an object
+class MyAppApiClient
+  attr_reader :json_client
+  attr_reader :xml_client
+
+  def initialize(api_token)
+    @json_client = JSONApiClient.new(api_token)
+    @xml_client = XMLApiClient.new(api_token)
+  end
+
+  def current_account
+    json_client.get('/api/current_account')
+  end
+
+  def balance
+    xml_client.get('/api/current_account/balance')
+  end
+end
+
+class MyAppApiClient
+  attr_reader :json_client
+  attr_reader :xml_client
+
+  def initialize(api_token)
+    @json_client = ApiClient.new(API_KEY, JSON.method(:parse).to_proc)
+    @xml_client = ApiClient.new(API_KEY, XML.method(:parse).to_proc)
+  end
+
+  def current_account
+    json_client.get('/api/current_account')
+  end
+
+  def balance
+    xml_client.get('/api/current_account/balance')
+  end
+end
+
+array = [1,2,3,4,5]
+
+array.map # => #
+
+array.map { |i| i * 2 } # => [2, 4, 6, 8, 10]
+```
+
+This certainly would get the job done. But **this code has two issues** that we need to address.
+
+First, both **JSONApiClient** and **XMLApiClient** are **tightly coupled to their parent and provide little functionality besides the functionality they inherited** — meaning that any change to the parent class would probably break the classes inheriting from it.
+
+Second, **JSONApiClient** and **XMLApiClient** are **too specialized**. Inheritance is all about specialization, but having too specialized classes can cause headaches — they are hard to extend (when requirements change) and introduce unnecessary complexities (for a human, it’s hard to remember many different kinds of objects and what they do).
+
+**We can address both issues by passing the desired parser as an argument to ApiClient**. This is in-line with the [open-close](https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle) principle, as now we can create an **ApiClient** that can parse any kind of data without needing to subclass it.
+
+**We took an existing class/service/object/function and combined it with another to get more specialized behavior.** This is the basic idea behind [function composition](https://en.wikipedia.org/wiki/Function_composition_%28computer_science%29).
+
+While the above example is actually an example of [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection), it is a great outline for the things that are possible with function composition in Ruby. Also, note that the above approach is limited to the configurable dependencies we accept through the initializer.
+
+**We use composition every day without even noticing it.** **Enumerable#map** uses composition to enable us to transform arrays.
+
+The **map** method is of limited usefulness on it’s own. But when we combine it with a block (another function) it can transform whole datasets.
+
+## `Proc#>>` and `Proc#<<`
+
+**`Proc#>>`** and **`Proc#<<`** were introduced in Ruby 2.6. **They provide a substantial quality-of-life improvement when it comes to composing functions.**
+
+**`Proc#>>`** is similar to Elixir’s pipeline, but instead of returning a result it returns a proc — a callable object.
+
+In mathematical terms, **`f(x) >> g(x)`** is the same as **`g(f(x))`**.
+
+Let’s go back to our **ApiClient** example:
+
+```ruby
+f = -> x { x + 2 }
+g = -> x { x * 2 }
+
+# h is the composition of f and g
+h = f >> g
+# h is the same as -> x { (x + 2) * 2 }
+
+[1, 2, 3].map(&h) # => [6, 8, 10]
+# This is exactly the same as
+[1, 2, 3].map(&f).map(&g) # => [6, 8, 10]
+
+fetch_transactions =
+  ApiClient.new(api_token).method(:get)
+  >> JSON.method(:parse)
+  >> (-> response { response['data']['transactions'] })
+
+fetch_transaction.call('/api/current_user/transactions')
+
+f = -> x { x + 2 }
+g = -> x { x * 2 }
+
+# h is the composition of g and f
+h = f << g
+# h is the same as -> x { (x * 2) + 2 }
+
+[1, 2, 3].map(&h) # => [4, 6, 8]
+# This is exactly the same as
+[1, 2, 3].map(&g).map(&f) # => [4, 6, 8]
+```
+
+Notice that we didn’t pass anything to **ApiClient**, we didn’t need to do dependency injection. **This solves the configuration problem we had before. And we are able to create highly specialized functions on-the-fly.** The above example creates a function that returns all transaction from an API endpoint.
+
+Note, if you want Elixir style pipelines that return a result check out **yield_self** or the new alias for it **then**.
+
+On the other hand, **`Proc#<<`** **is more in-line with Haskell style composition:**
+
+Or, in mathematical terms, **`f(x) << g(x)`** is the same as **`f(g(x))`**.
+
+Both **\<\<** and **>>** are basically the same, **which one to use is only subject to your preference.**
+
+**Function composition is very useful in languages that don’t have the concept of classes and inheritance** as it enables you to “inherit” the behavior of a function and extend/specialize its behavior. Like in the following example.
+
+**Since we do have inheritance in Ruby this kind of composition is less useful.** Yet it gives us the ability to create utility functions on-the-fly thus **it encouraging us to create methods/classes that can be extended through the open-close principle / dependency injection, and** [**composition-over-inheritance**](https://en.wikipedia.org/wiki/Composition_over_inheritance)**.** In my opinion, this is a big step forward for the language.
+
+## Conclusion
+
+As its implemented now, composition sticks out like a sore thumb. **The ecosystem needs to grow to accommodate for this feature.** Constantly calling **#method** on a class/module is confusing and distracting — a short hand operator for this purpose would be welcome (I would propose **`&[Json].parse`**). The **map**, **reduce** and other enumerator methods are hard to compose since they are implemented on an instance of an object — an **Enum** module exposing them would be nice.
+
+```ruby
+require 'net/http'
+require 'uri'
+require 'json'
+
+fetch =
+  self.method(:URI) \
+  >> Net::HTTP.method(:get) \
+  >> JSON.method(:parse) \
+  >> -> response { response.dig('bpi', 'EUR', 'rate') || '0' } \
+  >> -> value { value.gsub(',', '') } \
+  >> self.method(:Float)
+
+fetch.call('https://api.coindesk.com/v1/bpi/currentprice.json') # => 3530.6782
+```
+
+If somebody shares these pain points, and agrees with me. [I’ve created a draft implementation of those features](https://gist.github.com/monorkin/7e1a597afb0ad295d5b8ecfb951d60af).

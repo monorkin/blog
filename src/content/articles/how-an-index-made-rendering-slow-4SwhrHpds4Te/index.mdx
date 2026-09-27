@@ -1,0 +1,192 @@
+---
+title: How an index made rendering slow
+publishedAt: '2022-10-10T12:00:00Z'
+updatedAt: '2026-02-15T09:37:07Z'
+tags:
+- ruby
+- today-i-learned
+feedId: Article/20
+---
+
+I noticed that a view I was working on was rendering much slower than I would expect it to. The view showed a list of events, together with the person that generated the event and the device that the event belongs to. It took nearly half a second to render 25 events, while other similar pages render in a couple of milliseconds.
+
+At first I thought that I had an N+1 - that each rendered event went to fetch its person and device from the database, generating 2 database queries per rendered row.
+
+But in the controller the associations were clearly [preloaded](https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-preload), and even [marked for strict loading](https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-strict_loading). Not only was an N+1 problem avoided, but the system would raise an error if one would occur.
+
+```ruby
+def index
+  @events = Device::EventLog.all
+                            .preload(:user, :device)
+                            .strict_loading
+                            .page(params[:page])
+                            .per(25)
+end
+```
+
+**So why did the view render so slow?**
+
+I went to look at the development server logs - which, in Rails, show a lot of useful information for debugging problems like these - and I saw this:
+
+```plain
+Started GET "/events" for 172.23.0.1 at 2022-10-10 08:57:51 +0000
+Processing by EventsController#index as HTML
+  Parameters: {}
+
+...
+
+Device::EventLog Load (2.8ms)  SELECT `device_event_logs`.* FROM `device_event_logs` LIMIT 25 OFFSET 0
+↳ /app/views/events/index.html.erb:10:in `_app_views_events_index_html_erb___1845829941033837665_155040'
+
+...
+
+User Load (79.75ms)  SELECT `users`.* FROM `users` WHERE `users`.`deleted_at` IS NULL AND `users`.`id` IN (97212, 2526, ...)
+↳ /app/views/events/index.html.erb:10:in `_app_views_events_index_html_erb___1845829941033837665_155040'
+
+...
+
+Device Load (79.95ms)  SELECT `devices`.* FROM `devices` WHERE `devices`.`deleted_at` IS NULL AND `devices`.`id` IN (8368, 137, ...)
+↳ /app/views/events/index.html.erb:10:in `_app_views_events_index_html_erb___1845829941033837665_155040'
+
+...
+
+Completed 200 OK in 251ms (Views: 78.7ms | ActiveRecord: 162.5ms | Allocations: 226640)
+```
+
+It was clearly visible that the preload worked. ActiveRecord made three queries to the database - one to get the events, another to get the users, and a third to get the devices.
+
+**But where does the WHERE deleted_at IS NULL come from?**
+
+I looked at the **User** and **Device** models. Both invoke the **acts_as_paranoid** method which the [paranoia gem](https://github.com/rubysherpas/paranoia) adds to **ActiveRecord::Record**.
+
+We use that gem at work to soft delete records in the database - the data is kept in the table, it just isn’t returned unless specifically requested.
+
+Paranoia knows which records are deleted by checking a **deleted_at** column that has to be added to each model that can act as paranoid. When the record is deleted, **deleted_at** is set to the current timestamp. A record can be restored (un-deleted) by setting **deleted_at** back to **nil**.
+
+Paranoia filters out deleted records by adding **WHERE deleted_at IS NULL** to all queries.
+
+**Why are the queries to fetch the users and devices so slow?**
+
+In situations like these I reach for [the **explain** method on an ActiveRecord relation](https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-explain). It tells the database to explain how it will execute the query. This shows important information like the indices it plans to use, in which order it wants to filter rows, and more.
+
+Here is the explain result for one of the slow queries:
+
+```ruby
+User.where(id: [
+  97212, 2526, 15027, 11982, 10846,
+  17091, 19528, 10731, 7785, 23240,
+  23238, 7244, 7221, 6993, 11959,
+  16931, 38234, 7006, 8993, 6766,
+  39565, 31681, 7088, 7786, 34029
+]).explain
+#   User Load (79.75ms)  SELECT `users`.* FROM `users` WHERE `users`.`deleted_at` IS NULL AND `users`.`id` IN (97212, 2526, 15027, 11982, 10846, 17091, 19528, 10731, 7785, 23240, 23238, 7244, 7221, 6993, 11959, 16931, 38234, 7006, 8993, 6766, 39565, 31681, 7088, 7786, 34029)
+# => EXPLAIN for: SELECT `users`.* FROM `users` WHERE `users`.`deleted_at` IS NULL AND `users`.`id` IN (97212, 2526, 15027, 11982, 10846, 17091, 19528, 10731, 7785, 23240, 23238, 7244, 7221, 6993, 11959, 16931, 38234, 7006, 8993, 6766, 39565, 31681, 7088, 7786, 34029)
+# +----+-------------+-------+------+-----------------------------------+---------------------------+---------+-------+------+-----------------------+
+# | id | select_type | table | type | possible_keys                     | key                       | key_len | ref   | rows | Extra                 |
+# +----+-------------+-------+------+-----------------------------------+---------------------------+---------+-------+------+-----------------------+
+# |  1 | SIMPLE      | users | ref  | PRIMARY,index_users_on_deleted_at | index_users_on_deleted_at | 6       | const | 25   | Using index condition |
+# +----+-------------+-------+------+-----------------------------------+---------------------------+---------+-------+------+-----------------------+
+# 1 row in set (0.00 sec)
+```
+
+The result shows that the database sees two indices with which it can filter the table to generate the result - **PRIMARY** and **index_users_on_deleted_at**.
+
+Out of these two it choose to use **index_users_on_deleted_at**, which is a bit odd since the query mostly filters by IDs.
+
+**Why did it choose that index instead of using the primary key? And why is that so slow?**
+
+I ran **SHOW INDEX**, an introspection tool in MariaDB that shows statistics about indices on a table. The query planner uses those same statistics to plan how to filter the requested rows. Understanding what the query planner sees can explain why MariaDB picked **index_users_on_deleted_at** instead of **PRIMARY**
+
+These are the statistics for the **users** table:
+
+```plain
++---------+------------+-----------------------------+--------------+--------------+-----------+-------------+----
+| Table   | Non_unique | Key_name                    | Seq_in_index | Column_name  | Collation | Cardinality | ...
++---------+------------+-----------------------------+--------------+--------------+-----------+-------------+-----
+| "users" | 0          | "PRIMARY"                   | 1            | "id"         | "A"       | 3202800     | ...
+| "users" | 1          | "index_users_on_deleted_at" | 1            | "deleted_at" | "A"       | 4003        | ...
++---------+------------+-----------------------------+--------------+--------------+-----------+-------------+-----
+```
+
+The **Cardinality** column shows that the **PRIMARY** index has millions of values indexed, while **index_users_on_deleted_at** only has a few thousand.
+
+**But why is that index so slow?**
+
+The decision by the query planner to use **index_users_on_deleted_at** felt off. It seemed like a mistake so I dug deeper.
+
+MariaDB offers query optimizer tracing, which is fancy term for a “detailed explanation why it did what it did”.
+
+I opened a DB console and ran **SET optimizer_trace='enabled=on';** to enable tracing. Then I ran the slow query and right after that I checked to see the optimizer trace with **SELECT \* FROM information_schema.optimizer_trace LIMIT 1;**.
+
+This returned a large JSON object, which showed every decision that the query planner made and explained why it chose the approach it did.
+
+The trace showed that the **PRIMARY** index had a much lower execution cost (was much faster) than **index_users_on_deleted_at**, but it chose to use **index_users_on_deleted_at** for “rowid filtering”. I had no clue what “rowid filtering” was so I [went to look it up in the documentation](https://mariadb.com/kb/en/rowid-filtering-optimization/).
+
+Row ID filtering is an optimization. The basic idea is this - if you have two indices on a table, an you are filtering by both; more often than not it’s quicker to filter by the more restrictive index first, and then scan the result to filter by the less restrictive one.
+
+Or in other words, it’s better to pick the index that eliminates most values first so that you have fewer rows to work with, and then scan through the result and filter by any other filters. Makes sense.
+
+MariaDB, unlike PostgreSQL, doesn’t support conditional indexing. This means that each index you add to a table indexes the whole table.
+
+This is great when you have many rows with different values in the indexed column, but it can backfire when you have a table that has many rows with the same value.
+
+In my case the **deleted_at** column has around 4k different values in about 3 million rows. But a single value - **NULL** - of those 4k is associated with nearly all 3 million rows. This means that the database will load and scan through 3 million records to find the ones matching the **IN** clause - which is extremely slow.
+
+**How do I make the query fast?**
+
+Luckily MariaDB, unlike PostgreSQL, provides an escape hatch for situations like this. Through the **USE INDEX** option, it allows you to specify the index it should use when filtering.
+
+ActiveRecord doesn’t have a method for **USE INDEX** but it can be added by passing a string to the **from** method.
+
+Telling the planner to use the **PRIMARY** index speeds up the query drastically. The execution time fell from 80 ms to 1 ms.
+
+```ruby
+User.from('users USE INDEX(PRIMARY)')
+    .where(id: [97212, 2526, 15027, 11982, 10846, 17091, 19528, 10731, 7785, 23240, 23238, 7244, 7221, 6993, 11959, 16931, 38234, 7006, 8993, 6766, 39565, 31681, 7088, 7786, 34029])
+    .explain
+#   User Load (0.7ms)  SELECT `users`.* FROM users USE INDEX(PRIMARY) WHERE `users`.`deleted_at` IS NULL AND `users`.`id` IN (97212, 2526, 15027, 11982, 10846, 17091, 19528, 10731, 7785, 23240, 23238, 7244, 7221, 6993, 11959, 16931, 38234, 7006, 8993, 6766, 39565, 31681, 7088, 7786, 34029)
+# => EXPLAIN for: SELECT `users`.* FROM users USE INDEX(PRIMARY) WHERE `users`.`deleted_at` IS NULL AND `users`.`id` IN (97212, 2526, 15027, 11982, 10846, 17091, 19528, 10731, 7785, 23240, 23238, 7244, 7221, 6993, 11959, 16931, 38234, 7006, 8993, 6766, 39565, 31681, 7088, 7786, 34029)
+# +----+-------------+-------+-------+---------------+---------+---------+------+------+-------------+
+# | id | select_type | table | type  | possible_keys | key     | key_len | ref  | rows | Extra       |
+# +----+-------------+-------+-------+---------------+---------+---------+------+------+-------------+
+# |  1 | SIMPLE      | users | range | PRIMARY       | PRIMARY | 8       | NULL | 25   | Using where |
+# +----+-------------+-------+-------+---------------+---------+---------+------+------+-------------+
+# 1 row in set (0.00 sec)
+```
+
+But this doesn’t solve my problem. I can’t call the **from** method in a preload query - that query is built and executed by ActiveRecord internally.
+
+Though, now that I understand the problem I can trick the query planner into doing what I want.
+
+If I replace **preload** with **eager_load** I can force the query planner to use at least one **PRIMARY** index and thereby speed things up considerably.
+
+```ruby
+Device::EventLog.all
+                .eager_load(:user, :device)
+                .strict_loading
+                .explain
+#   Device::EventLog Load (2.7ms)  ...
+# +----+-------------+-------------------+--------+-------------------------------------+---------+---------+-----------------------------------------+------+-------------+
+# | id | select_type | table             | type   | possible_keys                       | key     | key_len | ref                                     | rows | Extra       |
+# +----+-------------+-------------------+--------+-------------------------------------+---------+---------+-----------------------------------------+------+-------------+
+# |  1 | SIMPLE      | device_event_logs | ALL    | NULL                                | NULL    | NULL    | NULL                                    | 25   | Using where |
+# |  1 | SIMPLE      | users             | eq_ref | PRIMARY,index_users_on_deleted_at   | PRIMARY | 8       | development.device_event_logs.user_id   | 25   | Using where |
+# |  1 | SIMPLE      | devices           | eq_ref | PRIMARY,index_devices_on_deleted_at | PRIMARY | 8       | development.device_event_logs.device_id | 25   | Using where |
+# +----+-------------+-------------------+--------+-------------------------------------+---------+---------+-----------------------------------------+------+-------------+
+```
+
+And it worked! Both **PRIMARY** indices were used when filtering, and the query returns in 3 ms.
+
+**Why did this work?**
+
+I had a hunch that a **LEFT OUTER JOIN** would force the optimizer to use at least one **PRIMARY** index on the joined tables. Because **eager_load** does the same thing as **preload**, in this case, but using a **LEFT OUTER JOIN** it was the perfect solution.
+
+And I was right. The query optimizer trace for the **eager_load** query showed that the optimizer tries to apply the same optimization as before, but its cost is higher than using the **PRIMARY** index.
+
+The **Device::EventLog** table doesn’t have any more restrictive index that is also used in the query so it can’t apply the same optimization. While the joined tables are implicitly filtered by so many IDs that the cost of using the **PRIMARY**index goes way down compared to the optimization.
+
+At least that’s what I think is going on.
+
+Either way, sometimes replacing **preload** with **eager_load** can utilize indices better and therefore speed up query execution.
+
+P.S. Because of this problem I took a deep dive into query planners and optimizers in both PostgreSQL and MariaDB. This is a fascinating topic, a science on its own, and a world with very different opinions about what the “correct” solution is. It made me appreciate the “no hints” approach that PostgreSQL takes, but at the same time showed me the value of escape hatches that MariaDB provides. It made me see that there really is no one-size-fits-all solution for SQL databases - as always in software, you stick with what works for you.

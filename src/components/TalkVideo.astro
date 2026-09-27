@@ -1,0 +1,20 @@
+---
+interface Props {
+  mirrorUrl?: string
+}
+
+const { mirrorUrl } = Astro.props
+const youtubeId = mirrorUrl?.match(/v=([^&]+)/)?.[1]
+---
+
+<div class="talk__video-section">
+  {mirrorUrl && mirrorUrl.includes("youtube") && (
+    <iframe src={`https://www.youtube.com/embed/${youtubeId}`} frameborder="0" allowfullscreen class="talk__video"></iframe>
+  )}
+  {mirrorUrl && !mirrorUrl.includes("youtube") && (
+    <video src={mirrorUrl} controls class="talk__video"></video>
+  )}
+  <div class="talk__video-links">
+    {mirrorUrl && <a href={mirrorUrl} class="txt-link" target="_blank" rel="noopener noreferrer">View via mirror</a>}
+  </div>
+</div>

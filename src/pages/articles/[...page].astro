@@ -1,0 +1,40 @@
+---
+import type { GetStaticPaths } from "astro"
+import Layout from "~/layouts/Layout.astro"
+import SeoTags from "~/components/SeoTags.astro"
+import EntryList from "~/components/EntryList.astro"
+import Paginated from "~/components/Paginated.astro"
+import { publishedEntries, type Entry } from "~/lib/entries"
+import { paginateIndex, type IndexPage } from "~/lib/pagination"
+import { absoluteUrl, titleize } from "~/lib/site"
+
+export const getStaticPaths = (async ({ paginate }) => {
+  return paginateIndex(paginate, await publishedEntries("article"), "/articles")
+}) satisfies GetStaticPaths
+
+const { page } = Astro.props as { page: IndexPage<Entry> }
+---
+
+<Layout>
+  <Fragment slot="head">
+    <title>{titleize("Articles")}</title>
+    <SeoTags
+      title="Articles"
+      description="Collection of articles about Ruby, Rails, and software development"
+      url={absoluteUrl("/articles")}
+    />
+  </Fragment>
+
+  <section class="article margin-block-end-4">
+    <h1 class="txt-4xl font-semibold">Articles</h1>
+  </section>
+
+  <section>
+    {page.data.length > 0 && (
+      <Paginated page={page}>
+        <EntryList entries={page.data} />
+      </Paginated>
+    )}
+    {page.data.length === 0 && <p>No articles were found</p>}
+  </section>
+</Layout>

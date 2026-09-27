@@ -1,0 +1,37 @@
+---
+import Icon from "~/components/Icon.astro"
+
+interface Props {
+  withHeading?: boolean
+}
+
+const { withHeading = false } = Astro.props
+---
+
+<div class="search" data-search>
+  {withHeading && <h1 class="visually-hidden">Search</h1>}
+  <div class="search__bar">
+    <form class="search__form" action="/search" method="get" role="search" data-search-form>
+      <label class="search__label">
+        <Icon name="search" class="icon" />
+        <input type="submit" value="" class="hidden" />
+        <span class="visually-hidden">Search</span>
+      </label>
+      <input type="search" name="search[term]" placeholder="Search" class="search__input" autocomplete="off" data-search-input />
+    </form>
+  </div>
+
+  <div class="search__results" data-search-results>
+    <div class="search__no-results">Enter something in the field above and press enter</div>
+  </div>
+
+  <template data-search-result-template>
+    <li class="search__result" role="option" aria-selected="false">
+      <div class="search__result-inner">
+        <a href="" class="search__result-link"></a>
+        <div class="search__result-title"></div>
+        <div class="search__result-type"></div>
+      </div>
+    </li>
+  </template>
+</div>

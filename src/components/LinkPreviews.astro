@@ -1,0 +1,51 @@
+---
+import linkPreviews from "~/data/link-previews.json"
+import { variantAtLeast } from "~/lib/media"
+
+interface Props {
+  html: string
+}
+
+interface LinkPreview {
+  title?: string
+  description?: string
+  image?: string
+}
+
+const PREVIEW_IMAGE_WIDTH = 768
+
+const previews = linkPreviews as Record<string, LinkPreview>
+
+const { html } = Astro.props
+const hrefs = new Set([ ...html.matchAll(/<a [^>]*href="([^"]+)"/g) ].map(match => decodeEntities(match[1])))
+
+const previewsForPage: Record<string, LinkPreview> = {}
+for (const href of hrefs) {
+  const preview = previews[href]
+
+  if (preview) {
+    previewsForPage[href] = { title: preview.title, description: preview.description, image: imageUrl(preview.image) }
+  }
+}
+
+function imageUrl(key?: string) {
+  if (key) {
+    return variantAtLeast(key, PREVIEW_IMAGE_WIDTH)
+  }
+}
+
+function decodeEntities(text: string) {
+  return text.replaceAll("&amp;", "&").replaceAll("&quot;", "\"").replaceAll("&#39;", "'").replaceAll("&lt;", "<").replaceAll("&gt;", ">")
+}
+
+const json = JSON.stringify(previewsForPage).replaceAll("</", "<\\/")
+---
+
+{Object.keys(previewsForPage).length > 0 && (
+  <Fragment>
+    <script type="application/json" id="link-previews" set:html={json} />
+    <script>
+      import "~/scripts/link-previews"
+    </script>
+  </Fragment>
+)}

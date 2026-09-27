@@ -1,0 +1,425 @@
+---
+title: Adding MCP to a Rails app
+publishedAt: '2025-05-06T09:00:00Z'
+updatedAt: '2026-03-09T09:32:25Z'
+tags:
+- ai
+- ruby
+feedId: Article/43
+---
+
+import Figure from "~/components/content/Figure.astro"
+import Gallery from "~/components/content/Gallery.astro"
+import Video from "~/components/content/Video.astro"
+
+Last week we had an AI hackathon at work during which we added an MCP server to our Rails app. This was much easier than I expected, the result was both impressive and scary, and I learned a few things about MCP that I didn't expect.
+
+<Video media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/screencast-from-2025-05-06-10-58-48-1-web.mp4" poster="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/screencast-from-2025-05-06-10-58-48-1-web.jpg" type="video/mp4" caption="Demo of Claude using our app via MCP to solve a support request" />
+
+**Goal**
+
+My team wanted to help our support team by automating some laborious tasks, like cross referencing data, by offloading the bulk of the work to an AI agent. This would make support’s work easier, responses quicker, and in some cases it would free up my team too - an all around win.
+
+*To allow the AI to interact with our app - like a person would - we decided to add MCP to it.*
+
+**What is MCP?**
+
+MCP, or Model Context Protocol, is a protocol through which LLMs can interact with different tools and resources to accomplish tasks.
+
+[The protocol specifics are fairly dry so I'll gloss over them](https://modelcontextprotocol.io/introduction). What you need to know is that in MCP there exists a server and a client.
+
+A server provides tools, prompts, and resources (I'll focus only on tools). While a client connects to one, or multiple, servers and exposes their tools to an LLM. The client then makes API requests to the Servers to use tools when the LLM tells it to.
+
+<Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/quick-sheets-page-33.png" caption="Overview of how the MCP client and server interact" />
+
+*In essence - the Client uses the LLM as a brain to plan out how to solve a problem and the Servers as tools to implement the solution.*
+
+*A tool can be anything from a query, like searching for a user, to a mutation, like creating a coupon code - anything the server is allowed to do on behalf of the LLM.*
+
+E.g. You could ask a client to *"Find a file called meeting_notes.txt"*, it would then use the LLM to interpret what that means and plan out how it would do that with the tools it has available. It gets a list of tools from the MCP servers it's connected to.
+
+The LLM might respond with something like *"\{action: 'tool_call', tool: 'find_file', arguments: \['meeting_notes.txt'\]\}"* and the client would go and make a request to an MCP server that exposes a tool called find_file.
+
+The server then responds with something like *"\{path: '/home/user/meeting_notes.txt', contents: '...'\}"* and the client passes that on to the LLM which then decides what to do with that information.
+
+**MCP and Rails**
+
+I used the [fast-mcp gem](https://github.com/yjacquin/fast-mcp) to add MCP support to our app.
+
+```shell
+bundle add fast-mcp
+bin/rails generate fast_mcp:install
+```
+
+This gave me two new directories - *app/tools* and *app/resources* - and a class name conflict.
+
+The resources directory contains an *ApplicationResource* class, but our app already has a different *ApplicationResource* class in *app/models* that we use to represent resources from 3rd party REST APIs.
+
+To solve the conflict I decided to namespace everything MCP-related under an *MCP* namespace.
+
+First I moved the two new directories into an *mcp* directory
+
+```shell
+mkdir app/mcp
+mv app/tools app/mcp/tools
+mv app/resources app/mcp/resources
+```
+
+But now the classes were namespaced with *Tools* and *Resources* instead of with *MCP* because Zeitwerk treats each directory in app/ as a root directory. To reconfigure Zeitwerk I added the following to *config/initializers/zeitwerk.rb*
+
+```ruby
+# config/initializers/zeitwerk.rb
+
+module MCP; end
+
+Rails.autoloaders.main.tap do |autoloader|
+  Dir.glob(Rails.root.join("app/mcp/*")).each do |file|
+    next unless File.directory?(file)
+
+    autoloader.push_dir(file, namespace: MCP)
+  end
+end
+```
+
+That tells Zeitwerk to treat every directory in *app/mcp* as a root directory with an *MCP* namespace.
+
+Now *app/mcp/resources/application_resource.rb* defines *MCP::ApplicationResource* instead of *Resources::ApplicationResource*.
+
+With that out of the way I could finally run my server
+
+```shell
+bin/rails s
+```
+
+**The Client**
+
+Now that the server was up and running I wanted to see if I could connect to it. The easiest way to do that is through cURL
+
+```shell
+curl -v http://localhost:3000/mcp/sse
+* Host localhost:3000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:3000...
+* Connected to localhost (::1) port 3000
+* using HTTP/1.x
+> GET /mcp/sse HTTP/1.1
+> Host: localhost:3000
+> User-Agent: curl/8.13.0
+> Accept: */*
+>
+* Request completely sent off
+< HTTP/1.1 200 OK
+< Content-Type: text/event-stream
+< Cache-Control: no-cache, no-store, must-revalidate
+< Connection: keep-alive
+< X-Accel-Buffering: no
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, OPTIONS
+< Access-Control-Allow-Headers: Content-Type
+< Access-Control-Max-Age: 86400
+< Keep-Alive: timeout=600
+< Pragma: no-cache
+< Expires: 0
+* no chunk, no close, no size. Assume close to signal end
+<
+: SSE connection established
+
+event: endpoint
+data: /mcp/messages?
+
+retry: 100
+
+: keep-alive 1
+
+: keep-alive 2
+
+: keep-alive 3
+
+: keep-alive 4
+
+: keep-alive 5
+
+event: message
+data: {"jsonrpc":"2.0","method":"ping","id":715239
+```
+
+It seems to be working.
+
+But to actually use an LLM with the server I had to find a proper MCP client. This was way more difficult than I thought it would be, mostly because I'm on Linux.
+
+By far the most well-known MCP client is [Claude Desktop](https://claude.ai/download), but it isn't available on Linux even though it's an Electron app... I tested a few open-source alternatives but in the end a coworker told me that [Zed (the text editor)](https://zed.dev/) has an MCP client built-in and it's available on Linux.
+
+```shell
+paru -Sy zed-preview-bin
+zeditor .
+```
+
+*(To get MCP support you have to join the* [*Agentic Editing Beta*](https://zed.dev/ai/agent)*)*
+
+To configure Zed I had to give it a shell command with which to start the server. This is a bit odd as I want Zed to connect to an already running server - my app - but MCP, at the moment, doesn't support connecting to remote servers. This is a planned feature that's supposed to release by the end of the year - but I need it now.
+
+Luckily, someone had the same problem as I and created [mcp-remote](https://github.com/geelen/mcp-remote).
+
+With that I configure Zed by giving it the following command
+
+```shell
+npx mcp-remote@0.0.22 http://localhost:3000/mcp/sse --allow-http --skip-browser-auth
+```
+
+Fast MCP generates a sample tool that, given a User ID and a prefix, returns a greeting for that user. With that in mind I asked
+
+```javascript
+Can you greet a User with ID 636166899? 
+```
+
+To my surprise it didn't respond with a greeting but started digging through the codebase
+
+<Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505124833.png" caption="Claude digging through the code base to figure out how to greet a user" />
+
+After some digging around I soon discovered that, while the server was running, it wasn't advertising any tools.
+
+<Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505125117.png" caption="My MCP server advertising 0 tools to the client" />
+
+The problem was that the initializer for Fast MCP uses the [descendants](https://api.rubyonrails.org/classes/Class.html#method-i-descendants) method to load all tools that inherit from ApplicationTool.
+
+```ruby
+server.register_tools(*MCP::ApplicationTool.descendants)
+server.register_resources(*MCP::ApplicationResource.descendants
+```
+
+That method returns all classes that inherit from a given class, but a caveat\
+of that method is that it returns only descendants that have been loaded so far.
+
+```ruby
+Foo.descendants
+# => []
+
+class Bar < Foo
+end
+
+Foo.descendants
+# => [Bar]
+```
+
+Since, in development, Rails disabled eager loading no descendants of *ApplicationTool* are loaded when the initializer runs, and therefore no tools get registered with the server.
+
+There are 2 easy ways around this - either enable eager loading in development (at least for this), or manually register each individual tool.
+
+I opted to go with eager loading as we already had it configured to trigger when an ENV variable is set, we use that in some tests.
+
+This has the downside of requiring a server restart whenever you want to test something, but as you also have to restart your MCP client so that it pulls in the new server changes this wasn't a big deal for me.
+
+```ruby
+# config/environment/development.rb
+
+Rails.application.configure do
+  # Eager load all classes if the EAGER_LOAD ENV is set
+  config.eager_load = !!ENV['EAGER_LOAD']
+  # ...
+end
+```
+
+So all I had to do is restart the server with
+
+```shell
+EAGER_LOAD=1 bin/rails s
+```
+
+I entered the same prompt again, and... it didn't work. It started searching through the codebase again.
+
+After some more digging I concluded that, to test my MCP server I'd have to create a new Profile
+
+<Gallery>
+  <Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505130656.png" caption="Location of the Profile tab in Zed" inGallery />
+  <Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505130722.png" caption="The Configure Profile section of the Profiles tab in Zed" inGallery />
+  <Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505130837.png" caption="The new Profile button in Zed" inGallery />
+</Gallery>
+
+<Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505130903.png" caption="Naming a new profile in Zed" />
+
+And then configure that Profile's tools to include only my MCP server's tools.
+
+<Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505130943.png" caption="Configuring tools for the new profile" />
+
+<Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505131014.png" caption="Enabling individual tools from different MCP servers" />
+
+With that configured I tried the prompt again and this time it worked!
+
+<Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505131112.png" caption="Claude sending a greeting to a User through the MCP server" />
+
+**Building a tool**
+
+From here the team and I spent the day building various tools that would allow us to automate common support requests.
+
+I implemented a simple building search tool
+
+```ruby
+module MCP
+  class SearchBuildingsTool < ApplicationTool
+    tool_name "search_buildings"
+    description "Searches for buildings"
+
+    arguments do
+      optional(:building_ids).array(:integer).description("IDs of the Buildings to look up")
+      optional(:query).maybe(:string).description("The search query")
+    end
+
+    def call(building_ids: nil, query: nil,)
+      buildings = Building.all
+
+      if building_ids.present?
+        buildings = buildings.where(id: building_ids)
+      end
+
+      if query.present?
+        buildings = buildings.where("name LIKE :query OR handle LIKE :query", query: "%#{query}%")
+      end
+
+      buildings
+	    .limit(50)
+	    .order(name: :desc)
+	    .to_json(only: [:id, :name, :handle, :address])
+    end
+  end
+end
+```
+
+that worked quite well
+
+<Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505134334.png" caption="Demo of the Building search tool" />
+
+Then I wanted to implement Access Log search. But to search Access Logs you need a building ID. I wasn't sure if the LLM could combine multiple tools by first searching for the building, getting its ID and then searching for the access logs with that ID. And I couldn't find a definitive answer online so I hoped for the best and implemented the following
+
+```ruby
+module MCP
+  class SearchAccessLogsTool < ApplicationTool
+    tool_name "search_access_logs"
+    description "Searches through Access Logs and returns the fist 25 results"
+
+    arguments do
+      required(:building_id).filled(:integer).description("ID of the Building that we are searching in")
+      optional(:query).maybe(:string).description("The search query")
+    end
+
+    def call(building_id: nil, query: nil)
+      building = begin
+        Building.find(building_id)
+      rescue ActiveRecord::RecordNotFound
+        return "Building not found"
+      end
+
+	  building
+	    .access_logs
+	    .search({ query: query })
+	    .order(logged_at: :desc)
+	    .limit(25)
+	    .to_json(only: [
+	      :id, 
+	      :logged_at, 
+	      :grantor, 
+	      :description,
+	      :access_point_id,
+	      :status
+	    ])
+    end
+  end
+end
+```
+
+To my surprise this worked! It reused the ID it found in the previous response to search for the access logs.
+
+<Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505134942.png" caption="Claude reusing previous result to solve new problems" />
+
+I was curious if it could actually combine tools so I started a new chat and asked the same question.
+
+<Figure media="articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505135346.png" caption="Claude combining multiple tools in a single response to solve a problem" />
+
+The response blew my mind. It could combine tools! To me, this was both incredible and scary. Kind of like seeing primates [use tools](https://www.youtube.com/watch?v=FA3LN4vqtlM) or [develop their own economy](https://www.bbc.com/worklife/article/20180406-what-monkeys-can-teach-us-about-money).
+
+**Takeaways**
+
+MCP is a very "loose" protocol. It does allow you to specify what inputs your tool has, which are required and which are optional, but it's not expressive enough specify what the input should look like.
+
+For example, in the Access Logs search I didn't specify what the query string should look like - my mistake - so the LLM just takes its best guess when you ask it something complex like "Can you give me all access logs created in the last hour in the building Crimson?".
+
+I expected it to get all the access logs and then filter them on its own, but that's not what happened. Instead it passed *"logged_at:>=2025-05-05T07:36:31"* as the query. And, honestly, I can't blame it.
+
+I later refined my tools with very detailed descriptions like this one
+
+```ruby
+module MCP
+  class SearchAccessLogsTool < ApplicationTool
+    tool_name "search_access_logs"
+    description <<~MD
+      Searches for Access Logs in a given building and returns
+      a JSON string containing an array of up to 25 objects.
+      The list is sorted in descending order by the time 
+      the access log was logged.
+      Inputs:
+      - building_id [Integer] (the ID of the building in which to search for access logs)
+      - query [String, null] (a plain string that can contain any part ot the name of the grantor, the id of the access log, the description, the id of the associated access point)
+      - logged_after [String, null] (An ISO8601 timestamp of the earliest time a log was recorded)
+      - logged_before [String, null] (An ISO8601 timestamp of the latest time a log was recorded)
+      - statuses [Array[String], null] (A comma-separated list of statuses)
+      Output:
+      - id [Integer] (The ID of the access log record)
+      - logged_at [String] (ISO8601 timestamp of the time the log was recorded)
+      - grantor [String, null] (Name of the person that granted this access, a null value means that the system granted the access)
+      - description [String] (A description of what happened)
+      - access_point_id [Integer] (ID of the access point that was accessed)
+      - status [String] (The access point's state after this access)
+
+      Statuses:
+      - open - means that the access point was unlocked and that someone opened it
+      - closed - means that the access point was unlocked, opened and then closed
+      - left_ajar - means that the access point was unlocked, and then left open for more than 1min
+      - denied - the access point never unlocked
+      
+      If the building couldn't be found you'll get a message back stating that.
+    MD
+
+    arguments do
+      required(:building_id)
+        .filled(:integer)
+        .description("ID of the Building that we are searching in")
+      optional(:query)
+        .maybe(:string)
+        .description("The search query which can contain any part of the grantors name, id of the record, id of the access point, or part of the description; any other input will be ignored")
+      optional(:status)
+	    .maybe(:string)
+	    .description("Comma-separated list of statuses - valid statuses are open, closed, left_ajar, denied; any other statuses will be ignored")
+    end
+
+    def call(**args)
+      # ...
+    end
+  end
+end
+```
+
+The more information that I gave the LLM the better the result was. Something to watch out for is that you:
+
+- Describe the output *(it's as important as describing the input*)
+- Describe error states
+- List all possible enum values and describe what each value means
+- Explicitly state what format you expect for an input (what kind of timestamp do you expect, can it be nullable, etc.)
+- Explicitly state what's not allowed *(e.g. additional enum values besides the ones listed)*
+
+One more thing. With smaller LLMs, like Llama 3 7b, I had to normalize input values. E.g. I'd tell it that I expect *"building"* as an enum value but it would pass me *"Buildings"*. Or I'd tell it that a field is a nullable String but it would still pass an empty string when it had no value. But Rails makes it really easy to accommodate for such mistakes.
+
+```ruby
+value.presence&.to_s&.strip&.singularize&.underscore
+```
+
+**Conclusion**
+
+Integrating our existing app with AI was surprisingly easy. We just had to expose tools and the LLM would figure out how to use them. In 8 hours we managed to set up an MCP server, configure our clients, and expose enough tools to speed up a dozen common support requests, which is amazing.
+
+In this hackathon, being a fully remote team with members in the EU and the US felt like a superpower. The EU team solved all the setup problems, so by the time the US team came online they could jump straight into building tools and testing ideas. For the price of 8 hours we got 14.
+
+I still want to explore how to add permissions and some guard rails so that the LLM can't do too much damage if it goes haywire. I intentionally skipped that during the hackathon as it wasn't important.
+
+This project was a technical success, but I'm not sure if it's the right direction to go in. This integration makes it so that developers get rarely involved in some types of support requests. As a developer, support is less about solving a problem and is more about figuring out customers' pain points and how to make the overall experience better.
+
+I'm not sure how to strike a good balance between automating laborious tasks and surfacing common problems. That's also something I'll have to explore.

@@ -1,0 +1,91 @@
+@layer components {
+  .highlight table td { padding: 5px; }
+  .highlight table pre { margin: 0; }
+
+  .highlight {
+    --background: #fff;
+    --foreground: #3760bf;
+
+    /* normal colorscheme */
+    /*--black: #b4b5b9;*/
+    /*--red: #f52a65;*/
+    /*--green: #587539;*/
+    /*--yellow: #8c6c3e;*/
+    /*--blue: #2e7de9;*/
+    /*--magenta: #9854f1;*/
+    /*--cyan: #007197;*/
+    /*--white: #6172b0;*/
+
+    /* bright colorscheme */
+    --black: #a1a6c5;
+    --red: #f52a65;
+    --green: #587539;
+    --yellow: #8c6c3e;
+    --blue: #2e7de9;
+    --magenta: #9854f1;
+    --cyan: #007197;
+    --white: #3760bf;
+  }
+
+  .color-scheme.color-scheme--dark .highlight {
+    --background: #1a1b26;
+    --foreground: #c0caf5;
+
+    --black: #15161e;
+    --red: #f7768e;
+    --green: #9ece6a;
+    --yellow: #e0af68;
+    --blue: #7aa2f7;
+    --magenta: #bb9af7;
+    --cyan: #7dcfff;
+    --white: #a9b1d6;
+  }
+
+  .highlight, .highlight .w, .lexxy-content pre.highlight, .lexxy-content pre.highlight .w,
+  .lexxy-content code.highlight, .lexxy-content code.highlight .w {
+    color: var(--foreground);
+    background-color: var(--background);
+  }
+
+  /* Ensure code blocks with highlight class display properly */
+  .lexxy-content pre.highlight,
+  .lexxy-content code.highlight {
+    display: block;
+    overflow-x: auto;
+    padding: 1rem;
+    border-radius: 0.125rem;
+    white-space: pre;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  }
+
+  .color-scheme--dark .lexxy-content pre.highlight,
+  .color-scheme--dark .lexxy-content code.highlight {
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not(.color-scheme--light) .lexxy-content pre.highlight,
+    :root:not(.color-scheme--light) .lexxy-content code.highlight {
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    }
+  }
+
+  /* Shiki's css-variables theme colors each token with one of these */
+  .highlight {
+    --astro-code-foreground: var(--foreground);
+    --astro-code-background: var(--background);
+    --astro-code-token-comment: var(--white);
+    --astro-code-token-keyword: var(--magenta);
+    --astro-code-token-constant: var(--cyan);
+    --astro-code-token-string: var(--green);
+    --astro-code-token-string-expression: var(--green);
+    --astro-code-token-function: var(--blue);
+    --astro-code-token-parameter: var(--foreground);
+    --astro-code-token-punctuation: var(--white);
+    --astro-code-token-link: var(--blue);
+    --astro-code-token-inserted: var(--cyan);
+    --astro-code-token-deleted: var(--red);
+    --astro-code-token-changed: var(--yellow);
+  }
+}

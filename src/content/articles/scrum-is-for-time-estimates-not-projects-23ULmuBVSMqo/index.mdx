@@ -1,0 +1,49 @@
+---
+title: Scrum is for time estimates, not projects
+publishedAt: '2022-07-15T12:00:00Z'
+updatedAt: '2026-02-15T09:37:07Z'
+tags:
+- people
+- rant
+feedId: Article/14
+---
+
+From my experience Scrum is the prevalent project management framework in software development. Most of the teams I was part of used it to develop, deliver and maintain their projects. Despite its prevalence I always felt like Scrum was bogs me down - that it was more harmful than useful.
+
+I knew what was bothering me the most - the daily standup. But even in teams that had a standup once a week I felt like Scrum didn’t make the project better. Yet we were burning two work-hours per person every week on its ritual.
+
+One day while reading about Control Theory and PID controllers, I realized that Scrum was a time estimation tool.
+
+To understand this, you first have to know what a PID controller is and how it works. In a nutshell, it’s a device that observes a dimension of a process - like the speed of a wheel - and tries to keep it at a desired value.
+
+If the wheel goes too slow the controller speeds it up, if it goes too fast the controller slows it down. The magic of PID controllers is that they, once tuned, don’t over or undershoot the desired value. Their magic consists of 3 steps - P, I & D.
+
+P, the proportional, corrects the difference between the desired and actual value. I, the integral, looks at past over or undershoots and corrects for them. D, the derivative, nudges the result closer to the ideal value.
+
+That is exactly what Scrum does. Standups correct problems as they occur. Planning corrects over or undershoots in the committed amount of work. Retros nudge the process towards the ideal outcome.
+
+If Scrum is a PID controller what dimension does it control?
+
+The only one that has a fixed value - the duration of the sprint. All other values are in flux - the number of story points, the number of tasks in a sprint, the number of people in a team.
+
+By controlling the duration of a sprint you can estimate the duration of a project. If you chop up a project into 30 tasks, and the team solves about 8 tasks every sprint, you can be somewhat certain that the project will take 4 to 6 sprints. If a sprint is 2 weeks long, then the project will take 12 weeks.
+
+This chopping up of a project into tasks is why Scrum bogs me down - it kills the vision. Without vision you can’t know what you are building and therefore you can’t utilize your expertise to make it better.
+
+Building a project task by task can produce something that doesn’t work as a whole. Each task makes sense on its own but all of them together don’t form a whole - they don’t accomplish the goal of the project.
+
+Because tasks don’t carry a sense of how they fit together, any sense of wholeness is accidental. One feature can be split into multiple tasks which can produce a different result depending on which one is implemented first. New tasks can be added with no regard as to how they incorporate into the vision, which can produce nonsensical features. When a feature is broken into multiple tasks, changing one task without updating the others leads to a disjointed feature.
+
+The worst possible case is when someone creates tasks that build on top of each other. Working on such tasks is like being led by a carrot on a stick through what someone else thinks is the best way to build the project. Instead of letting you, the expert at building software, decide what the best way to build it is. This is frustrating and demotivating, and you can’t prevent it because you can’t see the bigger picture.
+
+Scrum isn’t a framework for people building the project, it’s a framework for people concerned with timelines and roadmaps.
+
+Builders are concerned with how things are supposed to work, how they connect together and interact with one another. They are concerned with what they are building, with the vision.
+
+Scrum has no mechanism to help you build your project. None of its rituals can help you shape a project. They can’t help you form a vision for what you are about to build, or help you figure out what is still undefined. Scrum assumes that this is already figured out when you start grooming and planning the project. The best you can ever do is say “I have no clue what we are building” and throw a sprint out.
+
+Yet the burden of making Scrum work falls on the ones it doesn’t help - the builders - the ones concerned with building something great. It only helps them adhere to a timeline. But a bad project delivered on time is still a bad project.
+
+*P.S. Many thanks to* [*Hrvoje S.*](https://shime.sh/) *for reviewing drafts of this article.*
+
+*If you are looking for a framework that does help you shape your project and build something better, but has a looser concept of timelines, take a look at* [*Shape Up*](https://basecamp.com/shapeup/webbook)*. I recommend that book even if you aren't looking for a new framework, it describes excellent tools to help you identify if your project is well defined - like breadboards and fat marker sketches.*

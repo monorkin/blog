@@ -1,0 +1,44 @@
+---
+import defaultImage from "~/assets/images/default_seo_image.jpg"
+import { originalUrl, squareUrl } from "~/lib/media"
+import { absoluteUrl } from "~/lib/site"
+
+interface Props {
+  title: string
+  description?: string
+  url: string
+  type?: string
+  image?: string
+}
+
+const SEO_IMAGE_SIZE = 512
+
+const { title, description, url, type = "website", image: coverImage } = Astro.props
+
+let image: { url: string, width?: number, height?: number }
+const square = coverImage && squareUrl(coverImage, SEO_IMAGE_SIZE)
+
+if (square) {
+  image = { url: absoluteUrl(square), width: SEO_IMAGE_SIZE, height: SEO_IMAGE_SIZE }
+} else if (coverImage) {
+  image = { url: absoluteUrl(originalUrl(coverImage)) }
+} else {
+  image = { url: absoluteUrl(defaultImage.src) }
+}
+---
+
+<meta name="description" content={description} />
+<link rel="canonical" href={url} />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:creator" content="@monorkin" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content={type} />
+<meta property="og:url" content={url} />
+<meta property="og:image" content={image.url} />
+{image.width && <meta property="og:image:width" content={String(image.width)} />}
+{image.height && <meta property="og:image:height" content={String(image.height)} />}

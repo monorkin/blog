@@ -1,0 +1,22 @@
+---
+import SeoTags from "~/components/SeoTags.astro"
+import type { Entry } from "~/lib/entries"
+import { titleize } from "~/lib/site"
+
+interface Props {
+  entry: Entry
+}
+
+const DESCRIPTION_MAX_LENGTH = 160
+
+const { entry } = Astro.props
+---
+
+<title>{titleize(entry.title)}</title>
+<SeoTags
+  title={titleize(entry.title)}
+  description={await entry.excerpt(DESCRIPTION_MAX_LENGTH)}
+  url={entry.url}
+  type="article"
+  image={entry.coverImage()}
+/>

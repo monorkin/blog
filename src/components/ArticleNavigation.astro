@@ -1,0 +1,27 @@
+---
+import type { Entry } from "~/lib/entries"
+
+interface Props {
+  previousArticle?: Entry
+  nextArticle?: Entry
+}
+
+const { previousArticle, nextArticle } = Astro.props
+---
+
+{(previousArticle || nextArticle) && (
+  <nav class="article-nav">
+    {previousArticle && (
+      <div class="article-nav__item article-nav__item--previous">
+        <div class="article-nav__label">&larr; Previous</div>
+        <a href={previousArticle.path} class="article-nav__link">{previousArticle.title}</a>
+      </div>
+    )}
+    {nextArticle && (
+      <div class="article-nav__item article-nav__item--next">
+        <div class="article-nav__label">Next &rarr;</div>
+        <a href={nextArticle.path} class="article-nav__link">{nextArticle.title}</a>
+      </div>
+    )}
+  </nav>
+)}

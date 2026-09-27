@@ -1,0 +1,158 @@
+---
+title: Do you really need WebSockets?
+publishedAt: '2018-03-29T00:00:00Z'
+updatedAt: '2026-03-09T08:17:43Z'
+tags: []
+feedId: Article/4
+---
+
+import Figure from "~/components/content/Figure.astro"
+
+<Figure media="articles/do-you-really-need-websockets-343aed40aa9b/cloud.png" caption="The Cloud was made by Fabián Alexis (CC BY-SA 3.0), via Wikimedia Commons" />
+
+Over the years I've had this conversation a couple of times. This post will explain why we use WebSockets, how they can be used, what alternatives exist and when to use them.
+
+Every time I worked on a project where we had to implement any kind of a "real-time" component, usually a chat or an event feed, the word WebSockets started to circulate. Though, most people use them because they either aren't aware of the alternatives, or they blindly follow other people's examples.
+
+## Why WebSockets?
+
+**WebSockets enable the server and client to send messages to each other at any time**, after a connection is established, without an explicit request by one or the other. This is in contrast to HTTP, which is traditionally associated with the challenge-response principle — where to get data one has to explicitly request it. In more technical terms, WebSockets enable a [full-duplex connection](https://en.wikipedia.org/wiki/Duplex_%28telecommunications%29#Full_duplex) between the client and the server.
+
+In a challenge-response system there is no way for clients to know when new data is available for them (except by asking the server periodically — [polling](https://en.wikipedia.org/wiki/Polling_%28computer_science%29) or [long polling](https://en.wikipedia.org/wiki/Push_technology#Long_polling)), **with Websockets the server can push new data at any time which makes them the better candidate for "real-time" applications.**
+
+**It's important to note that WebSockets convert their HTTP connection to a WebSocket connection.** In other words, a WebSocket connection uses HTTP only to do the initial handshake (for authorization and authentification), after which the TCP connection is utilized to send data via the [its own protocol](https://tools.ietf.org/html/rfc6455#section-5.2).
+
+<Figure media="articles/do-you-really-need-websockets-343aed40aa9b/v2xywm5psk_f5vzywdmpoq.gif" caption="Animation of a WebSocket connection being established" />
+
+WebSockets are a part of [the HTML5 spec](https://www.w3.org/TR/websockets/) and they are supported by [all modern browsers](https://caniuse.com/#feat=websockets) (meaning, there is a JS API to use them natively in the browser). They provide a mechanism to detect dropped (disconnected) clients and can handle up to a 1024 connections per browser, **though** [**they aren't compatible with most load balancers out-of-the-box**](https://www.nginx.com/blog/websocket-nginx/) **and have no re-connection handling mechanism.**
+
+```javascript
+// Create WebSocket connection.
+const socket = new WebSocket('ws://localhost:8080');
+
+// Connection opened
+socket.addEventListener('open', function (event) {
+    socket.send('Hello Server!');
+});
+
+// Listen for messages
+socket.addEventListener('message', function (event) {
+    console.log('Message from server ', event.data);
+});
+```
+
+**The most common example for WebSockets is either a chat or push notifications. They can be used for those applications, but present an overkill solution to the problem**, since in those applications only the server needs to push data to the clients, and not the other way around — only a half-duplex connection is needed.
+
+**In Ruby, there are a few gems that add WebSockets to your web app.** The one I've mostly used is Faye, though I've been looking at websocket-ruby lately. Rails supports them out-of-the-box since version 5 through ActionCable.
+
+```ruby
+require 'faye/websocket'
+
+App = lambda do |env|
+  if Faye::WebSocket.websocket?(env)
+    ws = Faye::WebSocket.new(env)
+
+    ws.on :message do |event|
+      ws.send(event.data)
+    end
+
+    ws.on :close do |event|
+      p [:close, event.code, event.reason]
+      ws = nil
+    end
+
+    # Return async Rack response
+    ws.rack_response
+
+  else
+    # Normal HTTP request
+    [200, {'Content-Type' => 'text/plain'}, ['Hello']]
+  end
+end
+```
+
+In my opinion, **all of those implementations are more-or-less the same — you can't really go wrong.** Note that some gems also require their own JS library (mostly to encode and decode data that's being sent or received).
+
+## Server-sent events
+
+From my experience, most people don't know that regular old **HTTP provides a mechanism to push data from the server to clients via** [**Server-Sent Events**](https://en.wikipedia.org/wiki/Server-sent_events) (aka. [EventSources](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)).
+
+**Server-Sent Events utilize a regular HTTP octet streams**, and therefore are limited to the browser's connection [pool limit of ~6 concurrent HTTP connections per server](https://stackoverflow.com/questions/985431/max-parallel-http-connections-in-a-browser). But **they provide a standard way of pushing data from the server to the clients over HTTP**, which load balancers and proxies understand out-of-the-box. The biggest advantage being that, exactly as WebSockets, they **utilize only one TCP connection**. The biggest disadvantage is that **Server-Sent Events don't provide a mechanism to detect dropped clients** until a message is sent.
+
+<Figure media="articles/do-you-really-need-websockets-343aed40aa9b/k2j4qncy_0i3gunnkxq2_g.gif" caption="Animation of a Server-Sent Events connection being established" />
+
+[They are standardized via HTML 5](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events), most HTTP servers support them out-of-the-box, and [they are available in most browsers except for Internet Explorer and Edge](https://caniuse.com/#search=server%20sent%20events) where they are [available through a polyfill](https://github.com/Yaffle/EventSource).
+
+[**Rails**](http://edgeapi.rubyonrails.org/classes/ActionController/Live/SSE.html)**,** [**Roda**](https://github.com/jeremyevans/roda/blob/master/lib/roda/plugins/streaming.rb) **and** [**Sinatra**](https://gist.github.com/rkh/1476463) **support them out-of-the-box.** And they have a simple protocol — payloads are just prefixed with one of the following keywords **data:**, **event:**, **id:** and **retry:**. **data:** is used to push a payload, **event:** is optional and indicates the type of data being pushed, **id:** is also optional and indicates the event's ID, finally **retry:** instructs the client to change it's connection retry timeout — **unlike WebSockets, Server-Sent Events have a reconnect mechanism built-in**, though this is a feature that most WebSocket libraries add any way.
+
+```ruby
+# frozen_string_literal: true
+
+class App < Roda
+  QUEUES = []
+
+  Thread.new do
+    loop do
+      sleep(60)
+      QUEUES.each { |q| q << { heartbeat: true } }
+    end
+  end
+
+  plugin :streaming
+  plugin :render, engine: 'slim'
+
+  route do |r|
+    r.root do
+      view('root', layout: false)
+    end
+
+    r.on 'messages' do
+      r.post do
+        name = r.params['name']
+        message = r.params['message']
+        object = { name: name, message: message }
+        QUEUES.each { |q| q << object }
+        object.to_json
+      end
+    end
+
+    r.get 'stream' do
+      response['Content-Type'] = 'text/event-stream;charset=UTF-8'
+      q = Queue.new
+      QUEUES << q
+      q << { heartbeat: true }
+      stream(loop: true, callback: proc { QUEUES.delete(q) }) do |out|
+        loop do
+          out << "data: #{q.pop.to_json}\n\n"
+        end
+      end
+    end
+  end
+end
+```
+
+In the example above, **to send data to other clients a regular HTTP POST request is made** to the server. A heartbeat is kept to keep the connections alive (WebSockets also do that) and to detect dropped clients (since dropped connections can only be detected when data is pushed to them).
+
+## Long polling
+
+Before there were Server-Sent Events people usually resorted to long polling to receive "real-time" data from the server. Not to give the wrong impression, long polling is still used today in some scenarios.
+
+**Long polling utilizes regular HTTP requests**. When a request is made to the server it responds immediately if there is data that can be served. If no data is available, the server drags out its response while the client waits. If in that time new data becomes available it's served to the client. When the client receives data, or its request times-out, it immediately makes a new request to re-establish the connection.
+
+<Figure media="articles/do-you-really-need-websockets-343aed40aa9b/piakrkmpmripwafmz83nzq.gif" caption="Animation of a Long Polling connection being established" />
+
+**Long polling's biggest advantage is the fact that it works in every environment**, and in every browser. **It's, arguably, better for applications with large numbers of concurrent users** because it doesn't require a constant TCP connection to the server (it's harder to starve the server of TCP connections since they are periodically released). **Though they come with the overhead of having to re-authenticate and re-authorize the client on each request**. And the server needs to implement some kind of event aggregation to overcome blackouts between re-connects. **There are no JS APIs available for this mechanism, there is no re-connection handling, nor dropped client detection.**
+
+If data needs to be sent to the server a regular HTTP POST request is made, the same as with Server-Sent Events.
+
+**When it comes to pushing data from the server to clients both WebSockets and Server-Sent Event will do the job.** There are some subtle differences and incompatibilities, but there are libraries that solve those issues.
+
+**If you don't need to send data to the server in "real-time" (e.g. voice/video chat, multiplayer games, …) go with Server-Sent Events.** They are the standard HTTP way of pushing data (like notifications, messages or events) to clients. And **they can be added just by implementing an additional endpoint in a controller**, lowering the need to refactor the existing code base (in a well structured code base the "implementation cost" of both WS and SSE is the same), and making them somewhat faster to implement (and bring the feature to market).
+
+I don't have experience with long polling on projects with large numbers of concurrent users, so I can't attest the claims I've read about it being the better solution for those kinds of applications. Though, while we were [reverse engineering Facebook's Messenger to add PGP to it](https://stanko.io/hacking-privacy-into-facebook-s-messenger-in-24-hours-3da239baf6c5) I noticed that they utilize long polling to fetch messages. **On smaller projects I would recommend SSE over Long polling since it's easier to implement on both the server and client side.**
+
+## Conclusion
+
+If you are already using WebSockets or Long polling, don't go and convert them to Server-Sent Events. **All solutions are basically the same when it comes to pushing data from the server to clients.**
+
+<figure class="lexxy-content__table-wrapper"><table><tbody><tr><th class="lexxy-content__table-cell--header"><p><br /></p></th><th class="lexxy-content__table-cell--header"><p>WebSockets</p></th><th class="lexxy-content__table-cell--header"><p>Server Sent Events</p></th><th class="lexxy-content__table-cell--header"><p>Long Polling</p></th></tr><tr><th class="lexxy-content__table-cell--header"><p>Number of parallel connections from the browser</p></th><td><p>1024</p></td><td><p>~6 per server</p></td><td><p>~6 per server</p></td></tr><tr><th class="lexxy-content__table-cell--header"><p>Load balancing and proxying</p></th><td><p>Requires additional configuration</p></td><td><p>Out-of-the-box</p></td><td><p>Out-of-the-box</p></td></tr><tr><th class="lexxy-content__table-cell--header"><p>Supported on all browsers</p></th><td><p>Yes (90%)</p></td><td><p>No (84%)</p></td><td><p>Yes (100%)</p></td></tr><tr><th class="lexxy-content__table-cell--header"><p>Dropped client detection</p></th><td><p>Yes</p></td><td><p>No</p></td><td><p>No</p></td></tr><tr><th class="lexxy-content__table-cell--header"><p>Reconnection handling</p></th><td><p>No</p></td><td><p>Yes</p></td><td><p>No</p></td></tr></tbody></table></figure>

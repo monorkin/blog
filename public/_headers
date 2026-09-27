@@ -1,0 +1,5 @@
+/feed/style
+  Content-Type: application/xslt+xml; charset=utf-8
+
+/up
+  Content-Type: text/html; charset=utf-8

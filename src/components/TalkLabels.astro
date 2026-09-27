@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from "astro:content"
+import type { Entry } from "~/lib/entries"
+import Icon from "~/components/Icon.astro"
+
+interface Props {
+  talk: Entry
+}
+
+const KIND_LABELS = { conference: "Conference", meetup: "Meetup" }
+
+const data = Astro.props.talk.source.data as CollectionEntry<"talks">["data"]
+const hasVideo = Boolean(data.videoMirrorUrl)
+---
+
+<span class="talk-labels">
+  <span class={`talk-label talk-label--${data.kind}`}>{KIND_LABELS[data.kind]}</span>
+  {hasVideo && (
+    <span class="talk-label talk-label--video"><Icon name="play" class="talk-label__icon" />Video</span>
+  )}
+</span>

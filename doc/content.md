@@ -31,7 +31,7 @@ bin/generate project "Title"
 `bin/generate` makes the slug from the title the way Rails' `parameterize` did (accents and
 apostrophes dropped, every other run of non-alphanumerics one dash), picks a fresh ID no
 entry uses, and writes the file with `draft: true`, `publishedAt` and `updatedAt` set to now,
-and `tags: []`. Talks get placeholder `event` and `heldAt`. It also makes the entry's media
+and `tags: []`. Talks get placeholder `event` and `heldAt`, and `kind: meetup`. It also makes the entry's media
 folder, and for a snap copies the photo there and sets `image`. It prints the file and the
 URL the entry will have. Don't make IDs by hand.
 
@@ -50,8 +50,10 @@ draft: true                         # optional; drafts aren't built
 feedId: Article/46                  # migrated entries only, see below
 ```
 
-Talks add `event`, `eventUrl`, `heldAt` and `videoMirrorUrl` (the URLs are optional; a
-YouTube mirror is embedded, anything else becomes a `<video>`). The body is the talk's
+Talks add `event`, `kind`, `eventUrl`, `heldAt` and `videoMirrorUrl`. `kind` is
+`conference` or `meetup`, and is required; the talks list and the talk's page label it. The
+URLs are optional: a YouTube mirror is embedded, anything else becomes a `<video>`, and a
+talk with a `videoMirrorUrl` is the one marked as having a video. The body is the talk's
 abstract.
 
 Snaps have no body. They add `caption`, then `image`, or `video`, `videoType`, `duration`

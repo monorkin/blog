@@ -22,4 +22,37 @@
       column-gap: var(--space-4);
     }
   }
+
+  .talk-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .talk-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0.15em 0.5em;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius);
+  }
+
+  /* A conference talk stands out a little from the meetups */
+  .talk-label--conference {
+    color: var(--color-accent);
+    border-color: currentColor;
+  }
+
+  .talk-label__icon {
+    inline-size: 0.9em;
+    block-size: 0.9em;
+    color: var(--color-accent);
+  }
 }

@@ -50,7 +50,7 @@ function generateArticle(title) {
 
 function generateTalk(title) {
   const folder = newFolder(title)
-  const fields = frontmatter(title, [ "event: Event name", `heldAt: ${NOW}` ])
+  const fields = frontmatter(title, [ "event: Event name", "kind: meetup", `heldAt: ${NOW}` ])
   const path = writeEntry("talks", folder, "index.mdx", fields, "The talk's abstract.\n")
 
   announce(path, `/talks/${folder}`, mediaFolder("talks", folder))

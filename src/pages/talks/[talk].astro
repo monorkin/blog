@@ -4,6 +4,7 @@ import type { CollectionEntry } from "astro:content"
 import Layout from "~/layouts/Layout.astro"
 import EntrySeoTags from "~/components/EntrySeoTags.astro"
 import TalkVideo from "~/components/TalkVideo.astro"
+import TalkLabels from "~/components/TalkLabels.astro"
 import { publishedEntries, type Entry } from "~/lib/entries"
 import { formatDate, isoTimestamp } from "~/lib/site"
 
@@ -36,6 +37,10 @@ const html = await talk.html()
           {!data.eventUrl && data.event}
         </h2>
         <time datetime={isoTimestamp(data.heldAt)} data-pagefind-meta="date[datetime]">{formatDate(data.heldAt)}</time>
+      </div>
+
+      <div data-pagefind-ignore>
+        <TalkLabels talk={talk} />
       </div>
       {talk.tags.map(tag => <span hidden data-pagefind-filter="tag" data-pagefind-ignore>{tag}</span>)}
     </div>

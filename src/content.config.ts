@@ -29,6 +29,7 @@ const talks = defineCollection({
   schema: z.object({
     ...entryFields,
     event: z.string(),
+    kind: z.enum([ "conference", "meetup" ]),
     eventUrl: z.url().optional(),
     heldAt: z.coerce.date(),
     videoMirrorUrl: z.url().optional()

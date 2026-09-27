@@ -1,5 +1,5 @@
 import { publishedEntries, type Entry, type Kind } from "~/lib/entries"
-import { FEED_PATH, KIND_FEED_PATHS } from "~/lib/feed-paths"
+import { FEED_PATH, KIND_FEED_PATHS, feedPagePath } from "~/lib/feed-paths"
 import { AUTHOR_EMAIL, AUTHOR_NAME, SITE_URL } from "~/lib/site"
 
 export interface Feed {
@@ -8,6 +8,14 @@ export interface Feed {
   label: string
   kind?: Kind
 }
+
+export interface FeedPage {
+  number: number
+  count: number
+  entries: Entry[]
+}
+
+export const FEED_PAGE_SIZE = 50
 
 // Four static Atom feeds: everything, and one per kind of entry
 export const FEEDS: Feed[] = [
@@ -25,22 +33,36 @@ export function feedFor(kind?: Kind) {
   return FEEDS.find(feed => feed.kind === kind)!
 }
 
-export async function feedResponse(feed: Feed) {
-  return new Response(await atomFeed(feed, await publishedEntries(feed.kind)), {
+// A feed's pages, for getStaticPaths: every one of them, the first included
+export async function feedPages(feed: Feed) {
+  const entries = await publishedEntries(feed.kind)
+  const count = Math.max(1, Math.ceil(entries.length / FEED_PAGE_SIZE))
+
+  return Array.from({ length: count }, (_, index) => {
+    const number = index + 1
+    const page = { number, count, entries: entries.slice(index * FEED_PAGE_SIZE, number * FEED_PAGE_SIZE) }
+    return { params: { page: String(number) }, props: { page } }
+  })
+}
+
+export async function feedPageResponse(feed: Feed, page: FeedPage) {
+  return new Response(await atomFeed(feed, page), {
     headers: { "Content-Type": "application/xml; charset=utf-8" }
   })
 }
 
-async function atomFeed(feed: Feed, entries: Entry[]) {
+// RFC 5005 paging: the first page is the feed's own URL, and every page links to the others
+async function atomFeed(feed: Feed, page: FeedPage) {
   const lines = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     `<?xml-stylesheet href="${STYLESHEET_PATH}" type="text/xsl"?>`,
     '<feed xml:lang="en-US" xmlns="http://www.w3.org/2005/Atom">',
     `  <id>tag:${FEED_HOST},2005:${feed.path}</id>`,
     `  <link rel="alternate" type="text/html" href="${SITE_URL}/"/>`,
-    `  <link rel="self" type="application/atom+xml" href="${SITE_URL}${feed.path}"/>`,
+    ...pageLinks(feed, page),
     `  <title>${escape(feed.title)}</title>`
   ]
+  const entries = page.entries
 
   if (entries.length > 0) {
     lines.push(`  <updated>${timestamp(latestUpdate(entries))}</updated>`)
@@ -53,6 +75,30 @@ async function atomFeed(feed: Feed, entries: Entry[]) {
   lines.push("</feed>")
 
   return lines.join("\n") + "\n"
+}
+
+function pageLinks(feed: Feed, page: FeedPage) {
+  const links = [ [ "self", page.number ], [ "first", 1 ] ]
+
+  if (page.number > 1) {
+    links.push([ "previous", page.number - 1 ])
+  }
+
+  if (page.number < page.count) {
+    links.push([ "next", page.number + 1 ])
+  }
+
+  links.push([ "last", page.count ])
+
+  return links.map(([ rel, number ]) => `  <link rel="${rel}" type="application/atom+xml" href="${SITE_URL}${pageUrl(feed, Number(number))}"/>`)
+}
+
+function pageUrl(feed: Feed, number: number) {
+  if (number === 1) {
+    return feed.path
+  } else {
+    return feedPagePath(feed.path, number)
+  }
 }
 
 function latestUpdate(entries: Entry[]) {

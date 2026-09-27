@@ -78,6 +78,20 @@ ${feedLinks}
                 <div class="feed__entry-summary"><xsl:value-of select="atom:summary"/></div>
               </div>
             </xsl:for-each>
+
+            <ul class="feed__filter-list feed__pagination">
+              <xsl:for-each select="/atom:feed/atom:link[@rel='previous' or @rel='next']">
+                <li>
+                  <a>
+                    <xsl:attribute name="href">
+                      <xsl:value-of select="concat('/', substring-after(substring-after(@href, '://'), '/'))"/>
+                    </xsl:attribute>
+                    <xsl:if test="@rel = 'previous'">&#x2190; Newer</xsl:if>
+                    <xsl:if test="@rel = 'next'">Older &#x2192;</xsl:if>
+                  </a>
+                </li>
+              </xsl:for-each>
+            </ul>
           </div>
         </main>
       </body>

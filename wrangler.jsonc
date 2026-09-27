@@ -9,9 +9,9 @@
     "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "none",
-    // Static files answer first, except the feed URLs whose query strings the Worker has to
-    // read or drop (src/worker.ts); it hands anything it doesn't redirect to Astro
-    "run_worker_first": [ "/feed", "/articles/atom", "/articles/rss" ]
+    // Static files answer first, except the feeds' own URLs, whose first page the Worker
+    // serves, and the old feed URLs it redirects (src/worker.ts)
+    "run_worker_first": [ "/feed", "/articles/feed", "/talks/feed", "/snaps/feed", "/articles/atom", "/articles/rss" ]
   },
   "observability": {
     "enabled": true

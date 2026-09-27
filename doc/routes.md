@@ -38,17 +38,18 @@ Later pages are `/<index>/page/N`, not `/<index>/N`: `/talks/2` is an old talk U
 redirects. The Rails app paginated with `?page=N`; those URLs still answer, with the first
 page, because static files ignore the query string.
 
-The feeds, `/feed`, `/articles/feed`, `/talks/feed` and `/snaps/feed`, are static files too
-(`doc/feed.md`).
+The feeds, `/feed`, `/articles/feed`, `/talks/feed` and `/snaps/feed`, are built too, and
+paged: `/feed/page/2` and so on (`doc/feed.md`).
 
 ## The Worker
 
-Static files answer first, except for three paths `run_worker_first` in `wrangler.jsonc`
+Static files answer first, except for the paths `run_worker_first` in `wrangler.jsonc`
 sends to the Worker, whose entry is `src/worker.ts`:
 
 | URL | File | What |
 |---|---|---|
-| `/feed?types=X` | `src/worker.ts` | 301 to `X`'s feed when there's exactly one type; otherwise the built `/feed` |
+| `/feed`, `/articles/feed`, `/talks/feed`, `/snaps/feed` | `src/worker.ts` | The built first page, `<feed>/page/1` |
+| `/feed?types=X` | `src/worker.ts` | 301 to `X`'s feed when there's exactly one type; otherwise the whole feed |
 | `/articles/rss`, `/articles/atom` | `src/worker.ts` | 301 to `/articles/feed`, dropping `?tag=` |
 | anything that isn't a file | `src/pages/[...path].ts` | Slug redirects, then 404 (`prerender = false`) |
 
@@ -65,7 +66,7 @@ to `/feed.xsl`, the numeric talk URLs (`/talks/1` to `/talks/15`, and `/talks/10
 the Rails app redirected, and `/talks/page/*` to `/talks`, from when talks were paginated.
 Those IDs are frozen; new talks don't get one.
 
-`public/_headers` gives the four feeds, `/feed.xsl` and `/up` their content types, since
+`public/_headers` gives the feeds' pages, `/feed.xsl` and `/up` their content types, since
 the extension doesn't say it. The adapter adds long cache headers for `/_astro/*` to it at
 build time.
 

@@ -50,6 +50,10 @@
     text-decoration: underline;
   }
 
+  .feed__pagination {
+    margin-block: var(--space-8);
+  }
+
   .feed__entries-heading {
     margin-block-start: var(--space-8);
     margin-block-end: var(--space-3);

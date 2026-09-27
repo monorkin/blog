@@ -3,9 +3,16 @@
 
 export const FEED_PATH = "/feed"
 export const KIND_FEED_PATHS: Record<string, string> = { article: "/articles/feed", talk: "/talks/feed", snap: "/snaps/feed" }
+export const FEED_PATHS = [ FEED_PATH, ...Object.values(KIND_FEED_PATHS) ]
 
 // The Rails app's article feeds, which took `?tag=` too
 export const LEGACY_ARTICLE_FEED_PATHS = [ "/articles/atom", "/articles/rss" ]
+
+// A feed's pages are built as <feed>/page/<n>, the first one included; the Worker answers
+// the feed's own URL with its first page, since a file can't share a name with a folder
+export function feedPagePath(feedPath: string, number: number) {
+  return `${feedPath}/page/${number}`
+}
 
 // Where the Rails app's feed URLs go now, with their query strings dropped: the article feeds
 // to /articles/feed, and `/feed?types=…&tag=…` with a single type to that type's feed. Any

@@ -1,13 +1,13 @@
-/feed
+/feed/page/*
   Content-Type: application/xml; charset=utf-8
 
-/articles/feed
+/articles/feed/page/*
   Content-Type: application/xml; charset=utf-8
 
-/talks/feed
+/talks/feed/page/*
   Content-Type: application/xml; charset=utf-8
 
-/snaps/feed
+/snaps/feed/page/*
   Content-Type: application/xml; charset=utf-8
 
 /feed.xsl

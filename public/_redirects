@@ -1,6 +1,7 @@
-# Legacy feed stylesheet. /articles/rss and /articles/atom keep their `tag`
-# parameter, which needs the Worker, so they live in src/pages/articles/
-/articles/atom_style /feed/style 301
+# Legacy feed stylesheets. The legacy feeds themselves need the Worker (src/worker.ts), which
+# can read and drop their query strings
+/articles/atom_style /feed.xsl 301
+/feed/style /feed.xsl 301
 
 # Talks used to be addressed by their numeric database ID
 /talks/1 /talks/do-you-really-need-websockets-huEURtr2Oclt 301

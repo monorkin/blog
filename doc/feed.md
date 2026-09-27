@@ -1,37 +1,50 @@
-# The feed
+# The feeds
 
-`/feed` is one Atom feed of every published entry, newest first, and the only page the
-Worker renders.
+Four static Atom feeds, built with the rest of the site, newest entry first:
 
-## How it's made
+| URL | Has |
+|---|---|
+| `/feed` | Everything |
+| `/articles/feed` | Articles |
+| `/talks/feed` | Talks |
+| `/snaps/feed` | Snaps |
 
-At build time `src/pages/feed/entries.json.ts` writes `/feed/entries.json`: every published
-entry with its feed ID, title, dates, tags, HTML content (with absolute URLs) and summary,
-plus the list of known tags. At request time `src/pages/feed.ts` fetches that file from the
-static assets, filters it and renders the XML with `src/lib/feed.ts`. So a new entry is in
-the feed after the next build, like everywhere else.
+`src/lib/feed.ts` lists them (`FEEDS`) and renders them; `src/pages/feed.ts`,
+`src/pages/articles/feed.ts`, `talks/feed.ts` and `snaps/feed.ts` are one line each. A new
+entry is in its feeds after the next build, like everywhere else. `public/_headers` gives
+them their content type, since they have no extension.
 
-## Filters
+Pages point feed readers at a feed with `<link rel="alternate">`: a section's pages
+(`<Layout section="articles">` and so on) at that section's feed, everything else at
+`/feed`. The prompt under each article links to `/articles/feed`.
 
-Both take comma-separated lists, with the same rules as the Rails app's `FeedController`:
+## The Rails app's URLs
 
-- `?types=article,talk` keeps entries of those kinds (`article`, `talk`, `snap`).
-- `?tag=ruby,go` keeps entries with any of those tags.
-- Unknown values are dropped, and a filter with nothing valid left doesn't filter:
-  `?tag=nonexistent` is the whole feed.
+The Rails app had one feed that filtered by `?types=` and `?tag=`. People only ever filtered
+by type, so tags are gone:
 
-`/articles/rss` and `/articles/atom` are the old article feeds and redirect to
-`/feed?types=article`, keeping `tag`.
+- `/feed?types=article` (one type, with or without a `tag`) redirects (301) to that type's
+  feed.
+- Any other `/feed?…`, several types, an unknown one, or only a `tag`, is the whole feed.
+- `/articles/atom` and `/articles/rss` redirect to `/articles/feed`, dropping `?tag=`.
+- `/feed/style` and `/articles/atom_style` redirect to `/feed.xsl`.
+
+Static files can't redirect on a query string, and `_redirects` can't match or drop one, so
+the Worker does it: `run_worker_first` in `wrangler.jsonc` sends `/feed`, `/articles/atom`
+and `/articles/rss` to it first, and `src/worker.ts` redirects the old URLs
+(`legacyFeedPath` in `src/lib/feed-paths.ts`) and hands everything else to Astro, which
+serves the built file. Every other URL is a static file first.
 
 ## The XML
 
-It matches what the Rails app rendered, so feed readers see no change:
+It matches what the Rails app rendered, so feed readers see no change in the entries:
 
-- The `<?xml-stylesheet href="/feed/style"?>` instruction, so a browser shows a page.
+- The `<?xml-stylesheet href="/feed.xsl"?>` instruction, so a browser shows a page.
+- Each feed has its own ID (`tag:stanko.io,2005:/articles/feed`), title and self link.
 - Entry IDs are `tag:stanko.io,2005:<feedId>`, e.g. `tag:stanko.io,2005:Article/46`. Migrated
   entries carry `feedId` in their frontmatter; never change it (`doc/content.md`).
-- The content is the entry's HTML in a `<div class="lexxy-content">`, the summary its
-  300-character excerpt, and the author Stanko Krtalic Rusendic.
+- The content is the entry's HTML in a `<div class="lexxy-content">`, with absolute URLs,
+  the summary its 300-character excerpt, and the author Stanko Krtalic Rusendic.
 
-`/feed/style` (`src/pages/feed/style.ts`) is the XSL stylesheet, built with the site's CSS
-and the current list of tags to filter by.
+`/feed.xsl` (`src/pages/feed.xsl.ts`) is the XSL stylesheet, built with the site's CSS. It
+links to the four feeds.

@@ -7,9 +7,10 @@ nothing here deploys it: don't run `wrangler deploy` unless Stanko asks for exac
 
 `npm run build` writes everything to `dist/`:
 
-- `dist/client/` is the static assets: every page, image variant, the Pagefind index,
-  `/feed/entries.json`, `_redirects` and `_headers`.
-- `dist/server/` is the Worker, which the `@astrojs/cloudflare` adapter builds, and
+- `dist/client/` is the static assets: every page, the feeds, the Pagefind index,
+  `/entry-paths.json`, `_redirects` and `_headers`.
+- `dist/server/` is the Worker, which the `@astrojs/cloudflare` adapter builds from
+  `src/worker.ts` (the adapter's handler, after the feed redirects), and
   `dist/server/wrangler.json`, the configuration wrangler deploys. The adapter points
   wrangler at it through `.wrangler/deploy/config.json`.
 

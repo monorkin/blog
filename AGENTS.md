@@ -2,7 +2,7 @@
 
 Stanko's personal blog at stanko.io: articles, talks, snaps (photos) and projects. A static
 [Astro](https://astro.build) site on Cloudflare Workers, where every page is built ahead of
-time and one Worker answers the Atom feed and a few redirects.
+time, the Atom feeds included, and one Worker answers a few redirects.
 
 It used to be a Rails app, which is this repository's history. The content was exported
 from it once, and the URLs, markup and CSS were kept as they were.
@@ -13,7 +13,7 @@ from it once, and the URLs, markup and CSS were kept as they were.
 |---|---|
 | The collections, the frontmatter, MDX components, drafts and scheduling, the one-off export from Rails | `doc/content.md` |
 | Every URL the site answers, pagination, redirects, the slug lookup, sitemaps | `doc/routes.md` |
-| The Atom feed, its filters and its stylesheet | `doc/feed.md` |
+| The Atom feeds, the old feed URLs and the stylesheet | `doc/feed.md` |
 | Images and videos: media keys, the manifest, `bin/media`, R2, link previews | `doc/images.md` |
 | The layout, CSS, scripts, color scheme, search and the dialogs | `doc/front-end.md` |
 | Cloudflare, wrangler, R2 and the scheduled rebuild | `doc/deployment.md` |

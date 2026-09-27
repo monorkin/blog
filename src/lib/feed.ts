@@ -1,54 +1,45 @@
+import { publishedEntries, type Entry, type Kind } from "~/lib/entries"
+import { FEED_PATH, KIND_FEED_PATHS } from "~/lib/feed-paths"
 import { AUTHOR_EMAIL, AUTHOR_NAME, SITE_URL } from "~/lib/site"
 
-export interface FeedEntry {
-  id: string
-  kind: string
-  title: string
+export interface Feed {
   path: string
-  publishedAt: string
-  updatedAt: string
-  tags: string[]
-  content: string
-  summary?: string
+  title: string
+  label: string
+  kind?: Kind
 }
 
-export interface FeedIndex {
-  tags: string[]
-  entries: FeedEntry[]
-}
+// Four static Atom feeds: everything, and one per kind of entry
+export const FEEDS: Feed[] = [
+  { path: FEED_PATH, title: AUTHOR_NAME, label: "Everything" },
+  { path: KIND_FEED_PATHS.article, title: `${AUTHOR_NAME}: Articles`, label: "Articles", kind: "article" },
+  { path: KIND_FEED_PATHS.talk, title: `${AUTHOR_NAME}: Talks`, label: "Talks", kind: "talk" },
+  { path: KIND_FEED_PATHS.snap, title: `${AUTHOR_NAME}: Snaps`, label: "Snaps", kind: "snap" }
+]
 
-const KINDS = [ "article", "talk", "snap" ]
+export const STYLESHEET_PATH = "/feed.xsl"
+
 const FEED_HOST = new URL(SITE_URL).host
 
-// Same semantics as the Rails FeedController: unknown types and tags are
-// ignored, and a filter with nothing valid left in it doesn't filter at all.
-export function filterEntries(index: FeedIndex, params: URLSearchParams) {
-  const types = listParam(params, "types").filter(type => KINDS.includes(type))
-  const tags = listParam(params, "tag").filter(tag => index.tags.includes(tag))
-  let entries = index.entries
-
-  if (types.length > 0) {
-    entries = entries.filter(entry => types.includes(entry.kind))
-  }
-
-  if (tags.length > 0) {
-    entries = entries.filter(entry => entry.tags.some(tag => tags.includes(tag)))
-  }
-
-  return entries
+export function feedFor(kind?: Kind) {
+  return FEEDS.find(feed => feed.kind === kind)!
 }
 
-export function atomFeed(entries: FeedEntry[], requestUrl: URL) {
-  const fullPath = `${requestUrl.pathname}${requestUrl.search}`
-  const selfUrl = `${SITE_URL}${fullPath}`
+export async function feedResponse(feed: Feed) {
+  return new Response(await atomFeed(feed, await publishedEntries(feed.kind)), {
+    headers: { "Content-Type": "application/xml; charset=utf-8" }
+  })
+}
+
+async function atomFeed(feed: Feed, entries: Entry[]) {
   const lines = [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<?xml-stylesheet href="/feed/style" type="text/xsl"?>',
+    `<?xml-stylesheet href="${STYLESHEET_PATH}" type="text/xsl"?>`,
     '<feed xml:lang="en-US" xmlns="http://www.w3.org/2005/Atom">',
-    `  <id>tag:${FEED_HOST},2005:${escape(fullPath)}</id>`,
+    `  <id>tag:${FEED_HOST},2005:${feed.path}</id>`,
     `  <link rel="alternate" type="text/html" href="${SITE_URL}/"/>`,
-    `  <link rel="self" type="application/atom+xml" href="${escapeAttribute(selfUrl)}"/>`,
-    `  <title>${AUTHOR_NAME}</title>`
+    `  <link rel="self" type="application/atom+xml" href="${SITE_URL}${feed.path}"/>`,
+    `  <title>${escape(feed.title)}</title>`
   ]
 
   if (entries.length > 0) {
@@ -56,7 +47,7 @@ export function atomFeed(entries: FeedEntry[], requestUrl: URL) {
   }
 
   for (const entry of entries) {
-    lines.push(...entryLines(entry))
+    lines.push(...await entryLines(entry))
   }
 
   lines.push("</feed>")
@@ -64,21 +55,27 @@ export function atomFeed(entries: FeedEntry[], requestUrl: URL) {
   return lines.join("\n") + "\n"
 }
 
-function entryLines(entry: FeedEntry) {
+function latestUpdate(entries: Entry[]) {
+  return entries.map(entry => entry.updatedAt).sort((a, b) => a.getTime() - b.getTime()).at(-1)!
+}
+
+async function entryLines(entry: Entry) {
+  const content = `<div class="lexxy-content">\n  ${absolutizeUrls(await entry.html())}</div>\n`
+  const excerpt = await entry.excerpt()
   let summary = '    <summary type="html"/>'
 
-  if (entry.summary) {
-    summary = `    <summary type="html">${escape(entry.summary)}</summary>`
+  if (excerpt) {
+    summary = `    <summary type="html">${escape(excerpt)}</summary>`
   }
 
   return [
     "  <entry>",
-    `    <id>tag:${FEED_HOST},2005:${entry.id}</id>`,
+    `    <id>tag:${FEED_HOST},2005:${entry.feedId}</id>`,
     `    <published>${timestamp(entry.publishedAt)}</published>`,
     `    <updated>${timestamp(entry.updatedAt)}</updated>`,
     `    <link rel="alternate" type="text/html" href="${SITE_URL}${escapeAttribute(entry.path)}"/>`,
     `    <title>${escape(entry.title)}</title>`,
-    `    <content type="html">${escape(entry.content)}</content>`,
+    `    <content type="html">${escape(content)}</content>`,
     summary,
     "    <author>",
     `      <name>${AUTHOR_NAME}</name>`,
@@ -88,16 +85,18 @@ function entryLines(entry: FeedEntry) {
   ]
 }
 
-function listParam(params: URLSearchParams, name: string) {
-  return (params.get(name) ?? "").split(",").filter(value => value !== "")
+// Feed readers show the content away from the site, so its links and images need the host
+function absolutizeUrls(html: string) {
+  return html
+    .replace(/\b(src|href|poster)="\/(?!\/)/g, `$1="${SITE_URL}/`)
+    .replace(/\bsrcset="([^"]+)"/g, (_, srcset: string) => {
+      const candidates = srcset.split(",").map(candidate => candidate.trim().replace(/^\/(?!\/)/, `${SITE_URL}/`))
+      return `srcset="${candidates.join(", ")}"`
+    })
 }
 
-function latestUpdate(entries: FeedEntry[]) {
-  return entries.map(entry => entry.updatedAt).sort().at(-1)!
-}
-
-function timestamp(iso: string) {
-  return iso.replace(/\.\d{3}Z$/, "Z")
+function timestamp(date: Date) {
+  return date.toISOString().replace(/\.\d{3}Z$/, "Z")
 }
 
 function escape(text: string) {

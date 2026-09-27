@@ -1,10 +1,9 @@
 import type { APIRoute } from "astro"
 import { env } from "cloudflare:workers"
-import type { FeedIndex } from "~/lib/feed"
 
 export const prerender = false
 
-const INDEX_PATH = "/feed/entries.json"
+const PATHS_INDEX = "/entry-paths.json"
 const NOT_FOUND_PAGE = "/404.html"
 const SECTIONS: Record<string, string> = { "": "article", talks: "talk", snaps: "snap" }
 
@@ -28,8 +27,8 @@ async function canonicalPathFor(url: URL) {
   if (match) {
     const kind = SECTIONS[match[1] ?? ""]
     const slugId = match[2].split("-").at(-1)
-    const index: FeedIndex = await (await env.ASSETS.fetch(new URL(INDEX_PATH, url))).json()
-    const entry = index.entries.find(candidate => candidate.kind === kind && candidate.path.split("-").at(-1) === slugId)
+    const entries: Array<{ kind: string, path: string }> = await (await env.ASSETS.fetch(new URL(PATHS_INDEX, url))).json()
+    const entry = entries.find(candidate => candidate.kind === kind && candidate.path.split("-").at(-1) === slugId)
 
     if (entry && entry.path !== url.pathname) {
       return entry.path

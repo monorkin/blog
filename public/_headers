@@ -1,4 +1,16 @@
-/feed/style
+/feed
+  Content-Type: application/xml; charset=utf-8
+
+/articles/feed
+  Content-Type: application/xml; charset=utf-8
+
+/talks/feed
+  Content-Type: application/xml; charset=utf-8
+
+/snaps/feed
+  Content-Type: application/xml; charset=utf-8
+
+/feed.xsl
   Content-Type: application/xslt+xml; charset=utf-8
 
 /up

@@ -1,20 +1,15 @@
 import stylesheetUrl from "~/styles/app.css?url"
-import { allTags } from "~/lib/tags"
+import { FEEDS } from "~/lib/feed"
 
-// Styles the Atom feed so it reads like a web page when opened in a browser
-const TYPES = [ "article", "snap", "talk" ]
-
+// Styles the Atom feeds so they read like a web page when opened in a browser
 export async function GET() {
-  const tags = await allTags()
-
-  return new Response(stylesheet(tags.map(tag => tag.name)), {
+  return new Response(stylesheet(), {
     headers: { "Content-Type": "application/xslt+xml; charset=utf-8" }
   })
 }
 
-function stylesheet(tagNames: string[]) {
-  const typeLinks = TYPES.map(type => filterLink(`/feed?types=${type}`, `${titleize(type)}s`)).join("\n")
-  const tagLinks = tagNames.map(name => filterLink(`/feed?tag=${name}`, titleize(name))).join("\n")
+function stylesheet() {
+  const feedLinks = FEEDS.map(feed => feedLink(feed.path, feed.label)).join("\n")
 
   return `<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -53,21 +48,10 @@ function stylesheet(tagNames: string[]) {
 
             <div class="feed__filter-section">
               <p class="feed__filter-label">
-                Filter by type:
+                Feeds:
               </p>
               <ul class="feed__filter-list">
-                <li><a href="/feed">Everything</a></li>
-${typeLinks}
-              </ul>
-            </div>
-
-            <div class="feed__filter-section">
-              <p class="feed__filter-label">
-                Filter by tag:
-              </p>
-              <ul class="feed__filter-list">
-                <li><a href="/feed">Everything</a></li>
-${tagLinks}
+${feedLinks}
               </ul>
             </div>
 
@@ -103,14 +87,6 @@ ${tagLinks}
 `
 }
 
-function filterLink(href: string, label: string) {
-  return `                  <li>\n                    <a href="${href}">${label}</a>\n                  </li>`
-}
-
-// Rails' String#titleize for tag names like "today-i-learned"
-function titleize(name: string) {
-  return name
-    .split(/[-_\s]+/)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ")
+function feedLink(href: string, label: string) {
+  return `                <li><a href="${href}">${label}</a></li>`
 }

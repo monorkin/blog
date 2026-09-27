@@ -38,30 +38,36 @@ Later pages are `/<index>/page/N`, not `/<index>/N`: `/talks/2` is an old talk U
 redirects. The Rails app paginated with `?page=N`; those URLs still answer, with the first
 page, because static files ignore the query string.
 
+The feeds, `/feed`, `/articles/feed`, `/talks/feed` and `/snaps/feed`, are static files too
+(`doc/feed.md`).
+
 ## The Worker
 
-These are rendered on request (`export const prerender = false`):
+Static files answer first, except for three paths `run_worker_first` in `wrangler.jsonc`
+sends to the Worker, whose entry is `src/worker.ts`:
 
 | URL | File | What |
 |---|---|---|
-| `/feed` | `src/pages/feed.ts` | The Atom feed, `doc/feed.md` |
-| `/articles/rss`, `/articles/atom` | `src/pages/articles/rss.ts`, `atom.ts` | 301 to `/feed?types=article`, keeping `?tag=` |
-| anything else | `src/pages/[...path].ts` | Slug redirects, then 404 |
+| `/feed?types=X` | `src/worker.ts` | 301 to `X`'s feed when there's exactly one type; otherwise the built `/feed` |
+| `/articles/rss`, `/articles/atom` | `src/worker.ts` | 301 to `/articles/feed`, dropping `?tag=` |
+| anything that isn't a file | `src/pages/[...path].ts` | Slug redirects, then 404 (`prerender = false`) |
 
-The catch-all looks an unknown path up by the ID at the end of its last segment:
+The catch-all looks an unknown path up by the ID at the end of its last segment, in
+`/entry-paths.json`, which the build writes:
 `/old-title-AHcddmIf21lt`, `/AHcddmIf21lt` and `/talks/whatever-uM1SflOFpRUk` all redirect
 (301) to the entry's current URL, as the Rails app found entries by ID alone. Anything else
 gets `public/404.html` with a 404.
 
 ## Redirects and headers
 
-`public/_redirects` holds the static redirects: `/articles/atom_style` to `/feed/style`,
-the numeric talk URLs (`/talks/1` to `/talks/15`, and `/talks/1050011312`) the Rails app
-redirected, and `/talks/page/*` to `/talks`, from when talks were paginated. Those IDs are
-frozen; new talks don't get one.
+`public/_redirects` holds the static redirects: `/feed/style` and `/articles/atom_style`
+to `/feed.xsl`, the numeric talk URLs (`/talks/1` to `/talks/15`, and `/talks/1050011312`)
+the Rails app redirected, and `/talks/page/*` to `/talks`, from when talks were paginated.
+Those IDs are frozen; new talks don't get one.
 
-`public/_headers` gives `/feed/style` and `/up` their content types, since neither has an
-extension. The adapter adds long cache headers for `/_astro/*` to it at build time.
+`public/_headers` gives the four feeds, `/feed.xsl` and `/up` their content types, since
+the extension doesn't say it. The adapter adds long cache headers for `/_astro/*` to it at
+build time.
 
 Workers serves `/404.html` and the other error pages with a 307 to `/404` and so on.
 

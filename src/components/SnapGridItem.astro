@@ -8,7 +8,7 @@ interface Props {
 }
 
 const THUMBNAIL_SIZE = 400
-const THUMBNAIL_SIZES = "(width >= 640px) 300px, 33vw"
+const THUMBNAIL_SIZES = "(width >= 600px) 300px, 33vw"
 
 const { snap } = Astro.props
 const data = snap.source.data as CollectionEntry<"snaps">["data"]

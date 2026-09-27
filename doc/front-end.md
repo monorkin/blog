@@ -86,8 +86,8 @@ elements through `data-*` attributes, so they also work on content added later.
 ## Snaps
 
 `/snaps` is a grid of square thumbnails up to 1200px wide, wider than the reading column,
-four across on a desktop and three on a phone. Clicking one opens the snap in a lightbox
-without leaving the page; the snap's own page, `/snaps/:slug-:id`, is the same lightbox as a
+three across on a phone and a tablet, four where 250px thumbnails fit. Clicking one opens
+the snap in a lightbox without leaving the page; the snap's own page, `/snaps/:slug-:id`, is the same lightbox as a
 dark band between the header and the footer, so its white controls stay visible.
 
 ## Search

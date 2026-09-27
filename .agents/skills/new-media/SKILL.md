@@ -32,8 +32,14 @@ No size limit applies here; a 40 MB video is fine.
 bin/media variants
 ```
 
-It adds the file to `src/data/media.json` with its size and variants. Videos need `ffprobe`,
-which `bin/setup` installs. The manifest change is the part that goes in git.
+It first strips the original's metadata in place: GPS and location, camera and serial
+numbers, dates, maker notes, comments, everything but the orientation (and an image's colour
+profile). Originals are public on R2, and a phone photo says where it was taken. Then it adds
+the file to `src/data/media.json` with its size and variants. It needs `ffprobe`, `ffmpeg`
+and `exiv2`, which `bin/setup` installs. The manifest change is the part that goes in git.
+
+Always run it before a sync: `bin/media sync` refuses to upload an original that still has
+location data, and names it.
 
 ## 3. Use the key
 

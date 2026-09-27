@@ -14,8 +14,9 @@ bin/generate article "Title"   # a new draft article, talk, snap or project (doc
 
 ## bin/setup
 
-Installs what `.mise.toml` pins: Node, gum and rclone, and ffmpeg as a system package
-(`[bootstrap.packages]`, for `ffprobe`), then the npm packages. Astro, wrangler, sharp and
+Installs what `.mise.toml` pins: Node, gum and rclone, and ffmpeg and exiv2 as system
+packages (`[bootstrap.packages]`, for reading video sizes and stripping metadata from
+originals), then the npm packages. Astro, wrangler, sharp and
 Pagefind are npm packages, so their versions are in `package.json` and `package-lock.json`,
 not in mise. On a machine without `node_modules` it runs `npm ci`, so it gets exactly the
 lockfile; after that `npm install`, which does nothing when nothing changed. It is safe to

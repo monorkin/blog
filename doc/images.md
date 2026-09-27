@@ -80,9 +80,9 @@ bin/media pull              # fetch the originals from R2 into media/originals
 bin/media serve             # serve media/ on http://localhost:4322
 ```
 
-`variants` reads `media/originals/` with sharp, only makes variants that are missing or older
-than their original, removes variants whose original is gone, and rewrites the manifest
-from scratch. It makes each placeholder from the smallest variant and keeps the previous
+`variants` first strips each original's metadata in place (below), then reads
+`media/originals/` with sharp, only makes variants that are missing or older than their
+original, removes variants whose original is gone, and rewrites the manifest from scratch. It makes each placeholder from the smallest variant and keeps the previous
 one while the original's size hasn't changed. Video sizes come from `ffprobe`, which
 `bin/setup` installs.
 
@@ -97,7 +97,27 @@ under 2400, so nothing is upscaled. GIFs and SVGs get no variants and are served
 so animations keep playing. Videos are served as they are too.
 
 `sync` only copies; it never deletes from the bucket, and uploads with a year-long
-`Cache-Control`, so a changed file needs a new name.
+`Cache-Control`, so a changed file needs a new name. It compares files by size and
+checksum, not modification time.
+
+### Metadata
+
+Originals are public on R2, and a photo or video straight off a phone carries where it was
+taken, the camera or phone and its serial number, and when. The variants never had any
+(sharp drops it), but the originals did, so `bin/media variants` strips them in place
+before anything else, without re-encoding:
+
+- Images (JPEG, PNG, WebP): exiv2 removes all EXIF, XMP and IPTC data and comments, maker
+  notes and thumbnails included, then puts back the orientation tag, so nothing turns
+  sideways. The colour profile stays; the pixels don't change.
+- Videos: ffmpeg remuxes them without container, stream or chapter metadata (location,
+  make, model, software, creation time). The rotation is kept; the frames are copied.
+
+A stripped file keeps its modification time, so its variants aren't made again. GIFs and
+SVGs aren't touched; neither had any.
+
+`bin/media sync` checks every original first and refuses to upload one that still has GPS
+or location data, naming it. Run `bin/media variants`, then sync again.
 
 **Syncing changes Cloudflare. Only do it when Stanko asks.**
 

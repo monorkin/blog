@@ -14,11 +14,15 @@ R2_ACCOUNT_ID = "968c9cb19aac8b4e00f9f3b62f75de4e"
 R2_BUCKET = "stanko-io"
 
 [bootstrap.packages]
-# bin/media reads a video's size with ffprobe. Sharp, workerd and Pagefind ship prebuilt
-# binaries through npm, and the export from the Rails app runs with that app's own Ruby.
+# bin/media reads a video's size with ffprobe, and strips metadata from originals with exiv2
+# and ffmpeg. Sharp, workerd and Pagefind ship prebuilt binaries through npm, and the export
+# from the Rails app runs with that app's own Ruby.
 # Arch
 "pacman:ffmpeg" = "latest"
+"pacman:exiv2" = "latest"
 # Debian/Ubuntu
 "apt:ffmpeg" = "latest"
+"apt:exiv2" = "latest"
 # Fedora
 "dnf:ffmpeg-free" = "latest"
+"dnf:exiv2" = "latest"

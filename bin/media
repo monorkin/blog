@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 // Uploaded media lives outside git: originals in media/originals/, served from R2 in production.
 //
-//   bin/media variants          make the responsive variants and write src/data/media.json
-//   bin/media sync [--dry-run]  copy media/originals and media/variants to R2
+//   bin/media variants          strip metadata from originals, make the responsive variants
+//                               and write src/data/media.json
+//   bin/media sync [--dry-run]  copy media/originals and media/variants to R2, refusing any
+//                               original that still has location data
 //   bin/media pull              fetch the originals from R2 into media/originals
 //   bin/media serve [--port N]  serve media/ locally, as bin/preview does
 //
@@ -12,7 +14,7 @@
 // under `op run`, which reads them from 1Password through .env.1password. Nothing else here
 // touches 1Password, sync --dry-run included.
 import { existsSync } from "node:fs"
-import { mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises"
+import { mkdir, readdir, readFile, rename, rm, stat, utimes, writeFile } from "node:fs/promises"
 import { createServer } from "node:http"
 import { dirname, extname, join, relative, sep } from "node:path"
 import { spawnSync } from "node:child_process"
@@ -36,6 +38,11 @@ const FALLBACK_FORMATS = { jpeg: "jpeg", jpg: "jpeg", png: "png", webp: null }
 const VIDEO_TYPES = { ".mp4": "video/mp4", ".webm": "video/webm", ".mov": "video/quicktime" }
 const IMAGE_TYPES = { jpeg: "image/jpeg", png: "image/png", webp: "image/webp", gif: "image/gif", svg: "image/svg+xml" }
 const EXTENSIONS = { jpeg: "jpg", png: "png", webp: "webp" }
+const STRIPPABLE_IMAGES = new Set([ ".jpg", ".jpeg", ".png", ".webp" ])
+const ORIENTATION_KEY = "Exif.Image.Orientation"
+// Tags a remux writes itself, which say nothing about who made the video or where
+const HARMLESS_VIDEO_TAGS = new Set([ "major_brand", "minor_version", "compatible_brands", "handler_name", "vendor_id", "language", "DURATION" ])
+const LOCATION_TAG = /GPS|location|ISO6709|City|Country|Sublocation|ProvinceState/i
 const PLACEHOLDER_SIZE = 16
 const PLACEHOLDER_QUALITY = 30
 const CONCURRENCY = 4
@@ -70,9 +77,15 @@ async function makeVariants() {
   const previous = await previousManifest()
   const manifest = {}
   let made = 0
+  let stripped = 0
 
   await eachInParallel(files, async file => {
     const key = toKey(file)
+
+    if (await stripMetadata(file)) {
+      stripped += 1
+    }
+
     const entry = await describe(file)
 
     if (entry.formats) {
@@ -87,7 +100,91 @@ async function makeVariants() {
   await pruneVariants(new Set(Object.keys(manifest)))
   await writeFile(MANIFEST, JSON.stringify(sortedByKey(manifest), null, 2) + "\n")
 
-  console.log(`${files.length} originals, ${made} variants made, manifest in ${relative(ROOT, MANIFEST)}`)
+  console.log(`${files.length} originals, ${stripped} stripped of metadata, ${made} variants made, manifest in ${relative(ROOT, MANIFEST)}`)
+}
+
+// Originals are public on R2, and a photo or video straight off a phone says where it was
+// taken, with what, and when. Everything but the orientation goes, without re-encoding:
+// exiv2 for images (it keeps the colour profile), a remux for videos. The file keeps its
+// modification time, so its variants aren't made again.
+async function stripMetadata(file) {
+  const { atime, mtime } = await stat(file)
+  let stripped = false
+
+  if (VIDEO_TYPES[extname(file).toLowerCase()]) {
+    stripped = videoTags(file).some(([ key, value ]) => !isHarmlessVideoTag(key, value))
+
+    if (stripped) {
+      await remuxWithoutMetadata(file)
+    }
+  } else if (STRIPPABLE_IMAGES.has(extname(file).toLowerCase())) {
+    stripped = imageMetadataKeys(file).some(key => key !== ORIENTATION_KEY) || hasImageComment(file)
+
+    if (stripped) {
+      await removeImageMetadata(file)
+    }
+  }
+
+  if (stripped) {
+    await utimes(file, atime, mtime)
+  }
+
+  return stripped
+}
+
+function videoTags(file) {
+  const result = spawnSync("ffprobe", [ "-v", "error", "-show_entries", "format_tags:stream_tags", "-of", "json", file ], { encoding: "utf8" })
+  const probe = JSON.parse(result.stdout)
+
+  return [ probe.format, ...(probe.streams ?? []) ].flatMap(part => Object.entries(part?.tags ?? {}))
+}
+
+// A remux names ffmpeg as the encoder; any other encoder is the app that made the video
+function isHarmlessVideoTag(key, value) {
+  if (/^encoder$/i.test(key)) {
+    return /^Lav[fc]/.test(value)
+  } else {
+    return HARMLESS_VIDEO_TAGS.has(key)
+  }
+}
+
+async function remuxWithoutMetadata(file) {
+  const remuxed = `${file}.remuxed${extname(file)}`
+  const flags = [ "-map", "0", "-c", "copy", "-map_metadata", "-1", "-map_metadata:s", "-1", "-map_chapters", "-1", "-fflags", "+bitexact" ]
+
+  if ([ ".mp4", ".mov" ].includes(extname(file).toLowerCase())) {
+    flags.push("-movflags", "+faststart")
+  }
+
+  run("ffmpeg", [ "-v", "error", "-y", "-i", file, ...flags, remuxed ])
+  await rename(remuxed, file)
+}
+
+function imageMetadataKeys(file) {
+  return spawnSync("exiv2", [ "-q", "-PEIXk", file ], { encoding: "utf8" }).stdout.split("\n").map(key => key.trim()).filter(Boolean)
+}
+
+function hasImageComment(file) {
+  return spawnSync("exiv2", [ "-q", "-pc", file ], { encoding: "utf8" }).stdout.trim() !== ""
+}
+
+async function removeImageMetadata(file) {
+  const { orientation = 1 } = await sharp(file).metadata()
+
+  run("exiv2", [ "-q", "-d", "a", file ])
+
+  if (orientation > 1) {
+    run("exiv2", [ "-q", "-M", `set ${ORIENTATION_KEY} Short ${orientation}`, file ])
+  }
+}
+
+function run(command, args) {
+  const result = spawnSync(command, args, { stdio: [ "ignore", "ignore", "inherit" ] })
+
+  if (result.error || result.status !== 0) {
+    console.error(`${command} failed on ${relative(ROOT, args.at(-1))}. bin/setup installs ffmpeg and exiv2.`)
+    process.exit(1)
+  }
 }
 
 async function describe(file) {
@@ -256,10 +353,13 @@ async function pruneVariants(keys) {
 
 // R2
 
-function syncToR2(options) {
+async function syncToR2(options) {
   const dryRun = options.includes("--dry-run")
+  // Stripping keeps a file's modification time, so compare sizes and checksums, not times
   const copy = () => rclone([ "copy", MEDIA, `r2:${requireEnv("R2_BUCKET")}`, "--include", "/originals/**", "--include", "/variants/**",
-    "--header-upload", `Cache-Control: ${R2_CACHE_CONTROL}`, "--transfers", "8", ...flagsFor(dryRun) ])
+    "--checksum", "--header-upload", `Cache-Control: ${R2_CACHE_CONTROL}`, "--transfers", "8", ...flagsFor(dryRun) ])
+
+  refuseLocatedOriginals(await originals())
 
   if (dryRun && hasR2Keys()) {
     copy()
@@ -267,6 +367,25 @@ function syncToR2(options) {
     return describeUpload()
   } else {
     withR2Keys(copy)
+  }
+}
+
+// Nothing that says where it was taken goes up; bin/media variants strips it
+function refuseLocatedOriginals(files) {
+  const located = files.filter(file => {
+    if (VIDEO_TYPES[extname(file).toLowerCase()]) {
+      return videoTags(file).some(([ key ]) => LOCATION_TAG.test(key))
+    } else if (STRIPPABLE_IMAGES.has(extname(file).toLowerCase())) {
+      return imageMetadataKeys(file).some(key => LOCATION_TAG.test(key))
+    } else {
+      return false
+    }
+  })
+
+  if (located.length > 0) {
+    console.error(`Not syncing: ${located.length} originals still say where they were taken. Run bin/media variants to strip them.`)
+    located.forEach(file => console.error(`  ${relative(ROOT, file)}`))
+    process.exit(1)
   }
 }
 

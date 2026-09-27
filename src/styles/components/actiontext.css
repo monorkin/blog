@@ -171,20 +171,6 @@
     max-inline-size: 50%;
   }
 
-  .lexxy-content .attachment__image {
-    background-color: var(--color-border-subtle);
-    animation: attachment-image-pulse 1.5s ease-in-out infinite;
-  }
-
-  .lexxy-content .attachment__image--loaded {
-    background-color: transparent;
-    animation: none;
-  }
-
-  @keyframes attachment-image-pulse {
-    50% { background-color: var(--color-surface); }
-  }
-
   .lexxy-content .attachment.attachment--file.attachment--mp4 {
     border: 0;
   }
@@ -353,8 +339,18 @@
   --attachment-max-block-size: 32rem;
 }
 
+/* The picture is the image's box, sized by attachment__image--sized below, so its placeholder
+   covers exactly the image; the image fills it */
 .lexxy-content .attachment picture {
-  display: contents;
+  display: block;
+  margin-inline: auto;
+  border-radius: var(--lexxy-radius);
+}
+
+.lexxy-content .attachment__image--sized > img {
+  inline-size: 100%;
+  block-size: 100%;
+  max-block-size: none;
 }
 
 /* Markdown tables look like Lexxy's: the header row, and the bold cells that lead each row,

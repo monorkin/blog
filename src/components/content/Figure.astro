@@ -1,5 +1,5 @@
 ---
-import { findMedia, mediaFolderFor, resolveMediaKey, sources, variantAtLeast } from "~/lib/media"
+import { findMedia, mediaFolderFor, placeholderStyle, resolveMediaKey, sources, variantAtLeast } from "~/lib/media"
 
 interface Props {
   media?: string
@@ -37,7 +37,8 @@ if (media) {
     src: variantAtLeast(key, 1200),
     fullSrc: variantAtLeast(key, LIGHTBOX_WIDTH),
     extraSources: imageSources.slice(0, -1),
-    fallback: imageSources.at(-1)
+    fallback: imageSources.at(-1),
+    placeholder: placeholderStyle(key)
   }
 } else {
   image = {
@@ -47,28 +48,29 @@ if (media) {
     src: Astro.props.src!,
     fullSrc: Astro.props.src!,
     extraSources: [],
-    fallback: undefined
+    fallback: undefined,
+    placeholder: undefined
   }
 }
 
 const expandable = !inGallery && image.height > image.width
 const classes = [ "attachment", "attachment--preview", `attachment--${image.extension}`, expandable && "attachment--expandable" ]
+const pictureStyle = `--attachment-width: ${image.width}; --attachment-height: ${image.height}; ${image.placeholder ?? ""}`
 ---
 
 <figure class:list={classes} data-full-src={image.fullSrc}>
-  <picture>
+  <picture class:list={[ "attachment__image--sized", { placeholder: image.placeholder } ]} style={pictureStyle}>
     {image.extraSources.map(source => <source type={source.type} srcset={source.srcset} sizes={sizes} />)}
     <img
       alt={alt}
       loading="lazy"
       decoding="async"
-      class="attachment__image attachment__image--sized"
+      class="attachment__image"
       width={image.width}
       height={image.height}
       src={image.src}
       srcset={image.fallback?.srcset}
       sizes={image.fallback && sizes}
-      style={`--attachment-width: ${image.width}; --attachment-height: ${image.height};`}
     />
   </picture>
   <figcaption class="attachment__caption">{caption}</figcaption>

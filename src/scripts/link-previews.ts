@@ -10,7 +10,7 @@ const ARROW_INSET = 16
 interface LinkPreview {
   title?: string
   description?: string
-  image?: { src: string, width?: number, height?: number }
+  image?: { src: string, width?: number, height?: number, placeholder?: string }
 }
 
 const data = document.getElementById("link-previews")
@@ -87,6 +87,11 @@ function createPopup(preview: LinkPreview) {
     if (preview.image.width && preview.image.height) {
       image.width = preview.image.width
       image.height = preview.image.height
+    }
+
+    if (preview.image.placeholder) {
+      image.classList.add("placeholder")
+      image.style.cssText = preview.image.placeholder
     }
 
     linkPreview.append(image)

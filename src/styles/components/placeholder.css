@@ -1,0 +1,42 @@
+@layer components {
+  /* A blurred version of the image, and its average color, fill the image's box until it
+     loads. The properties come from placeholderStyle() in src/lib/media.ts; the class goes on
+     the image itself, or on a box around it whose size is the image's. */
+  .placeholder {
+    background: var(--placeholder) center / cover no-repeat, var(--placeholder-color);
+  }
+
+  /* Once loaded, nothing shows through an image's transparent parts */
+  img.placeholder.placeholder__image--loaded {
+    background: none;
+  }
+
+  .placeholder:has(> img.placeholder__image--loaded) {
+    animation: placeholder-clear 0s var(--placeholder-fade) forwards;
+  }
+
+  /* An image in a box fades in over it, when there's a script to say it has loaded
+     (src/scripts/placeholders.ts). Should the script never run, the image shows anyway. */
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .placeholder > img {
+      transition: opacity var(--placeholder-fade) ease-out;
+    }
+
+    .placeholder > img:not(.placeholder__image--loaded) {
+      opacity: 0;
+      animation: placeholder-reveal 0s 4s forwards;
+    }
+  }
+
+  @keyframes placeholder-clear {
+    to { background: none; }
+  }
+
+  @keyframes placeholder-reveal {
+    to { opacity: 1; }
+  }
+}
+
+:root {
+  --placeholder-fade: 0.2s;
+}

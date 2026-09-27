@@ -12,7 +12,7 @@
 // under `op run`, which reads them from 1Password through .env.1password. Nothing else here
 // touches 1Password, sync --dry-run included.
 import { existsSync } from "node:fs"
-import { mkdir, readdir, rm, stat, writeFile } from "node:fs/promises"
+import { mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises"
 import { createServer } from "node:http"
 import { dirname, extname, join, relative, sep } from "node:path"
 import { spawnSync } from "node:child_process"
@@ -36,6 +36,8 @@ const FALLBACK_FORMATS = { jpeg: "jpeg", jpg: "jpeg", png: "png", webp: null }
 const VIDEO_TYPES = { ".mp4": "video/mp4", ".webm": "video/webm", ".mov": "video/quicktime" }
 const IMAGE_TYPES = { jpeg: "image/jpeg", png: "image/png", webp: "image/webp", gif: "image/gif", svg: "image/svg+xml" }
 const EXTENSIONS = { jpeg: "jpg", png: "png", webp: "webp" }
+const PLACEHOLDER_SIZE = 16
+const PLACEHOLDER_QUALITY = 30
 const CONCURRENCY = 4
 const SERVE_PORT = 4322
 const R2_CACHE_CONTROL = "public, max-age=31536000"
@@ -65,6 +67,7 @@ if (commands[command]) {
 
 async function makeVariants() {
   const files = await originals()
+  const previous = await previousManifest()
   const manifest = {}
   let made = 0
 
@@ -75,6 +78,7 @@ async function makeVariants() {
     if (entry.formats) {
       const count = await writeVariants(file, key, entry)
       made += count
+      Object.assign(entry, await placeholderFor(key, entry, previous[key]))
     }
 
     manifest[key] = entry
@@ -197,6 +201,32 @@ function encode(image, format) {
     case "webp": return image.webp({ quality: 80 })
     case "jpeg": return image.jpeg({ quality: 82, mozjpeg: true })
     case "png": return image.png({ compressionLevel: 9 })
+  }
+}
+
+// A blurred stand-in the page shows while the image loads: a tiny WebP and the average color.
+// Made from the smallest variant, which is already the right way up, and kept from the last
+// manifest while the original is the same size.
+async function placeholderFor(key, entry, previous) {
+  if (previous?.placeholder && previous.bytes === entry.bytes) {
+    return { placeholder: previous.placeholder, color: previous.color }
+  } else {
+    const smallest = variantPath(key, `${entry.widths[0]}w`, "webp")
+    const tiny = await sharp(smallest).resize(PLACEHOLDER_SIZE, PLACEHOLDER_SIZE, { fit: "inside" }).webp({ quality: PLACEHOLDER_QUALITY }).toBuffer()
+    const { channels } = await sharp(tiny).stats()
+
+    return {
+      placeholder: `data:image/webp;base64,${tiny.toString("base64")}`,
+      color: `#${channels.slice(0, 3).map(channel => Math.round(channel.mean).toString(16).padStart(2, "0")).join("")}`
+    }
+  }
+}
+
+async function previousManifest() {
+  if (existsSync(MANIFEST)) {
+    return JSON.parse(await readFile(MANIFEST, "utf8"))
+  } else {
+    return {}
   }
 }
 

@@ -49,6 +49,27 @@ width and height (rotation applied, for photos and videos), and which variants e
 Components read it to write `srcset`, `width` and `height` without touching the files, which
 is why the build doesn't need `media/`. A key missing from it fails the build.
 
+Each resizable image (JPEG, PNG, WebP; not GIFs, SVGs or videos) also has a `placeholder`,
+a WebP data URI no longer than 16px, and `color`, its average as a hex string. They make up
+about 95 KB of the manifest's 240 KB, and add about 0.8 KB to the page per image shown.
+
+## Placeholders
+
+While an image loads, its box shows a blurred version of it over its average color instead of
+a gap. `placeholderStyle(key)` in `src/lib/media.ts` turns the manifest's tiny image into an
+SVG that blurs it (and keeps the blurred edges opaque) and returns it as custom properties;
+the `placeholder` class (`src/styles/components/placeholder.css`) paints them as a
+background. Give the class and the style to the element whose box is the image's:
+
+- a box around the image, like `<Figure>`'s `<picture>` or a snap thumbnail's link: the
+  image fades in over it in 0.2s, once `src/scripts/placeholders.ts` marks it loaded
+- the image or video itself, like a snap in the lightbox or a video's poster: the image
+  just covers it
+
+Without JavaScript, or with reduced motion, there's no fade; the image covers the
+placeholder as it loads. Once loaded, the placeholder goes, so nothing shows through
+transparent parts.
+
 ## bin/media
 
 ```bash
@@ -61,7 +82,9 @@ bin/media serve             # serve media/ on http://localhost:4322
 
 `variants` reads `media/originals/` with sharp, only makes variants that are missing or older
 than their original, removes variants whose original is gone, and rewrites the manifest
-from scratch. Video sizes come from `ffprobe`, which `bin/setup` installs.
+from scratch. It makes each placeholder from the smallest variant and keeps the previous
+one while the original's size hasn't changed. Video sizes come from `ffprobe`, which
+`bin/setup` installs.
 
 | Media | Widths | Squares |
 |---|---|---|
@@ -140,8 +163,8 @@ as images load.
 screenshot, so clicking one opens it full size in a lightbox, with arrows to move through the
 gallery (`src/scripts/gallery.ts`).
 
-`<Video>` renders an autoplaying, muted, looping video sized from the manifest, with its
-poster's 1200px variant. With `clip` it has no controls, for a short clip that stands in for a
+`<Video>` renders an autoplaying, muted, looping video sized from the manifest the way an
+image is, with its poster's 1200px variant and the poster's placeholder. With `clip` it has no controls, for a short clip that stands in for a
 GIF; convert GIFs to MP4 rather than adding them, since a GIF is many times bigger:
 
 ```bash

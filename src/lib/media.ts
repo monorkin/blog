@@ -13,7 +13,13 @@ export interface Media {
   formats?: string[]
   widths?: number[]
   squares?: number[]
+  placeholder?: string
+  color?: string
 }
+
+// The tiny image's longest side, as bin/media makes it, and how far it's blurred, in its pixels
+const PLACEHOLDER_SIZE = 16
+const PLACEHOLDER_BLUR = 1
 
 const EXTENSIONS: Record<string, string> = { jpeg: "jpg", png: "png", webp: "webp" }
 const MIME_TYPES: Record<string, string> = { jpeg: "image/jpeg", png: "image/png", webp: "image/webp" }
@@ -84,6 +90,25 @@ export function squareUrl(key: string, size: number, format?: string) {
 
   if (entry.squares?.includes(size)) {
     return variantUrl(key, `${size}sq`, format ?? entry.formats!.at(-1)!)
+  }
+}
+
+// Custom properties for the `placeholder` class (src/styles/components/placeholder.css): the
+// image's tiny version blurred by an SVG filter, over its average color. The filter makes the
+// blurred edges opaque, so they don't fade into the background.
+export function placeholderStyle(key: string) {
+  const entry = findMedia(key)
+
+  if (entry.placeholder) {
+    const scale = PLACEHOLDER_SIZE / Math.max(entry.width!, entry.height!)
+    const width = Math.max(1, Math.round(entry.width! * scale))
+    const height = Math.max(1, Math.round(entry.height! * scale))
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">` +
+      `<filter id="b" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="${PLACEHOLDER_BLUR}"/>` +
+      `<feComponentTransfer><feFuncA type="discrete" tableValues="1 1"/></feComponentTransfer></filter>` +
+      `<image width="100%" height="100%" preserveAspectRatio="none" filter="url(#b)" href="${entry.placeholder}"/></svg>`
+
+    return `--placeholder: url("data:image/svg+xml,${encodeURIComponent(svg)}"); --placeholder-color: ${entry.color};`
   }
 }
 

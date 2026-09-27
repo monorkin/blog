@@ -1,6 +1,6 @@
 ---
 import linkPreviews from "~/data/link-previews.json"
-import { findMedia, variantAtLeast } from "~/lib/media"
+import { findMedia, placeholderStyle, variantAtLeast } from "~/lib/media"
 
 interface Props {
   html: string
@@ -16,6 +16,7 @@ interface PreviewImage {
   src: string
   width?: number
   height?: number
+  placeholder?: string
 }
 
 const PREVIEW_IMAGE_WIDTH = 768
@@ -38,7 +39,7 @@ for (const href of hrefs) {
 function previewImage(key?: string) {
   if (key) {
     const { width, height } = findMedia(key)
-    return { src: variantAtLeast(key, PREVIEW_IMAGE_WIDTH), width, height }
+    return { src: variantAtLeast(key, PREVIEW_IMAGE_WIDTH), width, height, placeholder: placeholderStyle(key) }
   }
 }
 

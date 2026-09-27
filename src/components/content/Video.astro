@@ -1,5 +1,5 @@
 ---
-import { findMedia, mediaFolderFor, originalUrl, resolveMediaKey, variantAtLeast } from "~/lib/media"
+import { findMedia, mediaFolderFor, originalUrl, placeholderStyle, resolveMediaKey, variantAtLeast } from "~/lib/media"
 
 interface Props {
   media: string
@@ -19,13 +19,16 @@ const extension = media.split(".").pop()!.toLowerCase()
 const video = findMedia(media)
 
 let posterUrl
+let placeholder
 if (Astro.props.poster) {
-  posterUrl = variantAtLeast(resolveMediaKey(Astro.props.poster, folder), POSTER_WIDTH)
+  const posterKey = resolveMediaKey(Astro.props.poster, folder)
+  posterUrl = variantAtLeast(posterKey, POSTER_WIDTH)
+  placeholder = placeholderStyle(posterKey)
 }
 ---
 
 <figure class={`attachment attachment--preview attachment--${extension}`}>
-  <video controls={!clip} autoplay playsinline loop muted poster={posterUrl} width={video.width} height={video.height}>
+  <video class:list={[ "attachment__image--sized", { placeholder } ]} style={`--attachment-width: ${video.width}; --attachment-height: ${video.height}; ${placeholder ?? ""}`} controls={!clip} autoplay playsinline loop muted poster={posterUrl} width={video.width} height={video.height}>
     <source src={originalUrl(media)} type={type} />
   </video>
   <figcaption class="attachment__caption">{caption}</figcaption>

@@ -5,7 +5,7 @@ import Layout from "~/layouts/Layout.astro"
 import EntrySeoTags from "~/components/EntrySeoTags.astro"
 import Icon from "~/components/Icon.astro"
 import { publishedEntries, type Entry } from "~/lib/entries"
-import { findMedia, originalUrl, sources, variantAtLeast } from "~/lib/media"
+import { findMedia, originalUrl, placeholderStyle, sources, variantAtLeast } from "~/lib/media"
 import { isoTimestamp } from "~/lib/site"
 
 export const getStaticPaths = (async () => {
@@ -34,7 +34,7 @@ let original
 if (data.image) {
   const key = snap.mediaKey(data.image)
   const imageSources = sources(key)
-  image = { entry: findMedia(key), extraSources: imageSources.slice(0, -1), fallback: imageSources.at(-1), src: variantAtLeast(key, LIGHTBOX_FALLBACK_WIDTH) }
+  image = { entry: findMedia(key), extraSources: imageSources.slice(0, -1), fallback: imageSources.at(-1), src: variantAtLeast(key, LIGHTBOX_FALLBACK_WIDTH), placeholder: placeholderStyle(key) }
   original = originalUrl(key)
 }
 
@@ -42,7 +42,13 @@ let video
 if (data.video) {
   const key = snap.mediaKey(data.video)
   const videoMedia = findMedia(key)
-  video = { url: originalUrl(key), width: videoMedia.width, height: videoMedia.height, poster: data.poster && variantAtLeast(snap.mediaKey(data.poster), LIGHTBOX_FALLBACK_WIDTH) }
+  video = {
+    url: originalUrl(key),
+    width: videoMedia.width,
+    height: videoMedia.height,
+    poster: data.poster && variantAtLeast(snap.mediaKey(data.poster), LIGHTBOX_FALLBACK_WIDTH),
+    placeholder: data.poster && placeholderStyle(snap.mediaKey(data.poster))
+  }
   original = video.url
 }
 ---
@@ -70,12 +76,13 @@ if (data.video) {
             width={image.entry.width}
             height={image.entry.height}
             alt={snap.title}
-            class="lightbox__image"
+            class:list={[ "lightbox__image", { placeholder: image.placeholder } ]}
+            style={image.placeholder}
           />
         </picture>
       )}
       {video && (
-        <video class="lightbox__image" controls poster={video.poster} width={video.width} height={video.height}>
+        <video class:list={[ "lightbox__image", { placeholder: video.placeholder } ]} style={video.placeholder || undefined} controls poster={video.poster} width={video.width} height={video.height}>
           <source src={video.url} type={data.videoType} />
         </video>
       )}

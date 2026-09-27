@@ -72,7 +72,8 @@ elements through `data-*` attributes, so they also work on content added later.
 | `dialogs.ts` | Opens `[data-dialog-open="<id>"]` dialogs, closes on `[data-dialog-close]` and outside clicks |
 | `settings.ts` | The appearance radios, and placing the appearance popover |
 | `search.ts` | The search panels, and opening search on `/`, Ctrl/Cmd+K or a `[data-search-open]` link |
-| `attachments.ts` | Marks images loaded (ends the placeholder pulse), expands tall images on a phone |
+| `attachments.ts` | Expands tall images on a phone |
+| `placeholders.ts` | Marks images on a placeholder loaded, so they fade in over it (`doc/images.md`) |
 | `gallery.ts` | Opens a gallery's images full size in a lightbox, with arrow keys |
 | `pagination.ts` | Loads the next page when "Load more" comes near, and puts its content in place of the link |
 | `link-previews.ts` | The link preview popups in articles: popovers in the top layer, placed below or above the link, so they never move the text around it |

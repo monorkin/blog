@@ -41,5 +41,6 @@
     border-end-start-radius: var(--radius-lg);
     border-end-end-radius: var(--radius-lg);
     box-shadow: none;
+    background-size: contain;
   }
 }

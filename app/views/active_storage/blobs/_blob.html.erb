@@ -1,11 +1,16 @@
 <%
-  dimensions = local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, 768 ]
+  dimensions = local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, nil ]
   image_options = { resize_to_limit: dimensions, saver: { strip: true } }
   classes = %w[attachment]
   data = {}
 
   classes << "attachment--#{blob.representable? ? "preview" : "file"}"
   classes << "attachment--#{blob.filename.extension}"
+
+  if blob.image? && !local_assigns[:in_gallery] && blob.metadata["height"].to_i > blob.metadata["width"].to_i
+    classes << "attachment--expandable"
+    data.merge!(controller: "toggle-class", action: "click->toggle-class#toggle", toggle_class_active_class: "attachment--expanded")
+  end
 %>
 
 <%= content_tag(:figure, class: classes, data: data) do %>

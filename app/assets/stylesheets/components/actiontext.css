@@ -171,6 +171,10 @@
     max-inline-size: 50%;
   }
 
+  .lexxy-content .attachment--expandable img {
+    cursor: zoom-in;
+  }
+
   .lexxy-content .attachment.attachment--file.attachment--mp4 {
     border: 0;
   }
@@ -328,4 +332,10 @@
       --lexxy-color-code-token-variable: #ffa657;
     }
   }
+}
+
+/* Unlayered because Lexxy's unlayered max-block-size on images beats anything inside a layer */
+.lexxy-content .attachment--expanded img {
+  max-block-size: none;
+  cursor: zoom-out;
 }

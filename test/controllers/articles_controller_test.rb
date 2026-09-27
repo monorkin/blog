@@ -68,6 +68,21 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".lexxy-content ruby rt", text: "ko"
   end
 
+  test "GET show lets portrait images expand past the height cap" do
+    article = articles(:misguided_mark)
+    portrait = active_storage_blobs(:hiking_hut_blob)
+    landscape = active_storage_blobs(:hiking_moon_blob)
+    landscape.update!(metadata: landscape.metadata.merge(width: 1600, height: 1200))
+    article.update!(body: [ portrait, landscape ].map { ActionText::Attachment.from_attachable(it).to_html }.join)
+
+    get article_path(slug: article.to_param)
+
+    assert_response :success
+    assert_select "figure.attachment--expandable", count: 1, text: /hiking_hut\.jpg/
+    assert_select "figure.attachment--expandable[data-controller='toggle-class'][data-action='click->toggle-class#toggle'][data-toggle-class-active-class='attachment--expanded']", count: 1
+    assert_select "figure.attachment:not(.attachment--expandable)", text: /hiking_moon\.jpg/
+  end
+
   test "GET show resolves article by slug suffix only" do
     article = articles(:misguided_mark)
     entry = article.entry

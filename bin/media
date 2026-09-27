@@ -1,0 +1,379 @@
+#!/usr/bin/env node
+// Uploaded media lives outside git: originals in media/originals/, served from R2 in production.
+//
+//   bin/media variants          make the responsive variants and write src/data/media.json
+//   bin/media sync [--dry-run]  copy media/originals and media/variants to R2
+//   bin/media pull              fetch the originals from R2 into media/originals
+//   bin/media serve [--port N]  serve media/ locally, as bin/preview does
+//
+// sync and pull talk to R2 through rclone and its S3 API. R2_ACCOUNT_ID and R2_BUCKET come
+// from .mise.toml. The keys, R2_ACCESS_KEY_ID and R2_SECRET_ACCESS_KEY, are used from the
+// environment when they're set, as in CI; otherwise these two commands run themselves again
+// under `op run`, which reads them from 1Password through .env.1password. Nothing else here
+// touches 1Password, sync --dry-run included.
+import { existsSync } from "node:fs"
+import { mkdir, readdir, rm, stat, writeFile } from "node:fs/promises"
+import { createServer } from "node:http"
+import { dirname, extname, join, relative, sep } from "node:path"
+import { spawnSync } from "node:child_process"
+import { fileURLToPath } from "node:url"
+import sharp from "sharp"
+import { mediaHandler } from "../lib/media-server.js"
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
+const MEDIA = join(ROOT, "media")
+const ORIGINALS = join(MEDIA, "originals")
+const VARIANTS = join(MEDIA, "variants")
+const MANIFEST = join(ROOT, "src/data/media.json")
+
+const WIDTHS = [ 480, 800, 1200, 1600, 2400 ]
+const PROFILES = [
+  { prefix: "link-previews/", widths: [ 400, 768 ], squares: [] },
+  { prefix: "snaps/", widths: WIDTHS, squares: [ 400, 512, 800 ] },
+  { prefix: "", widths: WIDTHS, squares: [ 512 ] }
+]
+const FALLBACK_FORMATS = { jpeg: "jpeg", jpg: "jpeg", png: "png", webp: null }
+const VIDEO_TYPES = { ".mp4": "video/mp4", ".webm": "video/webm", ".mov": "video/quicktime" }
+const IMAGE_TYPES = { jpeg: "image/jpeg", png: "image/png", webp: "image/webp", gif: "image/gif", svg: "image/svg+xml" }
+const EXTENSIONS = { jpeg: "jpg", png: "png", webp: "webp" }
+const CONCURRENCY = 4
+const SERVE_PORT = 4322
+const R2_CACHE_CONTROL = "public, max-age=31536000"
+const R2_KEYS = [ "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY" ]
+const ONE_PASSWORD_ENV_FILE = join(ROOT, ".env.1password")
+// Stanko's personal account; a work account is signed in beside it
+const ONE_PASSWORD_ACCOUNT = "my.1password.eu"
+const UNDER_ONE_PASSWORD = "BIN_MEDIA_UNDER_OP_RUN"
+
+const commands = {
+  variants: makeVariants,
+  sync: syncToR2,
+  pull: pullFromR2,
+  serve: serveLocally
+}
+
+const [ command, ...options ] = process.argv.slice(2)
+
+if (commands[command]) {
+  await commands[command](options)
+} else {
+  console.error("Usage: bin/media variants | sync [--dry-run] | pull | serve [--port N]")
+  process.exit(1)
+}
+
+// Variants
+
+async function makeVariants() {
+  const files = await originals()
+  const manifest = {}
+  let made = 0
+
+  await eachInParallel(files, async file => {
+    const key = toKey(file)
+    const entry = await describe(file)
+
+    if (entry.formats) {
+      const count = await writeVariants(file, key, entry)
+      made += count
+    }
+
+    manifest[key] = entry
+  })
+
+  await pruneVariants(new Set(Object.keys(manifest)))
+  await writeFile(MANIFEST, JSON.stringify(sortedByKey(manifest), null, 2) + "\n")
+
+  console.log(`${files.length} originals, ${made} variants made, manifest in ${relative(ROOT, MANIFEST)}`)
+}
+
+async function describe(file) {
+  const bytes = (await stat(file)).size
+  const videoType = VIDEO_TYPES[extname(file).toLowerCase()]
+
+  if (videoType) {
+    return { type: videoType, bytes, ...videoSize(file) }
+  } else {
+    const metadata = await sharp(file).metadata()
+    const [ width, height ] = orientedSize(metadata)
+    const entry = { type: IMAGE_TYPES[metadata.format], bytes, width, height }
+
+    if (metadata.format in FALLBACK_FORMATS) {
+      const profile = profileFor(toKey(file))
+      entry.formats = [ "webp", FALLBACK_FORMATS[metadata.format] ].filter(Boolean)
+      entry.widths = widthsFor(width, profile.widths)
+      entry.squares = profile.squares.filter(size => size <= Math.min(width, height))
+    }
+
+    return entry
+  }
+}
+
+// The size a video displays at, rotation included, so the page can make room for it
+function videoSize(file) {
+  const result = spawnSync("ffprobe", [ "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height,sample_aspect_ratio:stream_side_data=rotation", "-of", "json", file ], { encoding: "utf8" })
+
+  if (result.status === 0) {
+    const stream = JSON.parse(result.stdout).streams[0]
+    const rotation = Math.abs(stream.side_data_list?.find(data => "rotation" in data)?.rotation ?? 0)
+    const [ width, height ] = displaySize(stream)
+
+    if (rotation === 90 || rotation === 270) {
+      return { width: height, height: width }
+    } else {
+      return { width, height }
+    }
+  } else {
+    console.error(`ffprobe couldn't read ${relative(ROOT, file)}. Is ffmpeg installed? bin/setup installs it.`)
+    process.exit(1)
+  }
+}
+
+// Pixels that aren't square stretch the picture; browsers stretch it the way that doesn't
+// lose any, so a narrow pixel makes the video taller rather than narrower
+function displaySize({ width, height, sample_aspect_ratio }) {
+  const [ numerator, denominator ] = (sample_aspect_ratio ?? "1:1").split(":").map(Number)
+  const pixelRatio = numerator / denominator || 1
+
+  if (pixelRatio >= 1) {
+    return [ Math.round(width * pixelRatio), height ]
+  } else {
+    return [ width, Math.round(height / pixelRatio) ]
+  }
+}
+
+// Phone photos are often stored sideways with an EXIF orientation saying so
+function orientedSize({ width, height, orientation }) {
+  if (orientation >= 5) {
+    return [ height, width ]
+  } else {
+    return [ width, height ]
+  }
+}
+
+function profileFor(key) {
+  return PROFILES.find(profile => key.startsWith(profile.prefix))
+}
+
+// Every standard width below the original, and the original's own width when it's smaller
+// than the largest standard one, so the biggest variant is as sharp as the original allows.
+function widthsFor(width, widths) {
+  const smaller = widths.filter(candidate => candidate < width)
+
+  if (width <= widths.at(-1) && !smaller.includes(width)) {
+    return [ ...smaller, width ]
+  } else {
+    return smaller
+  }
+}
+
+async function writeVariants(file, key, entry) {
+  let made = 0
+
+  for (const format of entry.formats) {
+    for (const width of entry.widths) {
+      made += await writeVariant(file, variantPath(key, `${width}w`, format), image => image.resize({ width }), format)
+    }
+
+    for (const size of entry.squares) {
+      made += await writeVariant(file, variantPath(key, `${size}sq`, format), image => image.resize({ width: size, height: size, fit: "cover" }), format)
+    }
+  }
+
+  return made
+}
+
+async function writeVariant(file, path, transform, format) {
+  if (await isFresh(path, file)) {
+    return 0
+  } else {
+    await mkdir(dirname(path), { recursive: true })
+    await encode(transform(sharp(file).rotate()), format).toFile(path)
+    return 1
+  }
+}
+
+function encode(image, format) {
+  switch (format) {
+    case "webp": return image.webp({ quality: 80 })
+    case "jpeg": return image.jpeg({ quality: 82, mozjpeg: true })
+    case "png": return image.png({ compressionLevel: 9 })
+  }
+}
+
+function variantPath(key, name, format) {
+  return join(VARIANTS, key, `${name}.${EXTENSIONS[format]}`)
+}
+
+async function isFresh(path, source) {
+  if (existsSync(path)) {
+    return (await stat(path)).mtimeMs >= (await stat(source)).mtimeMs
+  } else {
+    return false
+  }
+}
+
+async function pruneVariants(keys) {
+  if (existsSync(VARIANTS)) {
+    for (const file of await filesIn(VARIANTS)) {
+      const key = relative(VARIANTS, dirname(file)).split(sep).join("/")
+
+      if (!keys.has(key)) {
+        await rm(file)
+      }
+    }
+  }
+}
+
+// R2
+
+function syncToR2(options) {
+  const dryRun = options.includes("--dry-run")
+  const copy = () => rclone([ "copy", MEDIA, `r2:${requireEnv("R2_BUCKET")}`, "--include", "/originals/**", "--include", "/variants/**",
+    "--header-upload", `Cache-Control: ${R2_CACHE_CONTROL}`, "--transfers", "8", ...flagsFor(dryRun) ])
+
+  if (dryRun && hasR2Keys()) {
+    copy()
+  } else if (dryRun) {
+    return describeUpload()
+  } else {
+    withR2Keys(copy)
+  }
+}
+
+function pullFromR2() {
+  withR2Keys(() => rclone([ "copy", `r2:${requireEnv("R2_BUCKET")}/originals`, ORIGINALS, "--transfers", "8", ...flagsFor(false) ]))
+}
+
+// Runs `work` with the keys from the environment, or runs this command again under
+// `op run` to get them from 1Password
+function withR2Keys(work) {
+  if (hasR2Keys()) {
+    work()
+  } else if (process.env[UNDER_ONE_PASSWORD]) {
+    console.error(`op run didn't provide ${R2_KEYS.join(" and ")}. Check the 1Password item that .env.1password names (doc/images.md).`)
+    process.exit(1)
+  } else {
+    runUnderOnePassword()
+  }
+}
+
+function runUnderOnePassword() {
+  const result = spawnSync("op", [ "run", "--account", ONE_PASSWORD_ACCOUNT, `--env-file=${ONE_PASSWORD_ENV_FILE}`, "--", process.execPath, ...process.argv.slice(1) ], {
+    stdio: "inherit",
+    env: { ...process.env, [UNDER_ONE_PASSWORD]: "1" }
+  })
+
+  if (result.error) {
+    console.error(`Couldn't run the 1Password CLI (${result.error.message}). bin/setup installs it; sign in with 'op signin', or set ${R2_KEYS.join(" and ")} yourself.`)
+    process.exitCode = 1
+  } else {
+    process.exitCode = result.status ?? 1
+  }
+}
+
+function flagsFor(dryRun) {
+  const flags = []
+
+  if (dryRun) {
+    flags.push("--dry-run")
+  }
+
+  if (process.stdout.isTTY) {
+    flags.push("--progress")
+  }
+
+  return flags
+}
+
+// Without the keys in the environment there's no bucket to compare against, and a dry run
+// doesn't ask 1Password, so it says what's here to upload
+async function describeUpload() {
+  for (const directory of [ ORIGINALS, VARIANTS ]) {
+    if (existsSync(directory)) {
+      const files = await filesIn(directory)
+      const bytes = (await Promise.all(files.map(file => stat(file)))).reduce((sum, { size }) => sum + size, 0)
+      console.log(`${relative(ROOT, directory)}: ${files.length} files, ${(bytes / 1048576).toFixed(1)} MiB`)
+    } else {
+      console.log(`${relative(ROOT, directory)}: missing`)
+    }
+  }
+
+  console.log(`Would copy to r2:${process.env.R2_BUCKET ?? "(R2_BUCKET isn't set)"} on account ${process.env.R2_ACCOUNT_ID ?? "(R2_ACCOUNT_ID isn't set)"}.`)
+  console.log(`${R2_KEYS.join(" and ")} aren't set, so this didn't compare with the bucket. To see exactly what`)
+  console.log(`rclone would copy: op run --account ${ONE_PASSWORD_ACCOUNT} --env-file=.env.1password -- bin/media sync --dry-run`)
+}
+
+function hasR2Keys() {
+  return R2_KEYS.every(name => process.env[name])
+}
+
+function rclone(args) {
+  const env = {
+    ...process.env,
+    RCLONE_CONFIG_R2_TYPE: "s3",
+    RCLONE_CONFIG_R2_PROVIDER: "Cloudflare",
+    RCLONE_CONFIG_R2_ACCESS_KEY_ID: requireEnv("R2_ACCESS_KEY_ID"),
+    RCLONE_CONFIG_R2_SECRET_ACCESS_KEY: requireEnv("R2_SECRET_ACCESS_KEY"),
+    RCLONE_CONFIG_R2_ENDPOINT: `https://${requireEnv("R2_ACCOUNT_ID")}.r2.cloudflarestorage.com`,
+    RCLONE_CONFIG_R2_NO_CHECK_BUCKET: "true"
+  }
+  const result = spawnSync("rclone", args, { stdio: "inherit", env })
+
+  process.exitCode = result.status ?? 1
+}
+
+function requireEnv(name) {
+  if (process.env[name]) {
+    return process.env[name]
+  } else {
+    console.error(`${name} isn't set. R2_ACCOUNT_ID and R2_BUCKET come from .mise.toml, so run this where mise is active (or through 'mise exec --').`)
+    process.exit(1)
+  }
+}
+
+// Serving
+
+function serveLocally(options) {
+  let port = SERVE_PORT
+
+  if (options.includes("--port")) {
+    port = Number(options[options.indexOf("--port") + 1])
+  }
+
+  createServer(mediaHandler(MEDIA)).listen(port, "127.0.0.1", () => console.log(`Serving media/ at http://localhost:${port}`))
+}
+
+// Files
+
+async function originals() {
+  if (existsSync(ORIGINALS)) {
+    return (await filesIn(ORIGINALS)).sort()
+  } else {
+    console.error("media/originals is empty. Fetch it with `bin/media pull`.")
+    process.exit(1)
+  }
+}
+
+async function filesIn(directory) {
+  const entries = await readdir(directory, { recursive: true, withFileTypes: true })
+  return entries.filter(entry => entry.isFile()).map(entry => join(entry.parentPath, entry.name))
+}
+
+function toKey(file) {
+  return relative(ORIGINALS, file).split(sep).join("/")
+}
+
+function sortedByKey(object) {
+  return Object.fromEntries(Object.entries(object).sort(([ a ], [ b ]) => a.localeCompare(b)))
+}
+
+async function eachInParallel(items, work) {
+  const queue = [ ...items ]
+  const workers = Array.from({ length: CONCURRENCY }, async () => {
+    while (queue.length > 0) {
+      await work(queue.shift())
+    }
+  })
+
+  await Promise.all(workers)
+}

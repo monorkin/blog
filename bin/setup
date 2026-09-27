@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+# Sets a machine up to build this site: Node and gum from .mise.toml, then the npm
+# dependencies, Astro, wrangler and Pagefind among them. Safe to run again: each step only
+# does what is missing.
+#
+# `--quiet` is for bin/dev and bin/preview, which run this every time to be sure the machine
+# is ready: the work is the same, and what goes is the welcome.
+set -eo pipefail
+
+cd "$(dirname "$0")/.."
+
+quiet=no
+for argument in "$@"; do
+  case "$argument" in
+    --quiet) quiet=yes ;;
+  esac
+done
+
+PURPLE="#4f39f6"
+GREEN="#00a63e"
+RED="#e7000b"
+
+# gum is installed by mise a step below, so on a fresh machine there isn't one yet, and
+# plain text is what that looks like. `--background ""` because gum reads a bare
+# `BACKGROUND` from the environment, and a theme that sets one pads every line with it.
+tint() {
+  if command -v gum > /dev/null 2>&1; then
+    gum style --foreground "$1" --background "" "$2"
+  else
+    echo "$2"
+  fi
+}
+
+note() {
+  if [ "$quiet" = no ]; then
+    tint "$1" "$2"
+  fi
+}
+
+# Quiet means quiet when a step works and everything when it doesn't.
+step() {
+  note "$PURPLE" "▸ $1"
+  shift
+  local output
+  if [ "$quiet" = no ]; then
+    "$@"
+    echo
+  elif ! output=$("$@" 2>&1); then
+    echo "$output"
+    return 1
+  fi
+}
+
+if ! command -v mise &> /dev/null; then
+  tint "$RED" "bin/setup needs mise: install it from your package manager, or with 'curl https://mise.run | sh'."
+  exit 1
+fi
+
+step "Trusting the mise config" mise trust --yes
+
+# apt refreshes its package lists with --update; pacman must not, because mise maps it to a
+# forced `pacman -Sy` before a targeted -S, which is Arch's unsupported partial upgrade.
+update=()
+if command -v apt-get &> /dev/null; then
+  update=(--update)
+fi
+
+# sudo needs the terminal to ask for a password, and a quiet step has taken it away. So when
+# a system package is missing, this step talks even under --quiet.
+if [ "$quiet" = yes ] && mise bootstrap status 2> /dev/null | grep "^packages" | grep -q " missing$"; then
+  tint "$PURPLE" "▸ Installing missing system packages, which may ask for your password"
+  mise bootstrap --yes --only packages "${update[@]}"
+  echo
+else
+  step "Installing the system packages" mise bootstrap --yes --only packages "${update[@]}"
+fi
+# Named, so only this project's tools are installed and not everything in the global config;
+# the versions still come from .mise.toml.
+step "Installing Node, gum and rclone" mise install --yes node aqua:charmbracelet/gum aqua:rclone/rclone
+
+# bin/media sync and pull read the R2 keys with the 1Password CLI. It has to be the one from
+# 1Password's own package: the desktop app only unlocks for that binary, so mise can't
+# install it. Nothing else needs it, so this only says what's missing.
+if ! command -v op &> /dev/null; then
+  tint "$RED" "The 1Password CLI (op) isn't installed. bin/media sync and pull need it: install 1Password's package (https://developer.1password.com/docs/cli/get-started/) and turn on Settings → Developer → Integrate with 1Password CLI."
+fi
+eval "$(mise hook-env -s bash)"
+
+# `npm ci` when there is nothing installed yet, so a fresh machine gets exactly the lockfile;
+# `npm install` after that, which is a no-op when nothing changed.
+if [ -d node_modules ]; then
+  step "Installing the npm packages" npm install --no-audit --no-fund
+else
+  step "Installing the npm packages" npm ci --no-audit --no-fund
+fi
+
+# The media isn't in git. Without it pages build but images point at nothing locally, so say
+# so even under --quiet; fetching it needs R2 credentials, so this doesn't try.
+if [ ! -d media/variants ]; then
+  tint "$RED" "media/ is missing: images won't show locally. Fetch the originals with 'bin/media pull', then run 'bin/media variants' (doc/images.md)."
+fi
+
+note "$GREEN" "✓ Ready"
+if [ "$quiet" = no ]; then
+  echo "  bin/dev for development, bin/preview to run the build the way production does"
+fi

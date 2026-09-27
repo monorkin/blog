@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "MEDIA_URL=/media astro dev",
     "build": "astro build && pagefind --site dist/client",
-    "preview": "wrangler dev",
+    "preview": "bin/preview",
     "check": "astro check"
   },
   "dependencies": {

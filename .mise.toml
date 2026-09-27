@@ -1,0 +1,24 @@
+min_version = "2026.9.1"
+
+[tools]
+node = "26.10.0" # Astro 7 needs 22.12 or later; wrangler, Astro, sharp and Pagefind come from package.json
+"aqua:charmbracelet/gum" = "2.0.0" # bin/setup speaks with it
+"aqua:rclone/rclone" = "1.75.1" # bin/media syncs the media with R2 through its S3 API
+# Not the 1Password CLI: on Linux the desktop app only talks to the packaged, setgid `op`,
+# so a copy from mise can't unlock anything. bin/setup checks that it's installed.
+
+[env]
+# Where the media lives. Not secrets; the keys are in 1Password (.env.1password), read only by
+# the bin/media commands that talk to R2, never here, or every `cd` would ask 1Password.
+R2_ACCOUNT_ID = "968c9cb19aac8b4e00f9f3b62f75de4e"
+R2_BUCKET = "stanko-io"
+
+[bootstrap.packages]
+# bin/media reads a video's size with ffprobe. Sharp, workerd and Pagefind ship prebuilt
+# binaries through npm, and the export from the Rails app runs with that app's own Ruby.
+# Arch
+"pacman:ffmpeg" = "latest"
+# Debian/Ubuntu
+"apt:ffmpeg" = "latest"
+# Fedora
+"dnf:ffmpeg-free" = "latest"

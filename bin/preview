@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Builds the site and serves the build with `wrangler dev`, the way Cloudflare runs it:
+# static files first, the Worker only for /feed, the legacy feed redirects and the slug
+# redirects, plus _redirects and _headers. This is the mode where search works, because
+# `npm run build` ends by writing the Pagefind index into the build.
+#
+# Production takes media from R2. Here the build points MEDIA_URL at `bin/media serve`,
+# which serves the local media/ directory on port 4322 while this runs.
+#
+# Nothing reloads here; run it again after a change. Everything after `bin/preview` goes to
+# `wrangler dev`, e.g. `bin/preview --port 3000`. `--skip-build` serves the last build.
+set -eo pipefail
+
+cd "$(dirname "$0")/.."
+
+MEDIA_PORT=4322
+
+build=yes
+arguments=()
+for argument in "$@"; do
+  case "$argument" in
+    --skip-build) build=no ;;
+    *) arguments+=("$argument") ;;
+  esac
+done
+
+bin/setup --quiet
+eval "$(mise hook-env -s bash)"
+
+if [ "$build" = yes ]; then
+  MEDIA_URL="http://localhost:$MEDIA_PORT" npm run build
+fi
+
+bin/media serve --port "$MEDIA_PORT" &
+media_server=$!
+trap 'kill "$media_server" 2> /dev/null' EXIT
+
+npx wrangler dev "${arguments[@]}"

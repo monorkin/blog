@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Runs the site for development with `astro dev`: pages and styles reload as you save.
+# Pages render on request inside workerd, so /feed and the slug redirects work here too.
+# Search doesn't: its Pagefind index is built from the finished site, so it only exists in
+# bin/preview.
+#
+# Media comes from the local media/ directory, which astro dev serves at /media, so this
+# works offline; bin/media variants must have run once (bin/setup says so if not).
+#
+# Makes sure the machine is ready first with `bin/setup --quiet`, which prints nothing when
+# it is. Everything after `bin/dev` goes to `astro dev`, e.g. `bin/dev --port 3000`.
+set -eo pipefail
+
+cd "$(dirname "$0")/.."
+
+bin/setup --quiet
+eval "$(mise hook-env -s bash)"
+
+MEDIA_URL=/media exec npx astro dev "$@"

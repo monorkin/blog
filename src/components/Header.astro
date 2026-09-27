@@ -2,6 +2,7 @@
 import Icon from "~/components/Icon.astro"
 import AppearancePicker from "~/components/AppearancePicker.astro"
 import portrait from "~/assets/images/portrait/small.jpg"
+import { PROJECTS_ENABLED } from "~/lib/site"
 
 interface Props {
   section?: string
@@ -12,7 +13,7 @@ const NAV_ITEMS = [
   { section: "talks", href: "/talks", label: "Talks" },
   { section: "snaps", href: "/snaps", label: "Snaps" },
   { section: "projects", href: "/projects", label: "Projects" }
-]
+].filter(item => item.section !== "projects" || PROJECTS_ENABLED)
 
 const { section } = Astro.props
 

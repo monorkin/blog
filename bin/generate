@@ -17,7 +17,8 @@ import { fileURLToPath } from "node:url"
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
 const CONTENT = join(ROOT, "src/content")
-const PROJECTS = join(ROOT, "src/pages/projects")
+// src/pages/_projects while the projects section is switched off (src/lib/site.ts)
+const PROJECTS = [ "src/pages/projects", "src/pages/_projects" ].map(path => join(ROOT, path)).find(path => existsSync(path)) ?? join(ROOT, "src/pages/projects")
 const ORIGINALS = join(ROOT, "media/originals")
 const DEV_URL = "http://localhost:4321"
 

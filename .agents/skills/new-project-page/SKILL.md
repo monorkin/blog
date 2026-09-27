@@ -5,6 +5,12 @@ description: Adding a page about a project under /projects — generating an MDX
 
 # A new project page
 
+**The projects section is switched off.** Its pages live in `src/pages/_projects/`, which
+Astro doesn't route, so nothing under `/projects` is built and the header doesn't link to
+it. To switch it back on, rename the folder to `src/pages/projects/`; the header link and the
+sitemap entries follow (`PROJECTS_ENABLED` in `src/lib/site.ts`). `bin/generate project`
+writes into whichever of the two exists. The paths below assume it's on.
+
 Projects aren't a content collection. Each is a page in `src/pages/projects/`, and its file
 name is its URL: `src/pages/projects/air-quality-box.mdx` is `/projects/air-quality-box`.
 

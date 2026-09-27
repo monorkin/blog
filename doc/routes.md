@@ -18,10 +18,17 @@ The build uses `build.format: "file"` and `trailingSlash: "never"`, so `/article
 | `/snaps`, `/snaps/page/N` | `src/pages/snaps/[...page].astro` | Clicking opens the lightbox |
 | `/snaps/:slug-:id` | `src/pages/snaps/[snap].astro` | Also what the lightbox loads |
 | `/tags/:name`, `/tags/:name/page/N` | `src/pages/tags/[name]/[...page].astro` | |
-| `/projects`, `/projects/:name` | `src/pages/projects/` | `doc/content.md` |
+| `/projects`, `/projects/:name` | `src/pages/_projects/` | Switched off: not built, so they 404 (below) |
 | `/search`, `/settings` | `src/pages/search.astro`, `settings.astro` | The dialogs as pages, not indexed |
 | `/up` | `src/pages/up.ts` | Health check, kept from Rails |
 | `/404.html` etc. | `public/` | The Rails app's error pages |
+
+### Projects are switched off
+
+The project pages are in `src/pages/_projects/`, and Astro doesn't route a folder whose
+name starts with `_`: `/projects` and every project page 404, and the header, the menu and
+the sitemap leave them out (`PROJECTS_ENABLED` in `src/lib/site.ts` follows the folder's
+name). To switch them on, rename the folder to `src/pages/projects/`.
 
 ### Pagination
 

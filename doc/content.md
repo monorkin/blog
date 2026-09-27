@@ -127,6 +127,9 @@ one. A new tag needs nothing but using it.
 
 ## Projects
 
+The projects section is switched off for now (`doc/routes.md`), with its pages in
+`src/pages/_projects/`; what follows is how it works when it's on.
+
 Projects aren't a collection. Each is a page in `src/pages/projects/`, named after its slug
 with no ID; `bin/generate project "Title"` writes one. An `.mdx` file with
 `layout: ~/layouts/ProjectLayout.astro`, a `title` and a `description` shows up on

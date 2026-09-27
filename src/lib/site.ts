@@ -5,6 +5,11 @@ export const AUTHOR_EMAIL = "hey@stanko.io"
 
 export const PAGE_SIZE = 12
 
+// The projects section is switched off by its folder's name: Astro doesn't route
+// src/pages/_projects. Rename it to src/pages/projects and the pages, the header link and
+// the sitemap entries come back.
+export const PROJECTS_ENABLED = Object.keys(import.meta.glob("/src/pages/projects/index.astro")).length > 0
+
 const TITLE_SEPARATOR = " - "
 const RECOMMENDED_TITLE_MAX_LENGTH = 60
 const TITLE_MAX_LENGTH = RECOMMENDED_TITLE_MAX_LENGTH - SITE_NAME.length - TITLE_SEPARATOR.length

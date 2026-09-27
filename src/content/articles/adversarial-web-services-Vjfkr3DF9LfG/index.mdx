@@ -1,136 +1,291 @@
 ---
 title: Adversarial Web Services
-publishedAt: '2025-03-03T07:00:00Z'
-updatedAt: '2026-02-15T09:37:07Z'
-tags:
-- self-hosting
+publishedAt: 2025-03-03T07:00:00Z
+updatedAt: 2026-02-15T09:37:07Z
+tags: [self-hosting]
 feedId: Article/41
 ---
 
-My first job was at a digital agency. In addition to app development we also hosted the apps that we'd develop for our clients. This allowed us to avoid fiddly managed hosts, and since we ran everything on a beefy bare-metal server we didn't have to manage dozens of machines at different providers. All in all, this was a good setup.
+My first job was at a digital agency. In addition to app development we also
+hosted the apps that we'd develop for our clients. This allowed us to avoid
+fiddly managed hosts, and since we ran everything on a beefy bare-metal server
+we didn't have to manage dozens of machines at different providers. All in all,
+this was a good setup.
 
-Then, one Friday morning, I came into the office and went to clock in using an internal app. But the app just timed out. We soon noticed that all internal apps and our client's apps were timing out, our bare-metal server was completely unresponsive, and then came the bombshell - both hard drives in the server had failed.
+Then, one Friday morning, I came into the office and went to clock in using an
+internal app. But the app just timed out. We soon noticed that all internal apps
+and our client's apps were timing out, our bare-metal server was completely
+unresponsive, and then came the bombshell - both hard drives in the server had
+failed.
 
-Luckily we had hourly backups. Or so we thought. We found out the hard way that our backup script had a bug that caused it to create empty backups for the past few months. So we had no viable backup to restore from.
+Luckily we had hourly backups. Or so we thought. We found out the hard way that
+our backup script had a bug that caused it to create empty backups for the past
+few months. So we had no viable backup to restore from.
 
-We spent the next 22 hours provisioning a new machine, re-deploying projects to it, recovering databases and files from the old machine and uploading them to the new one. By some miracle we managed to recover everything.
+We spent the next 22 hours provisioning a new machine, re-deploying projects to
+it, recovering databases and files from the old machine and uploading them to
+the new one. By some miracle we managed to recover everything.
 
-This incident left a sour taste in everybody's mouth. Everything was back to normal, but nobody was confident that it would stay that way for long. We lost confidence in our tools and ourselves. The next week we were told that we’d be abandoning our bare-metal server and would move all our apps to AWS so that we wouldn't have to monitor the hardware and backups were built-in.
+This incident left a sour taste in everybody's mouth. Everything was back to
+normal, but nobody was confident that it would stay that way for long. We lost
+confidence in our tools and ourselves. The next week we were told that we’d be
+abandoning our bare-metal server and would move all our apps to AWS so that we
+wouldn't have to monitor the hardware and backups were built-in.
 
 Since that Friday, for more than a decade now, I've used AWS at every job I had.
 
-I've spent countless hours working with its services, configuring and misconfiguring them, optimizing them for performance and cost. And in my opinion it just isn't worth it for most people.
+I've spent countless hours working with its services, configuring and
+misconfiguring them, optimizing them for performance and cost. And in my opinion
+it just isn't worth it for most people.
 
 **AWS makes things easy, not simple**
 
-Some people think that AWS-hosted services are somehow magical 1-click solutions that you pay for and forget about. But the truth is far from that.
+Some people think that AWS-hosted services are somehow magical 1-click solutions
+that you pay for and forget about. But the truth is far from that.
 
-While you can set up a MySQL/Redis/Kafka instance in just a few easy clicks, after that you have to configure, tweak, monitor and manage that service like you would if you'd host it yourself.
+While you can set up a MySQL/Redis/Kafka instance in just a few easy clicks,
+after that you have to configure, tweak, monitor and manage that service like
+you would if you'd host it yourself.
 
 In other words, the complexity is the same, but the setup is easier.
 
-In fact, it's even more complex than running your own MySQL/Postgres/Redis/... server because AWS introduces its own arbitrary limitations on what you can and can't do. And on top of that it also introduces new concepts that you'll have to learn and manage - Floating IPs, Load Balancers, CPU credits, Network credits, IOPS credits, EBS credits, VPCs, Security Groups, IAM roles...
+In fact, it's even more complex than running your own MySQL/Postgres/Redis/...
+server because AWS introduces its own arbitrary limitations on what you can and
+can't do. And on top of that it also introduces new concepts that you'll have to
+learn and manage - Floating IPs, Load Balancers, CPU credits, Network credits,
+IOPS credits, EBS credits, VPCs, Security Groups, IAM roles...
 
-If you don’t learn these things, you will eventually either encounter a problem you can’t fix or receive an exorbitant bill from AWS.
+If you don’t learn these things, you will eventually either encounter a problem
+you can’t fix or receive an exorbitant bill from AWS.
 
-Probably the best example of this is EC2. You can set up an instance in a minute. And you can probably deploy something to it with minimal knowledge of Linux and/or Docker. But what will you do, for example, if you run out of IOPS credits? Or if Docker refuses to start after a mandatory update? Or your instance suddenly changes its IP address?
+Probably the best example of this is EC2. You can set up an instance in a
+minute. And you can probably deploy something to it with minimal knowledge of
+Linux and/or Docker. But what will you do, for example, if you run out of IOPS
+credits? Or if Docker refuses to start after a mandatory update? Or your
+instance suddenly changes its IP address?
 
-Setting up a VPS is extremely easy, but if you don't know Linux, networking and some AWS gotchas, but managing and monitoring the instance is still complex.
+Setting up a VPS is extremely easy, but if you don't know Linux, networking and
+some AWS gotchas, but managing and monitoring the instance is still complex.
 
-Think of it as sending an email. It's simple, all you have to do is open up Gmail, write a message, enter a recipient and hit send. But under the hood what is actually happening is a complex exchange between email servers that involves IMAP, DKIM, SPF, DNS, Spam detection, Spoofing detection, reputation management, firewalls, storage, and more.
+Think of it as sending an email. It's simple, all you have to do is open up
+Gmail, write a message, enter a recipient and hit send. But under the hood what
+is actually happening is a complex exchange between email servers that involves
+IMAP, DKIM, SPF, DNS, Spam detection, Spoofing detection, reputation management,
+firewalls, storage, and more.
 
-I hope that some of the acronyms and concepts of the complexity of email servers are foreign to you because that's my whole point.
+I hope that some of the acronyms and concepts of the complexity of email servers
+are foreign to you because that's my whole point.
 
-By buying email from Gmail you are giving Google money so that you don't have to deal with the complexities of running an email server. But at AWS you are giving Amazon money to get your own server. They will set it up for you, but then it's up to you to deal with the complexity of running that server.
+By buying email from Gmail you are giving Google money so that you don't have to
+deal with the complexities of running an email server. But at AWS you are giving
+Amazon money to get your own server. They will set it up for you, but then it's
+up to you to deal with the complexity of running that server.
 
 **Take everything with a grain of salt**
 
-One of the biggest mistakes I ever made was to trust AWS marketing at face value. Their marketing often omits important or inconvenient details.
+One of the biggest mistakes I ever made was to trust AWS marketing at face
+value. Their marketing often omits important or inconvenient details.
 
-Figuring out what you are *really* buying requires you to read the product's documentation - not one page, not the pricing page, but all of it - [and even then you have to take it with a grain of salt](https://old.reddit.com/r/aws/comments/bv70k8/aurora_postgres_disastrous_experience/).
+Figuring out what you are *really* buying requires you to read the product's
+documentation - not one page, not the pricing page, but all of it - [and even
+then you have to take it with a grain of
+salt](https://old.reddit.com/r/aws/comments/bv70k8/aurora_postgres_disastrous_experience/).
 
-Take the incident [I wrote about 2 weeks ago](https://stanko.io/monitoring-actioncable-GdeaeHfIU4Yk). At work we use ElastiCache Redis as a PubSub provider for our WebSockets. One day all our devices started disconnecting randomly. After weeks of investigation it turned out that we hit a CPU cap even though the instance claimed it was at 10% CPU during the incident. This happened because we were using a node type that's capped at 10% CPU which is, conveniently and vaguely, only mentioned in the documentation while the pricing page says that we get 2 full vCPUs.
+Take the incident [I wrote about 2 weeks
+ago](https://stanko.io/monitoring-actioncable-GdeaeHfIU4Yk). At work we use
+ElastiCache Redis as a PubSub provider for our WebSockets. One day all our
+devices started disconnecting randomly. After weeks of investigation it turned
+out that we hit a CPU cap even though the instance claimed it was at 10% CPU
+during the incident. This happened because we were using a node type that's
+capped at 10% CPU which is, conveniently and vaguely, only mentioned in the
+documentation while the pricing page says that we get 2 full vCPUs.
 
-Or how API Gateway offers WebSockets. [But you can't have a connection that lasts longer than 2h](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html#apigateway-execution-service-websocket-limits-table), [and you can't reliably know if a client has disconnected](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api-route-keys-connect-disconnect.html#apigateway-websocket-api-routes-about-disconnect).
+Or how API Gateway offers WebSockets. [But you can't have a connection that
+lasts longer than
+2h](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html#apigateway-execution-service-websocket-limits-table),
+[and you can't reliably know if a client has
+disconnected](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api-route-keys-connect-disconnect.html#apigateway-websocket-api-routes-about-disconnect).
 
-Or how Aurora offers unprecedented speed and infinite storage. [But it might corrupt your database](https://aws.amazon.com/about-aws/whats-new/2022/10/amazon-aurora-postgresql-14-4-version/). [And high load on a read-replica degrades the primary's performance negating the benefit of having the replica](https://plaid.com/blog/exploring-performance-differences-between-amazon-aurora-and-vanilla-mysql/).
+Or how Aurora offers unprecedented speed and infinite storage. [But it might
+corrupt your
+database](https://aws.amazon.com/about-aws/whats-new/2022/10/amazon-aurora-postgresql-14-4-version/).
+[And high load on a read-replica degrades the primary's performance negating the
+benefit of having the
+replica](https://plaid.com/blog/exploring-performance-differences-between-amazon-aurora-and-vanilla-mysql/).
 
 There are many more examples.
 
-But the gist of the story is that you have to carefully navigate AWS' documentation labyrinth - and it really is a labyrinth - to gather as much information as you can before you commit to a purchase. And even then you aren't 100% sure what you've purchased or how much it will cost you in the end.
+But the gist of the story is that you have to carefully navigate AWS'
+documentation labyrinth - and it really is a labyrinth - to gather as much
+information as you can before you commit to a purchase. And even then you aren't
+100% sure what you've purchased or how much it will cost you in the end.
 
-Some might say that this is a "skill issue", or just "RTFM". But I think that people who say this are either stuck in an inferiority complex or are just coping.
+Some might say that this is a "skill issue", or just "RTFM". But I think that
+people who say this are either stuck in an inferiority complex or are just
+coping.
 
-Imagine if any other business sold stuff like AWS does. Let's take a restaurant as an example.
+Imagine if any other business sold stuff like AWS does. Let's take a restaurant
+as an example.
 
-You go to a restaurant and want to order a pizza. The waiter walks up to you and tells you what pizzas they have. There are a few you like so you ask for the price and the waiter brings you the menu. You see that the pizza you like costs 15€ for a large so you order it. Then a short while later the waiter brings you a single slice of the pizza. You ask him where's the rest of the pizza and he points out that on the back of the menu it says that some pizzas come with limitations mentioned in the "limitation list". Then he brings you the limitation list which states that the pizza you ordered is served per slice.
+You go to a restaurant and want to order a pizza. The waiter walks up to you and
+tells you what pizzas they have. There are a few you like so you ask for the
+price and the waiter brings you the menu. You see that the pizza you like costs
+15€ for a large so you order it. Then a short while later the waiter brings you
+a single slice of the pizza. You ask him where's the rest of the pizza and he
+points out that on the back of the menu it says that some pizzas come with
+limitations mentioned in the "limitation list". Then he brings you the
+limitation list which states that the pizza you ordered is served per slice.
 
 You'd probably never go to that place ever again.
 
 **Sometimes it can feel like racketeering**
 
-After using AWS for a while I've noticed that it isn't as elastic as it claims to be, and somehow that feels intentional.
+After using AWS for a while I've noticed that it isn't as elastic as it claims
+to be, and somehow that feels intentional.
 
-Let's take the WebSocket disconnect incident again. We were using an instance that has 2 vCPUs but can only use 10% consistently and we decided to upgrade to an instance that can use 100% of the CPU available to it.
+Let's take the WebSocket disconnect incident again. We were using an instance
+that has 2 vCPUs but can only use 10% consistently and we decided to upgrade to
+an instance that can use 100% of the CPU available to it.
 
-That’s a 10x increase in compute, so we expected a 10x increase in price - and that’s exactly what we got. The monthly price for our instance went up from about 10€ to about 100€.
+That’s a 10x increase in compute, so we expected a 10x increase in price - and
+that’s exactly what we got. The monthly price for our instance went up from
+about 10€ to about 100€.
 
-But we soon learned that, while we did get 10x the CPU, we got only 1/5 of the bandwidth.
+But we soon learned that, while we did get 10x the CPU, we got only 1/5 of the
+bandwidth.
 
-So we upgraded to the first node type that offered the same bandwidth as before and our monthly cost rose to 200€ per month.
+So we upgraded to the first node type that offered the same bandwidth as before
+and our monthly cost rose to 200€ per month.
 
 *That's a 20x increase in price for 10x the compute.*
 
-Never mind the exorbitant price for what is essentially a managed EC2 instance that otherwise costs 60€. What bugs me the most here is that we're talking about a virtual machine, not a bare-metal server. You can give it as much CPU, memory and bandwidth as you want.
+Never mind the exorbitant price for what is essentially a managed EC2 instance
+that otherwise costs 60€. What bugs me the most here is that we're talking about
+a virtual machine, not a bare-metal server. You can give it as much CPU, memory
+and bandwidth as you want.
 
-Nearly all AWS services give you a predefined list of instance types to choose from - this is not just an ElastiCache issue.
+Nearly all AWS services give you a predefined list of instance types to choose
+from - this is not just an ElastiCache issue.
 
-I understand why smaller hosting providers make you choose from predefined instance types - they simply don't have the hardware to allow anybody to choose what they need. But a hyperscaler like AWS? One that calls their VPS offering Elastic Cloud Compute?
+I understand why smaller hosting providers make you choose from predefined
+instance types - they simply don't have the hardware to allow anybody to choose
+what they need. But a hyperscaler like AWS? One that calls their VPS offering
+Elastic Cloud Compute?
 
-Another thing I noticed is that some services have conveniently set, completely arbitrary, limitations that seem to exist only to make AWS more money.
+Another thing I noticed is that some services have conveniently set, completely
+arbitrary, limitations that seem to exist only to make AWS more money.
 
-For instance, API Gateway imposes a maximum duration on a WebSocket of 2h and will close any idle connections after 10min. But at the same time AWS charges you per WebSocket message in addition to each minute each client was connected, and most applications will need at least 1 message after a reconnect.
+For instance, API Gateway imposes a maximum duration on a WebSocket of 2h and
+will close any idle connections after 10min. But at the same time AWS charges
+you per WebSocket message in addition to each minute each client was connected,
+and most applications will need at least 1 message after a reconnect.
 
-If you have 50k clients you'll pay AWS 200€ every month just to keep them connected to a WebSocket 24/7. For comparison, a 60€ EC2 instance can handle more clients than that with no limitations.
+If you have 50k clients you'll pay AWS 200€ every month just to keep them
+connected to a WebSocket 24/7. For comparison, a 60€ EC2 instance can handle
+more clients than that with no limitations.
 
-To go back to the restaurant analogy. Imagine if you bought a Pizza at a restaurant and the waiter starts bringing you your pizza one slice at a time, because they decided to do so for whatever reason. Then, at the end of the meal, they charge you a delivery fee for every individual slice on top of the price of the pizza.
+To go back to the restaurant analogy. Imagine if you bought a Pizza at a
+restaurant and the waiter starts bringing you your pizza one slice at a time,
+because they decided to do so for whatever reason. Then, at the end of the meal,
+they charge you a delivery fee for every individual slice on top of the price of
+the pizza.
 
-The pizza would have to be out of this world for me to come back to that restaurant.
+The pizza would have to be out of this world for me to come back to that
+restaurant.
 
-When you run into such pricing practices AWS doesn't feel like a partner helping you build stuff anymore; it feels like an adversary trying to squeeze every penny out of you.
+When you run into such pricing practices AWS doesn't feel like a partner helping
+you build stuff anymore; it feels like an adversary trying to squeeze every
+penny out of you.
 
 **Serfs and sovereigns**
 
-My biggest gripe with AWS are its proprietary services. Some of them are great and novel while others are OK equivalents of existing open-source services.
+My biggest gripe with AWS are its proprietary services. Some of them are great
+and novel while others are OK equivalents of existing open-source services.
 
-When it comes to great and novel services, the first thing that comes to my mind is S3.
+When it comes to great and novel services, the first thing that comes to my mind
+is S3.
 
-You can get S3-compatible object storage at a dozen places today - [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces), [Backblaze B2](https://www.backblaze.com/cloud-storage), [Cloudflare R2](https://www.cloudflare.com/developer-platform/products/r2/), [Hetzner's](https://www.hetzner.com/storage/object-storage/), [OVH's](https://www.ovhcloud.com/en/public-cloud/object-storage/) and [Scaleway's Object Storage](https://www.scaleway.com/en/object-storage/), or open-source [Garage](https://github.com/deuxfleurs-org/garage) and [MinIO](https://github.com/minio/minio) just to name a few - but that wasn't always the case.
+You can get S3-compatible object storage at a dozen places today - [DigitalOcean
+Spaces](https://www.digitalocean.com/products/spaces), [Backblaze
+B2](https://www.backblaze.com/cloud-storage), [Cloudflare
+R2](https://www.cloudflare.com/developer-platform/products/r2/),
+[Hetzner's](https://www.hetzner.com/storage/object-storage/),
+[OVH's](https://www.ovhcloud.com/en/public-cloud/object-storage/) and
+[Scaleway's Object Storage](https://www.scaleway.com/en/object-storage/), or
+open-source [Garage](https://github.com/deuxfleurs-org/garage) and
+[MinIO](https://github.com/minio/minio) just to name a few - but that wasn't
+always the case.
 
-A little over 10 years ago S3 reigned supreme when it came to storage. The only real alternative to it was to either store the files locally on your server or using a network attached drive, both of which required some skill to scale and manage - at least compared to S3.
+A little over 10 years ago S3 reigned supreme when it came to storage. The only
+real alternative to it was to either store the files locally on your server or
+using a network attached drive, both of which required some skill to scale and
+manage - at least compared to S3.
 
-Back then, it was common for people to e.g. use a managed host but still have an AWS account just to get access to S3. Problem was, we were completely dependent on AWS for object storage. If they raised prices we had no real option but to pay. There was no contingency if S3 had an incident you just had to deal with the customer backlash.
+Back then, it was common for people to e.g. use a managed host but still have an
+AWS account just to get access to S3. Problem was, we were completely dependent
+on AWS for object storage. If they raised prices we had no real option but to
+pay. There was no contingency if S3 had an incident you just had to deal with
+the customer backlash.
 
-When other S3-compatible object storage providers started popping up not only did prices come down but you could suddenly choose a provider that suits your need - no ingress fees, no egress fees, cheaper long-term storage, faster storage, HIPPAA-compliant storage, etc. You could mix and match providers to suit your need, or use multiple as a contingency.
+When other S3-compatible object storage providers started popping up not only
+did prices come down but you could suddenly choose a provider that suits your
+need - no ingress fees, no egress fees, cheaper long-term storage, faster
+storage, HIPPAA-compliant storage, etc. You could mix and match providers to
+suit your need, or use multiple as a contingency.
 
-But most importantly, any code I write today that fetches or uploads files to S3 will work just as well anywhere. This means that, if I don't like a price hike or a term change from my current object storage provider, I can just pick up my stuff and move to another provider that offers more favorable terms.
+But most importantly, any code I write today that fetches or uploads files to S3
+will work just as well anywhere. This means that, if I don't like a price hike
+or a term change from my current object storage provider, I can just pick up my
+stuff and move to another provider that offers more favorable terms.
 
-When it comes to S3 - 10 years ago we were basically serfs, today we are sovereign and I don't miss the old days one bit.
+When it comes to S3 - 10 years ago we were basically serfs, today we are
+sovereign and I don't miss the old days one bit.
 
-There are other great AWS services - like DynamoDB - but I avoid them in favor of open-source alternatives just because I don't want to find myself locked in and having to accept any term change to avoid spending days switching to something else.
+There are other great AWS services - like DynamoDB - but I avoid them in favor
+of open-source alternatives just because I don't want to find myself locked in
+and having to accept any term change to avoid spending days switching to
+something else.
 
 **Competence**
 
-The incident that happened at my first job wasn't caused by our hosting provider, it was caused by us. Our hosting provider at the time gave us all the tools and services we needed to prevent that incident from happening, we just didn't know how to use them. It was our incompetence that caused the incident.
+The incident that happened at my first job wasn't caused by our hosting
+provider, it was caused by us. Our hosting provider at the time gave us all the
+tools and services we needed to prevent that incident from happening, we just
+didn't know how to use them. It was our incompetence that caused the incident.
 
-As a knee-jerk reaction we migrated to AWS chasing a promise, or rather a dream, that it will somehow save us from our incompetence - it didn't. All it did was mask that incompetence by making things easy to set up, but our old problems all eventually reoccurred.
+As a knee-jerk reaction we migrated to AWS chasing a promise, or rather a dream,
+that it will somehow save us from our incompetence - it didn't. All it did was
+mask that incompetence by making things easy to set up, but our old problems all
+eventually reoccurred.
 
-Only by learning to run my own server through learning Linux, Docker, networking, monitoring, backups and server security did I manage to avoid making the same mistakes - not just with AWS but at any host.
+Only by learning to run my own server through learning Linux, Docker,
+networking, monitoring, backups and server security did I manage to avoid making
+the same mistakes - not just with AWS but at any host.
 
-And that's the take-away here - AWS, or any other managed service provider, won't save you from having to learn how to manage that service. They will give you monitoring, but you still have to know what the metrics mean and what's acceptable for you. They will give you hardware, but you have to know what's enough for you. They will give you firewalls and other networking tools, but you still have to configure them for your use-case.
+And that's the take-away here - AWS, or any other managed service provider,
+won't save you from having to learn how to manage that service. They will give
+you monitoring, but you still have to know what the metrics mean and what's
+acceptable for you. They will give you hardware, but you have to know what's
+enough for you. They will give you firewalls and other networking tools, but you
+still have to configure them for your use-case.
 
-All you need to learn this stuff is a Virtual Machine or a Raspberry Pi and some time. Set up a small server and try to configure a firewall, install a database, run an app, upgrade the database. If you fail, and you probably will, just re-install and try again.
+All you need to learn this stuff is a Virtual Machine or a Raspberry Pi and some
+time. Set up a small server and try to configure a firewall, install a database,
+run an app, upgrade the database. If you fail, and you probably will, just
+re-install and try again.
 
-One of the best decisions I ever made was learning how to self-host the services I use at work. It was difficult at first - as going from 0 to 1 always is - but it made me much more confident and better at my job. I now understand not only how to operate these services but also how to optimize my code to make the most of them. And best of all is that these skills carry over to any hosting provider, project and job.
+One of the best decisions I ever made was learning how to self-host the services
+I use at work. It was difficult at first - as going from 0 to 1 always is - but
+it made me much more confident and better at my job. I now understand not only
+how to operate these services but also how to optimize my code to make the most
+of them. And best of all is that these skills carry over to any hosting
+provider, project and job.
 
-If you are willing to learn, I think you will be better off renting a few VPS instances or bare-metal machines from the likes of [DigitalOcean](https://www.digitalocean.com/), [Hetzner](https://www.hetzner.com/), [OVH](https://www.ovhcloud.com/en-gb/), and [Scaleway](https://www.scaleway.com/en/). The predictable pricing, and lack of AWS BS, will save you time and money. Or if you don't want to learn all this, then go with a hosting platform like [Heroku](https://www.heroku.com/) or [Fly](https://fly.io/).
+If you are willing to learn, I think you will be better off renting a few VPS
+instances or bare-metal machines from the likes of
+[DigitalOcean](https://www.digitalocean.com/),
+[Hetzner](https://www.hetzner.com/), [OVH](https://www.ovhcloud.com/en-gb/), and
+[Scaleway](https://www.scaleway.com/en/). The predictable pricing, and lack of
+AWS BS, will save you time and money. Or if you don't want to learn all this,
+then go with a hosting platform like [Heroku](https://www.heroku.com/) or
+[Fly](https://fly.io/).

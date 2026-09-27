@@ -243,7 +243,9 @@
       border-color: oklch(37.14% 0.014 285.75);
     }
 
-    & .lexxy-content__table-cell--header {
+    & .lexxy-content__table-cell--header,
+    & th,
+    & td:first-child:has(> strong:only-child) {
       background-color: rgb(38, 38, 38) !important;
     }
   }
@@ -267,7 +269,9 @@
         border-color: oklch(37.14% 0.014 285.75);
       }
 
-      & .lexxy-content__table-cell--header {
+      & .lexxy-content__table-cell--header,
+      & th,
+      & td:first-child:has(> strong:only-child) {
         background-color: rgb(38, 38, 38) !important;
       }
     }
@@ -351,6 +355,13 @@
 
 .lexxy-content .attachment picture {
   display: contents;
+}
+
+/* Markdown tables look like Lexxy's: the header row, and the bold cells that lead each row,
+   get its header cell background */
+.lexxy-content th,
+.lexxy-content td:first-child:has(> strong:only-child) {
+  background-color: var(--lexxy-color-table-header-bg);
 }
 
 /* Images side by side line up at the top, and open full size in a lightbox when clicked */

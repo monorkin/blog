@@ -1,93 +1,166 @@
 ---
 title: Keep it boring, don’t surprise me
-publishedAt: '2022-08-21T12:00:00Z'
-updatedAt: '2026-02-15T09:37:07Z'
-tags:
-- meditation
-- ruby
+publishedAt: 2022-08-21T12:00:00Z
+updatedAt: 2026-02-15T09:37:07Z
+tags: [meditation, ruby]
 feedId: Article/15
 ---
 
-> I’ve spent a lot of my life worried that people will think I don’t know enough. Sometimes, that worry has made me use big words when I didn’t need to. 
+> I’ve spent a lot of my life worried that people will think I don’t know
+> enough. Sometimes, that worry has made me use big words when I didn’t need to.
 >
 > –Randall Munroe in the foreword to the Thing Explainer
 
-I used to be a stickler for organizing code by what it was. Models, decorators, form objects, view objects, value objects, service objects - all lived in their own separate directory. I felt that the code was well organized that way, that everybody knew what went where, and what the purpose of everything was just by how the code was organized.
+I used to be a stickler for organizing code by what it was. Models, decorators,
+form objects, view objects, value objects, service objects - all lived in their
+own separate directory. I felt that the code was well organized that way, that
+everybody knew what went where, and what the purpose of everything was just by
+how the code was organized.
 
-My obsession with grouping things that way made me blind to what I was actually doing - writing surprising code.
+My obsession with grouping things that way made me blind to what I was actually
+doing - writing surprising code.
 
-When I think of the reasons why I did things that way only three things come to mind.
+When I think of the reasons why I did things that way only three things come to
+mind.
 
-First, I wanted to show off how much I knew about patterns, algorithms and programming. I wanted to be the best programmer, and prove that to my peers by organizing code in a manner that showed off my knowledge.
+First, I wanted to show off how much I knew about patterns, algorithms and
+programming. I wanted to be the best programmer, and prove that to my peers by
+organizing code in a manner that showed off my knowledge.
 
-Second, I didn’t know any better. The code was already organized into models, views and controllers so it was natural to me to continue this trend of having every kind of object separate.
+Second, I didn’t know any better. The code was already organized into models,
+views and controllers so it was natural to me to continue this trend of having
+every kind of object separate.
 
-Third, I didn’t want to have “fat” models or controllers because that has bitten me in the past.
+Third, I didn’t want to have “fat” models or controllers because that has bitten
+me in the past.
 
-Today I consider most things to be a model, with a few exceptions. Why? Because decorators, form objects, view objects, value objects, service objects, and others are just different ways to model data. Models aren’t just objects persisted in a database, a model is any object that represents a piece of data. Through them your app represents the world so that it can work with its data, similar to how [you have mental models about the world around you](https://en.wikipedia.org/wiki/Mental_model) (e.g. what is night and what is day).
+Today I consider most things to be a model, with a few exceptions. Why? Because
+decorators, form objects, view objects, value objects, service objects, and
+others are just different ways to model data. Models aren’t just objects
+persisted in a database, a model is any object that represents a piece of data.
+Through them your app represents the world so that it can work with its data,
+similar to how [you have mental models about the world around
+you](https://en.wikipedia.org/wiki/Mental_model) (e.g. what is night and what is
+day).
 
-Think about it. A model backed by a database - like User - just represents a row in that database that holds data about a person. It takes that row and wraps it into an object you can interact with - e.g. to get the person’s name or email.
+Think about it. A model backed by a database - like User - just represents a row
+in that database that holds data about a person. It takes that row and wraps it
+into an object you can interact with - e.g. to get the person’s name or email.
 
-Decorators, form, value, service and view objects do the same. They take one or more pieces of data and give you an object to interact with that data in different ways.
+Decorators, form, value, service and view objects do the same. They take one or
+more pieces of data and give you an object to interact with that data in
+different ways.
 
-This might be a reductionist way of thinking because controllers and views do the same. But they are novel concepts that are used so often, and that are so important, that separating them out makes building the application easier.
+This might be a reductionist way of thinking because controllers and views do
+the same. But they are novel concepts that are used so often, and that are so
+important, that separating them out makes building the application easier.
 
-For instance, I work on an IoT application. One of the most common actions we do is to send messages to a devices. Because it is so novel and so common, we have extracted “device messengers” out of models into their own thing. That way developers don’t have to search for them and we communicate that they are an important part of the app.
+For instance, I work on an IoT application. One of the most common actions we do
+is to send messages to a devices. Because it is so novel and so common, we have
+extracted “device messengers” out of models into their own thing. That way
+developers don’t have to search for them and we communicate that they are an
+important part of the app.
 
-Treating most things as models, and making models heavier, has made the code I write much less surprising.
+Treating most things as models, and making models heavier, has made the code I
+write much less surprising.
 
-Having super skinny objects produces surprising code because you have to be very verbose. Something boring like **user.purchase(line_items).charge(authorization_code: params\[:authorization_code\])** becomes a convoluted mess like **PurchaseChargerService(purchase: PurchaseBuilderService.new(line_items: line_items).call, form: purchase_form, user: current_user).call**.
+Having super skinny objects produces surprising code because you have to be very
+verbose. Something boring like
+`user.purchase(line_items).charge(authorization_code: params[:authorization_code])`
+becomes a convoluted mess like
+`PurchaseChargerService(purchase: PurchaseBuilderService.new(line_items: line_items).call, form: purchase_form, user: current_user).call`.
 
-Nobody expects things like **PurchaseChargerService** and **PurchaseBuilderService** to exist, yet alone that you have to call those in succession with a form object and the current user to make a purchase. While most people working on a web shop expect that a user can just purchase something, and that a purchase can be charged.
+Nobody expects things like **PurchaseChargerService** and
+**PurchaseBuilderService** to exist, yet alone that you have to call those in
+succession with a form object and the current user to make a purchase. While
+most people working on a web shop expect that a user can just purchase
+something, and that a purchase can be charged.
 
-By writing skinny objects you are pushing the complexity onto the programmer instead of having it in code.
+By writing skinny objects you are pushing the complexity onto the programmer
+instead of having it in code.
 
-I’m not saying you should get rid of **PurchaseChargerService** or **PurchaseBuilderService** (ok, maybe the builder is pushing it a bit, I'd get rid of that one). I’m saying that you should make them as boring as possible.
+I’m not saying you should get rid of **PurchaseChargerService** or
+**PurchaseBuilderService** (ok, maybe the builder is pushing it a bit, I'd get
+rid of that one). I’m saying that you should make them as boring as possible.
 
-For all you know **user.purchase** might call those same objects internally. You don’t have to know about that to make a purchase. It’s boring and it’s beautiful.
+For all you know `user.purchase` might call those same objects internally. You
+don’t have to know about that to make a purchase. It’s boring and it’s
+beautiful.
 
 How to make things boring?
 
 First, embrace the domain you are working with.
 
-Naming something a service and putting it in its own directory solves no problems, but it can create some. Naming something after what it does and putting it next to the thing it works with tells a story that can help people understand what’s going on.
+Naming something a service and putting it in its own directory solves no
+problems, but it can create some. Naming something after what it does and
+putting it next to the thing it works with tells a story that can help people
+understand what’s going on.
 
-Instead of **PurchaseChargerService** that lives in a service objects directory, try naming it **Purchase::Charger** and putting it under the Purchase model (e.g. **app/model/purchase/charger.rb**). You will know just by looking at the file that it has something to do with purchases and charging them.
+Instead of **PurchaseChargerService** that lives in a service objects directory,
+try naming it `Purchase::Charger` and putting it under the Purchase model (e.g.
+`app/model/purchase/charger.rb`). You will know just by looking at the file that
+it has something to do with purchases and charging them.
 
-Second, write code that mimics how people think about the domain you are working in.
+Second, write code that mimics how people think about the domain you are working
+in.
 
-Expose methods for common actions in your domain. If a **User** can purchase line items, then add a **purchase** method to the User model that accepts line items.
+Expose methods for common actions in your domain. If a **User** can purchase
+line items, then add a **purchase** method to the User model that accepts line
+items.
 
-Don’t push the complexity of figuring out how to make a purchase onto other people, solve it once in code, and explain it well so that others can build on top of your work. Don’t try to be too smart, most often people won’t care how the purchase is made so don’t try to expose it if it’s not needed.
+Don’t push the complexity of figuring out how to make a purchase onto other
+people, solve it once in code, and explain it well so that others can build on
+top of your work. Don’t try to be too smart, most often people won’t care how
+the purchase is made so don’t try to expose it if it’s not needed.
 
 Third, extract actions into models to tell a story and form new domains.
 
-Don’t create new classes just to keep things DRY. If your model has many small or a single large method that deal with a single action, extract it into its own model.
+Don’t create new classes just to keep things DRY. If your model has many small
+or a single large method that deal with a single action, extract it into its own
+model.
 
-If the **User** model has 5 methods related to purchasing or a single large **purchase** method, extract that into a **Purchase** model and delegate to it. If the **Purchase** model has 10 methods that deal with charging credit cards, extract those into a **Purchase::Charger** model and delegate to it.
+If the **User** model has 5 methods related to purchasing or a single large
+**purchase** method, extract that into a **Purchase** model and delegate to it.
+If the **Purchase** model has 10 methods that deal with charging credit cards,
+extract those into a `Purchase::Charger` model and delegate to it.
 
 Nobody will think less of you for writing boring code.
 
-Nobody will fuss about a method, module or class that is understandable but is too pedestrian.
+Nobody will fuss about a method, module or class that is understandable but is
+too pedestrian.
 
-Nobody wants to work with code that requires a manual to figure out how to do the most basic actions.
+Nobody wants to work with code that requires a manual to figure out how to do
+the most basic actions.
 
 Keep it simple, keep it boring, and don’t surprise other.
 
 ***Update on 2022-08-27***
 
-After sharing this article with a few friends I got a wonderful question which I want to address.
+After sharing this article with a few friends I got a wonderful question which I
+want to address.
 
-**Q:** If you put everything in **app/models** isn’t that surprising too? People will expect an ActiveRecord-like object and they can get anything.
+**Q:** If you put everything in `app/models` isn’t that surprising too? People
+will expect an ActiveRecord-like object and they can get anything.
 
-**A:** Yes that would be surprising, but I don’t see a situation where someone would write **Purchase::Charger.new(purchase: Purchase.all.sample).save** and hit Enter out of the blue.
+**A:** Yes that would be surprising, but I don’t see a situation where someone
+would write `Purchase::Charger.new(purchase: Purchase.all.sample).save` and hit
+Enter out of the blue.
 
-If you see **Purchase::Charger** you’d at least be curious why the model name isn’t a noun - the name implies that it’s different.
+If you see `Purchase::Charger` you’d at least be curious why the model name
+isn’t a noun - the name implies that it’s different.
 
-Why would someone create and try to save an object they know nothing about? That implies that they are just passing random arguments to random methods expecting things to just work.
+Why would someone create and try to save an object they know nothing about? That
+implies that they are just passing random arguments to random methods expecting
+things to just work.
 
-I don't see this as a realistic scenario, I expect people to know what they are doing and if they don't to read up until they do. In other words, I trust them to do good work.
+I don't see this as a realistic scenario, I expect people to know what they are
+doing and if they don't to read up until they do. In other words, I trust them
+to do good work.
 
-But I agree that there are cases where it’s beneficial to have a similar interface for some objects. Therefore, I make most objects in **app/models** inherit from **ActiveModel::Model**. There are many reasons for this which I think I’ll cover in a separate article.
+But I agree that there are cases where it’s beneficial to have a similar
+interface for some objects. Therefore, I make most objects in `app/models`
+inherit from `ActiveModel::Model`. There are many reasons for this which I think
+I’ll cover in a separate article.
 
-P.S. Many thanks to [Hrvoje S.](https://shime.sh/) for reviewing drafts of this article.
+P.S. Many thanks to [Hrvoje S.](https://shime.sh/) for reviewing drafts of this
+article.

@@ -37,22 +37,25 @@ URL the entry will have. Don't make IDs by hand.
 
 ### Frontmatter
 
-All three share these:
+All three share these, always in this order: title, the dates and tags first, anything the
+kind adds after them, `draft` and `feedId` last. Dates are bare YAML timestamps, tags an
+inline list, and strings are quoted only when YAML needs it.
 
 ```yaml
 title: Clean air & AI
-publishedAt: '2025-06-12T14:00:00Z'   # when it's shown as published, and the sort order
-updatedAt: '2026-03-11T13:32:32Z'     # the sitemap's lastmod
-draft: true                           # optional; drafts aren't built
-tags: [ai, go]                        # lowercase, dashes for spaces
-feedId: Article/46                    # migrated entries only, see below
+publishedAt: 2025-06-12T14:00:00Z   # when it's shown as published, and the sort order
+updatedAt: 2026-03-11T13:32:32Z     # the sitemap's lastmod
+tags: [ai, go]                      # lowercase, dashes for spaces
+draft: true                         # optional; drafts aren't built
+feedId: Article/46                  # migrated entries only, see below
 ```
 
-Talks add `event`, `heldAt`, and optionally `eventUrl` and `videoMirrorUrl` (a YouTube URL
-is embedded, anything else becomes a `<video>`). The body is the talk's abstract.
+Talks add `event`, `eventUrl`, `heldAt` and `videoMirrorUrl` (the URLs are optional; a
+YouTube mirror is embedded, anything else becomes a `<video>`). The body is the talk's
+abstract.
 
-Snaps have no body. They add `image`, a media key, or `video` and `poster` keys with
-`videoType` and `duration`, plus an optional `caption`.
+Snaps have no body. They add `caption`, then `image`, or `video`, `videoType`, `duration`
+and `poster`. The media are named by file, like `image: 1000054880.jpg` (see below).
 
 `feedId` is the Atom entry ID the Rails app gave the entry. Feed readers remember it, so it
 must never change. New entries leave it out and get `<Kind>/<folder name>`.
@@ -75,31 +78,41 @@ words a minute. All of this is in `src/lib/entries.ts` and `src/lib/plain-text.t
 
 ## MDX components
 
-Articles and talks are MDX. Images and videos use the components in
-`src/components/content/`, naming the media by its key (`new-media` skill):
+Articles and talks are MDX. Images and videos use `<Figure>`, `<Gallery>` and `<Video>`
+from `src/components/content/`, which every entry gets without importing them
+(`src/lib/rendering.ts` hands them to the content). An entry names its own media by file
+name, which is looked up in its media folder, `media/originals/<collection>/<folder>/`
+(`new-media` skill):
 
 ```mdx
-import Figure from "~/components/content/Figure.astro"
-import Gallery from "~/components/content/Gallery.astro"
-import Video from "~/components/content/Video.astro"
-
-<Figure media="articles/air-quality-box-Xifl2b1XyubA/breadboard.jpeg" caption="The first prototype" />
+<Figure media="breadboard.jpeg" caption="The first prototype" />
 
 <Gallery>
-  <Figure media="articles/air-quality-box-Xifl2b1XyubA/before.jpeg" caption="Before" inGallery />
-  <Figure media="articles/air-quality-box-Xifl2b1XyubA/after.jpeg" caption="After" inGallery />
+  <Figure media="before.jpeg" caption="Before" inGallery />
+  <Figure media="after.jpeg" caption="After" inGallery />
 </Gallery>
 
-<Video media="articles/air-quality-box-Xifl2b1XyubA/demo.mp4" poster="articles/air-quality-box-Xifl2b1XyubA/demo.jpg" type="video/mp4" caption="The demo" />
+<Video media="demo.mp4" poster="demo.jpg" type="video/mp4" caption="The demo" />
 ```
 
-`caption` also becomes the alt text; pass `alt` when it should differ. `doc/images.md` has
-what each component renders.
+A key with a slash is a full key, for using another entry's media:
+`<Figure media="snaps/soca-valley-C4wEfGoWTXNS/1000054880.jpg" />`.
 
-Code blocks are fenced with a language (```` ```ruby ````). A fence without one renders as a
-plain, unhighlighted block, as the Rails app did.
+`caption` also becomes the alt text; pass `alt` when it should differ, or instead of a
+caption. `<Figure src="https://…" width={480} height={270} />` shows an image from another
+site; only one entry does that. `doc/images.md` has what each component renders.
 
-Text in MDX needs `{`, `}` and `<` escaped with a backslash, as the migrated entries do.
+The source reads like any Markdown: prose wrapped at 80 columns (list items and quotes
+indented under their marker), blank lines between blocks, `**bold**`, `*italic*`,
+`` `code` `` for anything that's code, `-` for lists, `##` for headings, and Markdown tables.
+Links, code spans and component tags are never broken, so a long one overflows; a component
+tag that doesn't fit on one line gets one attribute per line. Code blocks and tables aren't
+wrapped. No raw HTML where Markdown has a way to say it.
+
+Code blocks are fenced with a language (```` ```ruby ````); `text` for plain output, which
+renders unhighlighted, as the Rails app did.
+
+Text in MDX needs `{`, `}` and a `<` that could start a tag escaped with a backslash.
 
 ## Tags
 

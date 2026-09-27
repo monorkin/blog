@@ -37,22 +37,23 @@ which `bin/setup` installs. The manifest change is the part that goes in git.
 
 ## 3. Use the key
 
-In MDX:
+An entry names its own media by file name; the components look it up in the entry's media
+folder, and need no import. In MDX:
 
 ```mdx
-import Figure from "~/components/content/Figure.astro"
-import Video from "~/components/content/Video.astro"
+<Figure media="img_8969.jpeg" caption="Zagreb from Sljeme" />
 
-<Figure media="articles/clean-air-ai-AHcddmIf21lt/img_8969.jpeg" caption="Zagreb from Sljeme" />
-
-<Video media="articles/clean-air-ai-AHcddmIf21lt/demo.mp4" poster="articles/clean-air-ai-AHcddmIf21lt/demo.jpg" type="video/mp4" caption="The demo" />
+<Video media="demo.mp4" poster="demo.jpg" type="video/mp4" caption="The demo" />
 ```
 
 A video needs a poster image beside it; grab a frame with
 `ffmpeg -i demo.mp4 -frames:v 1 demo.jpg`.
 
-In a snap's frontmatter: `image: snaps/<folder>/<file>`, or `video`, `videoType` and
-`poster` keys for a video snap.
+In a snap's frontmatter: `image: <file>`, or `video`, `videoType` and `poster` for a video
+snap.
+
+Another entry's media takes its full key, the path under `media/originals/`:
+`<Figure media="snaps/soca-valley-C4wEfGoWTXNS/1000054880.jpg" />`.
 
 ## 4. Look at it
 

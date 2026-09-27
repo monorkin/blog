@@ -50,25 +50,26 @@ tags: []
 - Tags are lowercase with dashes. A new tag needs nothing else.
 - A talk gets placeholder `event` and `heldAt` to replace, and optionally takes `eventUrl`
   and `videoMirrorUrl`.
-- A snap has `image: snaps/<folder>/<file>` (a media key) when you gave it a photo; run
-  `bin/media variants` so the manifest knows it. It takes an optional `caption`, and has no
-  body.
+- A snap has `image: <file>` when you gave it a photo; run `bin/media variants` so the
+  manifest knows it. It takes an optional `caption`, and has no body.
+- Keep the order: title, the dates, tags, what the kind adds, `draft` last.
 
 Set `updatedAt` again whenever you change a published entry; the sitemap reports it.
 
 ## 3. Write the body
 
-Markdown, in MDX. Escape `{`, `}` and `<` in text with a backslash. Code blocks name their
-language (```` ```ruby ````).
+Markdown, in MDX, like the other entries: prose wrapped at 80 columns, `**bold**`,
+`*italic*`, `` `code` `` for code (never bold), `-` lists, `##` headings, Markdown tables,
+and no HTML where Markdown will do. Links, code spans and component tags aren't broken. Escape `{`, `}`
+and a `<` that could start a tag with a backslash. Code blocks name their language
+(```` ```ruby ````, `text` for plain output).
 
-Images and videos are media: they go in `media/originals/`, not the entry's folder, and
-through the components; never an `<img>` or a file in `public/`. The `new-media` skill is
-how to add one:
+Images and videos are media: they go in the entry's media folder that `bin/generate` made,
+`media/originals/<collection>/<folder>/`, and through the components, which need no import;
+never an `<img>` or a file in `public/`. Name them by file; the `new-media` skill has the rest:
 
 ```mdx
-import Figure from "~/components/content/Figure.astro"
-
-<Figure media="articles/<folder>/view.jpeg" caption="Zagreb from Sljeme" />
+<Figure media="view.jpeg" caption="Zagreb from Sljeme" />
 ```
 
 `<Gallery>` for images side by side (each `<Figure>` with `inGallery`), `<Video>` for a

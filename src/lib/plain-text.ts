@@ -6,6 +6,7 @@ import { parse, type HTMLElement, type Node } from "node-html-parser"
 
 const BLOCKS = [ "h1", "h2", "h3", "h4", "h5", "h6", "p" ]
 const SKIPPED = [ "script", "style", "rt", "rp" ]
+const INLINE_PARENTS = [ "p", "h1", "h2", "h3", "h4", "h5", "h6", "li", "td", "th", "a", "strong", "em", "b", "i", "code", "del", "span" ]
 
 export function plainText(html: string) {
   const root = parse(html, { blockTextElements: { script: true, style: true } })
@@ -24,11 +25,15 @@ function textFor(node: Node): string {
   }
 }
 
+// Newlines inside a paragraph are Markdown's soft line breaks, which read as spaces. Rails'
+// content had none; between blocks, newlines are just markup and count for nothing.
 function textForTextNode(node: Node) {
   let text = node.text
 
   if (isInsidePre(node)) {
     return text
+  } else if (isInline(node)) {
+    return text.replace(/\n/g, " ")
   } else {
     if (previousElementName(node) === "br") {
       text = text.replace(/^\n/, "")
@@ -36,6 +41,10 @@ function textForTextNode(node: Node) {
 
     return removeTrailingNewlines(text)
   }
+}
+
+function isInline(node: Node) {
+  return INLINE_PARENTS.includes(tagName(node.parentNode as HTMLElement))
 }
 
 function textForElement(element: HTMLElement): string {

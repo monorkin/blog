@@ -1,33 +1,63 @@
 ---
 title: GraphQL file upload with Shrine
-publishedAt: '2019-01-02T00:00:00Z'
-updatedAt: '2026-02-15T09:37:07Z'
-tags:
-- ruby
+publishedAt: 2019-01-02T00:00:00Z
+updatedAt: 2026-02-15T09:37:07Z
+tags: [ruby]
 feedId: Article/7
 ---
 
-import Figure from "~/components/content/Figure.astro"
+<Figure
+  media="9719cecb0e0383439f4d62f48bc1b6f8.jpg"
+  caption="The GraphQL logo overlayed over a Japanese shrine"
+/>
 
-<Figure media="articles/graphql-file-upload-with-shrine-45fa26463c68/9719cecb0e0383439f4d62f48bc1b6f8.jpg" caption="The GraphQL logo overlayed over a Japanese shrine" />
+At the moment of writing there is no officially supported way to do file upload
+through [GraphQL](https://en.wikipedia.org/wiki/GraphQL). Here is a roundup of
+all available methods to do file upload through it, their pros and cons.
 
-At the moment of writing there is no officially supported way to do file upload through [GraphQL](https://en.wikipedia.org/wiki/GraphQL). Here is a roundup of all available methods to do file upload through it, their pros and cons.
-
-This post grew out of a request on the [Shrine](https://github.com/shrinerb/shrine) issue tracker — you can find [the original issue here](https://github.com/shrinerb/shrine/issues/244). It's still useful for other libraries, but the code examples will only apply to Shrine.
+This post grew out of a request on the
+[Shrine](https://github.com/shrinerb/shrine) issue tracker — you can find [the
+original issue here](https://github.com/shrinerb/shrine/issues/244). It's still
+useful for other libraries, but the code examples will only apply to Shrine.
 
 ## Direct file upload
 
-**Handling uploads is a resource intensive task for the server** (using up IO and bandwidth). To resolve this, **we can upload the file directly from the client to our block-storage server** ([AWS S3](https://aws.amazon.com/s3/) or [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/)) by using a presigned URL generated on our server.
+**Handling uploads is a resource intensive task for the server** (using up IO
+and bandwidth). To resolve this, **we can upload the file directly from the
+client to our block-storage server** ([AWS S3](https://aws.amazon.com/s3/) or
+[DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/)) by using a
+presigned URL generated on our server.
 
-This is in contrast to the classic approach where we would first upload the client's file to our server, and then from our server to the block-storage server.
+This is in contrast to the classic approach where we would first upload the
+client's file to our server, and then from our server to the block-storage
+server.
 
-The benefit is that **our server doesn't have to process the file** (which uses up IO) and **it doesn't have to upload the file** to the block-storage server (more IO usage). It also solves scaling issues related to distributed file caches and distributed resource management.
+The benefit is that **our server doesn't have to process the file** (which uses
+up IO) and **it doesn't have to upload the file** to the block-storage server
+(more IO usage). It also solves scaling issues related to distributed file
+caches and distributed resource management.
 
-**The downside to this method is apparent when the uploaded file needs to be processed**. To process a file our server needs to get the client's form submission containing the URL of the file, download the file, process it and re-upload it to the block-storage server. This uses up bandwidth and IO but it's necessary.
+**The downside to this method is apparent when the uploaded file needs to be
+processed**. To process a file our server needs to get the client's form
+submission containing the URL of the file, download the file, process it and
+re-upload it to the block-storage server. This uses up bandwidth and IO but it's
+necessary.
 
-**This method should be satisfactory for most use-cases**. If your application doesn't require immediate file processing then the downloading and re-uploading can be done in the background or on a separate machine ( [using an AWS lambda](https://github.com/ysugimoto/aws-lambda-image)). On AWS you can get the best of both world using the [Serverless image handler](https://aws.amazon.com/solutions/implementations/serverless-image-handler/).
+**This method should be satisfactory for most use-cases**. If your application
+doesn't require immediate file processing then the downloading and re-uploading
+can be done in the background or on a separate machine ( [using an AWS
+lambda](https://github.com/ysugimoto/aws-lambda-image)). On AWS you can get the
+best of both world using the [Serverless image
+handler](https://aws.amazon.com/solutions/implementations/serverless-image-handler/).
 
-[**Shrine supports this feature out-of-the-box**](https://github.com/shrinerb/shrine/blob/3c14113ce2fb77d1f3e96bd4e4ff10416651fc7c/doc/direct_s3.md) through the [presign plugin](https://github.com/shrinerb/shrine/blob/master/lib/shrine/plugins/presign_endpoint.rb). To get it running you'll need to add the [AWS S3 SDK](https://github.com/aws/aws-sdk-ruby) to your Gemfile, configure a new storage for Shrine, and expose the file presign endpoint — this is explained in detail in the documentation.
+[**Shrine supports this feature
+out-of-the-box**](https://github.com/shrinerb/shrine/blob/3c14113ce2fb77d1f3e96bd4e4ff10416651fc7c/doc/direct_s3.md)
+through the [presign
+plugin](https://github.com/shrinerb/shrine/blob/master/lib/shrine/plugins/presign_endpoint.rb).
+To get it running you'll need to add the [AWS S3
+SDK](https://github.com/aws/aws-sdk-ruby) to your Gemfile, configure a new
+storage for Shrine, and expose the file presign endpoint — this is explained in
+detail in the documentation.
 
 ```ruby
 # This code is license under the MIT license
@@ -99,7 +129,9 @@ class S3UrlToShrineObjectConverter
 end
 ```
 
-Once the client uploads the file it needs to send some kind of reference to the server — the URL of the file, or an ID, or the path of the file (I usually send the original file name as well as the URL).
+Once the client uploads the file it needs to send some kind of reference to the
+server — the URL of the file, or an ID, or the path of the file (I usually send
+the original file name as well as the URL).
 
 ```plain
 mutation SetAvatar($url: String, $filename: String) {
@@ -119,13 +151,20 @@ mutation SetAvatar($url: String, $filename: String) {
 
 The server uses this reference to build a Shrine object and attach it.
 
-Note that you can use the [upload_endpoint plugin](https://github.com/shrinerb/shrine/blob/master/lib/shrine/plugins/upload_endpoint.rb) instead of the [presign_endpoint plugin](https://github.com/shrinerb/shrine/blob/master/lib/shrine/plugins/presign_endpoint.rb). I advise against this as it enables anyone to upload any content, at any time, to your block-storage. By presiging we solve the "anyone” and "anytime” issues — we have control over who can request presigned URLs to upload or download files.
+Note that you can use the [upload_endpoint
+plugin](https://github.com/shrinerb/shrine/blob/master/lib/shrine/plugins/upload_endpoint.rb)
+instead of the [presign_endpoint
+plugin](https://github.com/shrinerb/shrine/blob/master/lib/shrine/plugins/presign_endpoint.rb).
+I advise against this as it enables anyone to upload any content, at any time,
+to your block-storage. By presiging we solve the "anyone” and "anytime” issues —
+we have control over who can request presigned URLs to upload or download files.
 
 ## Base64 encoding
 
 This method is **the simplest, yet it's the worst** for real-world applications.
 
-Your client can encode the file's data as Base64 and set it as the value of a mutation's field.
+Your client can encode the file's data as Base64 and set it as the value of a
+mutation's field.
 
 ```plain
 mutation SetAvatar($data: String, $filename: String) {
@@ -143,7 +182,8 @@ mutation SetAvatar($data: String, $filename: String) {
 }
 ```
 
-While on the surface this seems harmless, since the image has to be uploaded to the server in one way or another, this approach has many unwanted side-effects.
+While on the surface this seems harmless, since the image has to be uploaded to
+the server in one way or another, this approach has many unwanted side-effects.
 
 ```javascript
 #!/usr/bin/ruby
@@ -151,17 +191,33 @@ user.avatar_data_uri = arguments[:input][:avatar][:data]
 user.save
 ```
 
-**The biggest issue is memory consumption**. Since the image is now part of your request's JSON body it will be parsed as a string, which will drive your memory consumption up. E.g. If you upload ten 5MiB images in one mutation you will have a hash that's at least 50MiB in memory. **Storing whole files in memory can and will crash your application**.
+**The biggest issue is memory consumption**. Since the image is now part of your
+request's JSON body it will be parsed as a string, which will drive your memory
+consumption up. E.g. If you upload ten 5MiB images in one mutation you will have
+a hash that's at least 50MiB in memory. **Storing whole files in memory can and
+will crash your application**.
 
-**I advise against using this method**. If you wish to implement it, you can do so using Shrine's [data_uri plugin](https://github.com/shrinerb/shrine/blob/a8ba2510bf01981175eb2abe7421c1a86c1bcc9d/lib/shrine/plugins/data_uri.rb). After you add the plugin to your uploader you will need to set the **\<field>\_data_uri** of your file in the resolver.
+**I advise against using this method**. If you wish to implement it, you can do
+so using Shrine's [data_uri
+plugin](https://github.com/shrinerb/shrine/blob/a8ba2510bf01981175eb2abe7421c1a86c1bcc9d/lib/shrine/plugins/data_uri.rb).
+After you add the plugin to your uploader you will need to set the
+`<field>_data_uri` of your file in the resolver.
 
-If you decide to use this method be careful to remove the image upload field from your logs, otherwise your log file will contain a copy of all uploaded images.
+If you decide to use this method be careful to remove the image upload field
+from your logs, otherwise your log file will contain a copy of all uploaded
+images.
 
 ## Multipart upload
 
-Multipart uploads are the standard way of uploading files through HTTP. They are used by most browsers to do file uploads through forms. **Since GraphQL is just a JSON request we can pass files alongside our request**, but we need logic to interpret them.
+Multipart uploads are the standard way of uploading files through HTTP. They are
+used by most browsers to do file uploads through forms. **Since GraphQL is just
+a JSON request we can pass files alongside our request**, but we need logic to
+interpret them.
 
-I'll be referencing [jaydenseric](https://github.com/jaydenseric)'s [multipart request specification](https://github.com/jaydenseric/graphql-multipart-request-spec) as it's supported by several client and server implementations at this moment.
+I'll be referencing [jaydenseric](https://github.com/jaydenseric)'s [multipart
+request
+specification](https://github.com/jaydenseric/graphql-multipart-request-spec) as
+it's supported by several client and server implementations at this moment.
 
 ```plain
 mutation UploadGalleryImages {
@@ -176,11 +232,19 @@ mutation UploadGalleryImages {
 }
 ```
 
-A typical GraphQL request consists of three fields **query**, **variables** and **operationName**. This spec adds a fourth — **map**. The map contains indices and JSON pointers, each index represents an image and each pointer represents the location of the **ActionDispatch::Http::UploadedFile** that holds the corresponding image.
+A typical GraphQL request consists of three fields **query**, **variables** and
+**operationName**. This spec adds a fourth — `map`. The map contains indices and
+JSON pointers, each index represents an image and each pointer represents the
+location of the `ActionDispatch::Http::UploadedFile` that holds the
+corresponding image.
 
-Say we want to upload two images to a gallery using this method, our GraphQL mutation might look like this:
+Say we want to upload two images to a gallery using this method, our GraphQL
+mutation might look like this:
 
-Since the server knows that the **images** field is an array of **File** types it will match all **null** values in the array, in order of appearance, with their index in the **map** field and dereference their JSON pointer. If we were to inspect the input params hash we would see the following:
+Since the server knows that the `images` field is an array of **File** types it
+will match all `null` values in the array, in order of appearance, with their
+index in the `map` field and dereference their JSON pointer. If we were to
+inspect the input params hash we would see the following:
 
 ```ruby
 # {
@@ -199,12 +263,19 @@ arguments[:images].map do |file|
 end
 ```
 
-From here on you can assign those **UploadedFile** objects to any of your own objects as usual. No Shrine plugins needed.
+From here on you can assign those **UploadedFile** objects to any of your own
+objects as usual. No Shrine plugins needed.
 
 ## Conclusion
 
-**My suggestion is to use the direct upload method** if possible. It's the only method that doesn't require modifications to the GraphQL protocol, it's well understood, and it's used outside of the GraphQL ecosystem (better interoperability with client libraries).
+**My suggestion is to use the direct upload method** if possible. It's the only
+method that doesn't require modifications to the GraphQL protocol, it's well
+understood, and it's used outside of the GraphQL ecosystem (better
+interoperability with client libraries).
 
-**If direct uploads won't work for you I would take a gamble on multipart uploads.**
+**If direct uploads won't work for you I would take a gamble on multipart
+uploads.**
 
-Base64 encoding of upload files is problematic at best and should be avoided in my opinion. Though there are limited use-cases where it's implementation speed out ways the issues it has. Though, those use-cases are rare.
+Base64 encoding of upload files is problematic at best and should be avoided in
+my opinion. Though there are limited use-cases where it's implementation speed
+out ways the issues it has. Though, those use-cases are rare.

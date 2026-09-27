@@ -1,17 +1,24 @@
 ---
 title: Tracking online presence with ActionCable
-publishedAt: '2023-11-14T05:17:00Z'
-updatedAt: '2026-03-09T08:42:16Z'
-tags:
-- ruby
+publishedAt: 2023-11-14T05:17:00Z
+updatedAt: 2026-03-09T08:42:16Z
+tags: [ruby]
 feedId: Article/35
 ---
 
-import Video from "~/components/content/Video.astro"
+This month I worked on tracking when a device connected and disconnected to a
+WebSocket backed with
+[ActionCable](https://guides.rubyonrails.org/action_cable_overview.html). At
+first, this seemed like a simple problem to solve, but it turned out to be much
+more complicated.
 
-This month I worked on tracking when a device connected and disconnected to a WebSocket backed with [ActionCable](https://guides.rubyonrails.org/action_cable_overview.html). At first, this seemed like a simple problem to solve, but it turned out to be much more complicated.
-
-[I started with a simple solution](https://github.com/monorkin/actioncable-presence-detection-demo/tree/b86c5b02b4e411c5f43cd006629a8549dbbabd65), which was to mark a Device as being online in the #subsribed method, and marking it as offline in the #unsubscribed method. These methods are called when a client subscribes or unsubscribes to a channel. [This is also the solution from the ActionCable guides](https://guides.rubyonrails.org/action_cable_overview.html#example-1-user-appearances).
+[I started with a simple
+solution](https://github.com/monorkin/actioncable-presence-detection-demo/tree/b86c5b02b4e411c5f43cd006629a8549dbbabd65),
+which was to mark a Device as being online in the #subsribed method, and marking
+it as offline in the #unsubscribed method. These methods are called when a
+client subscribes or unsubscribes to a channel. [This is also the solution from
+the ActionCable
+guides](https://guides.rubyonrails.org/action_cable_overview.html#example-1-user-appearances).
 
 ```ruby
 class EventsChannel < ApplicationCable::Channel
@@ -26,7 +33,9 @@ class EventsChannel < ApplicationCable::Channel
 end
 ```
 
-\#came_online and #went_offline internally just update an online boolean column to either true or false, and also create a log record that the device came online or went offline.
+#came_online and #went_offline internally just update an online boolean column
+to either true or false, and also create a log record that the device came
+online or went offline.
 
 ```ruby
 class Device < ApplicationRecord
@@ -47,93 +56,245 @@ class Device < ApplicationRecord
 end
 ```
 
-And that works pretty well. If I connect as a device I can see a green orb appear next to to the device's name, and if I disconnect the orb turns red.
+And that works pretty well. If I connect as a device I can see a green orb
+appear next to to the device's name, and if I disconnect the orb turns red.
 
-<Video media="articles/tracking-online-presence-with-actioncable-ukEi6sUZ98Bz/presence_app_demo.webm" poster="articles/tracking-online-presence-with-actioncable-ukEi6sUZ98Bz/presence_app_demo.jpg" type="video/webm" caption="Demonstration of the device going online and offline within a simple presence tracking app" />
+<Video
+  media="presence_app_demo.webm"
+  poster="presence_app_demo.jpg"
+  type="video/webm"
+  caption="Demonstration of the device going online and offline within a simple presence tracking app"
+/>
 
-I soon discovered a problem with that solution. If I open the page on my phone, connect as a device, and then turn airplane mode on, the app will still think that the device is online even through the phone isn't connected to WiFi anymore.
+I soon discovered a problem with that solution. If I open the page on my phone,
+connect as a device, and then turn airplane mode on, the app will still think
+that the device is online even through the phone isn't connected to WiFi
+anymore.
 
-<Video media="articles/tracking-online-presence-with-actioncable-ukEi6sUZ98Bz/presence_app_offline_demo_av1.webm" poster="articles/tracking-online-presence-with-actioncable-ukEi6sUZ98Bz/presence_app_offline_demo_av1.jpg" type="video/webm" caption="Demonstration of the device staying online when the device is unplugged from the Internet" />
+<Video
+  media="presence_app_offline_demo_av1.webm"
+  poster="presence_app_offline_demo_av1.jpg"
+  type="video/webm"
+  caption="Demonstration of the device staying online when the device is unplugged from the Internet"
+/>
 
 What is going on?
 
-Well, most operating systems keep a connection "alive" and buffer messages for it if the other end suddenly disconnects (without closing the TCP connection). This is so that small hiccups in the network don't cause you problems, errors or warning messages. This connection state is known as [half-open](https://en.wikipedia.org/wiki/TCP_half-open).
+Well, most operating systems keep a connection "alive" and buffer messages for
+it if the other end suddenly disconnects (without closing the TCP connection).
+This is so that small hiccups in the network don't cause you problems, errors or
+warning messages. This connection state is known as
+[half-open](https://en.wikipedia.org/wiki/TCP_half-open).
 
-Depending on the OS, a connection can be considered held half-open in this way anywhere from a few minutes to nearly half an hour, or until the buffer overflows which can be dozens to hundreds of megabytes of messages.
+Depending on the OS, a connection can be considered held half-open in this way
+anywhere from a few minutes to nearly half an hour, or until the buffer
+overflows which can be dozens to hundreds of megabytes of messages.
 
-Since I want to know when a device disconnects as soon as possible this buffer and the delay it introduces is a problem.
+Since I want to know when a device disconnects as soon as possible this buffer
+and the delay it introduces is a problem.
 
-This behavior surprised me a bit since I know that ActionCable keeps a heartbeat which is supposed to detect sudden disconnects and prevent half-open connections from lingering.
+This behavior surprised me a bit since I know that ActionCable keeps a heartbeat
+which is supposed to detect sudden disconnects and prevent half-open connections
+from lingering.
 
-Why didn't the heartbeat save me this trouble? I had to dive deep into ActionCable to figure out.
+Why didn't the heartbeat save me this trouble? I had to dive deep into
+ActionCable to figure out.
 
-A heartbeat is a simple message, sent back and forth between the client and server every few seconds. It generates traffic, so the connection doesn't become stale, and if one side doesn't receive the heartbeat in time it knows that it has lost connection to the other side. The heartbeat messages are commonly called "ping" and "pong". The WebSocket protocol itself has a special ping & pong message, but most WebSocket libraries implement their own application-level ping & pong for various reasons I won't get into.
+A heartbeat is a simple message, sent back and forth between the client and
+server every few seconds. It generates traffic, so the connection doesn't become
+stale, and if one side doesn't receive the heartbeat in time it knows that it
+has lost connection to the other side. The heartbeat messages are commonly
+called "ping" and "pong". The WebSocket protocol itself has a special ping &
+pong message, but most WebSocket libraries implement their own application-level
+ping & pong for various reasons I won't get into.
 
-The ping message can be sent from the server to the client - this is known as a server-initiated ping - or from the client to the server - which is known as a client-initiated ping. Usually, whoever gets the ping responds back with a pong message. If one side doesn't receive a ping or pong back within a given time frame they assume that the other side has disconnected.
+The ping message can be sent from the server to the client - this is known as a
+server-initiated ping - or from the client to the server - which is known as a
+client-initiated ping. Usually, whoever gets the ping responds back with a pong
+message. If one side doesn't receive a ping or pong back within a given time
+frame they assume that the other side has disconnected.
 
-Turns out, in ActionCable, the heartbeat is server-initiated and one-directional. This means that the server periodically sends a ping to all clients, but it doesn't expect a pong back.
+Turns out, in ActionCable, the heartbeat is server-initiated and
+one-directional. This means that the server periodically sends a ping to all
+clients, but it doesn't expect a pong back.
 
-That's a bit curious, but it makes sense. The point is to help the client discover that it has lost connection so that it can reconnect. The downside of such a heartbeat is that the server can't know that the client has disconnected abruptly, so it can't close the connection until either the OS buffer overflows or times out.
+That's a bit curious, but it makes sense. The point is to help the client
+discover that it has lost connection so that it can reconnect. The downside of
+such a heartbeat is that the server can't know that the client has disconnected
+abruptly, so it can't close the connection until either the OS buffer overflows
+or times out.
 
-In my case, just adding a pong response to the client, and the ability for the server to close any connection that didn't receive a pong within two heartbeats would allow me to detect a disconnect within 9 sec which is a great improvement over the 30 min from before.
+In my case, just adding a pong response to the client, and the ability for the
+server to close any connection that didn't receive a pong within two heartbeats
+would allow me to detect a disconnect within 9 sec which is a great improvement
+over the 30 min from before.
 
-[So I monkey patched that in](https://github.com/monorkin/actioncable-presence-detection-demo/tree/7d239de992654ec944784a02c55a3dd69823aa75), and it worked pretty well.
+[So I monkey patched that
+in](https://github.com/monorkin/actioncable-presence-detection-demo/tree/7d239de992654ec944784a02c55a3dd69823aa75),
+and it worked pretty well.
 
-<Video media="articles/tracking-online-presence-with-actioncable-ukEi6sUZ98Bz/presence_app_pong_monkeypatch.webm" poster="articles/tracking-online-presence-with-actioncable-ukEi6sUZ98Bz/presence_app_pong_monkeypatch.jpg" type="video/webm" caption="Demonstration of the device going offline when unplugged when PONG messages are added" />
+<Video
+  media="presence_app_pong_monkeypatch.webm"
+  poster="presence_app_pong_monkeypatch.jpg"
+  type="video/webm"
+  caption="Demonstration of the device going offline when unplugged when PONG messages are added"
+/>
 
-In my opinion this is a generally useful feature so I went to open up a PR to ActionCable and checked for any preexisting PRs or issues related to ping and pong messages. There were two closed issues ([#24908](https://github.com/rails/rails/issues/24908) & [#29307](https://github.com/rails/rails/issues/29307)) and [another open one](https://github.com/rails/rails/issues/45112).
+In my opinion this is a generally useful feature so I went to open up a PR to
+ActionCable and checked for any preexisting PRs or issues related to ping and
+pong messages. There were two closed issues
+([#24908](https://github.com/rails/rails/issues/24908) &
+[#29307](https://github.com/rails/rails/issues/29307)) and [another open
+one](https://github.com/rails/rails/issues/45112).
 
-While slightly different all of them seem to focus on the same underlying issue of handling sudden disconnects. But the proposed solution for them isn't a pong response, instead it's a switch to client-initiated heartbeats.
+While slightly different all of them seem to focus on the same underlying issue
+of handling sudden disconnects. But the proposed solution for them isn't a pong
+response, instead it's a switch to client-initiated heartbeats.
 
-I was a bit surprised by the discussion leaning towards client-initiated heartbeats. Pong messages are a much simpler and less invasive solution which solves the same issue. So I read through all the discussions and did some research to understand what else client-initiated heartbeats bring to the table.
+I was a bit surprised by the discussion leaning towards client-initiated
+heartbeats. Pong messages are a much simpler and less invasive solution which
+solves the same issue. So I read through all the discussions and did some
+research to understand what else client-initiated heartbeats bring to the table.
 
 The issues highlight the following as advantages of client initiated heartbeats:
 
-- Ability to change the heartbeat on the client-side, this would allow some clients to do heartbeats more frequently to detect if the connection broke more quickly
-- The client could measure latency - the time it takes for a message to do a round trip - to the server
+- Ability to change the heartbeat on the client-side, this would allow some
+  clients to do heartbeats more frequently to detect if the connection broke
+  more quickly
+- The client could measure latency - the time it takes for a message to do a
+  round trip - to the server
 
 There were two other features mentioned:
 
 - Dropped message detection
 - Reporting of the last-received message
 
-These are technically doable by adding a [Lamport timestamp](https://en.wikipedia.org/wiki/Lamport_timestamp) to each message, but they raise a new question "*What do we do when we detect a dropped message?*" which is application-level stuff and a major expansion of the framework, so I won't delve into these features.
+These are technically doable by adding a [Lamport
+timestamp](https://en.wikipedia.org/wiki/Lamport_timestamp) to each message, but
+they raise a new question "*What do we do when we detect a dropped message?*"
+which is application-level stuff and a major expansion of the framework, so I
+won't delve into these features.
 
-I did [a proof of concept implementation of client-initiated heartbeats](https://github.com/monorkin/actioncable-presence-detection-demo/tree/82a851f0de0f8db414e3c8055fa28be4031ffd90), before I found out [socket.io](https://socket.io/) actually changed from client-initiated to server-initiated heartbeats.
+I did [a proof of concept implementation of client-initiated
+heartbeats](https://github.com/monorkin/actioncable-presence-detection-demo/tree/82a851f0de0f8db414e3c8055fa28be4031ffd90),
+before I found out [socket.io](https://socket.io/) actually changed from
+client-initiated to server-initiated heartbeats.
 
-Reading through the [GitHub issue](https://github.com/socketio/socket.io/issues/2769#issuecomment-639300952) where the switch was decided, I learned that [Chrome has started throttling setTimeout and setInterval for tabs that aren't in the foreground](https://developer.chrome.com/blog/timer-throttling-in-chrome-88/) in 2021 to lower power consumption (extend battery life). When your app is in a tab that gets throttled the fastest that the heartbeat timer could run is once a minute. When that happens the client would send out heartbeats so slow that the server would think that it disconnected and it would close the connection, that would cause the client to reconnect, only to get disconnected again before the next heartbeat. Basically, the client would reconnect loop.
+Reading through the [GitHub
+issue](https://github.com/socketio/socket.io/issues/2769#issuecomment-639300952)
+where the switch was decided, I learned that [Chrome has started throttling
+setTimeout and setInterval for tabs that aren't in the
+foreground](https://developer.chrome.com/blog/timer-throttling-in-chrome-88/) in
+2021 to lower power consumption (extend battery life). When your app is in a tab
+that gets throttled the fastest that the heartbeat timer could run is once a
+minute. When that happens the client would send out heartbeats so slow that the
+server would think that it disconnected and it would close the connection, that
+would cause the client to reconnect, only to get disconnected again before the
+next heartbeat. Basically, the client would reconnect loop.
 
-Because of this, I abandoned client-initiated heartbeats and returned to the original pong message idea.
+Because of this, I abandoned client-initiated heartbeats and returned to the
+original pong message idea.
 
-There were a few things to iron out in the pong monkey patch. The most important one was forwards and backwards compatibility. The original implementation waited for the client to respond with a pong to switched the connection to expect pong messages. This allows clients that don't support pong responses to still function, while clients that know about pong responses get improved presence detection.
+There were a few things to iron out in the pong monkey patch. The most important
+one was forwards and backwards compatibility. The original implementation waited
+for the client to respond with a pong to switched the connection to expect pong
+messages. This allows clients that don't support pong responses to still
+function, while clients that know about pong responses get improved presence
+detection.
 
-This is forwards-compatible (*client that don't send pong messages can connect to servers that expect them*), and somewhat backwards-compatible (*clients that do send pong messages can connect to servers that don't expect them*) if you don't mind the error log messages that this will cause (*it won't crash the WebSocket*).
+This is forwards-compatible (*client that don't send pong messages can connect
+to servers that expect them*), and somewhat backwards-compatible (*clients that
+do send pong messages can connect to servers that don't expect them*) if you
+don't mind the error log messages that this will cause (*it won't crash the
+WebSocket*).
 
-But there is also a [race condition](https://en.wikipedia.org/wiki/Race_condition) in this upgrade process, when a client connects and then immediately disconnects before they respond to the first heartbeat. When that happens the server is stuck thinking that the client doesn't support pongs even though they do, and will wait for the OS to close the connection and improved presence detection is lost. That’s exactly what I don’t want.
+But there is also a [race
+condition](https://en.wikipedia.org/wiki/Race_condition) in this upgrade
+process, when a client connects and then immediately disconnects before they
+respond to the first heartbeat. When that happens the server is stuck thinking
+that the client doesn't support pongs even though they do, and will wait for the
+OS to close the connection and improved presence detection is lost. That’s
+exactly what I don’t want.
 
-The more elegant and robust solution would be for the client to signal to the server that it supports pongs when it’s opening the WebSocket. And for the server to respond back that pong messages have to be used, so that the client knows it should send them. That way I can mark the connection as expecting pongs right away, and the client can connect to servers that don't support pong messages.
+The more elegant and robust solution would be for the client to signal to the
+server that it supports pongs when it’s opening the WebSocket. And for the
+server to respond back that pong messages have to be used, so that the client
+knows it should send them. That way I can mark the connection as expecting pongs
+right away, and the client can connect to servers that don't support pong
+messages.
 
-Luckly, WebSockets provide a mechanism for exactly that - it's called sub-protocols. When a client makes a HTTP request to open a WebSocket connection it can send a list of sub-protocols to the server in [a Sec-WebSocket-Protocol header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism#sec-websocket-protocol). The sub-protocols have to be ordered by preference (the one you'd like the most first). The server chooses the first protocol from the list that it supports, and adds a Sec-WebSocket-Protocol header to it's response with just the chosen protocol. With that both the server and the client know exactly how to communicate over the WebSocket.
+Luckly, WebSockets provide a mechanism for exactly that - it's called
+sub-protocols. When a client makes a HTTP request to open a WebSocket connection
+it can send a list of sub-protocols to the server in [a Sec-WebSocket-Protocol
+header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism#sec-websocket-protocol).
+The sub-protocols have to be ordered by preference (the one you'd like the most
+first). The server chooses the first protocol from the list that it supports,
+and adds a Sec-WebSocket-Protocol header to it's response with just the chosen
+protocol. With that both the server and the client know exactly how to
+communicate over the WebSocket.
 
-ActionCable already uses Sec-WebSocket-Protocol both on the server and in the official client. The name of its protocol is actioncable-v1-json. Since the pong message is a change to the protocol, I created a new protocol revision - actioncable-v1.1-json - which expects a pong response to the server's heartbeat ping, and [updated the monkey patches](https://github.com/monorkin/actioncable-presence-detection-demo/tree/9da4ce9df09de2b51e681f24df090aafe5949016).
+ActionCable already uses Sec-WebSocket-Protocol both on the server and in the
+official client. The name of its protocol is actioncable-v1-json. Since the pong
+message is a change to the protocol, I created a new protocol revision -
+actioncable-v1.1-json - which expects a pong response to the server's heartbeat
+ping, and [updated the monkey
+patches](https://github.com/monorkin/actioncable-presence-detection-demo/tree/9da4ce9df09de2b51e681f24df090aafe5949016).
 
 The only thing left to do now was to open a PR to Rails.
 
-The first step towards that was to expose the latency metric to the application somehow. Up until now I only measured the latency and logged it in the connection object itself. It would be nice if I could somehow hook into that metric so that I can process it and store it on the device model somehow. For this I chose [ActiveSupport Notifications](https://api.rubyonrails.org/classes/ActiveSupport/Notifications.html). I've added [a new connection.latency notification](https://github.com/monorkin/actioncable-presence-detection-demo/commit/e52488751c25dc4c2707835d5a6b60ff2d792c10), through which I can monitor, and respond to, the latency of any ActionCable connection.
+The first step towards that was to expose the latency metric to the application
+somehow. Up until now I only measured the latency and logged it in the
+connection object itself. It would be nice if I could somehow hook into that
+metric so that I can process it and store it on the device model somehow. For
+this I chose [ActiveSupport
+Notifications](https://api.rubyonrails.org/classes/ActiveSupport/Notifications.html).
+I've added [a new connection.latency
+notification](https://github.com/monorkin/actioncable-presence-detection-demo/commit/e52488751c25dc4c2707835d5a6b60ff2d792c10),
+through which I can monitor, and respond to, the latency of any ActionCable
+connection.
 
-The second step was to improve the naming of methods. As I developed the monkey patches I changed terminology a few times so the names are all over the place. I settled on calling such connections [half-open instead of dead, stale or expired](https://github.com/monorkin/actioncable-presence-detection-demo/commit/a3e4e682f93cdadf59fc532d19f1b30f5bd192da). That seems to be the most apt description.
+The second step was to improve the naming of methods. As I developed the monkey
+patches I changed terminology a few times so the names are all over the place. I
+settled on calling such connections [half-open instead of dead, stale or
+expired](https://github.com/monorkin/actioncable-presence-detection-demo/commit/a3e4e682f93cdadf59fc532d19f1b30f5bd192da).
+That seems to be the most apt description.
 
-The third step was to [treat the connection as open if any message was received within the PONG timeout](https://github.com/monorkin/actioncable-presence-detection-demo/commit/e6d090199db396a9fcd5ef70d633068216692d2c). After all, you can't receive messages if the connection is half-open, and if the server is processing a lot of incoming messages it might take too long to process a PONG message from some client and incorrectly think that the connection is half-open. There is also [an open PR to add the same behavior to the official JS client](https://github.com/rails/rails/pull/49168).
+The third step was to [treat the connection as open if any message was received
+within the PONG
+timeout](https://github.com/monorkin/actioncable-presence-detection-demo/commit/e6d090199db396a9fcd5ef70d633068216692d2c).
+After all, you can't receive messages if the connection is half-open, and if the
+server is processing a lot of incoming messages it might take too long to
+process a PONG message from some client and incorrectly think that the
+connection is half-open. There is also [an open PR to add the same behavior to
+the official JS client](https://github.com/rails/rails/pull/49168).
 
-[The fourth step was to fork Rails, create a new branch from main, apply all the changes from the monkey patches to it, and add tests](https://github.com/monorkin/rails/tree/add-pong-response-to-heartbeat-ping-messages).
+[The fourth step was to fork Rails, create a new branch from main, apply all the
+changes from the monkey patches to it, and add
+tests](https://github.com/monorkin/rails/tree/add-pong-response-to-heartbeat-ping-messages).
 
-The tests were a bit odd compared to other core Rails gems. In all other gems you only have to run bin/test to run the whole test suite, but in ActionCable you also have to run yarn pretest, bin/test and yarn test. This isn't well documented, I stumbled upon this by accident when I intentionally wrote a failing test.
+The tests were a bit odd compared to other core Rails gems. In all other gems
+you only have to run bin/test to run the whole test suite, but in ActionCable
+you also have to run yarn pretest, bin/test and yarn test. This isn't well
+documented, I stumbled upon this by accident when I intentionally wrote a
+failing test.
 
-And the final step was to double check that I did everything in the [contributing to Rails guide](https://guides.rubyonrails.org/contributing_to_ruby_on_rails.html), and [opening a PR](https://github.com/rails/rails/pull/50039).
+And the final step was to double check that I did everything in the
+[contributing to Rails
+guide](https://guides.rubyonrails.org/contributing_to_ruby_on_rails.html), and
+[opening a PR](https://github.com/rails/rails/pull/50039).
 
-With that out of the way, there is one more edge case that I've found. A device can suddenly lose connection, notice that, regain Internet service, and reconnect to the server, before the server closes the leftover half-open connection. When the server finally closes the half-open connection the device will be marked as offline in the database, even through it isn't.
+With that out of the way, there is one more edge case that I've found. A device
+can suddenly lose connection, notice that, regain Internet service, and
+reconnect to the server, before the server closes the leftover half-open
+connection. When the server finally closes the half-open connection the device
+will be marked as offline in the database, even through it isn't.
 
-To solve that all I had to do is change the online boolean column to a connection_count integer column. Every time the device connects that column is incremented, and every time it disconnects it's decremented. If the count is zero, the device is offline, if it's positive the device is online. The only thing that I had to do in addition to that is to lock the row before updating the count so that a race condition doesn't change the count incorrectly.
+To solve that all I had to do is change the online boolean column to a
+connection_count integer column. Every time the device connects that column is
+incremented, and every time it disconnects it's decremented. If the count is
+zero, the device is offline, if it's positive the device is online. The only
+thing that I had to do in addition to that is to lock the row before updating
+the count so that a race condition doesn't change the count incorrectly.
 
 ```ruby
 class Device < ApplicationRecord

@@ -1,5 +1,5 @@
 ---
-import { findMedia, originalUrl, variantAtLeast } from "~/lib/media"
+import { findMedia, mediaFolderFor, originalUrl, resolveMediaKey, variantAtLeast } from "~/lib/media"
 
 interface Props {
   media: string
@@ -10,13 +10,15 @@ interface Props {
 
 const POSTER_WIDTH = 1200
 
-const { media, type, poster, caption = "" } = Astro.props
+const { type, caption = "" } = Astro.props
+const folder = mediaFolderFor(Astro)
+const media = resolveMediaKey(Astro.props.media, folder)
 const extension = media.split(".").pop()!.toLowerCase()
 const video = findMedia(media)
 
 let posterUrl
-if (poster) {
-  posterUrl = variantAtLeast(poster, POSTER_WIDTH)
+if (Astro.props.poster) {
+  posterUrl = variantAtLeast(resolveMediaKey(Astro.props.poster, folder), POSTER_WIDTH)
 }
 ---
 

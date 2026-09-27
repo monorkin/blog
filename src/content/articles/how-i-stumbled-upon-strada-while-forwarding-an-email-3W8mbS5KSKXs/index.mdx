@@ -1,29 +1,46 @@
 ---
 title: How I stumbled upon Strada while forwarding an email
-publishedAt: '2022-07-01T12:00:00Z'
-updatedAt: '2026-03-09T08:17:30Z'
-tags:
-- ruby
+publishedAt: 2022-07-01T12:00:00Z
+updatedAt: 2026-03-09T08:17:30Z
+tags: [ruby]
 feedId: Article/12
 ---
 
-import Figure from "~/components/content/Figure.astro"
+I wanted to forward an email one evening, so I opened up the Hey app on my
+phone, found the email, tapped on the “More” button, and just before I hit
+“Forward” I noticed a “Share or print…” button at the bottom of the screen. I
+hit “Share” and to my surprise was greeted by a share sheet. It offered me to
+send a link to the email via SMS, Slack, Signal, and others.
 
-I wanted to forward an email one evening, so I opened up the Hey app on my phone, found the email, tapped on the “More” button, and just before I hit “Forward” I noticed a “Share or print…” button at the bottom of the screen. I hit “Share” and to my surprise was greeted by a share sheet. It offered me to send a link to the email via SMS, Slack, Signal, and others.
+If it was any other app this wouldn’t surprise me, but Hey is a hybrid app — its
+views are server-rendered HTML and some JavaScript wrapped in an app that is
+essentially a web browser. Showing a share sheet isn’t something you can do with
+HTML and JS, so how did the team at Hey do this?
 
-If it was any other app this wouldn’t surprise me, but Hey is a hybrid app — its views are server-rendered HTML and some JavaScript wrapped in an app that is essentially a web browser. Showing a share sheet isn’t something you can do with HTML and JS, so how did the team at Hey do this?
+<Figure media="strada_demo.gif" caption="Opening a share sheet in Hey" />
 
-<Figure media="articles/how-i-stumbled-upon-strada-while-forwarding-an-email-3W8mbS5KSKXs/strada_demo.gif" caption="Opening a share sheet in Hey" />
+I assumed that the Hey mobile app used the same HTML and JS as the web version.
+So I opened the Hey web app on my computer and started poking around.
 
-I assumed that the Hey mobile app used the same HTML and JS as the web version. So I opened the Hey web app on my computer and started poking around.
+The first thing I noticed was that all the buttons that were visible in the
+mobile app were present in the web version. But they were hidden unless the
+frontend was running in a browser that used a special User-Agent header. So I
+changed my User-Agent and reloaded the page. The UI changed — the header row was
+gone, some buttons looked like they were disabled and new buttons showed up.
 
-The first thing I noticed was that all the buttons that were visible in the mobile app were present in the web version. But they were hidden unless the frontend was running in a browser that used a special User-Agent header. So I changed my User-Agent and reloaded the page. The UI changed — the header row was gone, some buttons looked like they were disabled and new buttons showed up.
+<Figure
+  media="2022-06-13_15-11_3.png"
+  caption="Left: Hey web app in Firefox with the default User-Agent. Right: Impersonating Hey iOS app by changing the User-Agent"
+/>
 
-<Figure media="articles/how-i-stumbled-upon-strada-while-forwarding-an-email-3W8mbS5KSKXs/2022-06-13_15-11_3.png" caption="Left: Hey web app in Firefox with the default User-Agent. Right: Impersonating Hey iOS app by changing the User-Agent" />
+I thought the layout changes were related to Turbo Native and the disabled
+buttons seemed like a CSS issue, so l focused on the “Share and print…” button.
 
-I thought the layout changes were related to Turbo Native and the disabled buttons seemed like a CSS issue, so l focused on the “Share and print…” button.
-
-Inspecting it showed that it was controlled by a **bridge/share** Stimulus controller. So I opened that controller and saw that it only had a **component** static variable and a **#share** method. The static variable was hard-coded to the value “share”. The **#share** method just passed the current URL to a **#send** method it inherited from **bridge/base_component_controller**.
+Inspecting it showed that it was controlled by a `bridge/share` Stimulus
+controller. So I opened that controller and saw that it only had a `component`
+static variable and a **#share** method. The static variable was hard-coded to
+the value “share”. The **#share** method just passed the current URL to a
+**#send** method it inherited from `bridge/base_component_controller`.
 
 ```javascript
 // bridge/share.js
@@ -40,7 +57,12 @@ class ShareController extends BaseComponentController {
 }
 ```
 
-I followed the code and opened the **bridge/base_component_controller**. Its **#send** method took an event name, a data object, and a callback function. It built a **message** object with the event name, data, callback and the controller’s component. Then it forwarded everything to the **window.webBridge.send** method and stored the returned value as the ID of the message.
+I followed the code and opened the `bridge/base_component_controller`. Its
+**#send** method took an event name, a data object, and a callback function. It
+built a `message` object with the event name, data, callback and the
+controller’s component. Then it forwarded everything to the
+`window.webBridge.send` method and stored the returned value as the ID of the
+message.
 
 ```javascript
 // bridge/base_component_controller.js
@@ -51,9 +73,13 @@ send(event, data, callback) {
 }
 ```
 
-But where did **window.webBridge** come from? I searched all the files and found it was initialized right after a class named “Strata” was loaded. From the name of the class I knew I was looking at Strada — the, yet unreleased, framework from Hotwired.
+But where did `window.webBridge` come from? I searched all the files and found
+it was initialized right after a class named “Strata” was loaded. From the name
+of the class I knew I was looking at Strada — the, yet unreleased, framework
+from Hotwired.
 
-This got me excited! I started reading the code of the class to figure out what it does.
+This got me excited! I started reading the code of the class to figure out what
+it does.
 
 ```javascript
 // strata.js
@@ -82,23 +108,39 @@ supportsComponent(component) {
 }
 ```
 
-On load, it initialized itself and was assigned to **window.webBridge**. Then it fired a **web-bridge:ready** on the document.
+On load, it initialized itself and was assigned to `window.webBridge`. Then it
+fired a **web-bridge:ready** on the document.
 
-It had an **adapter** variable which was called in most of its methods.
+It had an `adapter` variable which was called in most of its methods.
 
-Its **#send** method generated an ID for each message, then it appended the ID to the message, stored the callback and forwarded the rest to the adapter.
+Its **#send** method generated an ID for each message, then it appended the ID
+to the message, stored the callback and forwarded the rest to the adapter.
 
-There was also a **#receive** method which seemed to take a message object and execute any callback method associated with its ID. That explained why the callbacks were stored when a message was sent.
+There was also a **#receive** method which seemed to take a message object and
+execute any callback method associated with its ID. That explained why the
+callbacks were stored when a message was sent.
 
-Then there was the **spportsComponent** method that queried the adapter for components it could support. Probably to avoid sending messages that the adapter couldn't process.
+Then there was the **spportsComponent** method that queried the adapter for
+components it could support. Probably to avoid sending messages that the adapter
+couldn't process.
 
-**Now I started looking for the adapter implementation but I couldn’t find it. This was where the code ended.**
+**Now I started looking for the adapter implementation but I couldn’t find it.
+This was where the code ended.**
 
-And then it hit me! This would usually run within a browser view controlled by the native app. The app can inject JavaScript into it. That’s why I couldn’t find the adapter implementation — it was in the native app.
+And then it hit me! This would usually run within a browser view controlled by
+the native app. The app can inject JavaScript into it. That’s why I couldn’t
+find the adapter implementation — it was in the native app.
 
-But why would the app inject the adapter into the frontend? This didn’t make sense at first. Then I remembered that in browsers controlled by a native app there is a special **window.external** object (on iOS it’s **window.webkit**). The app can expose functions on that object that when called from JS invoke a handler function in the app.
+But why would the app inject the adapter into the frontend? This didn’t make
+sense at first. Then I remembered that in browsers controlled by a native app
+there is a special `window.external` object (on iOS it’s `window.webkit`). The
+app can expose functions on that object that when called from JS invoke a
+handler function in the app.
 
-So, the app probably registered an adapter by injecting JS into the browser. That would explain why **web-bridge:ready** fires when Strada loads — so that the app knows when it can register the adapter. And through that adapter, the frontend can send messages to the app.
+So, the app probably registered an adapter by injecting JS into the browser.
+That would explain why **web-bridge:ready** fires when Strada loads — so that
+the app knows when it can register the adapter. And through that adapter, the
+frontend can send messages to the app.
 
 ```swift
 // AppDelegate.swift
@@ -143,7 +185,8 @@ webView.configuration.userContentController.addUserScript(
 )
 ```
 
-And the app could send messages back to the frontend by injecting them into the browser like JavaScript.
+And the app could send messages back to the frontend by injecting them into the
+browser like JavaScript.
 
 ```swift
 // AppDelegate.swift
@@ -202,12 +245,21 @@ webView.evaluateJavaScript(
 
 **I realized that Strada was a bridge between the native app and the frontend.**
 
-And through that bridge one can patch in functions that the platform supports but the browser doesn’t — things like showing a share sheet.
+And through that bridge one can patch in functions that the platform supports
+but the browser doesn’t — things like showing a share sheet.
 
-The mystery of the share sheet was solved. But now my head was buzzing with possibilities.
+The mystery of the share sheet was solved. But now my head was buzzing with
+possibilities.
 
-Most native apps are functionally the same as, or a subset of, their web counterpart. Without Strada, a native app would have to re-implement some of the views and logic of its web counterpart. This means that a team would have to build the same app at least twice — once for the web and another time for iOS, Android, Mac, or Windows — just so they could use some platform-specific features. This is even more wasteful if we take into account that most web apps are already optimized to work on phones, tablets, and PCs.
+Most native apps are functionally the same as, or a subset of, their web
+counterpart. Without Strada, a native app would have to re-implement some of the
+views and logic of its web counterpart. This means that a team would have to
+build the same app at least twice — once for the web and another time for iOS,
+Android, Mac, or Windows — just so they could use some platform-specific
+features. This is even more wasteful if we take into account that most web apps
+are already optimized to work on phones, tablets, and PCs.
 
 But with Strada, any existing web app can become a native app.
 
-Many thanks to Karla, Marko, Hrvoje & Vlado for reviewing drafts of this article.
+Many thanks to Karla, Marko, Hrvoje & Vlado for reviewing drafts of this
+article.

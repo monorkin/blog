@@ -19,6 +19,24 @@ const EXTENSIONS: Record<string, string> = { jpeg: "jpg", png: "png", webp: "web
 const MIME_TYPES: Record<string, string> = { jpeg: "image/jpeg", png: "image/png", webp: "image/webp" }
 const media = manifest as Record<string, Media>
 
+// An entry names its own media by file name alone ("img_8969.jpeg"), resolved against its
+// folder ("articles/clean-air-ai-AHcddmIf21lt"); a key with a slash is already complete
+export function resolveMediaKey(key: string, folder?: string) {
+  if (key.includes("/")) {
+    return key
+  } else if (folder) {
+    return `${folder}/${key}`
+  } else {
+    throw new Error(`Can't tell whose media "${key}" is. Use its full key, e.g. articles/<folder>/${key}.`)
+  }
+}
+
+// Where an entry's own media lives: rendered entries say so through Astro.locals, and a
+// project page's is named after its URL
+export function mediaFolderFor(astro: { locals: App.Locals, url: URL }) {
+  return astro.locals.mediaFolder ?? astro.url.pathname.replace(/^\/|\.html$/g, "")
+}
+
 export function findMedia(key: string) {
   const entry = media[key]
 

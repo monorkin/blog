@@ -1,27 +1,50 @@
 ---
 title: Vanilla Rails view components with partials
-publishedAt: '2023-01-24T14:00:00Z'
-updatedAt: '2026-02-15T09:37:07Z'
-tags:
-- ruby
+publishedAt: 2023-01-24T14:00:00Z
+updatedAt: 2026-02-15T09:37:07Z
+tags: [ruby]
 feedId: Article/29
 ---
 
-import Figure from "~/components/content/Figure.astro"
+Many projects I work on have some kind of view component that is repeated
+multiple times in the same view, or is present in multiple different views.
+These view components can be anything that has a specific styling, JavaScript
+specific attributes (like Stimulus controllers), rendering logic, and HTML
+element structure that always has to be the same for the component to render
+properly - like cards, containers, content boxes, modals, lists, tables, and so
+on.
 
-Many projects I work on have some kind of view component that is repeated multiple times in the same view, or is present in multiple different views. These view components can be anything that has a specific styling, JavaScript specific attributes (like Stimulus controllers), rendering logic, and HTML element structure that always has to be the same for the component to render properly - like cards, containers, content boxes, modals, lists, tables, and so on.
+There are three ways that I have seen people work with view components in
+Rails - by copy-pasting them around, by using one of the
+[view](https://github.com/ViewComponent/view_component)
+[component](https://github.com/trailblazer/cells) gems, and partials.
 
-There are three ways that I have seen people work with view components in Rails - by copy-pasting them around, by using one of the [view](https://github.com/ViewComponent/view_component) [component](https://github.com/trailblazer/cells) gems, and partials.
+Copy-pasting, even when using [CSS conventions like
+BEM](https://getbem.com/introduction/), has the downside of being laborious to
+update should the component ever change. And I find the gems to be unnecessary
+since vanilla Rails already has all the features to render and manage view
+components through
+[partials](https://guides.rubyonrails.org/layouts_and_rendering.html#using-partials).
 
-Copy-pasting, even when using [CSS conventions like BEM](https://getbem.com/introduction/), has the downside of being laborious to update should the component ever change. And I find the gems to be unnecessary since vanilla Rails already has all the features to render and manage view components through [partials](https://guides.rubyonrails.org/layouts_and_rendering.html#using-partials).
+This is an example of three different view components combined together to
+render a table-like list and a map within a content box with a title using just
+partials.
 
-This is an example of three different view components combined together to render a table-like list and a map within a content box with a title using just partials.
+<Figure
+  media="untitled.png"
+  caption="Code and browser view of multiple vanilla Rails view components composed together to show location details and a map side-by-side within a titled content box."
+/>
 
-<Figure media="articles/vanilla-rails-view-components-with-partials-41zctBGbN9ka/untitled.png" caption="Code and browser view of multiple vanilla Rails view components composed together to show location details and a map side-by-side within a titled content box." />
+Code and browser view of multiple vanilla Rails view components composed
+together to show location details and a map side-by-side within a titled content
+box.
 
-Code and browser view of multiple vanilla Rails view components composed together to show location details and a map side-by-side within a titled content box.
-
-The **component** method might seem like there is a lot of magic under the hood, but there really isn’t. I added this method through [a view helper](https://api.rubyonrails.org/classes/ActionController/Helpers.html) and it does just two things - it calls **render** with **"components/#\{component_name\}"** so that I don’t have to write the same incantation all over the place, and I’ll explain the the second purpose later.
+The `component` method might seem like there is a lot of magic under the hood,
+but there really isn’t. I added this method through [a view
+helper](https://api.rubyonrails.org/classes/ActionController/Helpers.html) and
+it does just two things - it calls `render` with
+`"components/#{component_name}"` so that I don’t have to write the same
+incantation all over the place, and I’ll explain the the second purpose later.
 
 For now, this is what the helper looks like
 
@@ -34,9 +57,13 @@ module ComponentHelper
 end
 ```
 
-So **component("map", longitude: 15.9765701, latitude: 45.8130054)** is the same thing as **render("components/map", longitude: 15.9765701, latitude: 45.8130054)**.
+So `component("map", longitude: 15.9765701, latitude: 45.8130054)` is the same
+thing as
+`render("components/map", longitude: 15.9765701, latitude: 45.8130054)`.
 
-Partials allow you to render a snippet of a view wherever you like. For example, instead of having to repeat all the HTML elements and Ruby code that renders two tables:
+Partials allow you to render a snippet of a view wherever you like. For example,
+instead of having to repeat all the HTML elements and Ruby code that renders two
+tables:
 
 ```html
 <!-- app/views/matches/show.html.erb -->
@@ -81,7 +108,8 @@ Partials allow you to render a snippet of a view wherever you like. For example,
 </table>
 ```
 
-With partials you can just render the partial once for each table and pass it a local with the content it should render:
+With partials you can just render the partial once for each table and pass it a
+local with the content it should render:
 
 ````html
 <!-- app/views/matches/show.html.erb -->
@@ -122,9 +150,12 @@ With partials you can just render the partial once for each table and pass it a 
 </tr>
 ````
 
-Using partials like this works for components that have predetermined content (like tables, maps and lists), but it’s a pain for components that can have anything inside them (like containers, content boxes and modals).
+Using partials like this works for components that have predetermined content
+(like tables, maps and lists), but it’s a pain for components that can have
+anything inside them (like containers, content boxes and modals).
 
-You could extract the content of each component into its own partial and pass the the name of the partial you want to render.
+You could extract the content of each component into its own partial and pass
+the the name of the partial you want to render.
 
 ```html
 <!-- app/views/teams/show.html.erb -->
@@ -168,7 +199,7 @@ This can be avoided by passing a block to the partial and yielding to it.
 </section>
 ```
 
-That’s how **component("content_box", title: "Location") do** works.
+That’s how `component("content_box", title: "Location") do` works.
 
 ```html
 <!-- app/views/properties/show.html.erb -->
@@ -192,9 +223,11 @@ That’s how **component("content_box", title: "Location") do** works.
 </section>
 ```
 
-This brings me back to the second purpose of the **component** method - fixing localization.
+This brings me back to the second purpose of the `component` method - fixing
+localization.
 
-If I would use full localization keys for everything then there wouldn’t be a problem with just using **render**
+If I would use full localization keys for everything then there wouldn’t be a
+problem with just using `render`
 
 ```html
 <!-- app/views/properties/show.html.erb -->
@@ -218,7 +251,8 @@ en:
 </section>
 ```
 
-But I’m lazy and like to use relative localization keys everywhere, which causes a problem.
+But I’m lazy and like to use relative localization keys everywhere, which causes
+a problem.
 
 ```html
 <!-- app/views/properties/show.html.erb -->
@@ -249,15 +283,26 @@ en:
 </section>
 ```
 
-With relative localization keys, Rails prefixed the key with the path of the component instead of the parent.
+With relative localization keys, Rails prefixed the key with the path of the
+component instead of the parent.
 
-When a view yields the passed block is rendered in the context of that view, not in the context of the view where the block was created. Since the partial yields the relative localization key prefix is **components.content_box**.
+When a view yields the passed block is rendered in the context of that view, not
+in the context of the view where the block was created. Since the partial yields
+the relative localization key prefix is `components.content_box`.
 
-To solve this I can either use full localization keys within components, which is annoying; or I can add the translation to the component’s localization, which means that I would have to think about possible key collisions when using relative localization keys within components.
+To solve this I can either use full localization keys within components, which
+is annoying; or I can add the translation to the component’s localization, which
+means that I would have to think about possible key collisions when using
+relative localization keys within components.
 
-Thankfully there is a way to capture a part of a view within the context of the current view and store it as a variable. With the **capture** [method](https://api.rubyonrails.org/classes/ActionView/Helpers/CaptureHelper.html#method-i-capture) I can yield the block passed to the component in the context of the current view, store the result to a variable, and pass that variable in a block to **render**.
+Thankfully there is a way to capture a part of a view within the context of the
+current view and store it as a variable. With the `capture`
+[method](https://api.rubyonrails.org/classes/ActionView/Helpers/CaptureHelper.html#method-i-capture)
+I can yield the block passed to the component in the context of the current
+view, store the result to a variable, and pass that variable in a block to
+`render`.
 
-Here is the full **ComponentHelper** code with the relative locale keys fix.
+Here is the full `ComponentHelper` code with the relative locale keys fix.
 
 ```ruby
 module ComponentHelper
@@ -281,4 +326,5 @@ module ComponentHelper
 end
 ```
 
-And that’s all there is to it - **render**, **local_assigns**, **yield** and **capture**.
+And that’s all there is to it - `render`, `local_assigns`, `yield` and
+`capture`.

@@ -1,18 +1,25 @@
 ---
 title: Running Campfire behind traefik
-publishedAt: '2024-02-06T07:10:00Z'
-updatedAt: '2026-02-15T09:37:07Z'
-tags:
-- ruby
-- self-hosting
+publishedAt: 2024-02-06T07:10:00Z
+updatedAt: 2026-02-15T09:37:07Z
+tags: [ruby, self-hosting]
 feedId: Article/37
 ---
 
-I rent a bare metal server from [Scaleway](https://www.scaleway.com/en/) where I host all my apps. For me, that's much more economical than running multiple small VPS boxes. 50€ a month buys me 2TB of disk space, 64GB of RAM and an 4 core / 8 thread CPU on which I can host two or three dozen apps. Compare that to AWS or DigitalOcean where for the same money I get about one quarter of those resources.
+I rent a bare metal server from [Scaleway](https://www.scaleway.com/en/) where I
+host all my apps. For me, that's much more economical than running multiple
+small VPS boxes. 50€ a month buys me 2TB of disk space, 64GB of RAM and an 4
+core / 8 thread CPU on which I can host two or three dozen apps. Compare that to
+AWS or DigitalOcean where for the same money I get about one quarter of those
+resources.
 
-All my apps are deployed as Docker containers, most of them using [Kamal](https://kamal-deploy.org/), in front of which I put [traefik](https://traefik.io/traefik/) as a reverse proxy to direct traffic and provide HTTPS via [Let's Encrypt](https://letsencrypt.org/).
+All my apps are deployed as Docker containers, most of them using
+[Kamal](https://kamal-deploy.org/), in front of which I put
+[traefik](https://traefik.io/traefik/) as a reverse proxy to direct traffic and
+provide HTTPS via [Let's Encrypt](https://letsencrypt.org/).
 
-Last weekend I wanted to setup a Campfire instance for Ruby Zagreb - my local Ruby user-group - on that machine.
+Last weekend I wanted to setup a Campfire instance for Ruby Zagreb - my local
+Ruby user-group - on that machine.
 
 So I ran the official installer and got an error.
 
@@ -33,11 +40,15 @@ Failed to start the software
 The software couldn't be started. Please try again. 
 ```
 
-I expected the installer to fail since it can't know my setup, and it didn't ask me anything besides the domain of the instance.
+I expected the installer to fail since it can't know my setup, and it didn't ask
+me anything besides the domain of the instance.
 
-Sadly, the email you get with your purchase doesn't explain what the installer does, and I can't check what it's doing since the installer is a binary blob. So I had to snoop around for a bit.
+Sadly, the email you get with your purchase doesn't explain what the installer
+does, and I can't check what it's doing since the installer is a binary blob. So
+I had to snoop around for a bit.
 
-The first thing I found was the installer's error log which said that the container couldn't bind to port 443.
+The first thing I found was the installer's error log which said that the
+container couldn't bind to port 443.
 
 ```bash
 cat .once-error.log
@@ -46,13 +57,22 @@ cat .once-error.log
 
 Since traefik is bound to port 80 and 443 this makes perfect sense.
 
-The error looks like it came from Docker so I checked my images, and sure enough there was a new *"registry.once.com/campfire:latest"* image and a stopped container which I promptly inspected.
+The error looks like it came from Docker so I checked my images, and sure enough
+there was a new *"registry.once.com/campfire:latest"* image and a stopped
+container which I promptly inspected.
 
-Within the container runs a custom proxy called [thruster](https://github.com/rails/rails/issues/50479) that terminates SSL and handles the [sendfile protocol](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/#enabling-sendfile). That's what's bound to port 443 and 80 of the container.
+Within the container runs a custom proxy called
+[thruster](https://github.com/rails/rails/issues/50479) that terminates SSL and
+handles the [sendfile
+protocol](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/#enabling-sendfile).
+That's what's bound to port 443 and 80 of the container.
 
-Inside the container is also a Redis instance, which implies that the installer sets at least *"sysctl vm.overcommit_memory=1"* else Redis wouldn't start.
+Inside the container is also a Redis instance, which implies that the installer
+sets at least *"sysctl vm.overcommit_memory=1"* else Redis wouldn't start.
 
-I also saw that there were ENV variables injected into the container so I looked where those came from and found a config file in *"/root/.config/once/config.json"*.
+I also saw that there were ENV variables injected into the container so I looked
+where those came from and found a config file in
+*"/root/.config/once/config.json"*.
 
 ```bash
 sudo cat /root/.config/once/config.json | jq
@@ -89,7 +109,8 @@ docker run \
 	bin/boot;;
 ```
 
-Where *"campfire/.env"* contains the values from *"/root/.config/once/config.json"* plus a few extras.
+Where *"campfire/.env"* contains the values from
+*"/root/.config/once/config.json"* plus a few extras.
 
 ```bash
 # campfire/.env 
@@ -140,7 +161,8 @@ traefik.http.services.campfire.loadbalancer.server.port=80
 traefik.http.services.campfire.loadbalancer.server.scheme=http 
 ```
 
-Finally, I had to disable thruster and bind Puma to port 80 by updating the "web" entry in the Procfile (you get the source files in the purchase email)
+Finally, I had to disable thruster and bind Puma to port 80 by updating the
+"web" entry in the Procfile (you get the source files in the purchase email)
 
 ```plain
 # campfire/Procfile 
@@ -148,11 +170,15 @@ web: bin/rails server -b 0.0.0.0 -p 80
 # ... 
 ```
 
-This will boot the server, it will allow you to setup an admin account, create rooms, add a logo, **but you won't be able to post messages because Action Cable can't connect to the server**.
+This will boot the server, it will allow you to setup an admin account, create
+rooms, add a logo, **but you won't be able to post messages because Action Cable
+can't connect to the server**.
 
-Traefik has [a bug where it doesn't forward x-forwarded-for headers for WebSocket handshakes](https://github.com/traefik/traefik/issues/6076).
+Traefik has [a bug where it doesn't forward x-forwarded-for headers for
+WebSocket handshakes](https://github.com/traefik/traefik/issues/6076).
 
-To fix that I had to update *"production.rb"* with the exact URL that Action Cable would get requests from
+To fix that I had to update *"production.rb"* with the exact URL that Action
+Cable would get requests from
 
 ```ruby
 # production.rb
@@ -164,4 +190,6 @@ config.action_cable.allowed_request_origins = ["https://#{ENV.fetch("SSL_DOMAIN"
 
 That's it.
 
-It's isn't as straight forward as I'd like it to be, and it would be nice if Kamal and Campfire could play along nicely out of the box. I'd bet there is a large overlap between those communities, and both are 37signals projects.
+It's isn't as straight forward as I'd like it to be, and it would be nice if
+Kamal and Campfire could play along nicely out of the box. I'd bet there is a
+large overlap between those communities, and both are 37signals projects.

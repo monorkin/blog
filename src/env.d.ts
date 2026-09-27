@@ -7,3 +7,10 @@ declare module "cloudflare:workers" {
     }
   }
 }
+
+declare namespace App {
+  interface Locals {
+    // The folder an entry's own media keys are relative to, set when rendering its content
+    mediaFolder?: string
+  }
+}

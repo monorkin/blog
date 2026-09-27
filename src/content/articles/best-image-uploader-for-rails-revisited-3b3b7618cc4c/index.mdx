@@ -1,99 +1,202 @@
 ---
 title: Best image uploader for Rails — Revisited
-publishedAt: '2018-12-25T00:00:00Z'
-updatedAt: '2026-02-15T09:37:07Z'
-tags:
-- ruby
+publishedAt: 2018-12-25T00:00:00Z
+updatedAt: 2026-02-15T09:37:07Z
+tags: [ruby]
 feedId: Article/8
 ---
 
-import Figure from "~/components/content/Figure.astro"
+<Figure media="ruby.jpeg" caption="Hand holding a plastic Ruby gemstone" />
 
-<Figure media="articles/best-image-uploader-for-rails-revisited-3b3b7618cc4c/ruby.jpeg" caption="Hand holding a plastic Ruby gemstone" />
-
-Three years ago I wrote about [how to choose the right uploader gem for your project](https://infinum.co/the-capsized-eight/best-rails-image-uploader-paperclip-carrierwave-refile). Since the time the original article has been published, all mentioned libraries got updated, one got deprecated, and two new libraries have appeared. I feel it's time to revisit this topic.
+Three years ago I wrote about [how to choose the right uploader gem for your
+project](https://infinum.co/the-capsized-eight/best-rails-image-uploader-paperclip-carrierwave-refile).
+Since the time the original article has been published, all mentioned libraries
+got updated, one got deprecated, and two new libraries have appeared. I feel
+it's time to revisit this topic.
 
 ## Why do we use uploader gems?
 
-[Rails](http://rubyonrails.org/) handles file-upload natively. When a file gets uploaded to your app it's represented by an [UploadedFile](https://web.archive.org/web/20171013094615/http://api.rubyonrails.org/classes/ActionDispatch/Http/UploadedFile.html) object, which is a wrapper around the underlying [Tempfile](https://ruby-doc.org/stdlib-2.5.0/libdoc/tempfile/rdoc/Tempfile.html) object that contains the data sent to the server.
+[Rails](http://rubyonrails.org/) handles file-upload natively. When a file gets
+uploaded to your app it's represented by an
+[UploadedFile](https://web.archive.org/web/20171013094615/http://api.rubyonrails.org/classes/ActionDispatch/Http/UploadedFile.html)
+object, which is a wrapper around the underlying
+[Tempfile](https://ruby-doc.org/stdlib-2.5.0/libdoc/tempfile/rdoc/Tempfile.html)
+object that contains the data sent to the server.
 
 After we get the file we have multiple options what to do with it:
 
-- **Cache it** — if the file is uploaded through a form we want to temporarily store the file in case the form fails to validate, so that the user doesn't have to re-upload it. This lowers bandwidth consumption and improves UX.
-- **Process it** — more often than not people want to create smaller or cropped versions of images that users upload. In the case of PDFs / DOCs we might want to create thumbnails. In general we want to process the data somehow.
-- **Store it** — we want to store the uploaded file without name clashes and corruption.
-- **Forward the data to a file storage server** — to lower bandwidth to our own servers we usually want to store the files on services like [Amazon's S3](https://aws.amazon.com/s3/) or [DigitalOcean's Spaces](https://www.digitalocean.com/products/spaces/). Perhaps we also want to send the data to a CDN (like [CloudFlare](https://www.cloudflare.com/)) so that the file gets served faster to users all over the world.
-- **Stream the file back to users** — if our app also handles serving of the file it would be best if we could stream its contents instead of loading it into memory.
-- **Process it on-the-fly** — if we don't know what kind of processing our client's require from the data, we can do it on-the-fly. E.g. different phones can have different resolutions, instead of serving all devices the same sized image a device can request the image best suited for it's display. The image will then be processed to the desired dimensions and passed to the device.
+- **Cache it** — if the file is uploaded through a form we want to temporarily
+  store the file in case the form fails to validate, so that the user doesn't
+  have to re-upload it. This lowers bandwidth consumption and improves UX.
+- **Process it** — more often than not people want to create smaller or cropped
+  versions of images that users upload. In the case of PDFs / DOCs we might want
+  to create thumbnails. In general we want to process the data somehow.
+- **Store it** — we want to store the uploaded file without name clashes and
+  corruption.
+- **Forward the data to a file storage server** — to lower bandwidth to our own
+  servers we usually want to store the files on services like [Amazon's
+  S3](https://aws.amazon.com/s3/) or [DigitalOcean's
+  Spaces](https://www.digitalocean.com/products/spaces/). Perhaps we also want
+  to send the data to a CDN (like [CloudFlare](https://www.cloudflare.com/)) so
+  that the file gets served faster to users all over the world.
+- **Stream the file back to users** — if our app also handles serving of the
+  file it would be best if we could stream its contents instead of loading it
+  into memory.
+- **Process it on-the-fly** — if we don't know what kind of processing our
+  client's require from the data, we can do it on-the-fly. E.g. different phones
+  can have different resolutions, instead of serving all devices the same sized
+  image a device can request the image best suited for it's display. The image
+  will then be processed to the desired dimensions and passed to the device.
 
-**Not to re-invent the wheel, and not to introduce bugs into our codebase, we reach for a gem that will do all or most of those things for us.**
+**Not to re-invent the wheel, and not to introduce bugs into our codebase, we
+reach for a gem that will do all or most of those things for us.**
 
 ## ActiveStorage & Shrine
 
-Since I published the previous article two new “mainstream” libraries have appeared. [Rails'](http://rubyonrails.org/) own [ActiveStorage](https://github.com/rails/rails/tree/master/activestorage) and [janko-m's Shrine](https://github.com/shrinerb/shrine).
+Since I published the previous article two new “mainstream” libraries have
+appeared. [Rails'](http://rubyonrails.org/) own
+[ActiveStorage](https://github.com/rails/rails/tree/master/activestorage) and
+[janko-m's Shrine](https://github.com/shrinerb/shrine).
 
 ## ActiveStorage
 
-ActiveStorage now represents the standard (or at least the Rails way) for handling file-upload and storage on file servers. It integrates seamlessly with [ActiveRecord](https://github.com/rails/rails/tree/master/activerecord), providing an elegant API to upload, download, delete, and process files.
+ActiveStorage now represents the standard (or at least the Rails way) for
+handling file-upload and storage on file servers. It integrates seamlessly with
+[ActiveRecord](https://github.com/rails/rails/tree/master/activerecord),
+providing an elegant API to upload, download, delete, and process files.
 
-**All file processing is done on the fly.** This was a gripe I had with Refile in the original article as it made it unusable without a CDN — to cache processed images. **ActiveStorage fixed that by storing all created versions after initial processing.** Note that **only the web app can create a version of the file as it has to sign the file's URL** — which enables it to sanitize and rate-limit clients' requests. And at the time of writing [there are some difficulties with connecting ActiveStorage to a CDN](https://github.com/rails/rails/issues/32236).
+**All file processing is done on the fly.** This was a gripe I had with Refile
+in the original article as it made it unusable without a CDN — to cache
+processed images. **ActiveStorage fixed that by storing all created versions
+after initial processing.** Note that **only the web app can create a version of
+the file as it has to sign the file's URL** — which enables it to sanitize and
+rate-limit clients' requests. And at the time of writing [there are some
+difficulties with connecting ActiveStorage to a
+CDN](https://github.com/rails/rails/issues/32236).
 
-**One feature that is lacking is the ability to create custom file processors.** In Rails 5.2 ActiveStorage uses the [minimagick gem](https://github.com/minimagick/minimagick) directly to process images, but in the future it will use the [image_processing gem](https://github.com/janko-m/image_processing) which can potentially expand the list of available options. But, it's currently only able to process files to images (it can create PDF and video previews). There is no way to re-encode a video file, or to e.g. count the number of words in a document. But it offers many macros for working with images and [vips](https://github.com/jcupitt/ruby-vips) support is on it's way.
+**One feature that is lacking is the ability to create custom file processors.**
+In Rails 5.2 ActiveStorage uses the [minimagick
+gem](https://github.com/minimagick/minimagick) directly to process images, but
+in the future it will use the [image_processing
+gem](https://github.com/janko-m/image_processing) which can potentially expand
+the list of available options. But, it's currently only able to process files to
+images (it can create PDF and video previews). There is no way to re-encode a
+video file, or to e.g. count the number of words in a document. But it offers
+many macros for working with images and
+[vips](https://github.com/jcupitt/ruby-vips) support is on it's way.
 
-**ActiveStorage advocates for direct uploads** (uploading directly to the file server), this abolishes the need for caching.
+**ActiveStorage advocates for direct uploads** (uploading directly to the file
+server), this abolishes the need for caching.
 
-The biggest issue I've experienced is that **it's coupled to ActiveRecord.** This forces developers' choice of ORM, and makes potential library migrations more difficult. Today it's not uncommon to see [ROM](https://github.com/rom-rb/rom) or [Sequel](https://github.com/jeremyevans/sequel) in an Rails app.
+The biggest issue I've experienced is that **it's coupled to ActiveRecord.**
+This forces developers' choice of ORM, and makes potential library migrations
+more difficult. Today it's not uncommon to see
+[ROM](https://github.com/rom-rb/rom) or
+[Sequel](https://github.com/jeremyevans/sequel) in an Rails app.
 
-**I'm glad that Rails introduced a standard solution.** Out-of-the-box file upload was something that was missing in the framework to make it the perfect one-stop-shop. And, in my opinion, ActiveStorage covers 90% of peoples' file uploading and processing needs. With it, you can add file upload to your Rails app in minutes.
+**I'm glad that Rails introduced a standard solution.** Out-of-the-box file
+upload was something that was missing in the framework to make it the perfect
+one-stop-shop. And, in my opinion, ActiveStorage covers 90% of peoples' file
+uploading and processing needs. With it, you can add file upload to your Rails
+app in minutes.
 
 ## Shrine
 
-**DISCLAMER:** I know the author of the gem and consider him a friend. Therefore my opinion can be interpreted as biased. I'll try to be as objective as possible.
+**DISCLAMER:** I know the author of the gem and consider him a friend. Therefore
+my opinion can be interpreted as biased. I'll try to be as objective as
+possible.
 
-In the previous article I named Carrierwave the Swiss army knife of Rails uploaders. This time around that honor goes to [Shrine](http://github.com/janko-m/shrine).
+In the previous article I named Carrierwave the Swiss army knife of Rails
+uploaders. This time around that honor goes to
+[Shrine](http://github.com/janko-m/shrine).
 
-**Shrine takes CarrierWave's idea of uploader classes and refines it further** by introducing a [Roda's / Sequel's plugin system](https://janko.io/the-plugin-system-of-sequel-and-roda/) and cleaning up the API.
+**Shrine takes CarrierWave's idea of uploader classes and refines it further**
+by introducing a [Roda's / Sequel's plugin
+system](https://janko.io/the-plugin-system-of-sequel-and-roda/) and cleaning up
+the API.
 
-The plugin system makes it agnostic to many things like ORMs, frameworks, and other. So-much-so that **it can be used with any Rack app.**
+The plugin system makes it agnostic to many things like ORMs, frameworks, and
+other. So-much-so that **it can be used with any Rack app.**
 
-[**It comes bundled with many plugins**](http://shrinerb.com/) **which provide a lot of configuration options and compatibility with many libraries.** E.g. both ActiveRecord and Sequel are supported out-of-the-box.
+[**It comes bundled with many plugins**](http://shrinerb.com/) **which provide a
+lot of configuration options and compatibility with many libraries.** E.g. both
+ActiveRecord and Sequel are supported out-of-the-box.
 
-There exists the ability for **parallel and background file processing.** This not only speeds things up, but makes large file processing (like video encoding) easier to handle.
+There exists the ability for **parallel and background file processing.** This
+not only speeds things up, but makes large file processing (like video encoding)
+easier to handle.
 
-Of course, **there's the ability to do direct uploads**, same as ActiveStorage. The difference between the two implementation being the underlying JS library. ActiveStorage rolled their own JS library, while Shrine decided to use Uppy (the most-popular direct-upload library at the time).
+Of course, **there's the ability to do direct uploads**, same as ActiveStorage.
+The difference between the two implementation being the underlying JS library.
+ActiveStorage rolled their own JS library, while Shrine decided to use Uppy (the
+most-popular direct-upload library at the time).
 
 **Different file storage servers, and caching is supported out-of-the-box.**
 
-Metadata, such as the original name, extension, file size, checksum and other arbitrary data can be stored alongside the file. This metadata feature also enables the storing of versions (e.g. different sizes/crops of an image or different encodings of a video).
+Metadata, such as the original name, extension, file size, checksum and other
+arbitrary data can be stored alongside the file. This metadata feature also
+enables the storing of versions (e.g. different sizes/crops of an image or
+different encodings of a video).
 
-**Something that I've only seen is Shrine is the ability to migrate data around.** E.g. there is a plugin that enables you to move your files from one file-store to another. Or to copy data over from one model to another.
+**Something that I've only seen is Shrine is the ability to migrate data
+around.** E.g. there is a plugin that enables you to move your files from one
+file-store to another. Or to copy data over from one model to another.
 
-**The only lacking feature is on-the-fly processing.** Though, personally, I have never found that to be the issue. But after ActiveStorage did it I'd like to see the same functionality in Shrine. [Note that it's possible to achieve on-the-fly processing if you integrate with Dragonfly or Cloudinary](https://shrinerb.com/rdoc/files/doc/processing_md.html#label-On-the-fly+processing), but there is no out-of-the-box solution.
+**The only lacking feature is on-the-fly processing.** Though, personally, I
+have never found that to be the issue. But after ActiveStorage did it I'd like
+to see the same functionality in Shrine. [Note that it's possible to achieve
+on-the-fly processing if you integrate with Dragonfly or
+Cloudinary](https://shrinerb.com/rdoc/files/doc/processing_md.html#label-On-the-fly+processing),
+but there is no out-of-the-box solution.
 
-From my experience, people complain that they have to configure Shrine for Rails. I've never found that to be an issue, but to address those people I'd hope the author creates a wrapper gem to ease the integration with sane defaults for most configuration options.
+From my experience, people complain that they have to configure Shrine for
+Rails. I've never found that to be an issue, but to address those people I'd
+hope the author creates a wrapper gem to ease the integration with sane defaults
+for most configuration options.
 
 ## Paperclip
 
-Sadly, with the advent of ActiveStorage we also saw the deprecation of [Paperclip](https://github.com/thoughtbot/paperclip).
+Sadly, with the advent of ActiveStorage we also saw the deprecation of
+[Paperclip](https://github.com/thoughtbot/paperclip).
 
-Paperclip didn't improve much since the last round-up, but it didn't need to. It always was the simplest and quickest solution, and intended only to attach files and light processing.
+Paperclip didn't improve much since the last round-up, but it didn't need to. It
+always was the simplest and quickest solution, and intended only to attach files
+and light processing.
 
-Much of what it does, ActiveStorage does better and it's a bundled-in part of Rails. Though, note that [some features like validation are still missing in ActiveStorage](https://github.com/rails/rails/issues/31656). It was a good decision to deprecate the project as it couldn't compete with Rail's own solution.
+Much of what it does, ActiveStorage does better and it's a bundled-in part of
+Rails. Though, note that [some features like validation are still missing in
+ActiveStorage](https://github.com/rails/rails/issues/31656). It was a good
+decision to deprecate the project as it couldn't compete with Rail's own
+solution.
 
 ## **CarrierWave, Refile & Dragonfly**
 
-When it comes to [CarrierWave](https://github.com/carrierwaveuploader/carrierwave), [Refile](https://github.com/refile/refile) and [Dragonfly](https://github.com/markevans/dragonfly) I have to admit **I haven't used either of them in quite the while as ActiveStorage and Shrine completely substituted them in my tool belt.**
+When it comes to
+[CarrierWave](https://github.com/carrierwaveuploader/carrierwave),
+[Refile](https://github.com/refile/refile) and
+[Dragonfly](https://github.com/markevans/dragonfly) I have to admit **I haven't
+used either of them in quite the while as ActiveStorage and Shrine completely
+substituted them in my tool belt.**
 
 Those libraries haven't changed much in the last two years.
 
 ## Conclusion
 
-In my opinion, today **you have two choices when it comes to file uploaders in Rails** — either ActiveStorage or Shrine.
+In my opinion, today **you have two choices when it comes to file uploaders in
+Rails** — either ActiveStorage or Shrine.
 
-**ActiveStorage is the perfect solution if you just need to store a file, do some light processing and forget about it.** I'd guess that this is enough for 90% of the projects that exist.
+**ActiveStorage is the perfect solution if you just need to store a file, do
+some light processing and forget about it.** I'd guess that this is enough for
+90% of the projects that exist.
 
-**If your applications requires more advanced processing or storage options, or any kind of custom file processing go with Shrine.** Its plugins system makes it easily extendable, and there already exist quite a few plugins out there.
+**If your applications requires more advanced processing or storage options, or
+any kind of custom file processing go with Shrine.** Its plugins system makes it
+easily extendable, and there already exist quite a few plugins out there.
 
-**CarrierWave, Refile and Dragonfly are by no means dead.** They do have their audiances, but I've found that ActiveStorage or Shrine can do most if not more than those libraries can, so I'd recommend those two over the others for new projects.
+**CarrierWave, Refile and Dragonfly are by no means dead.** They do have their
+audiances, but I've found that ActiveStorage or Shrine can do most if not more
+than those libraries can, so I'd recommend those two over the others for new
+projects.
 
-**If you aren't using Rails**, then there is only one real option for you — Shrine.
+**If you aren't using Rails**, then there is only one real option for you —
+Shrine.

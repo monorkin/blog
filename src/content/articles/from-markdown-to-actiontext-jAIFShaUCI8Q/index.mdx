@@ -1,31 +1,65 @@
 ---
 title: From Markdown to ActionText
-publishedAt: '2023-04-05T08:00:00Z'
-updatedAt: '2026-02-15T09:37:07Z'
-tags:
-- ruby
+publishedAt: 2023-04-05T08:00:00Z
+updatedAt: 2026-02-15T09:37:07Z
+tags: [ruby]
 feedId: Article/30
 ---
 
-I started this iteration of my blog because I grew dissatisfied with Medium. Like anyone migrating from any one platform to another I requested an export of my blog posts from them and got back a ZIP file containing HTML files.
+I started this iteration of my blog because I grew dissatisfied with Medium.
+Like anyone migrating from any one platform to another I requested an export of
+my blog posts from them and got back a ZIP file containing HTML files.
 
-The first thing that stood out was a lack of any media files - there were no images or gifs in the export. Opening the HTML files revealed that they contained the exact same HTML as was served by Medium.com. The source of the images and gifs pointed to Medium's servers. And the HTML itself had a lot of formatting and hidden elements specific to Medium and SEO.
+The first thing that stood out was a lack of any media files - there were no
+images or gifs in the export. Opening the HTML files revealed that they
+contained the exact same HTML as was served by Medium.com. The source of the
+images and gifs pointed to Medium's servers. And the HTML itself had a lot of
+formatting and hidden elements specific to Medium and SEO.
 
-I spent a whole day downloading images and cleaning up the files into something that could be imported somewhere else. I decided to convert my blog posts into Markdown - the pendulum had swung too far in the opposite direction. That way I could easily import them anywhere later. I fantasied about  writing blog posts directly in my text editor with no distraction like headings, italics, bold, fonts - just my thoughts and text. And it was fun to develop a markdown rendering pipeline for the blog!
+I spent a whole day downloading images and cleaning up the files into something
+that could be imported somewhere else. I decided to convert my blog posts into
+Markdown - the pendulum had swung too far in the opposite direction. That way I
+could easily import them anywhere later. I fantasied about writing blog posts
+directly in my text editor with no distraction like headings, italics, bold,
+fonts - just my thoughts and text. And it was fun to develop a markdown
+rendering pipeline for the blog!
 
-After a few months I gave up on the fantasy of writing in a text editor. While markdown is great, having a few simple options for editing text and being able to see the result right away is much more pleasing than knowing that # will eventually turn into a h1 element.
+After a few months I gave up on the fantasy of writing in a text editor. While
+markdown is great, having a few simple options for editing text and being able
+to see the result right away is much more pleasing than knowing that # will
+eventually turn into a h1 element.
 
-I started writing and editing articles in Notion, exporting them to markdown, adjusting them for my blog, and then uploading them here. This was unnecessarily complicated, but it gave me the ability to write wherever I went (I like to go for a walk, think, then sit down on a bench when I figure something out and write it down).
+I started writing and editing articles in Notion, exporting them to markdown,
+adjusting them for my blog, and then uploading them here. This was unnecessarily
+complicated, but it gave me the ability to write wherever I went (I like to go
+for a walk, think, then sit down on a bench when I figure something out and
+write it down).
 
-Now I had a different problem - editing an article after it was published. With this process I had to first update the version in Notion, export it, adjust it again, and upload it again. This was annoying when I started publishing more often and therefore catching less typos in editing.
+Now I had a different problem - editing an article after it was published. With
+this process I had to first update the version in Notion, export it, adjust it
+again, and upload it again. This was annoying when I started publishing more
+often and therefore catching less typos in editing.
 
-This convoluted process eventual led me to stop publishing articles here. Then a few weeks ago I had the urge to write and publish something. But the thought of having to go through this publishing process made me put it off. This week I decided to correct this pendulum swing and migrate to ActionText to make things as simple as possible.
+This convoluted process eventual led me to stop publishing articles here. Then a
+few weeks ago I had the urge to write and publish something. But the thought of
+having to go through this publishing process made me put it off. This week I
+decided to correct this pendulum swing and migrate to ActionText to make things
+as simple as possible.
 
-ActionText is a framework within Rails that enabled rich text editing and presentation. Adding it took no time at all, but migrating data to it took a whole day. There are many opinionated decisions in the framework with which I butted heads in the process.
+ActionText is a framework within Rails that enabled rich text editing and
+presentation. Adding it took no time at all, but migrating data to it took a
+whole day. There are many opinionated decisions in the framework with which I
+butted heads in the process.
 
-**The first "problem"** I ran into were attachments. ActionText uses Rails' own ActiveStorage framework for uploading, processing and serving attachments, while the blog used Shrine (because I like Shrine). But the way I used Shrine was very reminiscent of how ActiveStorage works, so instead of reinventing the wheel further I decided to migrate over.
+**The first "problem"** I ran into were attachments. ActionText uses Rails' own
+ActiveStorage framework for uploading, processing and serving attachments, while
+the blog used Shrine (because I like Shrine). But the way I used Shrine was very
+reminiscent of how ActiveStorage works, so instead of reinventing the wheel
+further I decided to migrate over.
 
-This wasn't an issue and was as simple as iterating through all **Article::Attachment** records, taking their attachment, calling **to_io** on it and then passing that to **ActiveStorage::Blob.create_and_upload!**
+This wasn't an issue and was as simple as iterating through all
+`Article::Attachment` records, taking their attachment, calling `to_io` on it
+and then passing that to **ActiveStorage::Blob.create_and_upload!**
 
 ```ruby
 blob = ActiveStorage::Blob.create_and_upload!(
@@ -36,11 +70,26 @@ blob = ActiveStorage::Blob.create_and_upload!(
 )
 ```
 
-**The second "problem"** I ran into was paragraph support. ActionText doesn't use paragraphs (p elements) for text, instead it puts all text into a single div element and breaks it into "paragraphs" using line breaks (br elements). This was a problem because I wanted to use [Tailwind's Typography plugin](https://tailwindcss.com/docs/typography-plugin) and its **prose** class - which expects paragraphs as p elements. After fighting with the framework to make it work with p elements I ran across [a GitHub issue where the reasoning behind using a div was explained](https://github.com/basecamp/trix/issues/202#issuecomment-461166895) which made me realized that it was far easier to write a bit of custom CSS than to make paragraphs work with ActionText in all browsers.
+**The second "problem"** I ran into was paragraph support. ActionText doesn't
+use paragraphs (p elements) for text, instead it puts all text into a single div
+element and breaks it into "paragraphs" using line breaks (br elements). This
+was a problem because I wanted to use [Tailwind's Typography
+plugin](https://tailwindcss.com/docs/typography-plugin) and its **prose**
+class - which expects paragraphs as p elements. After fighting with the
+framework to make it work with p elements I ran across [a GitHub issue where the
+reasoning behind using a div was
+explained](https://github.com/basecamp/trix/issues/202#issuecomment-461166895)
+which made me realized that it was far easier to write a bit of custom CSS than
+to make paragraphs work with ActionText in all browsers.
 
-Without the explanation from the GH issue the decision to use divs seemed completely arbitrary and I wanted it to work with Tailwind. It would have been nice to have this explanation in the Readme.
+Without the explanation from the GH issue the decision to use divs seemed
+completely arbitrary and I wanted it to work with Tailwind. It would have been
+nice to have this explanation in the Readme.
 
-**The third problem** was converting my previously rendered markdown into ActionText's HTML format (using a div and br elements) and embedding images into it. Though this turned out to be easier than I initially thought. A simple script and some Nokogiri magic and everything work like a charm.
+**The third problem** was converting my previously rendered markdown into
+ActionText's HTML format (using a div and br elements) and embedding images into
+it. Though this turned out to be easier than I initially thought. A simple
+script and some Nokogiri magic and everything work like a charm.
 
 ```ruby
 Nokogiri.HTML(article.rendered_markdown).tap do |doc|
@@ -65,9 +114,19 @@ Nokogiri.HTML(article.rendered_markdown).tap do |doc|
 end
 ```
 
-**The fourth problem** was the [lack of support for tables](https://github.com/basecamp/trix/issues/539). But I decided to use Judo here and just [embed the tables as content attachments](https://github.com/basecamp/trix#inserting-a-content-attachment), then take screenshots of them and embed them as images. This isn't ideal, but it works and it's what I used to do on Medium. I intend to add table support at some point, but currently only two articles use tables and spending a few days on this wasn't worth it.
+**The fourth problem** was the [lack of support for
+tables](https://github.com/basecamp/trix/issues/539). But I decided to use Judo
+here and just [embed the tables as content
+attachments](https://github.com/basecamp/trix#inserting-a-content-attachment),
+then take screenshots of them and embed them as images. This isn't ideal, but it
+works and it's what I used to do on Medium. I intend to add table support at
+some point, but currently only two articles use tables and spending a few days
+on this wasn't worth it.
 
-**The fifth "problem"** was code block highlighting. At first I though this would be a significant undertaking that would require me to hook into ActionText, but in the end I used the Judo approach again and simply created a helper that changes the HTML before rendering.
+**The fifth "problem"** was code block highlighting. At first I though this
+would be a significant undertaking that would require me to hook into
+ActionText, but in the end I used the Judo approach again and simply created a
+helper that changes the HTML before rendering.
 
 ```ruby
 module RichTextHelper
@@ -103,16 +162,36 @@ end
 <%= transform_rich_text(@article.content) %>
 ```
 
-Though my initial idea of hooking into ActionText led me to read it's source code, because of which I'm now much more familiar with the framework. So this detour wasn't a waste time.
+Though my initial idea of hooking into ActionText led me to read it's source
+code, because of which I'm now much more familiar with the framework. So this
+detour wasn't a waste time.
 
-**The final "problem"** were link previews. That's the feature I love the most in this iteration of the blog and wanted to have it in action text. At first I through that I'd have to extend the helper from before but then it dawned on me that I could inject everything needed for link previews through Stimulus. I liked that approach in this case because the previews are a "frontend" feature and they don't work if someone disabled JS or blocks it. But I'm still unsure it that was a good idea and I might move the code to setup previews into the helper.
+**The final "problem"** were link previews. That's the feature I love the most
+in this iteration of the blog and wanted to have it in action text. At first I
+through that I'd have to extend the helper from before but then it dawned on me
+that I could inject everything needed for link previews through Stimulus. I
+liked that approach in this case because the previews are a "frontend" feature
+and they don't work if someone disabled JS or blocks it. But I'm still unsure it
+that was a good idea and I might move the code to setup previews into the
+helper.
 
-All in all, I love using ActionText and I'm glad I fixed my over-correction. Having an editor baked into the blog makes it so much easier to edit (at home and on the go). And since the HTML format is well documented and simple I can still convert it to some other format if need be.
+All in all, I love using ActionText and I'm glad I fixed my over-correction.
+Having an editor baked into the blog makes it so much easier to edit (at home
+and on the go). And since the HTML format is well documented and simple I can
+still convert it to some other format if need be.
 
-ActionText was easy to integrate, and with hindsight I can say that it was also easy to migrate to it.
+ActionText was easy to integrate, and with hindsight I can say that it was also
+easy to migrate to it.
 
-*P.S. while reading through ActionText's source and issues* [*I ran across an interesting quote form the author of markdown*](https://github.com/basecamp/trix/issues/626#issuecomment-800338265)*:*
+*P.S. while reading through ActionText's source and issues* [*I ran across an
+interesting quote form the author of
+markdown*](https://github.com/basecamp/trix/issues/626#issuecomment-800338265)*:*
 
-> I have no idea why there are now apps that use Markdown as their back end storage format but only show styled text without the Markdown source code visible. Hey World, for example, gets this right: they just do simple WYSIWYG editing where bold is bold, italic is italic, and links look like links and the linked URL is edited in a popup. If you want WYSIWYG, do WYSIWYG. If you want Markdown, show the Markdown. Trust me, it’s meant to be shown.
+> I have no idea why there are now apps that use Markdown as their back end
+> storage format but only show styled text without the Markdown source code
+> visible. Hey World, for example, gets this right: they just do simple WYSIWYG
+> editing where bold is bold, italic is italic, and links look like links and
+> the linked URL is edited in a popup. If you want WYSIWYG, do WYSIWYG. If you
+> want Markdown, show the Markdown. Trust me, it’s meant to be shown.
 >
 > \- [John Gruber](https://en.wikipedia.org/wiki/John_Gruber)

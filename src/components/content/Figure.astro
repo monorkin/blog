@@ -1,8 +1,11 @@
 ---
-import { findMedia, sources, variantAtLeast } from "~/lib/media"
+import { findMedia, mediaFolderFor, resolveMediaKey, sources, variantAtLeast } from "~/lib/media"
 
 interface Props {
-  media: string
+  media?: string
+  src?: string
+  width?: number
+  height?: number
   caption?: string
   alt?: string
   inGallery?: boolean
@@ -14,34 +17,58 @@ const GALLERY_SIZES = "(width >= 768px) 520px, 50vw"
 const LIGHTBOX_WIDTH = 2400
 
 const { media, caption = "", alt = caption, inGallery = false } = Astro.props
-const entry = findMedia(media)
-const extension = media.split(".").pop()!.toLowerCase()
-const expandable = !inGallery && entry.height! > entry.width!
-const classes = [ "attachment", "attachment--preview", `attachment--${extension}`, expandable && "attachment--expandable" ]
 
 let sizes = ARTICLE_SIZES
 if (inGallery) {
   sizes = GALLERY_SIZES
 }
 
-const imageSources = sources(media)
-const fallback = imageSources.at(-1)
+// Our own media comes with variants; `src` is for the odd image hotlinked from elsewhere
+let image
+if (media) {
+  const key = resolveMediaKey(media, mediaFolderFor(Astro))
+  const entry = findMedia(key)
+  const imageSources = sources(key)
+
+  image = {
+    extension: key.split(".").pop()!.toLowerCase(),
+    width: entry.width!,
+    height: entry.height!,
+    src: variantAtLeast(key, 1200),
+    fullSrc: variantAtLeast(key, LIGHTBOX_WIDTH),
+    extraSources: imageSources.slice(0, -1),
+    fallback: imageSources.at(-1)
+  }
+} else {
+  image = {
+    extension: Astro.props.src!.split(".").pop()!.toLowerCase(),
+    width: Astro.props.width!,
+    height: Astro.props.height!,
+    src: Astro.props.src!,
+    fullSrc: Astro.props.src!,
+    extraSources: [],
+    fallback: undefined
+  }
+}
+
+const expandable = !inGallery && image.height > image.width
+const classes = [ "attachment", "attachment--preview", `attachment--${image.extension}`, expandable && "attachment--expandable" ]
 ---
 
-<figure class:list={classes} data-full-src={variantAtLeast(media, LIGHTBOX_WIDTH)}>
+<figure class:list={classes} data-full-src={image.fullSrc}>
   <picture>
-    {imageSources.slice(0, -1).map(source => <source type={source.type} srcset={source.srcset} sizes={sizes} />)}
+    {image.extraSources.map(source => <source type={source.type} srcset={source.srcset} sizes={sizes} />)}
     <img
       alt={alt}
       loading="lazy"
       decoding="async"
       class="attachment__image attachment__image--sized"
-      width={entry.width}
-      height={entry.height}
-      src={variantAtLeast(media, 1200)}
-      srcset={fallback?.srcset}
-      sizes={fallback && sizes}
-      style={`--attachment-width: ${entry.width}; --attachment-height: ${entry.height};`}
+      width={image.width}
+      height={image.height}
+      src={image.src}
+      srcset={image.fallback?.srcset}
+      sizes={image.fallback && sizes}
+      style={`--attachment-width: ${image.width}; --attachment-height: ${image.height};`}
     />
   </picture>
   <figcaption class="attachment__caption">{caption}</figcaption>

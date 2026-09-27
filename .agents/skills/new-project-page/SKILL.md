@@ -27,7 +27,7 @@ draft: true
 
 import Figure from "~/components/content/Figure.astro"
 
-<Figure media="projects/air-quality-box/on-a-desk.jpeg" caption="The Air Quality Box on a desk" />
+<Figure media="on-a-desk.jpeg" caption="The Air Quality Box on a desk" />
 
 Text as in any article.
 ```
@@ -40,9 +40,11 @@ the article typography.
 project is at its URL, but it isn't listed on `/projects` or in the sitemap and asks search
 engines not to index it. Remove it when the page is ready.
 
-Photos and screenshots of a project are media, keyed under `projects/<page name>/`; the
-`new-media` skill is how to add them. Only something that is part of the page's own design,
-like an icon, goes in `src/assets/`.
+Photos and screenshots of a project are media, in `media/originals/projects/<page name>/`,
+and the page names them by file, like an entry does; the `new-media` skill is how to add
+them. Unlike entries, a project page is an ordinary page, so it imports `Figure` (and
+`Gallery` or `Video`) itself. Only something that is part of the page's own design, like an
+icon, goes in `src/assets/`.
 
 ## A freeform page
 

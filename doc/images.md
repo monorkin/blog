@@ -19,7 +19,14 @@ snaps/soca-valley-C4wEfGoWTXNS/1000054880.jpg
 link-previews/233-og-image.png
 ```
 
-Entries use keys, never URLs (`doc/content.md`). The bucket, and `media/`, hold:
+Entries use keys, never URLs (`doc/content.md`), and name their own media by file name
+alone: `img_8969.jpeg` in `articles/clean-air-ai-AHcddmIf21lt` is
+`articles/clean-air-ai-AHcddmIf21lt/img_8969.jpeg`. `resolveMediaKey` in `src/lib/media.ts`
+does that; a key with a slash is taken as complete. Rendered entries pass their folder to
+the components as `Astro.locals.mediaFolder`, and a project page's folder is its URL, e.g.
+`projects/air-quality-box`.
+
+The bucket, and `media/`, hold:
 
 | Path | What |
 |---|---|

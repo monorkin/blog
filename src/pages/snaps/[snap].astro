@@ -31,17 +31,18 @@ const data = snap.source.data as CollectionEntry<"snaps">["data"]
 let image
 let original
 if (data.image) {
-  const imageSources = sources(data.image)
-  image = { entry: findMedia(data.image), extraSources: imageSources.slice(0, -1), fallback: imageSources.at(-1), src: variantAtLeast(data.image, LIGHTBOX_FALLBACK_WIDTH) }
-  original = originalUrl(data.image)
-} else if (data.video) {
-  original = originalUrl(data.video)
+  const key = snap.mediaKey(data.image)
+  const imageSources = sources(key)
+  image = { entry: findMedia(key), extraSources: imageSources.slice(0, -1), fallback: imageSources.at(-1), src: variantAtLeast(key, LIGHTBOX_FALLBACK_WIDTH) }
+  original = originalUrl(key)
 }
 
 let video
 if (data.video) {
-  const videoMedia = findMedia(data.video)
-  video = { url: originalUrl(data.video), width: videoMedia.width, height: videoMedia.height, poster: data.poster && variantAtLeast(data.poster, LIGHTBOX_FALLBACK_WIDTH) }
+  const key = snap.mediaKey(data.video)
+  const videoMedia = findMedia(key)
+  video = { url: originalUrl(key), width: videoMedia.width, height: videoMedia.height, poster: data.poster && variantAtLeast(snap.mediaKey(data.poster), LIGHTBOX_FALLBACK_WIDTH) }
+  original = video.url
 }
 ---
 

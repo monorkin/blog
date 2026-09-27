@@ -1,23 +1,27 @@
 ---
 title: Why does Rails put the type column first in an index for a polymorphic association?
-publishedAt: '2024-04-01T12:00:00Z'
-updatedAt: '2026-02-15T09:37:07Z'
-tags:
-- deep-dive
-- ruby
+publishedAt: 2024-04-01T12:00:00Z
+updatedAt: 2026-02-15T09:37:07Z
+tags: [deep-dive, ruby]
 feedId: Article/38
 ---
 
-import Figure from "~/components/content/Figure.astro"
-import Gallery from "~/components/content/Gallery.astro"
-
-Last week, I had a discussion with a coworker about how Rails indexes columns used in polymorphic associations. He thought that the order of columns in the index should be flipped - instead of indexing by type and ID, it should index by ID and type - as that way the most restrictive column is first, and therefore the index is more efficient. While I argued that the way that Rails indexes polymorphic associations is very pragmatic while also being efficient.
+Last week, I had a discussion with a coworker about how Rails indexes columns
+used in polymorphic associations. He thought that the order of columns in the
+index should be flipped - instead of indexing by type and ID, it should index by
+ID and type - as that way the most restrictive column is first, and therefore
+the index is more efficient. While I argued that the way that Rails indexes
+polymorphic associations is very pragmatic while also being efficient.
 
 *First off, what are we talking about?*
 
-We have an Access Log model in our app. It holds a log of who granted access to which device and when. But the thing granting access can be a Person, another Device or a Schedule.
+We have an Access Log model in our app. It holds a log of who granted access to
+which device and when. But the thing granting access can be a Person, another
+Device or a Schedule.
 
-In Rails, an association that can point to many different types of models is called a ["polymorphic associations"](https://guides.rubyonrails.org/association_basics.html#polymorphic-associations).
+In Rails, an association that can point to many different types of models is
+called a ["polymorphic
+associations"](https://guides.rubyonrails.org/association_basics.html#polymorphic-associations).
 
 ```ruby
 class AccessLog < ApplicationRecord
@@ -40,11 +44,15 @@ log.grantor.class # => Schedule
 log.update!(device: Person.all.sample) # => ActiveRecord::AssociationTypeMismatch: Device expected, got Person
 ```
 
-A polymorphic and a regular association are implemented differently in the database. 
+A polymorphic and a regular association are implemented differently in the
+database.
 
-A regular association is just a column that holds an ID that points to a record in the other model's table; usually it also has a foreign key constraint, which ensures that the assigned ID actually exists in the other table. 
+A regular association is just a column that holds an ID that points to a record
+in the other model's table; usually it also has a foreign key constraint, which
+ensures that the assigned ID actually exists in the other table.
 
-While a polymorphic association uses two columns, one to hold the type of model it's for and another to hold the ID of the record it's for.
+While a polymorphic association uses two columns, one to hold the type of model
+it's for and another to hold the ID of the record it's for.
 
 ```ruby
 create_table "access_logs", force: :cascade do |t|
@@ -63,52 +71,105 @@ end
 add_foreign_key "access_logs", "devices"
 ```
 
-When you generate an association, Rails will automatically create an index for it. In the case of a polymorphic association, it will create a composite index - *that's an index that indexes two or more columns simultaneously* - in which it will put the type column first and the ID column last.
+When you generate an association, Rails will automatically create an index for
+it. In the case of a polymorphic association, it will create a composite index -
+*that's an index that indexes two or more columns simultaneously* - in which it
+will put the type column first and the ID column last.
 
 *Why does it matter which column is first in the index?*
 
-This has to do with how databases build indices. By default, MySQL, MariaDB and PostgreSQL build [b-tree](https://en.wikipedia.org/wiki/B-tree) indices.
+This has to do with how databases build indices. By default, MySQL, MariaDB and
+PostgreSQL build [b-tree](https://en.wikipedia.org/wiki/B-tree) indices.
 
-An index is similar to a regular book index, but instead of having chapter names and page numbers, it has values from the indexed column and internal record IDs.
+An index is similar to a regular book index, but instead of having chapter names
+and page numbers, it has values from the indexed column and internal record IDs.
 
-<Figure media="articles/why-does-rails-put-the-type-column-first-in-an-index-for-a-polymorphic-association-d1opdSyuh50B/pasted-image-20240319080622.png" caption="Comparison between a book and a naive database index" />
+<Figure
+  media="pasted-image-20240319080622.png"
+  caption="Comparison between a book and a naive database index"
+/>
 
-The problem with this kind of index is that it will grow as the number of distinct values in the indexed column grows. 
+The problem with this kind of index is that it will grow as the number of
+distinct values in the indexed column grows.
 
-E.g. if you create an index on a column that holds a person's email address, this kind of index would have one entry for each email, and the database would have to scan through each email until it finds the right one. To speed things up, we can do what dictionaries usually do and create a multi-level index.
+E.g. if you create an index on a column that holds a person's email address,
+this kind of index would have one entry for each email, and the database would
+have to scan through each email until it finds the right one. To speed things
+up, we can do what dictionaries usually do and create a multi-level index.
 
-In a dictionary, you'd usually have an index that points you to another index. E.g. the main index would tell you that the index for all words starting with R is on page 6. Then the R sub-index would tell you that words starting with RU are on pages 342 to 361. Then you'd go to page 342 and search for the word *"Ruby"* until you reached page 361.
+In a dictionary, you'd usually have an index that points you to another index.
+E.g. the main index would tell you that the index for all words starting with R
+is on page 6. Then the R sub-index would tell you that words starting with RU
+are on pages 342 to 361. Then you'd go to page 342 and search for the word
+*"Ruby"* until you reached page 361.
 
 <Gallery>
-  <Figure media="articles/why-does-rails-put-the-type-column-first-in-an-index-for-a-polymorphic-association-d1opdSyuh50B/pasted-image-20240401104044.png" caption="A multi-level index from a dictionary" inGallery />
-  <Figure media="articles/why-does-rails-put-the-type-column-first-in-an-index-for-a-polymorphic-association-d1opdSyuh50B/pasted-image-20240401104111.png" caption="A naive multi-level index in a database" inGallery />
+  <Figure
+    media="pasted-image-20240401104044.png"
+    caption="A multi-level index from a dictionary"
+    inGallery
+  />
+  <Figure
+    media="pasted-image-20240401104111.png"
+    caption="A naive multi-level index in a database"
+    inGallery
+  />
 </Gallery>
 
-B-trees are similar to multi-level indices in dictionaries, though they have extra rules and nuances that aren't important now.
+B-trees are similar to multi-level indices in dictionaries, though they have
+extra rules and nuances that aren't important now.
 
-What's important is that a b-tree index can have a sub-index, which in term can have a sub-index, and so on. And the more items each sub-index has, the slower it is to find something.
+What's important is that a b-tree index can have a sub-index, which in term can
+have a sub-index, and so on. And the more items each sub-index has, the slower
+it is to find something.
 
-*These indices work for single values such as words and emails, but how would you make an index of two words, or an email and a number?*
+*These indices work for single values such as words and emails, but how would
+you make an index of two words, or an email and a number?*
 
-To create a composite index, most databases just concatenate the values together and build a regular b-tree index. This is a gross simplification of what actually happens, but in essence, that's what they do. Because of that, the order of the columns becomes important.
+To create a composite index, most databases just concatenate the values together
+and build a regular b-tree index. This is a gross simplification of what
+actually happens, but in essence, that's what they do. Because of that, the
+order of the columns becomes important.
 
-If you tell the database to build an index over ***grantor_type*** **first and then** ***grantor_id*** it would take the two and concatenate them together like so *"Person|443"*. But if you tell it to build an index over ***grantor_id*** **first and then** ***grantor_type*** it would concatenate them like so *"443|Person"*.
+If you tell the database to build an index over ***grantor_type*** **first and
+then** ***grantor_id*** it would take the two and concatenate them together like
+so *"Person|443"*. But if you tell it to build an index over ***grantor_id***
+**first and then** ***grantor_type*** it would concatenate them like so
+*"443|Person"*.
 
 The order of the columns in the index changes the structure of the index.
 
-When the ID column is first, the index points to fewer rows, so the database has to scan through fewer rows, and therefore it can find a match quicker. That's why it's a general recommendation to put the most specific column first in a composite index - it narrows down the search a lot.
+When the ID column is first, the index points to fewer rows, so the database has
+to scan through fewer rows, and therefore it can find a match quicker. That's
+why it's a general recommendation to put the most specific column first in a
+composite index - it narrows down the search a lot.
 
-<Figure media="articles/why-does-rails-put-the-type-column-first-in-an-index-for-a-polymorphic-association-d1opdSyuh50B/pasted-image-20240401105701.png" caption="Naive composite database index with the ID column first and type column second" />
+<Figure
+  media="pasted-image-20240401105701.png"
+  caption="Naive composite database index with the ID column first and type column second"
+/>
 
-When the type column is first, there are a lot more rows to scan through in the end.
+When the type column is first, there are a lot more rows to scan through in the
+end.
 
-<Figure media="articles/why-does-rails-put-the-type-column-first-in-an-index-for-a-polymorphic-association-d1opdSyuh50B/pasted-image-20240401104647.png" caption="Naive composite database index with the type column first and ID column second" />
+<Figure
+  media="pasted-image-20240401104647.png"
+  caption="Naive composite database index with the type column first and ID column second"
+/>
 
 *Why would anyone create an index and put the type column first then?*
 
-You don't have to follow a multi-level index all the way to the last index entry to find something. E.g. if you are searching for all words that start with R, you can go from the main index to find all sub-indices of words starting with R. Take the start page of the first index and the last page of the last index. Now you know that all words between these two pages start with R, and you didn't have to scan through anything.
+You don't have to follow a multi-level index all the way to the last index entry
+to find something. E.g. if you are searching for all words that start with R,
+you can go from the main index to find all sub-indices of words starting with R.
+Take the start page of the first index and the last page of the last index. Now
+you know that all words between these two pages start with R, and you didn't
+have to scan through anything.
 
-**In a real app, you'd sometimes want to filter all records that are associated with another record of a certain type.** E.g. you might want to fetch all Access Logs that were granted by a Schedule, or all People associated with a Property through an Access Log.
+**In a real app, you'd sometimes want to filter all records that are associated
+with another record of a certain type.** E.g. you might want to fetch all Access
+Logs that were granted by a Schedule, or all People associated with a Property
+through an Access Log.
 
 ```ruby
 class Property < ApplicationRecord
@@ -145,17 +206,25 @@ Propert.find(42).active_people.count
 #   AND access_logs.grantor_type = 'Person'
 ```
 
-**In that case, the composite index over** ***grantor_id*** **first and then** ***grantor_type*** **is basically useless.** The database would have to traverse the whole index to aggregate a range that it then has to scan through.
+**In that case, the composite index over** ***grantor_id*** **first and then**
+***grantor_type*** **is basically useless.** The database would have to traverse
+the whole index to aggregate a range that it then has to scan through.
 
-**While the index over** ***grantor_type*** **first and then** ***grantor_id*** **can quickly give you the range that you have to scan through by looking at the first and last entry of a sub-index.**
+**While the index over** ***grantor_type*** **first and then** ***grantor_id***
+**can quickly give you the range that you have to scan through by looking at the
+first and last entry of a sub-index.**
 
 We can test this out.
 
-I created a test MariaDB database, with an access_logs table that I've filled with a million rows. Then I created a composite index over *grantor_type* and *grantor_id* that I've named *test_index*.
+I created a test MariaDB database, with an access_logs table that I've filled
+with a million rows. Then I created a composite index over *grantor_type* and
+*grantor_id* that I've named *test_index*.
 
-When I ask MariaDB to explain how it would go about counting all rows where the *grantor_type* is *Person*, **it says that it would use** ***test_index*** **to generate the count**.
+When I ask MariaDB to explain how it would go about counting all rows where the
+*grantor_type* is *Person*, **it says that it would use** ***test_index*** **to
+generate the count**.
 
-```
+```text
 MariaDB [test]> CREATE INDEX test_index ON access_logs (grantor_type, grantor_id);
 Query OK, 0 rows affected (1.209 sec)
 Records: 0  Duplicates: 0  Warnings: 0
@@ -177,9 +246,11 @@ MariaDB [test]> SELECT COUNT(1) FROM access_logs WHERE grantor_type = 'Person';
 1 row in set (0.042 sec)
 ```
 
-If I ask the same question, but change the order of columns in the index, **then MariaDB says that it can't use any index to generate the count but it still tries to use test_index**, and it takes about twice as long to count the rows.
+If I ask the same question, but change the order of columns in the index, **then
+MariaDB says that it can't use any index to generate the count but it still
+tries to use test_index**, and it takes about twice as long to count the rows.
 
-```
+```text
 MariaDB [test]> DROP INDEX test_index ON access_logs;
 Query OK, 0 rows affected (0.045 sec)
 Records: 0  Duplicates: 0  Warnings: 0
@@ -205,11 +276,16 @@ MariaDB [test]> SELECT COUNT(1) FROM access_logs WHERE grantor_type = 'Person';
 1 row in set (0.095 sec)
 ```
 
-These results will vary from database to database, but the principle still stands.
+These results will vary from database to database, but the principle still
+stands.
 
-For example, [PostgreSQL can sometimes utilize an index even when it isn't optimal](https://www.postgresql.org/docs/current/indexes-multicolumn.html). In the case of an index for a polymorphic association, changing the order of the columns has much less impact than in MariaDB. In both cases, PostgreSQL uses the index and produces a result in about the same time.
+For example, [PostgreSQL can sometimes utilize an index even when it isn't
+optimal](https://www.postgresql.org/docs/current/indexes-multicolumn.html). In
+the case of an index for a polymorphic association, changing the order of the
+columns has much less impact than in MariaDB. In both cases, PostgreSQL uses the
+index and produces a result in about the same time.
 
-```
+```text
 postgres=# CREATE INDEX test_index ON access_logs (grantor_type, grantor_id);
 CREATE INDEX
 
@@ -248,8 +324,15 @@ QUERY PLAN
 
 Simply put.
 
-The type column is first in an index for a polymorphic association because then the same index can be used to speed up association look-ups (querying by both type and ID columns) and to filter by the type of the associated record (querying by just the type column).
+The type column is first in an index for a polymorphic association because then
+the same index can be used to speed up association look-ups (querying by both
+type and ID columns) and to filter by the type of the associated record
+(querying by just the type column).
 
-These are the two most common use cases that you'll encounter in a Rails app. And also the use-cases for which Rails has built-in interfaces for (e.g. the *source_type* option).
+These are the two most common use cases that you'll encounter in a Rails app.
+And also the use-cases for which Rails has built-in interfaces for (e.g. the
+*source_type* option).
 
-This is more efficient in terms of speed (index creation and updating) and space (the size of the index on disk) than having two or more separate indices, which would be required in some databases if the columns were flipped.
+This is more efficient in terms of speed (index creation and updating) and space
+(the size of the index on disk) than having two or more separate indices, which
+would be required in some databases if the columns were flipped.

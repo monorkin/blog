@@ -1,95 +1,170 @@
 ---
 title: 'My last PHP app: How I Fell for Ruby'
-publishedAt: '2025-05-24T09:00:00Z'
-updatedAt: '2026-02-15T09:37:07Z'
-tags:
-- php
-- ruby
+publishedAt: 2025-05-24T09:00:00Z
+updatedAt: 2026-02-15T09:37:07Z
+tags: [php, ruby]
 feedId: Article/45
 ---
 
-import Figure from "~/components/content/Figure.astro"
+Last week I found a backup of the very last PHP app I ever wrote. The backup was
+from 2009, but the app itself was written in 2007 - 18 years ago!
 
-Last week I found a backup of the very last PHP app I ever wrote. The backup was from 2009, but the app itself was written in 2007 - 18 years ago!
+Back then I was in my late teens and the world was *(or at least felt)*
+completely different. Out of nostalgia, I spent some time exploring the source
+code and even got it to run *(for the most part)*.
 
-Back then I was in my late teens and the world was *(or at least felt)* completely different. Out of nostalgia, I spent some time exploring the source code and even got it to run *(for the most part)*.
-
-This reminded me of how different and quirky the web used to be, and how I discovered Ruby.
+This reminded me of how different and quirky the web used to be, and how I
+discovered Ruby.
 
 **What was the app for?**
 
-My friends and I used to play Call of Duty 2 together after school - *seems like the world hasn't changed that much after all* - and we got good at it. So we organized into a team, called a clan, and started playing against other clans for fun.
+My friends and I used to play Call of Duty 2 together after school - *seems like
+the world hasn't changed that much after all* - and we got good at it. So we
+organized into a team, called a clan, and started playing against other clans
+for fun.
 
-Every clan we looked up to at the time had its own website where it put up its latest games, demos of those games *(a demo is a file that allows you to replay a game and spectate)*, they had a forum, news, and so on. So we wanted to have our own website, but we were extremely tight on money.
+Every clan we looked up to at the time had its own website where it put up its
+latest games, demos of those games *(a demo is a file that allows you to replay
+a game and spectate)*, they had a forum, news, and so on. So we wanted to have
+our own website, but we were extremely tight on money.
 
-The most that we could spend - all of us together - on a website was around 3€ per month or 35€ per year. To put that into context, 3€ could buy you 2 large pizzas at the time - we were financing this with pocket money.
+The most that we could spend - all of us together - on a website was around 3€
+per month or 35€ per year. To put that into context, 3€ could buy you 2 large
+pizzas at the time - we were financing this with pocket money.
 
-All hosted website engines were way too expensive for us. We had just enough money to pay for PHP hosting to a local company. For the domain we got a free [.su domain](https://en.wikipedia.org/wiki/.su) from a sketchy registrar. And now we had to make a website.
+All hosted website engines were way too expensive for us. We had just enough
+money to pay for PHP hosting to a local company. For the domain we got a free
+[.su domain](https://en.wikipedia.org/wiki/.su) from a sketchy registrar. And
+now we had to make a website.
 
-At the time I used to write small programs to solve my math homework or just to play around with my computer, and I just learned HTML, so I volunteered to make the website.
+At the time I used to write small programs to solve my math homework or just to
+play around with my computer, and I just learned HTML, so I volunteered to make
+the website.
 
-Looking back, implementing a website with news, a calendar, file uploads and a comment system was very ambitious for a first project. But I didn't know that at the time so I gave it a try and failed. There were too many moving parts which caused too many bugs, and on top of that the file storage logic that I wrote - *because I didn't know that databases existed* - kept corrupting files forcing me to recreate everything every now and then.
+Looking back, implementing a website with news, a calendar, file uploads and a
+comment system was very ambitious for a first project. But I didn't know that at
+the time so I gave it a try and failed. There were too many moving parts which
+caused too many bugs, and on top of that the file storage logic that I wrote -
+*because I didn't know that databases existed* - kept corrupting files forcing
+me to recreate everything every now and then.
 
-Somehow I came across [webSPELL](http://www.webspell.org/) - a CMS for clan websites. That solved most of my problems. Now all I had to do was create a template, add and change a few things. All in all I made five websites using PHP and webSPELL - three different iterations of our website, and two websites for other clans.
+Somehow I came across [webSPELL](http://www.webspell.org/) - a CMS for clan
+websites. That solved most of my problems. Now all I had to do was create a
+template, add and change a few things. All in all I made five websites using PHP
+and webSPELL - three different iterations of our website, and two websites for
+other clans.
 
-The last one I made was the third iteration of our website in 2007. Here it is in most of its former glory.
+The last one I made was the third iteration of our website in 2007. Here it is
+in most of its former glory.
 
-<Figure media="articles/my-last-php-app-how-i-fell-for-ruby-pcaqgWmybRLN/pasted-image-20250523082554.png" caption="The website, mostly working" />
+<Figure
+  media="pasted-image-20250523082554.png"
+  caption="The website, mostly working"
+/>
 
 It even had a visitor counter - this was the Google Analytics of the time.
 
-<Figure media="articles/my-last-php-app-how-i-fell-for-ruby-pcaqgWmybRLN/pasted-image-20250523082935.png" caption="The visitor counter that was in the bottom-right corner" />
+<Figure
+  media="pasted-image-20250523082935.png"
+  caption="The visitor counter that was in the bottom-right corner"
+/>
 
-This was written for PHP 4 and I'm running it in a Docker container with PHP 7 so some things - like the news, forum and stats tickers at the top - just broke during the update. I'm honestly amazed that I only had to do a handful of changes to get the app to boot with PHP 7.
+This was written for PHP 4 and I'm running it in a Docker container with PHP 7
+so some things - like the news, forum and stats tickers at the top - just broke
+during the update. I'm honestly amazed that I only had to do a handful of
+changes to get the app to boot with PHP 7.
 
-Digging through the code made me remember how **different the Web was back then**.
+Digging through the code made me remember how **different the Web was back
+then**.
 
-For starters the app rendered [XHTML](https://en.wikipedia.org/wiki/XHTML) because [HTML 5](https://en.wikipedia.org/wiki/HTML5) didn't exist yet and [HTML 4](https://en.wikipedia.org/wiki/HTML#HTML4_variations) was difficult to work with.
+For starters the app rendered [XHTML](https://en.wikipedia.org/wiki/XHTML)
+because [HTML 5](https://en.wikipedia.org/wiki/HTML5) didn't exist yet and [HTML
+4](https://en.wikipedia.org/wiki/HTML#HTML4_variations) was difficult to work
+with.
 
 ```html
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 ```
 
-The encoding was set to [iso-8859-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1) to get support for [Croatian diacritics](https://en.wikipedia.org/wiki/Gaj%27s_Latin_alphabet). [UTF-8](https://en.wikipedia.org/wiki/UTF-8) did exist at the time but a lot of software just didn't support ([Windows 98](https://en.wikipedia.org/wiki/Windows_98) was still very common) so the best thing I could do was to use iso-8859-1 as it would render the characters correctly for most people.
+The encoding was set to
+[iso-8859-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1) to get support for
+[Croatian diacritics](https://en.wikipedia.org/wiki/Gaj%27s_Latin_alphabet).
+[UTF-8](https://en.wikipedia.org/wiki/UTF-8) did exist at the time but a lot of
+software just didn't support ([Windows
+98](https://en.wikipedia.org/wiki/Windows_98) was still very common) so the best
+thing I could do was to use iso-8859-1 as it would render the characters
+correctly for most people.
 
 ```html
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 ```
 
-Then the wild part - this whole site is one giant HTML table with an iframe in it.
+Then the wild part - this whole site is one giant HTML table with an iframe in
+it.
 
-<Figure media="articles/my-last-php-app-how-i-fell-for-ruby-pcaqgWmybRLN/pasted-image-20250523082715.png" caption="DOM of the website" />
+<Figure media="pasted-image-20250523082715.png" caption="DOM of the website" />
 
-DIVs did exist, but they were much harder to position than table cells - [flexbox](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox) didn't exist - so they were mostly used as *DIV*iders. And the nice thing about tables is that you can set a fixed width to every cell using the *width* attribute - this was the only way you could do templates back then.
+DIVs did exist, but they were much harder to position than table cells -
+[flexbox](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox)
+didn't exist - so they were mostly used as *DIV*iders. And the nice thing about
+tables is that you can set a fixed width to every cell using the *width*
+attribute - this was the only way you could do templates back then.
 
-A template started out as big picture that was sliced into box-shaped sections like a jigsaw puzzle. Then you'd make an HTML table that puts the puzzle back together. You'd make each table cell the exact width and height of your slice and then set the slice image as the background image of that cell. If you had a layout that wouldn't fit into a single table you'd nest HTML tables to get the layout you want.
+A template started out as big picture that was sliced into box-shaped sections
+like a jigsaw puzzle. Then you'd make an HTML table that puts the puzzle back
+together. You'd make each table cell the exact width and height of your slice
+and then set the slice image as the background image of that cell. If you had a
+layout that wouldn't fit into a single table you'd nest HTML tables to get the
+layout you want.
 
-<Figure media="articles/my-last-php-app-how-i-fell-for-ruby-pcaqgWmybRLN/slicing.png" caption="An example of how slicing worked" />
+<Figure media="slicing.png" caption="An example of how slicing worked" />
 
-Slicing was an art. A big part of the job was to create slices that could be tiled. This saved on bandwidth which, compared to today's 100+ Mbps speeds, were barely able to provide a meager 2 Mbps. This also meant that you'd often have to slice something in such a way that seams and tiling wasn't obvious.
+Slicing was an art. A big part of the job was to create slices that could be
+tiled. This saved on bandwidth which, compared to today's 100+ Mbps speeds, were
+barely able to provide a meager 2 Mbps. This also meant that you'd often have to
+slice something in such a way that seams and tiling wasn't obvious.
 
-E.g. the horizontal bars on the top and bottom would get turned into a 1px wide image that would tile horizontally. The vertical bars would be turned in a 1px high tiling image. This also allowed the template to scale to fit any size content and would often reduce a 1MB image down to 1kb or less if you used a GIF.
+E.g. the horizontal bars on the top and bottom would get turned into a 1px wide
+image that would tile horizontally. The vertical bars would be turned in a 1px
+high tiling image. This also allowed the template to scale to fit any size
+content and would often reduce a 1MB image down to 1kb or less if you used a
+GIF.
 
-Another interesting thing - this site was exactly 1011px wide. Most monitors at the time were either 1024px or 1280px wide, so the site would fill most of the screen. Responsiveness just wasn't a thing - the iPhone had just come out and there was literally no way to detect the screen size.
+Another interesting thing - this site was exactly 1011px wide. Most monitors at
+the time were either 1024px or 1280px wide, so the site would fill most of the
+screen. Responsiveness just wasn't a thing - the iPhone had just come out and
+there was literally no way to detect the screen size.
 
-This produces hilarious results on today's monitors. E.g. this is what the site looks like on my ultra-wide.
+This produces hilarious results on today's monitors. E.g. this is what the site
+looks like on my ultra-wide.
 
-<Figure media="articles/my-last-php-app-how-i-fell-for-ruby-pcaqgWmybRLN/pasted-image-20250523134844.png" caption={"What it looks like on a 40\" ultra-wide"} />
+<Figure
+  media="pasted-image-20250523134844.png"
+  caption='What it looks like on a 40" ultra-wide'
+/>
 
 And on my iPhone 14
 
-<Figure media="articles/my-last-php-app-how-i-fell-for-ruby-pcaqgWmybRLN/pasted-image-20250523135013.png" caption="What it looks like on an iPhone 14" />
+<Figure
+  media="pasted-image-20250523135013.png"
+  caption="What it looks like on an iPhone 14"
+/>
 
 I can barely read the text, and I'll need a toothpick to click on a link.
 
 [**Ruby, Ruby, Ruby, Ruby**](https://www.youtube.com/watch?v=qObzgUfCl28)
 
-Over the winter break of 2008, I stumbled across a tweet praising Ruby on Rails as an elegant alternative to PHP. The next day, my mom asked me if I could build a website for her real estate business - perfect timing.
+Over the winter break of 2008, I stumbled across a tweet praising Ruby on Rails
+as an elegant alternative to PHP. The next day, my mom asked me if I could build
+a website for her real estate business - perfect timing.
 
-I decided to give Rails a try. webSPELL wasn't a good fit for a real estate website, and I was ready for something new.
+I decided to give Rails a try. webSPELL wasn't a good fit for a real estate
+website, and I was ready for something new.
 
-Something about Ruby just clicked. The code read like a story. Ruby's syntax felt natural and obvious in a way PHP never had. Suddenly programming wasn't just about hacking things together - it was expressive, joyful, and beautiful.
+Something about Ruby just clicked. The code read like a story. Ruby's syntax
+felt natural and obvious in a way PHP never had. Suddenly programming wasn't
+just about hacking things together - it was expressive, joyful, and beautiful.
 
 I remember comparing how I used to join first and last names in PHP:
 
@@ -103,7 +178,9 @@ to how it looked in Ruby:
 [first_name, last_name].join(" ")
 ```
 
-Ruby felt like I was talking to the data. I'd say "Hey Array, join your elements together with this separator". PHP, by contrast, felt like rummaging through a toolbox hoping the right function was in there somewhere.
+Ruby felt like I was talking to the data. I'd say "Hey Array, join your elements
+together with this separator". PHP, by contrast, felt like rummaging through a
+toolbox hoping the right function was in there somewhere.
 
 Simple database queries became poetic:
 
@@ -117,12 +194,21 @@ vs.
 user = User.find_by_first_name("John")
 ```
 
-Rails didn’t just simplify the work - it made me fall in love with writing code. After that, there was no turning back. I decided to turn my programming hobby into my career.
+Rails didn’t just simplify the work - it made me fall in love with writing code.
+After that, there was no turning back. I decided to turn my programming hobby
+into my career.
 
-I went to college to learn computer science, protocols, and telecommunications. Then my first job was at a digital agency writing Rails apps to help bootstrap businesses - many of which are still around. And I've been fortunate enough to work with Ruby and with Rails on every job I've had since.
+I went to college to learn computer science, protocols, and telecommunications.
+Then my first job was at a digital agency writing Rails apps to help bootstrap
+businesses - many of which are still around. And I've been fortunate enough to
+work with Ruby and with Rails on every job I've had since.
 
 That dusty old PHP app didn't age well, but I'm glad I found it.
 
-It brought back memories of a time when building things felt like magic, which reminded me how I stumbled into Ruby. One tiny decision I made one winter ended up shaping my whole career.
+It brought back memories of a time when building things felt like magic, which
+reminded me how I stumbled into Ruby. One tiny decision I made one winter ended
+up shaping my whole career.
 
-I didn't know it then, but I was writing the first lines of a lifelong love story - one that carried me from Call of Duty matches and sliced-up tables to a profession built on joy, clarity, and code that reads like prose.
+I didn't know it then, but I was writing the first lines of a lifelong love
+story - one that carried me from Call of Duty matches and sliced-up tables to a
+profession built on joy, clarity, and code that reads like prose.

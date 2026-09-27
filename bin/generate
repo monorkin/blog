@@ -50,7 +50,7 @@ function generateArticle(title) {
 
 function generateTalk(title) {
   const folder = newFolder(title)
-  const fields = frontmatter(title, [ "event: Event name", `heldAt: '${NOW}'` ])
+  const fields = frontmatter(title, [ "event: Event name", `heldAt: ${NOW}` ])
   const path = writeEntry("talks", folder, "index.mdx", fields, "The talk's abstract.\n")
 
   announce(path, `/talks/${folder}`, mediaFolder("talks", folder))
@@ -62,7 +62,7 @@ function generateSnap(title, photo) {
   const fields = []
 
   if (photo) {
-    fields.push(`image: ${copyPhoto(photo, media, folder)}`)
+    fields.push(`image: ${copyPhoto(photo, media)}`)
   }
 
   const path = writeEntry("snaps", folder, "index.md", frontmatter(title, fields), "")
@@ -71,7 +71,7 @@ function generateSnap(title, photo) {
   if (photo) {
     console.log("Then run bin/media variants to make its variants and add it to the manifest.")
   } else {
-    console.log(`Add the photo to ${relative(ROOT, media)}/, set image: snaps/${folder}/<file>, and run bin/media variants.`)
+    console.log(`Add the photo to ${relative(ROOT, media)}/, set image: <file name>, and run bin/media variants.`)
   }
 }
 
@@ -142,7 +142,8 @@ function mediaFolder(collection, folder) {
   return path
 }
 
-function copyPhoto(photo, media, folder) {
+// Copies the photo into the snap's media folder and returns its name, the snap's key for it
+function copyPhoto(photo, media) {
   const extension = extname(photo).toLowerCase()
 
   if (!existsSync(photo)) {
@@ -152,20 +153,21 @@ function copyPhoto(photo, media, folder) {
   } else {
     const name = `${slugFor(basename(photo, extname(photo))) || "photo"}${extension}`
     copyFileSync(photo, join(media, name))
-    return `snaps/${folder}/${name}`
+    return name
   }
 }
 
 // Files
 
+// The order every entry's frontmatter follows: title, dates, tags, the rest
 function frontmatter(title, extraFields = []) {
   return [
     `title: ${yamlString(title)}`,
-    `publishedAt: '${NOW}'`,
-    `updatedAt: '${NOW}'`,
-    "draft: true",
+    `publishedAt: ${NOW}`,
+    `updatedAt: ${NOW}`,
     "tags: []",
-    ...extraFields
+    ...extraFields,
+    "draft: true"
   ]
 }
 
@@ -179,8 +181,13 @@ function writeEntry(collection, folder, file, fields, body) {
   return path
 }
 
+// Quoted only when YAML would read it as something other than a string
 function yamlString(text) {
-  return JSON.stringify(text)
+  if (/^[\p{L}\p{N}][^:#"'\\\n]*$/u.test(text) && !/^(true|false|null|yes|no|on|off|[\d.]+)$/i.test(text)) {
+    return text
+  } else {
+    return JSON.stringify(text)
+  }
 }
 
 // Output

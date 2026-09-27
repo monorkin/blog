@@ -1,78 +1,156 @@
 ---
 title: Tips to improve your tests
-publishedAt: '2016-05-23T00:00:00Z'
-updatedAt: '2026-03-09T08:21:18Z'
-tags:
-- today-i-learned
+publishedAt: 2016-05-23T00:00:00Z
+updatedAt: 2026-03-09T08:21:18Z
+tags: [today-i-learned]
 feedId: Article/2
 ---
 
-import Figure from "~/components/content/Figure.astro"
+<Figure
+  media="tsnyl5u5enqjg5xeeysmgg.jpeg"
+  caption="A shoe stuck in the railing of a bridge in Stockholm"
+/>
 
-<Figure media="articles/tips-to-improve-your-tests-414733ecbc4-414733ecbc4/tsnyl5u5enqjg5xeeysmgg.jpeg" caption="A shoe stuck in the railing of a bridge in Stockholm" />
+Peoples' test suites often get out of hand. Having thousands of tests that run
+for hours on some CI should be a thing of the past. There doesn't exist code
+that's too hard to test or code that can't fail. You shouldn't waste your time
+waiting for your test suite, or chasing some bug you are unable to pinpoint.
+Writing a test suite that covers 100% of your code base isn't hard. But to do it
+right is extremely hard.
 
-Peoples' test suites often get out of hand. Having thousands of tests that run for hours on some CI should be a thing of the past. There doesn't exist code that's too hard to test or code that can't fail. You shouldn't waste your time waiting for your test suite, or chasing some bug you are unable to pinpoint. Writing a test suite that covers 100% of your code base isn't hard. But to do it right is extremely hard.
-
-As I said earlier, all code is 'testable'. There only exists the age-old question of "should I write code that is easy to test?". By now, this discussion has turned into a 'religious war' of sorts. There is no definitive answer to this question.
+As I said earlier, all code is 'testable'. There only exists the age-old
+question of "should I write code that is easy to test?". By now, this discussion
+has turned into a 'religious war' of sorts. There is no definitive answer to
+this question.
 
 ## Writing 'testable' code
 
-**You shouldn't write code with your test suite in mind**. Write code that makes sense. Write code that is easy to read, and easy to understand. Most of all, **write code that is maintainable**. If you are having problems coming up with a test suite for the code you wrote then go back and evaluate if your code is as good as it can be. More often than not you will find a way to refactor the code so that it makes more sense, to make it more readable, or to make it maintainable.
+**You shouldn't write code with your test suite in mind**. Write code that makes
+sense. Write code that is easy to read, and easy to understand. Most of all,
+**write code that is maintainable**. If you are having problems coming up with a
+test suite for the code you wrote then go back and evaluate if your code is as
+good as it can be. More often than not you will find a way to refactor the code
+so that it makes more sense, to make it more readable, or to make it
+maintainable.
 
-You can think of this as a positive feedback loop. Your code becomes easier to test the 'better' code you write. Better in the sense that it's maintainable, readable and sensible. Implementing one pattern (or good practice) will lead you to use other related patterns. And in the end, you will have a solid code base with an excellent test suite.
+You can think of this as a positive feedback loop. Your code becomes easier to
+test the 'better' code you write. Better in the sense that it's maintainable,
+readable and sensible. Implementing one pattern (or good practice) will lead you
+to use other related patterns. And in the end, you will have a solid code base
+with an excellent test suite.
 
-There are exceptions to this rule. Sometimes, 'good' code is hard to test. That's why you should always write code without your test suite in mind.
+There are exceptions to this rule. Sometimes, 'good' code is hard to test.
+That's why you should always write code without your test suite in mind.
 
-Knowing that your application, as a whole, returns expected results for certain scenarios isn't that reassuring. You can never cover all possible combinations of states in an application.
+Knowing that your application, as a whole, returns expected results for certain
+scenarios isn't that reassuring. You can never cover all possible combinations
+of states in an application.
 
-Therefore, it's better to test each module of your application by itself. Rather said — unit test your application. That way you can cover more, if not all possible states. And thus, be confident that your application will do what you expect from it. It also makes refactoring easier as you can detect if you changed an output without intention.
+Therefore, it's better to test each module of your application by itself. Rather
+said — unit test your application. That way you can cover more, if not all
+possible states. And thus, be confident that your application will do what you
+expect from it. It also makes refactoring easier as you can detect if you
+changed an output without intention.
 
 ## Write more unit tests
 
-Unit tests are generally faster than integration test. Thus, they are cheaper to run. You can have thousands of unit tests that run in a couple of seconds and be assured that your code does what you expect from it. While running the same amount of integration tests might take hours. And they wouldn't tell you if your application performs as expected in all situations.
+Unit tests are generally faster than integration test. Thus, they are cheaper to
+run. You can have thousands of unit tests that run in a couple of seconds and be
+assured that your code does what you expect from it. While running the same
+amount of integration tests might take hours. And they wouldn't tell you if your
+application performs as expected in all situations.
 
-**You should write integrations tests!** They assure that all modules of your application work well together. Hence the name — integration tests. Each feature (code execution path) should have at least one integration test. But, there is no rule to determine how many integration tests you should have. My rule of thumb is that, after you run only your integration tests, you should have code coverage greater than zero on each module.
+**You should write integrations tests!** They assure that all modules of your
+application work well together. Hence the name — integration tests. Each feature
+(code execution path) should have at least one integration test. But, there is
+no rule to determine how many integration tests you should have. My rule of
+thumb is that, after you run only your integration tests, you should have code
+coverage greater than zero on each module.
 
-It's only important that your integration tests reassure that the modules of which your application is made of can interact together without a fault.
+It's only important that your integration tests reassure that the modules of
+which your application is made of can interact together without a fault.
 
-<figure class="attachment attachment--preview"><img width="480" height="270" src="https://media.giphy.com/media/3o7rbGT9rrEJa4Y5LG/giphy.gif" alt="" /><figcaption class="attachment__caption"></figcaption></figure>
+<Figure media="giphy.gif" />
 
 ## Stubs and mocks
 
-I often see people letting their 'unit' test call code from a module that isn't their module under test. That effectively turns a unit into an integration test.
+I often see people letting their 'unit' test call code from a module that isn't
+their module under test. That effectively turns a unit into an integration test.
 
-**The basic idea of stubs is to decouple modules from one another**. Stubs, as the name implies, stub out the behaviour of method calls. You can think of stubs as predefined responses to method calls. Stubbing a call to a method never executes the method's code, it just returns the desired value then and there. This is an incredibly powerful tool! **Not only can you decouple modules this way, but you can control your program's flow**. By stubbing certain methods you can simulate success and failure conditions without the need to craft a complex data set that triggers the same behavior.
+**The basic idea of stubs is to decouple modules from one another**. Stubs, as
+the name implies, stub out the behaviour of method calls. You can think of stubs
+as predefined responses to method calls. Stubbing a call to a method never
+executes the method's code, it just returns the desired value then and there.
+This is an incredibly powerful tool! **Not only can you decouple modules this
+way, but you can control your program's flow**. By stubbing certain methods you
+can simulate success and failure conditions without the need to craft a complex
+data set that triggers the same behavior.
 
-Stubs can't assure that a method got called, which is important if that call does something 'mission critical'. Mocks were invented for this kind of situations. Mocks are identical to stubs, but they expect that the mocked method will get called at least once. If the method doesn't get called the test explicitly fails.
+Stubs can't assure that a method got called, which is important if that call
+does something 'mission critical'. Mocks were invented for this kind of
+situations. Mocks are identical to stubs, but they expect that the mocked method
+will get called at least once. If the method doesn't get called the test
+explicitly fails.
 
-Using these two tools you can test all possible scenarios without the need for complex data sets and repercussion checking. This is the first step to making your tests run blazing fast!
+Using these two tools you can test all possible scenarios without the need for
+complex data sets and repercussion checking. This is the first step to making
+your tests run blazing fast!
 
 ## Asserting vs. mocking
 
-The question arises of when to assert a value and when to mock a call. *We can differentiate two kinds of method calls — queries and commands*. Queries are calls that return a value while commands are calls that change the state of the system. For instance, reading a file is a query as it returns the contents of the file. While writing a file is a command as it creates a file with a given content, thus changing the state of the file system.
+The question arises of when to assert a value and when to mock a call. *We can
+differentiate two kinds of method calls — queries and commands*. Queries are
+calls that return a value while commands are calls that change the state of the
+system. For instance, reading a file is a query as it returns the contents of
+the file. While writing a file is a command as it creates a file with a given
+content, thus changing the state of the file system.
 
-We also differentiate incoming and outgoing calls. **Outgoing calls are calls that your module under test makes to other modules. While incoming calls are calls made to the module under test**.
+We also differentiate incoming and outgoing calls. **Outgoing calls are calls
+that your module under test makes to other modules. While incoming calls are
+calls made to the module under test**.
 
-The returned value of outgoing queries should not be asserted. These values will be asserted in the respective module's unit test. Outgoing commands should be mocked. We rely on other module's commands to work. It's only important that we know that they got called. By knowing this, we can stub out the behavior of other modules to simulate the command's repercussions without causing an artificial success state.
+The returned value of outgoing queries should not be asserted. These values will
+be asserted in the respective module's unit test. Outgoing commands should be
+mocked. We rely on other module's commands to work. It's only important that we
+know that they got called. By knowing this, we can stub out the behavior of
+other modules to simulate the command's repercussions without causing an
+artificial success state.
 
-The returned value of incoming queries *should be* asserted. We need to make sure that given an input our method returns an expected result. Incoming commands' repercussions should be asserted for the same reason incoming queries should be asserted.
+The returned value of incoming queries *should be* asserted. We need to make
+sure that given an input our method returns an expected result. Incoming
+commands' repercussions should be asserted for the same reason incoming queries
+should be asserted.
 
-<figure class="lexxy-content__table-wrapper"><table><tbody><tr><th class="lexxy-content__table-cell--header"><p><br /></p></th><th class="lexxy-content__table-cell--header"><p>Query</p></th><th class="lexxy-content__table-cell--header"><p>Command</p></th></tr><tr><th class="lexxy-content__table-cell--header"><p>Incoming</p></th><td><p>assert return value</p></td><td><p>assert side effect</p></td></tr><tr><th class="lexxy-content__table-cell--header"><p>Outgoing</p></th><td><p>do not assert</p></td><td><p>assert message sent</p></td></tr></tbody></table></figure>
+|  | Query | Command |
+| --- | --- | --- |
+| **Incoming** | assert return value | assert side effect |
+| **Outgoing** | do not assert | assert message sent |
 
-There also exist methods that are both queries and commands. A combination of the above rules should be applied when testing them.
+There also exist methods that are both queries and commands. A combination of
+the above rules should be applied when testing them.
 
 ## Write tests first?
 
-If you know what your module should do, then by all means you should write a test suite first. A test suite should always come first. That way you can ensure that the code you wrote complies to expectations.
+If you know what your module should do, then by all means you should write a
+test suite first. A test suite should always come first. That way you can ensure
+that the code you wrote complies to expectations.
 
-There are exceptions to this rule. If you are unsure about the final architecture of the code or think that the code will drastically change during development. Then it's better to write a test suite after the fact.
+There are exceptions to this rule. If you are unsure about the final
+architecture of the code or think that the code will drastically change during
+development. Then it's better to write a test suite after the fact.
 
 ## Conclusion
 
-No matter how you test your software you can never assure that no bugs are present. The methods outlined here are tools to help you write a better test suite. They should be food for thought, not hard rules to follow.
+No matter how you test your software you can never assure that no bugs are
+present. The methods outlined here are tools to help you write a better test
+suite. They should be food for thought, not hard rules to follow.
 
 > Testing shows the presence, not the absence of bugs
 >
 > — Edsger W. Dijkstra
 
-Having unit, integration tests, mocks, and spies gives you the assurance that your code does what you expect it to do. Being able to run your test suite fast enables you to iterate quickly. These two together, speed and confidence, enable you to write software at an incredible pace thus giving you time to improve your methods and skills. Resulting in incredible software.
+Having unit, integration tests, mocks, and spies gives you the assurance that
+your code does what you expect it to do. Being able to run your test suite fast
+enables you to iterate quickly. These two together, speed and confidence, enable
+you to write software at an incredible pace thus giving you time to improve your
+methods and skills. Resulting in incredible software.

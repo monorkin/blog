@@ -1,31 +1,52 @@
 ---
 title: RabbitMQ is more than a Sidekiq replacement
-publishedAt: '2018-03-07T00:00:00Z'
-updatedAt: '2026-03-09T08:19:30Z'
-tags:
-- ruby
+publishedAt: 2018-03-07T00:00:00Z
+updatedAt: 2026-03-09T08:19:30Z
+tags: [ruby]
 feedId: Article/5
 ---
 
-import Figure from "~/components/content/Figure.astro"
+<Figure
+  media="rabbit_karate.png"
+  caption="A rabbit dressed up as the karate kid - a cross of RabbitMQ and Sidekiq logos"
+/>
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/rabbit_karate.png" caption="A rabbit dressed up as the karate kid - a cross of RabbitMQ and Sidekiq logos" />
+I've had gripes with [Sidekiq](https://github.com/mperham/sidekiq) because of
+which I switched to RabbitMQ. Here are my thoughts and experiences after a year
+of using it in production.
 
-I've had gripes with [Sidekiq](https://github.com/mperham/sidekiq) because of which I switched to RabbitMQ. Here are my thoughts and experiences after a year of using it in production.
-
-I got inspired to write this post by the overwhelming response I received for my [talk](https://github.com/stankec/lectures/tree/master/19-rabbitmq_is_more_than_a_sidekiq_replacement) at the [local Ruby user group](https://www.meetup.com/rubyzg/).
+I got inspired to write this post by the overwhelming response I received for my
+[talk](https://github.com/stankec/lectures/tree/master/19-rabbitmq_is_more_than_a_sidekiq_replacement)
+at the [local Ruby user group](https://www.meetup.com/rubyzg/).
 
 ## Why do we need Sidekiq or RabbitMQ?
 
-"Background job" libraries like Sidekiq are used in situations when **the result of a process can be yielded, but further side effects still need to be caused.**
+"Background job" libraries like Sidekiq are used in situations when **the result
+of a process can be yielded, but further side effects still need to be caused.**
 
-An example of this are signup forms. When a user signs up, usually, a confirmation email is sent out to confirm their email, but the email is not crucial to the signup process — the user's account will be created even if the confirmation email fails to get sent.
+An example of this are signup forms. When a user signs up, usually, a
+confirmation email is sent out to confirm their email, but the email is not
+crucial to the signup process — the user's account will be created even if the
+confirmation email fails to get sent.
 
-It's unclear what to do if the email fails to get sent. The intuitive solution would be to return an error, but then the user wouldn't be able to create a new account since their email is already taken. **We are penalizing the user for something that isn't their fault**, something they can't influence and something that has no effect on the action they wanted to undertake. If we decide to retry the action we end up with the same problem as before if it fails again.
+It's unclear what to do if the email fails to get sent. The intuitive solution
+would be to return an error, but then the user wouldn't be able to create a new
+account since their email is already taken. **We are penalizing the user for
+something that isn't their fault**, something they can't influence and something
+that has no effect on the action they wanted to undertake. If we decide to retry
+the action we end up with the same problem as before if it fails again.
 
-To resolve those issues we offload that work to a "background job" library. In the case of the signup example, the user's account would be created and they would be logged in. The "send email" job would be put in a queue, and would eventually get processed. If the job fails we can retry it as many times as we like, or run custom logic on the raised errors. **The user isn't penalized for our mistake.**
+To resolve those issues we offload that work to a "background job" library. In
+the case of the signup example, the user's account would be created and they
+would be logged in. The "send email" job would be put in a queue, and would
+eventually get processed. If the job fails we can retry it as many times as we
+like, or run custom logic on the raised errors. **The user isn't penalized for
+our mistake.**
 
-**But do we really need Sidekiq for this?** No. The same functionality can be accomplished with the standard [Queue class](http://ruby-doc.org/core-2.5.0/Queue.html) and a [Thread](http://ruby-doc.org/core-2.5.0/Thread.html).
+**But do we really need Sidekiq for this?** No. The same functionality can be
+accomplished with the standard [Queue
+class](http://ruby-doc.org/core-2.5.0/Queue.html) and a
+[Thread](http://ruby-doc.org/core-2.5.0/Thread.html).
 
 ```ruby
 class App < Roda
@@ -58,37 +79,91 @@ end
 
 ## Why do we use background workers then?
 
-The above approach has many downsides. Not to go too deep down the rabbit hole, I'll focus on **debuggability** (yes, I made that word up), **persistence**, **scaling** and lastly **fault tolerance**.
+The above approach has many downsides. Not to go too deep down the rabbit hole,
+I'll focus on **debuggability** (yes, I made that word up), **persistence**,
+**scaling** and lastly **fault tolerance**.
 
-The above solution is difficult to debug. There is no clear way to inspect the contents of the queue without littering the code with [bindings to pry](https://github.com/pry/pry). If the server is stopped (e.g. to add said bindings to pry) all jobs in the queue are lost, which means that we can't even extract the job that caused the issue to replicate it. **To solve those issues Sidekiq uses** [**Redis**](https://redis.io/) **to store it's jobs.** Redis is an in-memory key-value store that can store values as many different data types. Jobs are stored in a list as JSON objects. We can inspect the queue's content by connecting to Redis with redis-cli and inspecting the queue list.
+The above solution is difficult to debug. There is no clear way to inspect the
+contents of the queue without littering the code with [bindings to
+pry](https://github.com/pry/pry). If the server is stopped (e.g. to add said
+bindings to pry) all jobs in the queue are lost, which means that we can't even
+extract the job that caused the issue to replicate it. **To solve those issues
+Sidekiq uses** [**Redis**](https://redis.io/) **to store it's jobs.** Redis is
+an in-memory key-value store that can store values as many different data types.
+Jobs are stored in a list as JSON objects. We can inspect the queue's content by
+connecting to Redis with redis-cli and inspecting the queue list.
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/cskeexdbb7evp8x129dvww.png" caption="Contents of the default queue in Redis" />
+<Figure
+  media="cskeexdbb7evp8x129dvww.png"
+  caption="Contents of the default queue in Redis"
+/>
 
-Using Redis as a central job queue also enables us to scale the number of workers to accommodate higher workloads.
+Using Redis as a central job queue also enables us to scale the number of
+workers to accommodate higher workloads.
 
 ## Sidekiq's memory problem
 
-There are two concerns regarding fault tolerance, Redis and the worker process. By default, **Redis is a volatile store** (data may be lost if the store restarts), though that can be changed by utilizing its [RDB and AOF features](https://redis.io/topics/persistence) which in conjunction prevent any data loss. There are some caveats, if RDB (which is enabled by default) is used without AOF, data loss may still occur, and if used in conjunction with AOF may cause performance fluctuations.
+There are two concerns regarding fault tolerance, Redis and the worker process.
+By default, **Redis is a volatile store** (data may be lost if the store
+restarts), though that can be changed by utilizing its [RDB and AOF
+features](https://redis.io/topics/persistence) which in conjunction prevent any
+data loss. There are some caveats, if RDB (which is enabled by default) is used
+without AOF, data loss may still occur, and if used in conjunction with AOF may
+cause performance fluctuations.
 
-When it comes to worker failures, Sidekiq handles most issues regarding handling Ruby errors and retry logic. **But if a worker crashes or is killed while processing a job, that job is gone.**
+When it comes to worker failures, Sidekiq handles most issues regarding handling
+Ruby errors and retry logic. **But if a worker crashes or is killed while
+processing a job, that job is gone.**
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/pn5ldfeiowaimyzfqemmeg.gif" caption="Animation of how a job can disappear from Sidekiq in the case of a worker restart/crash" />
+<Figure
+  media="pn5ldfeiowaimyzfqemmeg.gif"
+  caption="Animation of how a job can disappear from Sidekiq in the case of a worker restart/crash"
+/>
 
-The most common cases for job disappearance are **deploys** (since the application is killed at that point, though Sidekiq offers rolling restarts with it's Pro plan) and **VM crashes** caused by faulty gem extensions (as they can't be caught).
+The most common cases for job disappearance are **deploys** (since the
+application is killed at that point, though Sidekiq offers rolling restarts with
+it's Pro plan) and **VM crashes** caused by faulty gem extensions (as they can't
+be caught).
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/ildbyqygdm_br_4vv1yg5w.png" caption="Screenshot of Sidekiq's README about error handeling" />
+<Figure
+  media="ildbyqygdm_br_4vv1yg5w.png"
+  caption="Screenshot of Sidekiq's README about error handeling"
+/>
 
-If you are a business, or have a $1000 spare, you can resolve this issue by buying a [Sidekiq Pro license](https://sidekiq.org/products/pro.html) which ensures that a job gets executed and comes with other niceties. Personally, I find this price tag too steep (especially since it's recurring) for small/personal projects which lead me to look for alternatives.
+If you are a business, or have a $1000 spare, you can resolve this issue by
+buying a [Sidekiq Pro license](https://sidekiq.org/products/pro.html) which
+ensures that a job gets executed and comes with other niceties. Personally, I
+find this price tag too steep (especially since it's recurring) for
+small/personal projects which lead me to look for alternatives.
 
-If we ignore the fault tolerance pay wall, Sidekiq still has a memory consumption issue as it uses Redis for its job queue. Redis, is an in-memory data store, and it has no mechanism to offload stale data to disk. This means that **all jobs in the queue are kept in-memory all the time**.
+If we ignore the fault tolerance pay wall, Sidekiq still has a memory
+consumption issue as it uses Redis for its job queue. Redis, is an in-memory
+data store, and it has no mechanism to offload stale data to disk. This means
+that **all jobs in the queue are kept in-memory all the time**.
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/hzcnzhmtlzr6xbui5xl7tw.png" caption="Redis memory usage plot around peak usage times" />
+<Figure
+  media="hzcnzhmtlzr6xbui5xl7tw.png"
+  caption="Redis memory usage plot around peak usage times"
+/>
 
-The most common solution to this issue is passing IDs of database records instead of values to the job queue. **This reduces Redis' memory consumption, but increases Sidekiq's or Ruby's** since each Sidekiq instance needs to initialize your application to get access to your models. This can be solved by writing your workers as lightweight Ruby processes, but now we have the issue of managing models and database access information in two separate applications (your worker and your main application). Another solution is to consume your main app's API, but then we are increasing load on our app instead of off-loading work from it.
+The most common solution to this issue is passing IDs of database records
+instead of values to the job queue. **This reduces Redis' memory consumption,
+but increases Sidekiq's or Ruby's** since each Sidekiq instance needs to
+initialize your application to get access to your models. This can be solved by
+writing your workers as lightweight Ruby processes, but now we have the issue of
+managing models and database access information in two separate applications
+(your worker and your main application). Another solution is to consume your
+main app's API, but then we are increasing load on our app instead of
+off-loading work from it.
 
 ## How RabbitMQ solves those issues
 
-RabbitMQ is a general purpose message queue. To utilize it in a "background worker" backend scenario we need a library to communicate with it. I would highly recommend [Sneakers](https://github.com/jondot/sneakers) for this purpose. Sneakers handles worker process creation, management, queue creation, and job enqueuing — everything that Sidekiq does, and offers a syntax that resembles Sidekiq's syntax.
+RabbitMQ is a general purpose message queue. To utilize it in a "background
+worker" backend scenario we need a library to communicate with it. I would
+highly recommend [Sneakers](https://github.com/jondot/sneakers) for this
+purpose. Sneakers handles worker process creation, management, queue creation,
+and job enqueuing — everything that Sidekiq does, and offers a syntax that
+resembles Sidekiq's syntax.
 
 ```ruby
 class SneakersLogger
@@ -115,84 +190,242 @@ class SidekiqLogger
 end
 ```
 
-The biggest difference between the two implementations is the **ack!** on line 10. **That line enables Sneakers and RabbitMQ to guarantee that a job has been processed.** This is a feature of RabbitMQ's communication protocol — AMQP. In AMQP a message can be popped from a queue in two modes — ack mode and no-ack mode.
+The biggest difference between the two implementations is the **ack!** on
+line 10. **That line enables Sneakers and RabbitMQ to guarantee that a job has
+been processed.** This is a feature of RabbitMQ's communication protocol — AMQP.
+In AMQP a message can be popped from a queue in two modes — ack mode and no-ack
+mode.
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/yealpgldxalxe0afcwh79g.gif" caption="Animation of a consumer failing and succeeding in ACK mode" />
+<Figure
+  media="yealpgldxalxe0afcwh79g.gif"
+  caption="Animation of a consumer failing and succeeding in ACK mode"
+/>
 
-**In ack mode the consumer must specify the maximum amount of time for it to process the message.** When the consumer pops a message from the queue it's virtually removed from it, but RabbitMQ still keeps a copy of it. **If the consumer fails to send an "ack" signal in the specified time period the message is put back at the front of the queue so that another consumer can process it.** If the consumer sends an "ack" signal in the specified time period the message is fully removed from RabbitMQ. **In no-ack mode no guarantees are given**, no time window has to be specified, and no "ack" signal has to be sent.
+**In ack mode the consumer must specify the maximum amount of time for it to
+process the message.** When the consumer pops a message from the queue it's
+virtually removed from it, but RabbitMQ still keeps a copy of it. **If the
+consumer fails to send an "ack" signal in the specified time period the message
+is put back at the front of the queue so that another consumer can process it.**
+If the consumer sends an "ack" signal in the specified time period the message
+is fully removed from RabbitMQ. **In no-ack mode no guarantees are given**, no
+time window has to be specified, and no "ack" signal has to be sent.
 
-**Another difference is memory consumption.** By default, RabbitMQ keeps as many messages in memory as it can, before it reaches a configurable high water mark. At that point it offloads all eligible messages to disk. Though, that is not true for all queues. RabbitMQ also provides a "lazy queue" which keeps all it's messages on disk if possible — it's useful for passing large messages.
+**Another difference is memory consumption.** By default, RabbitMQ keeps as many
+messages in memory as it can, before it reaches a configurable high water mark.
+At that point it offloads all eligible messages to disk. Though, that is not
+true for all queues. RabbitMQ also provides a "lazy queue" which keeps all it's
+messages on disk if possible — it's useful for passing large messages.
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/z_qyc0chosqm-pdy0jvpa.png" caption="Illustration of RabbitMQ resource allocation per message in a normal and a lazy queue" />
+<Figure
+  media="z_qyc0chosqm-pdy0jvpa.png"
+  caption="Illustration of RabbitMQ resource allocation per message in a normal and a lazy queue"
+/>
 
-**With those features we can create reliable job queues which can handle larger payloads.** Now we can write our workers as lightweight Ruby processes which have no database access, as they can now receive all data needed for them to process a job through the queue without a large performance or memory penalty.
+**With those features we can create reliable job queues which can handle larger
+payloads.** Now we can write our workers as lightweight Ruby processes which
+have no database access, as they can now receive all data needed for them to
+process a job through the queue without a large performance or memory penalty.
 
-There is still one feature of Sidekiq I haven't mentioned — the UI. Sidekiq's UI is useful for monitoring the health of your jobs, and general throughput.
+There is still one feature of Sidekiq I haven't mentioned — the UI. Sidekiq's UI
+is useful for monitoring the health of your jobs, and general throughput.
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/2s8gt8c0hkpfzzl_i6cidq.png" caption="The Sidekiq UI" />
+<Figure media="2s8gt8c0hkpfzzl_i6cidq.png" caption="The Sidekiq UI" />
 
-**RabbitMQ also comes with a powerful UI** which provides insight not only into the number of failed and succeed jobs, but also into global and per-queue system resource (disk, RAM, …) usage, the ability to consume and publish messages directly from the UI, consumer and user management, and a login screen… which is premium feature in Sidekiq and costs $1950 per year (and there is a limit of 100 workers for that price).
+**RabbitMQ also comes with a powerful UI** which provides insight not only into
+the number of failed and succeed jobs, but also into global and per-queue system
+resource (disk, RAM, …) usage, the ability to consume and publish messages
+directly from the UI, consumer and user management, and a login screen… which is
+premium feature in Sidekiq and costs $1950 per year (and there is a limit of 100
+workers for that price).
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/ekcsvlntnmmqu1uwolofuw.png" caption="RabbitMQ Management Console" />
+<Figure
+  media="ekcsvlntnmmqu1uwolofuw.png"
+  caption="RabbitMQ Management Console"
+/>
 
 ## Exchanges
 
-AMQP defines the concept of exchanges. Exchanges can be thought of as routers. **When a message is published to an exchange, the exchange determines which queues should the message be delivered to.** It's important to note that it's impossible to put a message directly into a queue. Even if a message is published directly to a queue, a temporary exchange will be created to deliver it to the queue.
+AMQP defines the concept of exchanges. Exchanges can be thought of as routers.
+**When a message is published to an exchange, the exchange determines which
+queues should the message be delivered to.** It's important to note that it's
+impossible to put a message directly into a queue. Even if a message is
+published directly to a queue, a temporary exchange will be created to deliver
+it to the queue.
 
 **There are four types of exchanges supported by RabbitMQ.**
 
-The most commonly used exchange type is the [**direct exchange**](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-direct). It directly delivers all messages to a single queue bound to it. **It's a 1-on-1 mapping of an exchange to a queue.** If applied to a chat application, a direct exchange would deliver messages from a chat room to a single user.
+The most commonly used exchange type is the [**direct
+exchange**](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-direct).
+It directly delivers all messages to a single queue bound to it. **It's a 1-on-1
+mapping of an exchange to a queue.** If applied to a chat application, a direct
+exchange would deliver messages from a chat room to a single user.
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/09g-3e6jmvq5c5bkj-cydg.gif" caption="Animation of a direct exchange being utilized in a chat app" />
+<Figure
+  media="09g-3e6jmvq5c5bkj-cydg.gif"
+  caption="Animation of a direct exchange being utilized in a chat app"
+/>
 
-Another kind of exchange is the **fan-out exchange**. They deliver messages to all queues bound to them. **It's a 1-to-many mapping of an exchange to multiple queues.** In the example of the chat application, a fan-out exchange would be used to send a message to all users.
+Another kind of exchange is the **fan-out exchange**. They deliver messages to
+all queues bound to them. **It's a 1-to-many mapping of an exchange to multiple
+queues.** In the example of the chat application, a fan-out exchange would be
+used to send a message to all users.
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/2fezqaffqpihawmv0g8rxw.gif" caption="Animation of a fan-out exchange being utilized in a chat app" />
+<Figure
+  media="2fezqaffqpihawmv0g8rxw.gif"
+  caption="Animation of a fan-out exchange being utilized in a chat app"
+/>
 
-Then there are [**topic exchanges**](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-topic). **They deliver messages published to them to a bound queue based on the messages tag/topic and the queue's bound topic.** In the example of the chat application, a topic exchange would be used to direct messages to their corresponding user.
+Then there are [**topic
+exchanges**](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-topic).
+**They deliver messages published to them to a bound queue based on the messages
+tag/topic and the queue's bound topic.** In the example of the chat application,
+a topic exchange would be used to direct messages to their corresponding user.
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/f2lzm5ok-dyydfwfk9rexw.gif" caption="Animation of a topic exchange being utilized in a chat app" />
+<Figure
+  media="f2lzm5ok-dyydfwfk9rexw.gif"
+  caption="Animation of a topic exchange being utilized in a chat app"
+/>
 
-Finally, there are [**header exchanges**](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-headers). They are a step up from topic exchanges. **Instead of looking at a topic, also called a routing key, they look at the message's headers to determine where a message should be delivered.** Messages in RabbitMQ can have additional attributes associated with them — called headers. Headers determine different behaviors when handling messages. E.g. an "x-match" header indicates to the exchange that either any or all headers have to match a value for it to get routed to a queue. There is also the "reply-to" header which indicates where the result of processing a message should be published to.
+Finally, there are [**header
+exchanges**](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-headers).
+They are a step up from topic exchanges. **Instead of looking at a topic, also
+called a routing key, they look at the message's headers to determine where a
+message should be delivered.** Messages in RabbitMQ can have additional
+attributes associated with them — called headers. Headers determine different
+behaviors when handling messages. E.g. an "x-match" header indicates to the
+exchange that either any or all headers have to match a value for it to get
+routed to a queue. There is also the "reply-to" header which indicates where the
+result of processing a message should be published to.
 
-**Utilizing exchanges gives many advantages** — exactly once delivery, performance, and ease of deprecation. Utilizing an exchange to deliver your messages is much faster and more reliable than using Ruby to handle that logic. There is also the pragmatic reason of not having code to maintain. The logic is handled by RabbitMQ, you only have to configure it (which can be done through code). Exchange-exchange and exchange-queue bindings can be changed on-the-fly by any client which enables one application to change the behavior of other services. **Personally, exchanges have helped me deploy applications with little-to-no downtime and deprecate services without having to change other services.**
+**Utilizing exchanges gives many advantages** — exactly once delivery,
+performance, and ease of deprecation. Utilizing an exchange to deliver your
+messages is much faster and more reliable than using Ruby to handle that logic.
+There is also the pragmatic reason of not having code to maintain. The logic is
+handled by RabbitMQ, you only have to configure it (which can be done through
+code). Exchange-exchange and exchange-queue bindings can be changed on-the-fly
+by any client which enables one application to change the behavior of other
+services. **Personally, exchanges have helped me deploy applications with
+little-to-no downtime and deprecate services without having to change other
+services.**
 
 ## **Special features**
 
-RabbitMQ adds it's own magic on top of AMQP. I have already mentioned header exchanges, which are a non-standard AMQP feature. A feature I personally use a lot is **"**[**direct reply-to**](https://www.rabbitmq.com/direct-reply-to.html)**"**. Direct reply-to is a form of synchronous communication between a producer and a consumer. **It enables a producer to publish a message and wait for a consumer to process it and return the result directly to the producer.** It's useful when the result of a message is used in further processes. E.g. IoT devices usually log a heartbeat signal to their server to indicate that they are connected and configured correctly. If we have a smart lock, we can process its heartbeat asynchronously since the result isn't really important for the server nor for the device. But a pin check is important and should be handled synchronously to avoid access permission errors caused by stale data.
+RabbitMQ adds it's own magic on top of AMQP. I have already mentioned header
+exchanges, which are a non-standard AMQP feature. A feature I personally use a
+lot is **"**[**direct
+reply-to**](https://www.rabbitmq.com/direct-reply-to.html)**"**. Direct reply-to
+is a form of synchronous communication between a producer and a consumer. **It
+enables a producer to publish a message and wait for a consumer to process it
+and return the result directly to the producer.** It's useful when the result of
+a message is used in further processes. E.g. IoT devices usually log a heartbeat
+signal to their server to indicate that they are connected and configured
+correctly. If we have a smart lock, we can process its heartbeat asynchronously
+since the result isn't really important for the server nor for the device. But a
+pin check is important and should be handled synchronously to avoid access
+permission errors caused by stale data.
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/xcie9e2hlbfyxrpeiwswrg.gif" caption="Animation of utilizing a direct reply-to message" />
+<Figure
+  media="xcie9e2hlbfyxrpeiwswrg.gif"
+  caption="Animation of utilizing a direct reply-to message"
+/>
 
-Another feature that I often utilize is **"**[**dead lettering**](https://www.rabbitmq.com/dlx.html)**"**. It allows for a message to be re-queued automatically in case it gets rejected from an exchange or queue. **This feature is useful for error handling**, exponential back-off, scheduled message processing …
+Another feature that I often utilize is **"**[**dead
+lettering**](https://www.rabbitmq.com/dlx.html)**"**. It allows for a message to
+be re-queued automatically in case it gets rejected from an exchange or queue.
+**This feature is useful for error handling**, exponential back-off, scheduled
+message processing …
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/fjwenuxnbdgczk162fs02q.gif" caption="Animation of utilizing a dead letter queue" />
+<Figure
+  media="fjwenuxnbdgczk162fs02q.gif"
+  caption="Animation of utilizing a dead letter queue"
+/>
 
-**"**[**Alternate exchange**](https://www.rabbitmq.com/ae.html)**"** is a useful feature for deprecating services. **It specifies to which exchange a message should get sent to in the case that the primary exchange rejects it.**
+**"**[**Alternate exchange**](https://www.rabbitmq.com/ae.html)**"** is a useful
+feature for deprecating services. **It specifies to which exchange a message
+should get sent to in the case that the primary exchange rejects it.**
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/ogy1ioclzrfhuprm2fsapg.gif" caption="Animation of utilizing an alternate exchange" />
+<Figure
+  media="ogy1ioclzrfhuprm2fsapg.gif"
+  caption="Animation of utilizing an alternate exchange"
+/>
 
-Then there are **"**[**priority queues**](https://www.rabbitmq.com/priority.html)**"** and **"**[**priority consumers**](https://www.rabbitmq.com/consumer-priority.html)**"**. Priority queue are CS standard priority queues. Meaning that messages in the queue have a priority (ranging from 0 to 255), **messages with higher priority get processed first**. Which is useful for the same reasons as "direct reply-to", but it's asynchronous. While **priority consumers are a form of fail-over**. Priority consumers will be served messages if they are active. In the case that all priority consumers are inactive, other consumers will get served messages.
+Then there are **"**[**priority
+queues**](https://www.rabbitmq.com/priority.html)**"** and **"**[**priority
+consumers**](https://www.rabbitmq.com/consumer-priority.html)**"**. Priority
+queue are CS standard priority queues. Meaning that messages in the queue have a
+priority (ranging from 0 to 255), **messages with higher priority get processed
+first**. Which is useful for the same reasons as "direct reply-to", but it's
+asynchronous. While **priority consumers are a form of fail-over**. Priority
+consumers will be served messages if they are active. In the case that all
+priority consumers are inactive, other consumers will get served messages.
 
-Finally there is **"**[**TTL**](https://www.rabbitmq.com/ttl.html)**"**. It specifies how long a message lives. **If a message outlives its TTL it's automatically rejected from the queue.** Though, this feature comes with a caveat — **this rule can only be enforced for the message at the front of the queue**. E.g. if you put two messages in a queue the first with a TTL of 300 and the second with a TTL of 100. Both would be in the queue until the one with a TTL 300 expires, because it is in front. The moment it expires, the second message is at the front and automatically expires since it's TTL has passed. This seems harmless, but can cause a lot of problems when combined with dead lettering to achieve e.g. offset delivery.
+Finally there is **"**[**TTL**](https://www.rabbitmq.com/ttl.html)**"**. It
+specifies how long a message lives. **If a message outlives its TTL it's
+automatically rejected from the queue.** Though, this feature comes with a
+caveat — **this rule can only be enforced for the message at the front of the
+queue**. E.g. if you put two messages in a queue the first with a TTL of 300 and
+the second with a TTL of 100. Both would be in the queue until the one with a
+TTL 300 expires, because it is in front. The moment it expires, the second
+message is at the front and automatically expires since it's TTL has passed.
+This seems harmless, but can cause a lot of problems when combined with dead
+lettering to achieve e.g. offset delivery.
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/c9ic606eev0_sw5a4dadpq.gif" caption="Animation of TTL messages combined with dead lettering" />
+<Figure
+  media="c9ic606eev0_sw5a4dadpq.gif"
+  caption="Animation of TTL messages combined with dead lettering"
+/>
 
 ## Plugins
 
-For me, this is the most important feature of RabbitMQ. **With plugins you can add any functionality you want to RabbitMQ**. The best example of this is the management console which is a plugin, and must be enabled before use.
+For me, this is the most important feature of RabbitMQ. **With plugins you can
+add any functionality you want to RabbitMQ**. The best example of this is the
+management console which is a plugin, and must be enabled before use.
 
-**Through plugins, RabbitMQ supports not only AMQP, but STOMP, MQTT and WebSockets as communication protocols.**
+**Through plugins, RabbitMQ supports not only AMQP, but STOMP, MQTT and
+WebSockets as communication protocols.**
 
-Then there is the **Federation plugin**. It enables RabbitMQ to run several isolated clusters or instances which can communicate with one-another. It is similar to the way that [Mastodon](https://mastodon.social/about) works. All users, no matter which server they signed up to, can communicate with one-another. **Federations are useful for handling large workloads.** E.g. if you handle logs from a lot of different machines through RabbitMQ, that can be handled by one federated cluster, while everything else is handled by another federated cluster. That way you can scale those two cluster independently depending on their workload, and you avoid the noisy neighbor problem (when a highly taxed service slows the whole system down).
+Then there is the **Federation plugin**. It enables RabbitMQ to run several
+isolated clusters or instances which can communicate with one-another. It is
+similar to the way that [Mastodon](https://mastodon.social/about) works. All
+users, no matter which server they signed up to, can communicate with
+one-another. **Federations are useful for handling large workloads.** E.g. if
+you handle logs from a lot of different machines through RabbitMQ, that can be
+handled by one federated cluster, while everything else is handled by another
+federated cluster. That way you can scale those two cluster independently
+depending on their workload, and you avoid the noisy neighbor problem (when a
+highly taxed service slows the whole system down).
 
-<Figure media="articles/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb/wlkngwu84jqdccqftugorq.png" caption="Example RabbitMQ Federation for an IoT application" />
+<Figure
+  media="wlkngwu84jqdccqftugorq.png"
+  caption="Example RabbitMQ Federation for an IoT application"
+/>
 
 ## Conclusion
 
-**Replacing Sidekiq with RabbitMQ provides many advantages when it comes to debuggability, scaling, fault tolerance and memory consumption.** It supports multiple industry-standard message queue protocols and can be used as a drop in replacement for other "background worker" libraries.
+**Replacing Sidekiq with RabbitMQ provides many advantages when it comes to
+debuggability, scaling, fault tolerance and memory consumption.** It supports
+multiple industry-standard message queue protocols and can be used as a drop in
+replacement for other "background worker" libraries.
 
-**If you need a queue that guarantees job execution and persistence, go with RabbitMQ instead of Sidekiq.** There are some features that are missing in Rabbit, like cron jobs and unique jobs, but they can be added by the clients. RabbitMQ offers a plethora of features which, if not useful at first, will become useful later as they will help grow a monolith to a services oriented architecture.
+**If you need a queue that guarantees job execution and persistence, go with
+RabbitMQ instead of Sidekiq.** There are some features that are missing in
+Rabbit, like cron jobs and unique jobs, but they can be added by the clients.
+RabbitMQ offers a plethora of features which, if not useful at first, will
+become useful later as they will help grow a monolith to a services oriented
+architecture.
 
-To get started take a look at projects like [Sneakers](https://github.com/jondot/sneakers) (background jobs) and [Bunny](https://github.com/ruby-amqp/bunny) (AMQP client), read through the [basic concepts page](https://www.rabbitmq.com/tutorials/amqp-concepts.html), and lastly there is the [manual](https://www.rabbitmq.com/documentation.html). If you are using Ruby on Rails, [Sneakers integrates with ActiveJob](https://github.com/jondot/sneakers/wiki/How-To:-Rails-Background-Jobs-with-ActiveJob) which eases the transition.
+To get started take a look at projects like
+[Sneakers](https://github.com/jondot/sneakers) (background jobs) and
+[Bunny](https://github.com/ruby-amqp/bunny) (AMQP client), read through the
+[basic concepts page](https://www.rabbitmq.com/tutorials/amqp-concepts.html),
+and lastly there is the [manual](https://www.rabbitmq.com/documentation.html).
+If you are using Ruby on Rails, [Sneakers integrates with
+ActiveJob](https://github.com/jondot/sneakers/wiki/How-To:-Rails-Background-Jobs-with-ActiveJob)
+which eases the transition.
 
-**Sidekiq isn't useless!** If your project doesn't require execution or persistence guarantees, or if you hold a Sidekiq Pro license, I would recommend you stick with it for the time being. While I disagree with hiding essential features (like guaranteed execution, and rolling restarts) behind a paywall, **a Pro license offers support and additional business oriented features which you won't get with a self-hosted RabbitMQ instance.**
+**Sidekiq isn't useless!** If your project doesn't require execution or
+persistence guarantees, or if you hold a Sidekiq Pro license, I would recommend
+you stick with it for the time being. While I disagree with hiding essential
+features (like guaranteed execution, and rolling restarts) behind a paywall, **a
+Pro license offers support and additional business oriented features which you
+won't get with a self-hosted RabbitMQ instance.**

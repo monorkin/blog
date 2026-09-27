@@ -12,7 +12,7 @@ const THUMBNAIL_SIZES = "(width >= 640px) 300px, 33vw"
 
 const { snap } = Astro.props
 const data = snap.source.data as CollectionEntry<"snaps">["data"]
-const cover = (data.image ?? data.poster)!
+const cover = snap.coverImage()!
 const squares = findMedia(cover).squares ?? []
 const srcset = squares.map(size => `${squareUrl(cover, size, "webp")} ${size}w`).join(", ")
 

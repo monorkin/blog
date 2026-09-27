@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from "astro:content"
+import { resolveMediaKey } from "~/lib/media"
 import { plainText } from "~/lib/plain-text"
 import { renderToHtml } from "~/lib/rendering"
 import { absoluteUrl, truncate } from "~/lib/site"
@@ -88,12 +89,27 @@ export class Entry {
     return Math.max(Math.ceil(words / WORDS_PER_MINUTE), 1)
   }
 
-  // A media key: a snap's photo, or an article's first figure
+  // Where the entry's own media lives, which its media keys are relative to
+  get mediaFolder() {
+    return `${this.source.collection}/${this.id}`
+  }
+
+  mediaKey(key: string) {
+    return resolveMediaKey(key, this.mediaFolder)
+  }
+
+  // A full media key: a snap's photo, or an article's first figure
   coverImage(): string | undefined {
+    let key
+
     if (this.source.collection === "snaps") {
-      return this.source.data.image ?? this.source.data.poster
+      key = this.source.data.image ?? this.source.data.poster
     } else if (this.source.collection === "articles") {
-      return this.source.body?.match(/<Figure media="([^"]+)"/)?.[1]
+      key = this.source.body?.match(/<Figure media=(["'])(.+?)\1/)?.[2]
+    }
+
+    if (key) {
+      return this.mediaKey(key)
     }
   }
 }

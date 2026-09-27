@@ -1,152 +1,300 @@
 ---
 title: Clean air & AI
-publishedAt: '2025-06-12T14:00:00Z'
-updatedAt: '2026-03-11T13:32:32Z'
-tags:
-- ai
-- go
-- hiking
-- linux
+publishedAt: 2025-06-12T14:00:00Z
+updatedAt: 2026-03-11T13:32:32Z
+tags: [ai, go, hiking, linux]
 feedId: Article/46
 ---
 
-import Figure from "~/components/content/Figure.astro"
-import Video from "~/components/content/Video.astro"
+One of my favorite activities is hiking. I'm fortunate to live close to a
+mountain where I can go for a hike any time I want - often early in the morning,
+before work.
 
-One of my favorite activities is hiking. I'm fortunate to live close to a mountain where I can go for a hike any time I want - often early in the morning, before work.
+<Figure
+  media="img_8969.jpeg"
+  caption="A winding road on the way to Medvednica"
+/>
 
-<Figure media="articles/clean-air-ai-AHcddmIf21lt/img_8969.jpeg" caption="A winding road on the way to Medvednica" />
+I love the trek over hills and valleys, through forests and streams, the
+creaking of trees in the wind, the rustling of leaves, the murmur of streams,
+and the discussions with friends along the way.
 
-I love the trek over hills and valleys, through forests and streams, the creaking of trees in the wind, the rustling of leaves, the murmur of streams, and the discussions with friends along the way.
-
-I love the destination - the view, the tranquility, the bean stew with sausage at a hiking lodge, cuddling up to a fireplace in the winter.
+I love the destination - the view, the tranquility, the bean stew with sausage
+at a hiking lodge, cuddling up to a fireplace in the winter.
 
 But most of all I love the mountain air.
 
-<Figure media="articles/clean-air-ai-AHcddmIf21lt/img_8385.jpeg" caption="Zagreb, as seen from Sljeme, covered with clouds" />
+<Figure
+  media="img_8385.jpeg"
+  caption="Zagreb, as seen from Sljeme, covered with clouds"
+/>
 
 It smells different, it’s light, relaxing, refreshing, and clean.
 
-The difference is most striking on the way down - at one point, the air starts to feel heavy, turns dusty, and takes on an odor.
+The difference is most striking on the way down - at one point, the air starts
+to feel heavy, turns dusty, and takes on an odor.
 
-One winter morning, as the trail gave way to pavement and the outskirts of the city, a sharp sulfur smell - almost like gunpowder - hit me and stayed with me all the way home.
+One winter morning, as the trail gave way to pavement and the outskirts of the
+city, a sharp sulfur smell - almost like gunpowder - hit me and stayed with me
+all the way home.
 
-Something wasn’t right. The air wasn’t usually that bad. I checked the AQI for Zagreb - it was the fifth worst in the world that day.
+Something wasn’t right. The air wasn’t usually that bad. I checked the AQI for
+Zagreb - it was the fifth worst in the world that day.
 
-I immediately bought a cheap air purifier off IKEA and decided to make an air quality monitor.
+I immediately bought a cheap air purifier off IKEA and decided to make an air
+quality monitor.
 
-<Figure media="articles/clean-air-ai-AHcddmIf21lt/img_0769.jpeg" caption="Breadboard with the first prototype of my air quality monitor" />
+<Figure
+  media="img_0769.jpeg"
+  caption="Breadboard with the first prototype of my air quality monitor"
+/>
 
-I made a quick prototype using parts I bought off AliExpress. After ironing out a few kinks, I ended up with something functional - [Air Quality Box](https://github.com/monorkin/air_quality_box).
+I made a quick prototype using parts I bought off AliExpress. After ironing out
+a few kinks, I ended up with something functional - [Air Quality
+Box](https://github.com/monorkin/air_quality_box).
 
-<Figure media="articles/clean-air-ai-AHcddmIf21lt/776d4c55-fe36-468f-b480-6a6b2cdb9e0e.jpeg" caption="The Air Quality Box" />
+<Figure
+  media="776d4c55-fe36-468f-b480-6a6b2cdb9e0e.jpeg"
+  caption="The Air Quality Box"
+/>
 
-To turn the rat's nest of a prototype into something presentable, I designed a custom PCB that connected all the components and packed them as tightly as possible in a enclosure that I printed. It was as small as I could make it given the parts and air flow constraints needed for everything to work properly.
+To turn the rat's nest of a prototype into something presentable, I designed a
+custom PCB that connected all the components and packed them as tightly as
+possible in a enclosure that I printed. It was as small as I could make it given
+the parts and air flow constraints needed for everything to work properly.
 
-<Figure media="articles/clean-air-ai-AHcddmIf21lt/ecfac0d9-983b-4eae-9a7b-5cb10d2a527c.jpeg" caption="The tightly packed inside of the Air Quality Box" />
+<Figure
+  media="ecfac0d9-983b-4eae-9a7b-5cb10d2a527c.jpeg"
+  caption="The tightly packed inside of the Air Quality Box"
+/>
 
-It integrated with Home Assistant and displayed measurements on its screen. This allowed me to automate my IKEA air purifier, and I could read the air quality right from my desk without any app.
+It integrated with Home Assistant and displayed measurements on its screen. This
+allowed me to automate my IKEA air purifier, and I could read the air quality
+right from my desk without any app.
 
-That little boxed served me for four years and taught me a lot about air quality:
+That little boxed served me for four years and taught me a lot about air
+quality:
 
 1. Higher CO2 levels in a room cause headaches and drowsiness
 2. Air with very low particulares and 40% humidity feels like mountain air
 3. VOCs and high humidity make the air feel heavy
 
-But it had two major flaws.\
-First, its design was very industrial - *people either loved it or hated it*.\
-Second, the UI was clunky - *you couldn’t just glance at it and see what’s wrong, you had to wait for all the measurements to cycle through.*
+But it had two major flaws.
 
-At first, I started working on a V2 which was heavily inspired by IKEA’s Vindriktning. It had a single light bar that told you an overall score of the air quality, and a small screen at the top that showed what needed fixing.
+First, its design was very industrial - *people either loved it or hated it*.
 
-Then I came across the Awair Element. It had everything I wanted - a beautiful enclosure, it shows everything at a glance, it can integrate with Home Assistant. So I just bought one, and I have been very happy with it for the past 6 months.
+Second, the UI was clunky - *you couldn’t just glance at it and see what’s
+wrong, you had to wait for all the measurements to cycle through.*
 
-<Figure media="articles/clean-air-ai-AHcddmIf21lt/20250610_174929.jpg" caption="The Awair Element that I bought" />
+At first, I started working on a V2 which was heavily inspired by IKEA’s
+Vindriktning. It had a single light bar that told you an overall score of the
+air quality, and a small screen at the top that showed what needed fixing.
 
-Its default screen shows five bars and a number. The number is the score of the air quality based on all measurements. Each bar represents a measurement: temperature, humidity, CO2, VOC, and particulates. When a value is within the target range, the bar shows a single dot. If it’s too high or too low, it displays two to five dots, depending on how far it has drifted.
+Then I came across the Awair Element. It had everything I wanted - a beautiful
+enclosure, it shows everything at a glance, it can integrate with Home
+Assistant. So I just bought one, and I have been very happy with it for the past
+6 months.
 
-I just have one minor annoyance with this interface - you can't tell if a measurement is too low or too high at a glance.
+<Figure media="20250610_174929.jpg" caption="The Awair Element that I bought" />
 
-Say the humidity bar shows three dots - is it too humid or too dry? To find out, I have to pull out my phone, open the app, and read the value. Or I can reach around the device, press a button a few times until it displays the humidity measurement, and then cycle back to the score display. It isn't terrible, just annoying.
+Its default screen shows five bars and a number. The number is the score of the
+air quality based on all measurements. Each bar represents a measurement:
+temperature, humidity, CO2, VOC, and particulates. When a value is within the
+target range, the bar shows a single dot. If it’s too high or too low, it
+displays two to five dots, depending on how far it has drifted.
 
-But I had an idea for how to fix this. I could create an app that lives in the system tray and shows the current air quality score. When clicked, it expands to show all measurements. That way I can quickly check what's wrong - no phone, no fiddling with buttons.
+I just have one minor annoyance with this interface - you can't tell if a
+measurement is too low or too high at a glance.
 
-<Figure media="articles/clean-air-ai-AHcddmIf21lt/pasted-image-20250611155058.png" caption="Demo of the system tray app" />
+Say the humidity bar shows three dots - is it too humid or too dry? To find out,
+I have to pull out my phone, open the app, and read the value. Or I can reach
+around the device, press a button a few times until it displays the humidity
+measurement, and then cycle back to the score display. It isn't terrible, just
+annoying.
 
-This wouldn't be my first Linux Desktop app. Years ago, I made one using [Qt](https://wiki.archlinux.org/title/Qt), [QML](https://en.wikipedia.org/wiki/QML) and [Rust](https://www.rust-lang.org/), so I knew what I had to do.
+But I had an idea for how to fix this. I could create an app that lives in the
+system tray and shows the current air quality score. When clicked, it expands to
+show all measurements. That way I can quickly check what's wrong - no phone, no
+fiddling with buttons.
 
-There would be two parts to the app - the app itself and the system tray widget. The app discovers air quality monitors on the network, gathers measurements, and handles settings. The system tray widget displays the gathered measurements. The two would communicate with each other via [D-Bus](https://wiki.archlinux.org/title/D-Bus).
+<Figure
+  media="pasted-image-20250611155058.png"
+  caption="Demo of the system tray app"
+/>
 
-[Over the last few weeks, I've been sharpening my Go skills](https://stanko.io/building-twice-a-clone-of-once-gJKxLYCe26Ak), so I decided to write this app in [Go](https://go.dev/). And since I use [GNOME](https://wiki.archlinux.org/title/GNOME) as my Desktop environment these days, I went with [GTK](https://wiki.archlinux.org/title/GTK) instead of Qt - it fits in better visually.
+This wouldn't be my first Linux Desktop app. Years ago, I made one using
+[Qt](https://wiki.archlinux.org/title/Qt),
+[QML](https://en.wikipedia.org/wiki/QML) and [Rust](https://www.rust-lang.org/),
+so I knew what I had to do.
+
+There would be two parts to the app - the app itself and the system tray widget.
+The app discovers air quality monitors on the network, gathers measurements, and
+handles settings. The system tray widget displays the gathered measurements. The
+two would communicate with each other via
+[D-Bus](https://wiki.archlinux.org/title/D-Bus).
+
+[Over the last few weeks, I've been sharpening my Go
+skills](https://stanko.io/building-twice-a-clone-of-once-gJKxLYCe26Ak), so I
+decided to write this app in [Go](https://go.dev/). And since I use
+[GNOME](https://wiki.archlinux.org/title/GNOME) as my Desktop environment these
+days, I went with [GTK](https://wiki.archlinux.org/title/GTK) instead of Qt - it
+fits in better visually.
 
 Which brings me to AI.
 
-Until now, I've used AI as a pair programmer. I’m in the driver’s seat, and when I want to bounce ideas around or look something up, I ask the AI.
+Until now, I've used AI as a pair programmer. I’m in the driver’s seat, and when
+I want to bounce ideas around or look something up, I ask the AI.
 
-To me, that’s the most natural way to work with an AI. It allows me to stay in flow - I can focused on keeping the code clear, modeling the domain, and solving the real problem, while the AI allows me to tap into a vast pool of knowledge in a moment's notice. No more digging through SEO spam for that one useful link - I get exactly what I need, when I need it.
+To me, that’s the most natural way to work with an AI. It allows me to stay in
+flow - I can focused on keeping the code clear, modeling the domain, and solving
+the real problem, while the AI allows me to tap into a vast pool of knowledge in
+a moment's notice. No more digging through SEO spam for that one useful link - I
+get exactly what I need, when I need it.
 
-<Figure media="articles/clean-air-ai-AHcddmIf21lt/pasted-image-20250612094946.png" caption="ChatGPT and NVIM side by side" />
+<Figure
+  media="pasted-image-20250612094946.png"
+  caption="ChatGPT and NVIM side by side"
+/>
 
-This approach helped me a lot while learning Go. Whenever I hit a wall, I could ask the AI how it would solve the problem and get a few new things to read up on. In a way, it felt like having a mentor.
+This approach helped me a lot while learning Go. Whenever I hit a wall, I could
+ask the AI how it would solve the problem and get a few new things to read up
+on. In a way, it felt like having a mentor.
 
-This time, I decided to flip things around and let the AI drive while I guide it. I wanted to see if there was a better way to work with AI than what I'd been using. So I installed [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview) and bought $50 worth of API credits.
+This time, I decided to flip things around and let the AI drive while I guide
+it. I wanted to see if there was a better way to work with AI than what I'd been
+using. So I installed [Claude
+Code](https://docs.anthropic.com/en/docs/claude-code/overview) and bought $50
+worth of API credits.
 
-*(Since this week, if you have a Pro subscription to Claude, Claude Code is included - no API credits needed)*
+*(Since this week, if you have a Pro subscription to Claude, Claude Code is
+included - no API credits needed)*
 
-<Figure media="articles/clean-air-ai-AHcddmIf21lt/pasted-image-20250612103759.png" caption="The initial prompt given to Claude Code" />
+<Figure
+  media="pasted-image-20250612103759.png"
+  caption="The initial prompt given to Claude Code"
+/>
 
-And that's how I - or rather *we* - made [GNOME Desktop Air Monitor](https://github.com/monorkin/gnome-desktop-air-monitor).
+And that's how I - or rather *we* - made [GNOME Desktop Air
+Monitor](https://github.com/monorkin/gnome-desktop-air-monitor).
 
-<Video media="articles/clean-air-ai-AHcddmIf21lt/screencast-from-2025-06-10-17-24-02-1.mp4" poster="articles/clean-air-ai-AHcddmIf21lt/screencast-from-2025-06-10-17-24-02-1.jpg" type="video/mp4" caption="Demo of GNOME Desktop Air Monitor" />
+<Video
+  media="screencast-from-2025-06-10-17-24-02-1.mp4"
+  poster="screencast-from-2025-06-10-17-24-02-1.jpg"
+  type="video/mp4"
+  caption="Demo of GNOME Desktop Air Monitor"
+/>
 
-I didn't like this way of us working together - for me, the pair programming approach just works better. Letting the AI drive seemed to amplify both of our weaknesses.
+I didn't like this way of us working together - for me, the pair programming
+approach just works better. Letting the AI drive seemed to amplify both of our
+weaknesses.
 
-**First, the AI is very goal-oriented.**\
-It only cares about the outcome - in many ways it behaves like a [greedy algorithm](https://en.wikipedia.org/wiki/Greedy_algorithm), making choices that seem best in the moment, without regard for long-term consequences.
+**First, the AI is very goal-oriented.**
 
-This isn't bad per se. Sometimes this leads to efficient, pragmatic solutions. But more often, it results in [spaghetti code](https://en.wikipedia.org/wiki/Spaghetti_code) - one hack piled on top of another, just to reach the goal. It doesn't care how maintainable, extendable or readable the solution is - that isn't its goal.
+It only cares about the outcome - in many ways it behaves like a [greedy
+algorithm](https://en.wikipedia.org/wiki/Greedy_algorithm), making choices that
+seem best in the moment, without regard for long-term consequences.
 
-To counter that, I had to be very explicit. I had to explain not just *what* I wanted it to do, but also *how* I wanted it to do it.
+This isn't bad per se. Sometimes this leads to efficient, pragmatic solutions.
+But more often, it results in [spaghetti
+code](https://en.wikipedia.org/wiki/Spaghetti_code) - one hack piled on top of
+another, just to reach the goal. It doesn't care how maintainable, extendable or
+readable the solution is - that isn't its goal.
 
-For example, I asked it to create an index screen that shows all devices, then a show screen for individual devices, and finally a settings screen.
+To counter that, I had to be very explicit. I had to explain not just *what* I
+wanted it to do, but also *how* I wanted it to do it.
 
-The result? One giant app.go file. All three screens were in it. All their logic, all the app setup and window management, everything. There was an App struct that held the state of every button, list and graph that could ever appear, with cryptic names like "button", "settingsButton", "actionList", etc. There were three methods - "showIndex", "showSettings" and "showDevice" - that were nearly identical, each resets the state of every UI element before switching screens.
+For example, I asked it to create an index screen that shows all devices, then a
+show screen for individual devices, and finally a settings screen.
 
-I had to explicitly ask it: *"Do you think it would be better to create a struct for each screen and keep its state there? You could add a reset and a show method there too"*. It agreed - and refactored the code.
+The result? One giant app.go file. All three screens were in it. All their
+logic, all the app setup and window management, everything. There was an App
+struct that held the state of every button, list and graph that could ever
+appear, with cryptic names like "button", "settingsButton", "actionList", etc.
+There were three methods - "showIndex", "showSettings" and "showDevice" - that
+were nearly identical, each resets the state of every UI element before
+switching screens.
 
-I tried to improve the naming in the same way. But it kept giving me worse and worse suggestions until I gave up and renamed everything manually.
+I had to explicitly ask it: *"Do you think it would be better to create a struct
+for each screen and keep its state there? You could add a reset and a show
+method there too"*. It agreed - and refactored the code.
 
-By the end, my prompts had become so detailed that I felt like I was micro-managing someone. And that's just not how I want to work. For me, trust - in someone doing their job and doing it well - is essential. If that trust isn't there, then explaining exactly what needs to be done is often more work than just doing it myself.
+I tried to improve the naming in the same way. But it kept giving me worse and
+worse suggestions until I gave up and renamed everything manually.
 
-I talked to a friend about this and he said something along the lines of *"you have to treat it like a junior developer"*. But that's the problem - *it isn't a junior developer*. It doesn't learn from its mistakes. You can't explain to it in which situation one approach is better than another. It won't conclude that it produced garbage or that it's painting itself into a corner - as long as the goal was *technically* achieved.
+By the end, my prompts had become so detailed that I felt like I was
+micro-managing someone. And that's just not how I want to work. For me, trust -
+in someone doing their job and doing it well - is essential. If that trust isn't
+there, then explaining exactly what needs to be done is often more work than
+just doing it myself.
 
-**Second, it doesn't understand the sunken cost fallacy.**\
-The AI will almost never give up on a solution. It will almost always build on top of what already exists. It doesn't question, it doesn't suggest, it just marches on. In that regard, it's similar to a junior developer.
+I talked to a friend about this and he said something along the lines of *"you
+have to treat it like a junior developer"*. But that's the problem - *it isn't a
+junior developer*. It doesn't learn from its mistakes. You can't explain to it
+in which situation one approach is better than another. It won't conclude that
+it produced garbage or that it's painting itself into a corner - as long as the
+goal was *technically* achieved.
 
-This gets worse and worse as you iterate on your project. At some point you have to step in and explain to it that the current approach just doesn't work, and that it should try something else.
+**Second, it doesn't understand the sunken cost fallacy.**
 
-I didn’t really see this as a serious issue until my girlfriend - who can't code - asked ChatGPT to help her build an iOS app. She described what she wanted, and it generated a React Native app that did exactly what she asked. Then she asked it to add live notifications - at the time, an iOS-only feature that required native code to get it working. Instead of switching tools, it piled on hack after hack to make it work. It ultimately failed.
+The AI will almost never give up on a solution. It will almost always build on
+top of what already exists. It doesn't question, it doesn't suggest, it just
+marches on. In that regard, it's similar to a junior developer.
+
+This gets worse and worse as you iterate on your project. At some point you have
+to step in and explain to it that the current approach just doesn't work, and
+that it should try something else.
+
+I didn’t really see this as a serious issue until my girlfriend - who can't
+code - asked ChatGPT to help her build an iOS app. She described what she
+wanted, and it generated a React Native app that did exactly what she asked.
+Then she asked it to add live notifications - at the time, an iOS-only feature
+that required native code to get it working. Instead of switching tools, it
+piled on hack after hack to make it work. It ultimately failed.
 
 Then I told it to recreate the app in Swift - and it nailed it on the first try.
 
-If I didn't know what it had to do - and didn't tell it explicitly - we'd still be spinning around in circles, trying every hack known to man or machine.
+If I didn't know what it had to do - and didn't tell it explicitly - we'd still
+be spinning around in circles, trying every hack known to man or machine.
 
-**Third, it doesn't generalize.**\
-I often found myself in awe of both its brilliance and its stupidity in the span of five lines of code. It would implement a pattern that felt like the right solution - elegant, compresses the complexity just enough, clean - but only in the narrow context of the problem it was solving at the time. It never generalized the pattern or applied it across the rest of the code. And that’s what’s so frustrating - it has access to vast knowledge, the entire codebase, and limitless memory - you'd expect better.
+**Third, it doesn't generalize.**
+
+I often found myself in awe of both its brilliance and its stupidity in the span
+of five lines of code. It would implement a pattern that felt like the right
+solution - elegant, compresses the complexity just enough, clean - but only in
+the narrow context of the problem it was solving at the time. It never
+generalized the pattern or applied it across the rest of the code. And that’s
+what’s so frustrating - it has access to vast knowledge, the entire codebase,
+and limitless memory - you'd expect better.
 
 But enough of the negatives. I also discovered some strengths.
 
-**It's brilliant at writing documentation from existing code.**\
-Last week, [I started writing a new gem](https://github.com/monorkin/croatia/) and it crossed my mind to try letting Claude write the documentation for it. To my surprise, it produced well-worded, concise descriptions, complete with good examples and relevant links - even if a few of the links turned out to be dead.
+**It's brilliant at writing documentation from existing code.**
 
-**It's decent at writing tests.**\
-I also let it write a few tests, and they turned out surprisingly solid. It covered a lot of edge cases I might’ve missed on a first pass, and the structure was generally clean and readable. Occasionally, it repeated itself more than necessary - but as a starting point, it saved time.
+Last week, [I started writing a new gem](https://github.com/monorkin/croatia/)
+and it crossed my mind to try letting Claude write the documentation for it. To
+my surprise, it produced well-worded, concise descriptions, complete with good
+examples and relevant links - even if a few of the links turned out to be dead.
 
-**It's excellent for scaffolding.**\
-The most enjoyable way to work with an AI agent, for me, was to let it handle the first pass - generate the rough structure. Then I’d come in and rewrite the code the way I like it. That initial scaffold gave me something to react to, and it helped me move faster.
+**It's decent at writing tests.**
 
-All in all, I learned that I love programming as much as I love solving problems.
+I also let it write a few tests, and they turned out surprisingly solid. It
+covered a lot of edge cases I might’ve missed on a first pass, and the structure
+was generally clean and readable. Occasionally, it repeated itself more than
+necessary - but as a starting point, it saved time.
 
-Letting the AI drive helped me see that. It made the coding faster - but it also took the joy out of shaping the code, thinking through the domain, and making things beautiful. That’s the part I don’t want to give up.
+**It's excellent for scaffolding.**
 
-Working *with* AI, as a partner, is what feels best to me. It can help me move faster, think broader, and stay in flow.
+The most enjoyable way to work with an AI agent, for me, was to let it handle
+the first pass - generate the rough structure. Then I’d come in and rewrite the
+code the way I like it. That initial scaffold gave me something to react to, and
+it helped me move faster.
+
+All in all, I learned that I love programming as much as I love solving
+problems.
+
+Letting the AI drive helped me see that. It made the coding faster - but it also
+took the joy out of shaping the code, thinking through the domain, and making
+things beautiful. That’s the part I don’t want to give up.
+
+Working *with* AI, as a partner, is what feels best to me. It can help me move
+faster, think broader, and stay in flow.

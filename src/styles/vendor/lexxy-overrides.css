@@ -1,0 +1,22 @@
+/* Lexxy's content styles aren't in a layer, so they beat everything in ours; changes to
+   what they set go here, unlayered and after them. */
+
+/* A heading sits closer to the text it introduces than to the section before it. The
+   margin above collapses with the one under the block before, so the gap is this, not more. */
+:where(.lexxy-content) :is(h2, h3, h4) {
+  margin-block-start: calc(var(--lexxy-content-margin) * 2);
+  margin-block-end: calc(var(--lexxy-content-margin) * 0.375);
+
+  &:first-child {
+    margin-block-start: 0;
+  }
+
+  & + *,
+  & + :is(ul, ol) > li:first-child {
+    margin-block-start: 0;
+  }
+}
+
+:where(.lexxy-content) h2:not(:first-child) {
+  margin-block-start: calc(var(--lexxy-content-margin) * 2.5);
+}

@@ -15,8 +15,11 @@ Project pages use `src/layouts/ProjectLayout.astro` on top of it.
 ## CSS
 
 `src/styles/app.css` imports everything in the order the Rails app loaded it: Lexxy's content
-styles (vendored in `src/styles/vendor/`), then the app's files. Everything sits in the
-layers `reset, base, components, utilities`, so order rarely matters.
+styles (vendored in `src/styles/vendor/`), then the app's files. The app's files sit in the
+layers `reset, base, components, utilities`, so order rarely matters. Lexxy's styles aren't
+in a layer, so they beat any layered rule for what they set, such as the margins of headings,
+paragraphs and lists in entries; change those in `vendor/lexxy-overrides.css`, which is
+unlayered too.
 
 The breakpoints are mobile-first; write them as `@media (width >= <value>)`:
 

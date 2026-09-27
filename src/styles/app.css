@@ -1,6 +1,7 @@
 /* Same order as the Rails app loaded them: Lexxy's content styles first, then the app's stylesheets alphabetically */
 @import "./vendor/lexxy-variables.css";
 @import "./vendor/lexxy-content.css";
+@import "./vendor/lexxy-overrides.css";
 @import "./_global.css";
 @import "./base.css";
 @import "./components/actiontext.css";

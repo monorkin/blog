@@ -1,21 +1,4 @@
 @layer components {
-  /* Safari 26+ samples fixed elements at the top edge to color its toolbar, otherwise it lightens it into a white band */
-  .header__toolbar-tint {
-    display: none;
-    position: fixed;
-    inset-block-start: 0;
-    inset-inline: 0;
-    block-size: 6px;
-    background-color: var(--color-canvas);
-    pointer-events: none;
-  }
-
-  @supports (-webkit-touch-callout: none) {
-    .header__toolbar-tint {
-      display: block;
-    }
-  }
-
   .header__desktop {
     display: none;
     padding: var(--space-2);

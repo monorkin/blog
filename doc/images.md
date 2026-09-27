@@ -141,7 +141,14 @@ screenshot, so clicking one opens it full size in a lightbox, with arrows to mov
 gallery (`src/scripts/gallery.ts`).
 
 `<Video>` renders an autoplaying, muted, looping video sized from the manifest, with its
-poster's 1200px variant.
+poster's 1200px variant. With `clip` it has no controls, for a short clip that stands in for a
+GIF; convert GIFs to MP4 rather than adding them, since a GIF is many times bigger:
+
+```bash
+ffmpeg -i clip.gif -an -c:v libx264 -crf 23 -preset slow -pix_fmt yuv420p \
+  -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -movflags +faststart clip.mp4
+ffmpeg -i clip.mp4 -frames:v 1 -q:v 3 clip.jpg
+```
 
 Snaps get square thumbnails for the grid, the width variants in the lightbox, and a link to
 the original for download. Open Graph images are an entry's cover image's 512px square, or

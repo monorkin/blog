@@ -15,7 +15,7 @@ the cause of the problem. To do that I usually go over each component that could
 be causing this to check if it's functioning correctly and then drill down on
 any components that aren't.
 
-**Step one, identify which components could be at fault.**
+### Step one, identify which components could be at fault.
 
 We use Rails' ActionCable for WebSockets. I've done a deep dive into ActionCable
 [in a previous
@@ -25,7 +25,7 @@ like to read more about it.
 ActionCable, except for the Ruby process itself, depends on Redis (in my case)
 and on the database(s) that the app uses.
 
-**Step two, prioritize.**
+### Step two, prioritize.
 
 Since I knew that the devices were randomly disconnecting I assumed that either
 app containers were restarting for whatever reason, or that something was
@@ -34,7 +34,7 @@ causing ActionCable's worker pool to lag which then caused missed heartbeats.
 This means that the Ruby process is the most likely culprit, then the database,
 and finally Redis.
 
-**Step three, check each components.**
+### Step three, check each components.
 
 I checked Grafana to see what's going on with the app containers and saw that
 CPU was elevated but wasn't exceeding 80%, while memory didn't go above 70%, and
@@ -53,7 +53,7 @@ never exceeded 10% and memory was at 5%.
 
 What was going on?
 
-**Step four, stabilize the app.**
+### Step four, stabilize the app.
 
 Since Redis and the database were fine, in an Hail Mary attempt, I scaled-out
 the number of app containers to stop the disconnects. Surprisingly, this
@@ -61,7 +61,7 @@ worked... This pointed a spotlight at the application code and ActionCable. They
 must have been the faulty component since the scale-out fixed the issue - but
 how?
 
-**Step five, find the root cause.**
+### Step five, find the root cause.
 
 At that point I realized that I had no clue what was going on with our
 WebSockets after they were established. Elastic APM only captures metrics about
@@ -76,7 +76,7 @@ I'm not one to reinvent the wheel, so I checked if some tool for monitoring
 ActionCable already exists. I found out that Sentry's and AppSignal's APM tools
 monitor ActionCable's action execution times.
 
-**Action Execution Time**
+### Action Execution Time
 
 Action execution time measures how long it takes for a Channel to process a
 received message. This metric is important because it can show if you have a
@@ -99,7 +99,7 @@ end
 
 That worked!
 
-**PubSub latency**
+### PubSub latency
 
 I soon noticed that some extra metrics, like the PubSub latency, would be
 helpful. Knowing the PubSub latency would help me identify problems with the
@@ -368,7 +368,7 @@ I'm shoehorning this metric in and later metrics I flat out don't know how to
 expose in Elastic AMP. So I decided not to bother with this and figure it out
 later.
 
-**Number of connections**
+### Number of connections
 
 Since I'm running an IoT platform I have a somewhat constant number of clients
 connected at all times. This means that by knowing the number of clients at any
@@ -406,7 +406,7 @@ The trick to getting the count is to call
 call it from the Rails console or from a rails runner the count will always
 return zero as the connections only exist in the server's memory.
 
-**Client-Server Latency**
+### Client-Server Latency
 
 Since I'm running [my own patch of ActionCable that adds PONG
 messages](https://stanko.io/tracking-online-presence-with-actioncable-ukEi6sUZ98Bz)
@@ -712,7 +712,7 @@ That's my action execution duration. It works!
 My coworker had already configured Prometheus to scrape that endpoint every
 minute or so and the metrics appeared in Prometheus within a few minutes.
 
-**Analyzing the metrics**
+### Analyzing the metrics
 
 Now that I had all the metrics somewhere where I could query them I had to make
 them easy to analyze. I've decided to go with [Grafana](https://grafana.com/) as
@@ -772,7 +772,7 @@ With all these metrics in Grafana I could now focus on finding and fixing the
 root cause. As the incident had passed and I didn't have any metrics from it so
 I'd have to wait for another one.
 
-**Step six, fixing the root cause.**
+### Step six, fixing the root cause.
 
 The app was now stable so I tried a few things that I guessed could be the cause
 while I waited to see if this would occur again.
@@ -798,7 +798,7 @@ the root cause of both incidents. I'll go into more detail on this in a
 subsequent post, but [the gist of it is that AWS is a piece of
 crap](https://stanko.io/adversarial-web-services-Vjfkr3DF9LfG).
 
-**Looking back**
+### Looking back
 
 I would never have found and fixed this without the monitoring that I've set up.
 

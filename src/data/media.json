@@ -2919,9 +2919,23 @@
       512
     ]
   },
-  "articles/tips-to-improve-your-tests-414733ecbc4-414733ecbc4/giphy.gif": {
-    "type": "image/gif",
-    "bytes": 22062529,
+  "articles/tips-to-improve-your-tests-414733ecbc4-414733ecbc4/giphy.jpg": {
+    "type": "image/jpeg",
+    "bytes": 11957,
+    "width": 480,
+    "height": 270,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480
+    ],
+    "squares": []
+  },
+  "articles/tips-to-improve-your-tests-414733ecbc4-414733ecbc4/giphy.mp4": {
+    "type": "video/mp4",
+    "bytes": 698282,
     "width": 480,
     "height": 270
   },

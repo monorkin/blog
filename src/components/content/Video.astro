@@ -6,11 +6,13 @@ interface Props {
   type: string
   poster?: string
   caption?: string
+  // A short clip that plays like a GIF: no controls
+  clip?: boolean
 }
 
 const POSTER_WIDTH = 1200
 
-const { type, caption = "" } = Astro.props
+const { type, caption = "", clip = false } = Astro.props
 const folder = mediaFolderFor(Astro)
 const media = resolveMediaKey(Astro.props.media, folder)
 const extension = media.split(".").pop()!.toLowerCase()
@@ -23,7 +25,7 @@ if (Astro.props.poster) {
 ---
 
 <figure class={`attachment attachment--preview attachment--${extension}`}>
-  <video controls autoplay playsinline loop muted poster={posterUrl} width={video.width} height={video.height}>
+  <video controls={!clip} autoplay playsinline loop muted poster={posterUrl} width={video.width} height={video.height}>
     <source src={originalUrl(media)} type={type} />
   </video>
   <figcaption class="attachment__caption">{caption}</figcaption>

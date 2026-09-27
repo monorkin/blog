@@ -59,7 +59,8 @@ Set `updatedAt` again whenever you change a published entry; the sitemap reports
 ## 3. Write the body
 
 Markdown, in MDX, like the other entries: prose wrapped at 80 columns, `**bold**`,
-`*italic*`, `` `code` `` for code (never bold), `-` lists, `##` headings, Markdown tables,
+`*italic*`, `` `code` `` for code (never bold), `-` lists, `##` and `###` headings (not bold
+lines), Markdown tables,
 and no HTML where Markdown will do. Links, code spans and component tags aren't broken. Escape `{`, `}`
 and a `<` that could start a tag with a backslash. Code blocks name their language
 (```` ```ruby ````, `text` for plain output).

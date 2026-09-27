@@ -27,7 +27,7 @@ Me: None, this is as vanilla as it gets.
 
 Him: What!?
 
-**Backstory**
+### Backstory
 
 For the past 12 months, each month I built an app within a strict time-box of 12
 hours.
@@ -46,7 +46,7 @@ unknowns. But around the third one I got better at both. Then came the hard
 part - learning to strike a balance between quality work, functionality, and not
 obsessing over details.
 
-**Simpliki**
+### Simpliki
 
 Simpliki is the 12th app I’ve built.
 
@@ -67,7 +67,7 @@ You can practice breathing with Simpliki at
 [simpliki.app](https://simpliki.app/). And you can [peruse the source-code on
 GitHub](https://github.com/monorkin/simpliki).
 
-**Starting from the center**
+### Starting from the center
 
 The best way to finish a project is to start from the center and work your way
 from there. I focus on what makes the app work - what makes it what it is - and
@@ -119,7 +119,7 @@ their attributes and methods are called.
 
 <Figure media="simpliki_domain.png" caption="The domain" />
 
-**Design**
+### Design
 
 I had a clear vibe I wanted to go for - [Endel](https://endel.io/) +
 [Headspace](https://www.headspace.com/). I like Endel's minimalist and
@@ -137,7 +137,7 @@ the animated organic shapes from Headspace.
 
 <Figure media="pasted-image-20250423095110.png" caption="Simpliki's UI" />
 
-**Starting a new project**
+### Starting a new project
 
 I decided to use Tailwind because I like working with it. And I chose SQLite as
 the database because it's the simplest one to use out of the presets. I honestly
@@ -191,7 +191,7 @@ pages, added a header that said "Simpl息" on each page, added a plain HTML
 "Practice" button on the exercise show page, and created a very simple index
 page that shows a list of exercises.
 
-**The ruby tag**
+### The ruby tag
 
 <Figure media="pasted-image-20250423133538.png" caption="Simpliki's logo" />
 
@@ -212,7 +212,7 @@ nice way to show where the app's name comes from.
 
 It took about a minute to add and style the "iki" - plain HTML is amazing.
 
-**Animating SVGs**
+### Animating SVGs
 
 Next I wanted to animate the play button. I've done similar things before so I
 was quite confident that I could do it quickly.
@@ -328,7 +328,7 @@ look.](https://github.com/monorkin/simpliki/blob/main/app/javascript/controllers
 
 The end effect is subtle, but it makes the circle look friendlier.
 
-**View transitions**
+### View transitions
 
 Next I animated the view transitions. This takes maybe 10 minutes but makes the
 app feel way more modern and responsive.
@@ -398,7 +398,7 @@ There is one caveat, View Transitions aren't supported on Firefox. This only
 works on Chromium and WebKit based browsers. As one of the 2% of global Firefox
 users I don't mind, the app still works without the transitions.
 
-**The breathing animation**
+### The breathing animation
 
 Now that I have an animated circle I want to create a breathing animation to
 help people pace their breath.
@@ -527,7 +527,7 @@ animation](https://github.com/monorkin/simpliki/blob/main/app/javascript/control
 This just meant that I had to define a *steps* value of type Array and serialize
 the steps as JSON on the HTML element.
 
-**Sound**
+### Sound
 
 With the animation done I wanted to also add an audio cue that you should
 breathe in or out.
@@ -559,7 +559,7 @@ You can listen to the sound at [simpliki.app](https://simpliki.app/), just pick
 any exercise and start it. If you are on an iPhone be sure to set your phone
 *OFF* silent.
 
-**Scroll snapping**
+### Scroll snapping
 
 As I was working on the breathing animation I noticed that I forgot to record if
 you are supposed to breathe with your nose or mouth, so I had to go back, add a
@@ -594,7 +594,7 @@ scroll near the top of the page.
   caption="Demo of the page snapping to the top when you scroll near the top"
 />
 
-**Full text search**
+### Full text search
 
 Since I had four hours left at this point I decided to add full-text search to
 the index page.
@@ -689,7 +689,7 @@ With that I can do a full-text search across all exercises
 Exercise.search("box")
 ```
 
-**Pagination**
+### Pagination
 
 Now that I had search I wanted to add pagination. [Years ago while exploring
 what Strada/Turbo Native
@@ -759,7 +759,7 @@ I just render the next page like always and let the controller do the rest.
   caption="Demo of the pagination controller loading in more exercises"
 />
 
-**Auth, create, update & delete**
+### Auth, create, update & delete
 
 Since I still had time left I decided to implement CRUD for exercises. [Here I
 decided to use the new auth
@@ -776,7 +776,7 @@ and called it a day.
   caption="Demo of the sign in process and CRUD actions"
 />
 
-**Conclusion**
+### Conclusion
 
 I wanted to share how I built Simpliki because everyone I show it to seems to
 think that it's some SPA made with the latest technology trend when in reality

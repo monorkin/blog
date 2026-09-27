@@ -100,11 +100,13 @@ A key with a slash is a full key, for using another entry's media:
 
 `caption` also becomes the alt text; pass `alt` when it should differ, or instead of a
 caption. `<Figure src="https://…" width={480} height={270} />` shows an image from another
-site; only one entry does that. `doc/images.md` has what each component renders.
+site; no entry does that any more. A GIF becomes a short MP4 shown with `<Video … clip />`,
+which plays like a GIF, without controls. `doc/images.md` has what each component renders.
 
 The source reads like any Markdown: prose wrapped at 80 columns (list items and quotes
 indented under their marker), blank lines between blocks, `**bold**`, `*italic*`,
-`` `code` `` for anything that's code, `-` for lists, `##` for headings, and Markdown tables.
+`` `code` `` for anything that's code, `-` for lists, `##` or `###` for headings (never a
+bold line standing in for one), and Markdown tables.
 Links, code spans and component tags are never broken, so a long one overflows; a component
 tag that doesn't fit on one line gets one attribute per line. Code blocks and tables aren't
 wrapped. No raw HTML where Markdown has a way to say it.

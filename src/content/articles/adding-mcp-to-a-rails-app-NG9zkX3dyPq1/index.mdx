@@ -17,7 +17,7 @@ impressive and scary, and I learned a few things about MCP that I didn't expect.
   caption="Demo of Claude using our app via MCP to solve a support request"
 />
 
-**Goal**
+### Goal
 
 My team wanted to help our support team by automating some laborious tasks, like
 cross referencing data, by offloading the bulk of the work to an AI agent. This
@@ -27,7 +27,7 @@ free up my team too - an all around win.
 *To allow the AI to interact with our app - like a person would - we decided to
 add MCP to it.*
 
-**What is MCP?**
+### What is MCP?
 
 MCP, or Model Context Protocol, is a protocol through which LLMs can interact
 with different tools and resources to accomplish tasks.
@@ -66,7 +66,7 @@ The server then responds with something like *"\{path:
 '/home/user/meeting_notes.txt', contents: '...'\}"* and the client passes that
 on to the LLM which then decides what to do with that information.
 
-**MCP and Rails**
+### MCP and Rails
 
 I used the [fast-mcp gem](https://github.com/yjacquin/fast-mcp) to add MCP
 support to our app.
@@ -124,7 +124,7 @@ With that out of the way I could finally run my server
 bin/rails s
 ```
 
-**The Client**
+### The Client
 
 Now that the server was up and running I wanted to see if I could connect to it.
 The easiest way to do that is through cURL
@@ -337,7 +337,7 @@ With that configured I tried the prompt again and this time it worked!
   caption="Claude sending a greeting to a User through the MCP server"
 />
 
-**Building a tool**
+### Building a tool
 
 From here the team and I spent the day building various tools that would allow
 us to automate common support requests.
@@ -445,7 +445,7 @@ incredible and scary. Kind of like seeing primates [use
 tools](https://www.youtube.com/watch?v=FA3LN4vqtlM) or [develop their own
 economy](https://www.bbc.com/worklife/article/20180406-what-monkeys-can-teach-us-about-money).
 
-**Takeaways**
+### Takeaways
 
 MCP is a very "loose" protocol. It does allow you to specify what inputs your
 tool has, which are required and which are optional, but it's not expressive
@@ -534,7 +534,7 @@ really easy to accommodate for such mistakes.
 value.presence&.to_s&.strip&.singularize&.underscore
 ```
 
-**Conclusion**
+### Conclusion
 
 Integrating our existing app with AI was surprisingly easy. We just had to
 expose tools and the LLM would figure out how to use them. In 8 hours we managed

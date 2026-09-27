@@ -47,7 +47,8 @@ folder, and need no import. In MDX:
 ```
 
 A video needs a poster image beside it; grab a frame with
-`ffmpeg -i demo.mp4 -frames:v 1 demo.jpg`.
+`ffmpeg -i demo.mp4 -frames:v 1 demo.jpg`. A GIF goes in as an MP4 with `clip` on its
+`<Video>`, which drops the controls; `doc/images.md` has the ffmpeg command.
 
 In a snap's frontmatter: `image: <file>`, or `video`, `videoType` and `poster` for a video
 snap.

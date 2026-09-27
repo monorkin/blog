@@ -33,7 +33,7 @@ def index
 end
 ```
 
-**So why did the view render so slow?**
+### So why did the view render so slow?
 
 I went to look at the development server logs - which, in Rails, show a lot of
 useful information for debugging problems like these - and I saw this:
@@ -67,7 +67,7 @@ It was clearly visible that the preload worked. ActiveRecord made three queries
 to the database - one to get the events, another to get the users, and a third
 to get the devices.
 
-**But where does the WHERE deleted_at IS NULL come from?**
+### But where does the WHERE deleted_at IS NULL come from?
 
 I looked at the **User** and **Device** models. Both invoke the
 `acts_as_paranoid` method which the [paranoia
@@ -84,7 +84,7 @@ deleted, `deleted_at` is set to the current timestamp. A record can be restored
 Paranoia filters out deleted records by adding `WHERE deleted_at IS NULL` to all
 queries.
 
-**Why are the queries to fetch the users and devices so slow?**
+### Why are the queries to fetch the users and devices so slow?
 
 In situations like these I reach for [the `explain` method on an ActiveRecord
 relation](https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-explain).
@@ -118,8 +118,7 @@ table to generate the result - `PRIMARY` and `index_users_on_deleted_at`.
 Out of these two it choose to use `index_users_on_deleted_at`, which is a bit
 odd since the query mostly filters by IDs.
 
-**Why did it choose that index instead of using the primary key? And why is that
-so slow?**
+### Why did it choose that index instead of using the primary key? And why is that so slow?
 
 I ran `SHOW INDEX`, an introspection tool in MariaDB that shows statistics about
 indices on a table. The query planner uses those same statistics to plan how to
@@ -140,7 +139,7 @@ These are the statistics for the `users` table:
 The **Cardinality** column shows that the `PRIMARY` index has millions of values
 indexed, while `index_users_on_deleted_at` only has a few thousand.
 
-**But why is that index so slow?**
+### But why is that index so slow?
 
 The decision by the query planner to use `index_users_on_deleted_at` felt off.
 It seemed like a mistake so I dug deeper.
@@ -184,7 +183,7 @@ nearly all 3 million rows. This means that the database will load and scan
 through 3 million records to find the ones matching the **IN** clause - which is
 extremely slow.
 
-**How do I make the query fast?**
+### How do I make the query fast?
 
 Luckily MariaDB, unlike PostgreSQL, provides an escape hatch for situations like
 this. Through the **USE INDEX** option, it allows you to specify the index it
@@ -237,7 +236,7 @@ Device::EventLog.all
 And it worked! Both `PRIMARY` indices were used when filtering, and the query
 returns in 3 ms.
 
-**Why did this work?**
+### Why did this work?
 
 I had a hunch that a **LEFT OUTER JOIN** would force the optimizer to use at
 least one `PRIMARY` index on the joined tables. Because `eager_load` does the

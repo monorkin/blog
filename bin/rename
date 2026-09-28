@@ -1,0 +1,207 @@
+#!/usr/bin/env node
+// Gives an entry a new title, and the URL that goes with it.
+//
+//   bin/rename article 8s17uw9GPHgD "New title"
+//   bin/rename 8s17uw9GPHgD "New title"
+//
+// The ID is the end of the entry's folder name; the whole folder name works too. The folder
+// becomes <new slug>-<same id>, and its media folders and media keys move with it. The old
+// URL keeps working: the catch-all route redirects any slug with the right ID
+// (src/pages/[...path].ts), and the feed ID is made from the ID alone.
+import { existsSync, readFileSync, readdirSync, renameSync, writeFileSync } from "node:fs"
+import { dirname, join, relative } from "node:path"
+import { fileURLToPath } from "node:url"
+import { slugFor, yamlString } from "./lib/names.mjs"
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
+const CONTENT = join(ROOT, "src/content")
+const MEDIA = join(ROOT, "media")
+const MANIFEST = join(ROOT, "src/data/media.json")
+const DEV_URL = "http://localhost:4321"
+
+const COLLECTIONS = {
+  article: { collection: "articles", urlPrefix: "/" },
+  talk: { collection: "talks", urlPrefix: "/talks/" },
+  snap: { collection: "snaps", urlPrefix: "/snaps/" }
+}
+
+const [ kind, id, title ] = parseArguments(process.argv.slice(2))
+
+if (id && title?.trim() && slugFor(title)) {
+  rename(findEntry(kind, id.split("-").at(-1)), title.trim())
+} else {
+  usage()
+}
+
+function parseArguments(args) {
+  if (args.length === 3 && COLLECTIONS[args[0]]) {
+    return args
+  } else if (args.length === 2) {
+    return [ undefined, ...args ]
+  } else {
+    return []
+  }
+}
+
+// Entries
+
+function findEntry(kind, id) {
+  const kinds = kind ? [ kind ] : Object.keys(COLLECTIONS)
+  const matches = kinds.flatMap(kind => {
+    const { collection } = COLLECTIONS[kind]
+    return readdirSync(join(CONTENT, collection))
+      .filter(folder => folder.split("-").at(-1) === id)
+      .map(folder => ({ kind, collection, folder }))
+  })
+
+  if (matches.length === 1) {
+    return matches[0]
+  } else if (matches.length === 0) {
+    fail(`There's no ${kind ?? "entry"} with the ID ${id}.`)
+  } else {
+    fail(`More than one entry has the ID ${id}: ${matches.map(match => match.folder).join(", ")}. Name its kind.`)
+  }
+}
+
+function rename(entry, title) {
+  const id = entry.folder.split("-").at(-1)
+  const newFolder = `${slugFor(title)}-${id}`
+  const draft = setTitle(entry, title)
+
+  if (newFolder === entry.folder) {
+    console.log(`Set the title of ${entry.folder}; its URL stays the same.`)
+  } else {
+    moveFolders(entry, newFolder)
+    const movedKeys = moveMediaKeys(entry, newFolder)
+    const updatedEntries = updateMediaReferences(entry, newFolder)
+
+    announce(entry, newFolder, { draft, movedKeys, updatedEntries })
+  }
+}
+
+// Replaces the title line of the frontmatter, and says whether the entry is a draft
+function setTitle(entry, title) {
+  const path = entryFile(entry.collection, entry.folder)
+  const [ , frontmatter, body ] = readFileSync(path, "utf8").match(/^---\n([\s\S]*?\n)---\n([\s\S]*)$/)
+
+  if (/^title: .*$/m.test(frontmatter)) {
+    writeFileSync(path, `---\n${frontmatter.replace(/^title: .*$/m, `title: ${yamlString(title)}`)}---\n${body}`)
+    return /^draft: true$/m.test(frontmatter)
+  } else {
+    fail(`${relative(ROOT, path)} has no title line in its frontmatter.`)
+  }
+}
+
+function entryFile(collection, folder) {
+  const directory = join(CONTENT, collection, folder)
+  return join(directory, readdirSync(directory).find(file => /^index\.mdx?$/.test(file)))
+}
+
+// Folders
+
+function moveFolders(entry, newFolder) {
+  const folders = [
+    join(CONTENT, entry.collection),
+    join(MEDIA, "originals", entry.collection),
+    join(MEDIA, "variants", entry.collection)
+  ]
+
+  for (const parent of folders) {
+    if (existsSync(join(parent, newFolder))) {
+      fail(`${relative(ROOT, join(parent, newFolder))} already exists.`)
+    }
+  }
+
+  for (const parent of folders) {
+    if (existsSync(join(parent, entry.folder))) {
+      renameSync(join(parent, entry.folder), join(parent, newFolder))
+    }
+  }
+}
+
+// Media
+
+// Keys are paths under media/originals/, so the entry's all start with its folder
+function moveMediaKeys(entry, newFolder) {
+  const oldPrefix = `${entry.collection}/${entry.folder}/`
+  const newPrefix = `${entry.collection}/${newFolder}/`
+  const manifest = JSON.parse(readFileSync(MANIFEST, "utf8"))
+  let moved = 0
+
+  const renamed = Object.entries(manifest).map(([ key, media ]) => {
+    if (key.startsWith(oldPrefix)) {
+      moved++
+      return [ newPrefix + key.slice(oldPrefix.length), media ]
+    } else {
+      return [ key, media ]
+    }
+  })
+
+  if (moved > 0) {
+    writeFileSync(MANIFEST, JSON.stringify(sortedByKey(renamed), null, 2) + "\n")
+  }
+
+  return moved
+}
+
+// The same order bin/media writes the manifest in
+function sortedByKey(entries) {
+  return Object.fromEntries(entries.sort(([ a ], [ b ]) => a.localeCompare(b)))
+}
+
+// Other entries may use this one's media by its full key
+function updateMediaReferences(entry, newFolder) {
+  const oldPrefix = `${entry.collection}/${entry.folder}/`
+  const newPrefix = `${entry.collection}/${newFolder}/`
+  const updated = []
+
+  for (const { collection } of Object.values(COLLECTIONS)) {
+    for (const folder of readdirSync(join(CONTENT, collection))) {
+      const path = entryFile(collection, folder)
+      const text = readFileSync(path, "utf8")
+
+      if (text.includes(oldPrefix)) {
+        writeFileSync(path, text.replaceAll(oldPrefix, newPrefix))
+        updated.push(relative(ROOT, path))
+      }
+    }
+  }
+
+  return updated
+}
+
+// Output
+
+function announce(entry, newFolder, { draft, movedKeys, updatedEntries }) {
+  const { urlPrefix } = COLLECTIONS[entry.kind]
+
+  console.log(`Renamed ${entry.collection}/${entry.folder} to ${entry.collection}/${newFolder}`)
+  console.log(`It's at ${DEV_URL}${urlPrefix}${newFolder} in bin/dev.`)
+
+  if (!draft) {
+    console.log(`${urlPrefix}${entry.folder} redirects there once deployed.`)
+  }
+
+  for (const path of updatedEntries) {
+    console.log(`Updated its media keys in ${path}`)
+  }
+
+  if (movedKeys > 0) {
+    console.log(`Moved ${movedKeys} media keys in src/data/media.json; run bin/media sync to upload them under the new name.`)
+  }
+}
+
+function usage() {
+  console.error([
+    "Usage:",
+    "  bin/rename [article|talk|snap] <id> \"New title\"",
+    "",
+    "The ID is the end of the entry's folder name, e.g. 8s17uw9GPHgD; the kind is optional."
+  ].join("\n"))
+  process.exit(1)
+}
+
+function fail(message) {
+  console.error(message)
+  process.exit(1)
+}

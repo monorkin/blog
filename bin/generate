@@ -14,6 +14,7 @@ import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from 
 import { randomInt } from "node:crypto"
 import { basename, dirname, extname, join, relative } from "node:path"
 import { fileURLToPath } from "node:url"
+import { slugFor, yamlString } from "./lib/names.mjs"
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
 const CONTENT = join(ROOT, "src/content")
@@ -97,18 +98,6 @@ function newFolder(title) {
   return `${slugFor(title)}-${unusedId()}`
 }
 
-// Rails' parameterize, which made every slug so far: accents dropped, apostrophes too, and
-// every run of anything else that isn't a letter or digit turned into one dash
-function slugFor(title) {
-  return title
-    .normalize("NFKD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/['’]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-}
-
 function unusedId() {
   const used = usedIds()
   let id = randomId()
@@ -180,15 +169,6 @@ function writeEntry(collection, folder, file, fields, body) {
   writeFileSync(path, `---\n${fields.join("\n")}\n---\n${body && `\n${body}`}`)
 
   return path
-}
-
-// Quoted only when YAML would read it as something other than a string
-function yamlString(text) {
-  if (/^[\p{L}\p{N}][^:#"'\\\n]*$/u.test(text) && !/^(true|false|null|yes|no|on|off|[\d.]+)$/i.test(text)) {
-    return text
-  } else {
-    return JSON.stringify(text)
-  }
 }
 
 // Output

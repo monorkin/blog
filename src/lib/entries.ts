@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from "astro:content"
-import { resolveMediaKey } from "~/lib/media"
+import { findMedia, posterFor, resolveMediaKey } from "~/lib/media"
 import { plainText } from "~/lib/plain-text"
 import { renderToHtml } from "~/lib/rendering"
 import { absoluteUrl, truncate } from "~/lib/site"
@@ -59,8 +59,10 @@ export class Entry {
     return absoluteUrl(this.path)
   }
 
+  // Only the ID at the end of the folder name, so renaming an entry doesn't make it new in
+  // feed readers
   get feedId() {
-    return this.source.data.feedId ?? `${this.kind[0].toUpperCase()}${this.kind.slice(1)}/${this.id}`
+    return this.source.data.feedId ?? `${this.kind[0].toUpperCase()}${this.kind.slice(1)}/${this.id.split("-").at(-1)}`
   }
 
   // The Rails app broke ties between equal publish times by record ID
@@ -102,14 +104,38 @@ export class Entry {
   coverImage(): string | undefined {
     let key
 
-    if (this.source.collection === "snaps") {
-      key = this.source.data.image ?? this.source.data.poster
+    if (this.source.collection === "snaps" && this.source.data.image) {
+      key = this.source.data.image
+    } else if (this.source.collection === "snaps") {
+      return this.posterKey()
     } else if (this.source.collection === "articles") {
       key = this.source.body?.match(/<Figure media=(["'])(.+?)\1/)?.[2]
     }
 
     if (key) {
       return this.mediaKey(key)
+    }
+  }
+
+  // A snap's or talk's video: its `poster` when it names one, or the image beside the video
+  posterKey(): string | undefined {
+    const { poster, video } = this.source.data as { poster?: string, video?: string }
+
+    if (poster) {
+      return this.mediaKey(poster)
+    } else if (video) {
+      return posterFor(this.mediaKey(video))
+    }
+  }
+
+  // A video snap's length in seconds: its `duration`, or the video's in the manifest
+  videoDuration(): number | undefined {
+    const { duration, video } = this.source.data as { duration?: number, video?: string }
+
+    if (duration) {
+      return duration
+    } else if (video) {
+      return findMedia(this.mediaKey(video)).duration
     }
   }
 }

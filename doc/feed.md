@@ -56,7 +56,8 @@ It matches what the Rails app rendered, so feed readers see no change in the ent
 - The `<?xml-stylesheet href="/feed.xsl"?>` instruction, so a browser shows a page.
 - Each feed has its own ID (`tag:stanko.io,2005:/articles/feed`), title and self link.
 - Entry IDs are `tag:stanko.io,2005:<feedId>`, e.g. `tag:stanko.io,2005:Article/46`. Migrated
-  entries carry `feedId` in their frontmatter; never change it (`doc/content.md`).
+  entries carry `feedId` in their frontmatter; never change it (`doc/content.md`). New ones
+  get `<Kind>/<id>`, from the ID alone, so a rename keeps it.
 - The content is the entry's HTML in a `<div class="lexxy-content">`, with absolute URLs,
   the summary its 300-character excerpt, and the author Stanko Krtalic Rusendic.
 

@@ -5,7 +5,10 @@
 #   2. bin/media variants: posters, stripped metadata, variants and the manifest. Should that
 #      change anything, it stops again, since the manifest the build reads has to be in git.
 #   3. bin/media sync: makes R2 match media/, and asks before deleting anything there.
-#   4. Builds the site and deploys it with wrangler, which asks you to log in the first time.
+#   4. Builds the site and deploys it with wrangler.
+#
+# It checks you're logged in to Cloudflare before it touches anything, and offers to log you
+# in, so a deploy doesn't stop at the end with the media already synced.
 set -eo pipefail
 
 cd "$(dirname "$0")/.."
@@ -49,6 +52,24 @@ elif [ "$behind" -gt 0 ]; then
   fail "$upstream has $behind commits you don't. Pull them first."
 fi
 echo "$(git branch --show-current) at $(git rev-parse --short HEAD), the same as $upstream"
+echo
+
+# A token in the environment, as in CI, needs no login
+step "Checking that you're logged in to Cloudflare"
+if [ -z "$CLOUDFLARE_API_TOKEN" ] && npx wrangler whoami 2>&1 | grep -q "You are not authenticated"; then
+  if [ ! -t 0 ]; then
+    fail "You aren't logged in to Cloudflare. Run 'npx wrangler login', then deploy again."
+  elif gum confirm "You aren't logged in to Cloudflare. Log in now?"; then
+    npx wrangler login
+  else
+    fail "Not deploying without a Cloudflare login."
+  fi
+
+  if npx wrangler whoami 2>&1 | grep -q "You are not authenticated"; then
+    fail "Still not logged in to Cloudflare."
+  fi
+fi
+echo "Logged in"
 echo
 
 step "Making the media's variants"

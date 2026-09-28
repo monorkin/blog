@@ -1,7 +1,7 @@
 # Deployment
 
-The site runs on Cloudflare Workers with static assets. **It hasn't been deployed.** Don't
-run `bin/deploy` or `wrangler deploy` unless Stanko asks for exactly that.
+The site runs on Cloudflare Workers with static assets, as the Worker `blog`. Don't run
+`bin/deploy` or `wrangler deploy` unless Stanko asks for exactly that.
 
 ## bin/deploy
 
@@ -60,7 +60,13 @@ appear. That job isn't set up yet. It needs to check out the repository, run
 `npm ci && npm run build && npx wrangler deploy` with a Cloudflare API token. It doesn't need
 the media: the build reads only the manifest.
 
-## Before the switch
+## The domain
 
-The Rails app still serves stanko.io. Moving the domain means pointing it at the Worker; DNS
-isn't managed from here.
+stanko.io is in Cloudflare, proxied to the server that ran the Rails app. The Worker takes
+it over with a route in `wrangler.jsonc`, `stanko.io/*`, rather than a custom domain: the
+DNS record stays, and removing the route and deploying again sends the domain back to the
+server. `www.stanko.io` redirects to `stanko.io` before it gets here. media.stanko.io is R2's
+custom domain and isn't touched. After the first deploy with the route, purge the stanko.io
+cache in Cloudflare, so pages cached from the Rails app go.
+
+The Worker is also at its `workers.dev` address, which `wrangler deploy` prints.

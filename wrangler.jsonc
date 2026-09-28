@@ -4,6 +4,11 @@
   "main": "./src/worker.ts",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": [ "nodejs_compat" ],
+  // stanko.io itself; media.stanko.io is R2's. A route, not a custom domain, so the DNS
+  // record stays as it is, and taking the route out sends the domain back to its server.
+  "routes": [
+    { "pattern": "stanko.io/*", "zone_name": "stanko.io" }
+  ],
   "assets": {
     "directory": "./dist/client",
     "binding": "ASSETS",

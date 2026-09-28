@@ -100,21 +100,27 @@ export class Entry {
     return resolveMediaKey(key, this.mediaFolder)
   }
 
-  // A full media key: a snap's photo, or an article's first figure
+  // A snap's photo, or its video's poster, as a full media key
   coverImage(): string | undefined {
-    let key
-
     if (this.source.collection === "snaps" && this.source.data.image) {
-      key = this.source.data.image
+      return this.mediaKey(this.source.data.image)
     } else if (this.source.collection === "snaps") {
       return this.posterKey()
-    } else if (this.source.collection === "articles") {
-      key = this.source.body?.match(/<Figure media=(["'])(.+?)\1/)?.[2]
     }
+  }
 
-    if (key) {
-      return this.mediaKey(key)
+  // The image a link to the entry shows when shared: the one `ogImage` names, or a snap's
+  // photo. Without either it gets a generated preview card (src/lib/social-image.ts).
+  get socialImageKey(): string | undefined {
+    if (this.source.data.ogImage) {
+      return this.mediaKey(this.source.data.ogImage)
+    } else {
+      return this.coverImage()
     }
+  }
+
+  get usesGeneratedSocialImage() {
+    return !this.socialImageKey
   }
 
   // A snap's or talk's video: its `poster` when it names one, or the image beside the video

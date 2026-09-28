@@ -65,7 +65,9 @@ name, with no imports:
 <Video media="demo.mp4" caption="The demo" />
 ```
 
-- The first `<Figure>` is the image shown when the article is shared, so lead with a good one.
+- When it's shared, the article shows a generated card: your avatar, the title and the
+  excerpt. To show one of its images instead, name it in the frontmatter:
+  `ogImage: view.jpeg`. Talks work the same way; snaps show their photo.
 - A video's poster is the image with the same name beside it (`demo.jpg`). If there isn't
   one, `bin/media variants` takes a frame from the video. Put your own there to override it.
 - A GIF goes in as an MP4 with `clip` on its `<Video>`: it loops without controls.

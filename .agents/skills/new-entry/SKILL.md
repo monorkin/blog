@@ -77,8 +77,9 @@ never an `<img>` or a file in `public/`. Name them by file; the `new-media` skil
 ```
 
 `<Gallery>` for images side by side (each `<Figure>` with `inGallery`), `<Video media="demo.mp4" />` for a
-video, whose poster `bin/media variants` makes. The first `<Figure>` is the article's Open Graph image, so lead
-with a good one.
+video, whose poster `bin/media variants` makes. When it's shared, an article or talk shows a
+generated preview card; `ogImage: <file>` in the frontmatter shows that image instead
+(`doc/content.md`).
 
 ## 4. Check it
 

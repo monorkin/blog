@@ -2,6 +2,7 @@
 import SeoTags from "~/components/SeoTags.astro"
 import type { Entry } from "~/lib/entries"
 import { markdownPath } from "~/lib/markdown"
+import { socialImagePath } from "~/lib/social-image"
 import { titleize } from "~/lib/site"
 
 interface Props {
@@ -11,6 +12,11 @@ interface Props {
 const DESCRIPTION_MAX_LENGTH = 160
 
 const { entry } = Astro.props
+
+let generatedImage
+if (entry.usesGeneratedSocialImage) {
+  generatedImage = socialImagePath(entry)
+}
 ---
 
 <title>{titleize(entry.title)}</title>
@@ -19,6 +25,7 @@ const { entry } = Astro.props
   description={await entry.excerpt(DESCRIPTION_MAX_LENGTH)}
   url={entry.url}
   type="article"
-  image={entry.coverImage()}
+  image={entry.socialImageKey}
+  generatedImage={generatedImage}
 />
 <link rel="alternate" type="text/markdown" href={markdownPath(entry)} />

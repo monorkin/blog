@@ -46,6 +46,7 @@ title: Clean air & AI
 publishedAt: 2025-06-12T14:00:00Z   # when it's shown as published, and the sort order
 updatedAt: 2026-03-11T13:32:32Z     # the sitemap's lastmod
 tags: [ai, go]                      # lowercase, dashes for spaces
+ogImage: img_8969.jpeg              # optional; the image shown when it's shared (below)
 draft: true                         # optional; drafts aren't built
 feedId: Article/46                  # migrated entries only, see below
 ```
@@ -95,9 +96,21 @@ Drafts are left out completely, including from the feed, the sitemaps and the ta
 
 Nothing is written by hand. The excerpt (list pages, feed summary, 300 characters) and the
 description (SEO, 160 characters) come from the entry's text, converted the way Action Text
-converted it, so they matched the Rails app's at the migration. The cover image, used for
-Open Graph, is the article's first `<Figure>`, or a snap's image. Reading time assumes 225
+converted it, so they matched the Rails app's at the migration. Reading time assumes 225
 words a minute. All of this is in `src/lib/entries.ts` and `src/lib/plain-text.ts`.
+
+### The image shown when it's shared
+
+The Open Graph and Twitter image is, in order:
+
+1. The media `ogImage` names, as its 512px square with a small card, the way the Rails app
+   shared it. Migrated articles set it to the image Rails used, their first figure.
+2. For a snap, its photo, the same way.
+3. Otherwise a preview card made at build time, 1200×630 with a large card, in the site's
+   dark colors: my portrait in black and white beside the title, the excerpt under them,
+   and the date, or for a talk its event and date, across the top. It's at
+   `/og/<the entry's path>.png`. `src/lib/social-image.ts` draws it with satori, in Inter
+   from `@fontsource/inter`, and sharp makes it a PNG.
 
 ## MDX components
 

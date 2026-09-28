@@ -26,7 +26,7 @@ export async function GET() {
 
 // The excerpt keeps its paragraphs; a list item needs them on one line
 async function articleLine(article: Entry) {
-  const excerpt = await article.excerpt(EXCERPT_LENGTH)
+  const excerpt = (await article.excerpt(EXCERPT_LENGTH)) ?? ""
   return `${link(article)}: ${excerpt.replace(/\s+/g, " ")}`
 }
 

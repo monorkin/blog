@@ -214,7 +214,8 @@ ffmpeg -i clip.mp4 -frames:v 1 -q:v 3 clip.jpg
 ```
 
 Snaps get square thumbnails for the grid, the width variants in the lightbox, and a link to
-the original for download. Open Graph images are an entry's cover image's 512px square, or
+the original for download. An entry's Open Graph image is its `ogImage`'s 512px square, a
+snap's photo, or a generated preview card (`doc/content.md`). Pages that aren't entries use
 `src/assets/images/default_seo_image.jpg`.
 
 ## Link previews

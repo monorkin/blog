@@ -1,6 +1,7 @@
 ---
 import SeoTags from "~/components/SeoTags.astro"
 import type { Entry } from "~/lib/entries"
+import { markdownPath } from "~/lib/markdown"
 import { titleize } from "~/lib/site"
 
 interface Props {
@@ -20,3 +21,4 @@ const { entry } = Astro.props
   type="article"
   image={entry.coverImage()}
 />
+<link rel="alternate" type="text/markdown" href={markdownPath(entry)} />

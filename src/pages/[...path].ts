@@ -21,17 +21,19 @@ export const GET: APIRoute = async ({ request }) => {
   }
 }
 
+// The same goes for an entry's Markdown version, its URL plus ".md"
 async function canonicalPathFor(url: URL) {
-  const match = url.pathname.match(/^\/(?:(talks|snaps)\/)?([^/]+)$/)
+  const match = url.pathname.match(/^\/(?:(talks|snaps)\/)?([^/]+?)(\.md)?$/)
 
   if (match) {
     const kind = SECTIONS[match[1] ?? ""]
     const slugId = match[2].split("-").at(-1)
+    const extension = match[3] ?? ""
     const entries: Array<{ kind: string, path: string }> = await (await env.ASSETS.fetch(new URL(PATHS_INDEX, url))).json()
     const entry = entries.find(candidate => candidate.kind === kind && candidate.path.split("-").at(-1) === slugId)
 
-    if (entry && entry.path !== url.pathname) {
-      return entry.path
+    if (entry && entry.path + extension !== url.pathname) {
+      return entry.path + extension
     }
   }
 }

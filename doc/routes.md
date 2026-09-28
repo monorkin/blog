@@ -20,6 +20,8 @@ The build uses `build.format: "file"` and `trailingSlash: "never"`, so `/article
 | `/tags/:name`, `/tags/:name/page/N` | `src/pages/tags/[name]/[...page].astro` | |
 | `/projects`, `/projects/:name` | `src/pages/_projects/` | Switched off: not built, so they 404 (below) |
 | `/search`, `/settings` | `src/pages/search.astro`, `settings.astro` | The dialogs as pages, not indexed |
+| `/:slug-:id.md`, `/talks/:slug-:id.md`, `/snaps/:slug-:id.md` | `src/pages/[article].md.ts`, `talks/[talk].md.ts`, `snaps/[snap].md.ts` | The entry as Markdown (below) |
+| `/llms.txt` | `src/pages/llms.txt.ts` | The site for language models (below) |
 | `/up` | `src/pages/up.ts` | Health check, kept from Rails |
 | `/404.html` etc. | `public/` | The Rails app's error pages |
 
@@ -29,6 +31,25 @@ The project pages are in `src/pages/_projects/`, and Astro doesn't route a folde
 name starts with `_`: `/projects` and every project page 404, and the header, the menu and
 the sitemap leave them out (`PROJECTS_ENABLED` in `src/lib/site.ts` follows the folder's
 name). To switch them on, rename the folder to `src/pages/projects/`.
+
+### Markdown and llms.txt
+
+Every published entry is also Markdown at its URL plus `.md`, served as `text/markdown`
+(`src/lib/markdown.ts`). It starts with YAML frontmatter: title, URL, author, dates, tags,
+and for a talk its event, kind, date, video and mirror. Then comes the title as a heading,
+and the body as written, with the MDX components turned into plain Markdown:
+- a `<Figure>` becomes an image of its 1600px variant, with the caption as alt text;
+- a `<Video>` becomes a link to the file;
+- a `<Gallery>` is just its figures;
+- a root-relative link becomes absolute.
+
+A snap is its photo, or a link to its video, and its caption. Each entry's page points to
+its Markdown with `<link rel="alternate" type="text/markdown">`. An old slug redirects the
+`.md` too.
+
+`/llms.txt` follows [llmstxt.org](https://llmstxt.org): a heading, a one-line summary, then
+every article with its excerpt, every talk with its event and date, and the snaps under
+`## Optional`, all linking to their Markdown versions.
 
 ### Pagination
 

@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content"
 import type { Entry } from "~/lib/entries"
-import { findMedia, originalUrl, placeholderStyle, variantAtLeast } from "~/lib/media"
+import { findMedia, originalUrl, placeholderStyle, posterFor, variantAtLeast } from "~/lib/media"
 
 interface Props {
   talk: Entry
@@ -19,16 +19,15 @@ let video
 if (data.video) {
   const key = talk.mediaKey(data.video)
   const { width, height, type } = findMedia(key)
-  let poster
-  let placeholder
+  let posterKey
 
   if (data.poster) {
-    const posterKey = talk.mediaKey(data.poster)
-    poster = variantAtLeast(posterKey, POSTER_WIDTH)
-    placeholder = placeholderStyle(posterKey)
+    posterKey = talk.mediaKey(data.poster)
+  } else {
+    posterKey = posterFor(key)
   }
 
-  video = { src: originalUrl(key), type, width, height, poster, placeholder }
+  video = { src: originalUrl(key), type, width, height, poster: variantAtLeast(posterKey, POSTER_WIDTH), placeholder: placeholderStyle(posterKey) }
 }
 ---
 

@@ -342,14 +342,15 @@
     "squares": [
       512
     ],
-    "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoJABAABABoJYgCdADzgfK62AAA/vLi4Eed1gJErDG3f7LxADFUItPPD0X+rudepfDsBEnXCcJLde4Ex3l0odvjYavh5PHsmWUAAA==",
-    "color": "#725f56"
+    "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADQAQCdASoJABAABABoJbACdAELW+IrMAD+743cG3ng7OVqy2qm2kBgldG+kciSA0yQNNhyYRfVWEHFywnIqFTo4YTQSc3qJ8EG/CeTDQAAAA==",
+    "color": "#6e5f50"
   },
   "articles/a-week-in-helsinki-3XbBLSiAuFKy/koreanbbq2.mp4": {
     "type": "video/mp4",
     "bytes": 19406902,
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "duration": 11
   },
   "articles/adding-mcp-to-a-rails-app-NG9zkX3dyPq1/pasted-image-20250505124833.png": {
     "type": "image/png",
@@ -603,7 +604,8 @@
     "type": "video/mp4",
     "bytes": 399654,
     "width": 638,
-    "height": 664
+    "height": 664,
+    "duration": 37
   },
   "articles/best-image-uploader-for-rails-revisited-3b3b7618cc4c/ruby.jpeg": {
     "type": "image/jpeg",
@@ -756,7 +758,8 @@
     "type": "video/mp4",
     "bytes": 1039037,
     "width": 504,
-    "height": 942
+    "height": 942,
+    "duration": 41
   },
   "articles/building-simpl-77CAzym51p5a/screencast-from-2025-04-23-14-32-42-1.jpg": {
     "type": "image/jpeg",
@@ -781,7 +784,8 @@
     "type": "video/mp4",
     "bytes": 175522,
     "width": 596,
-    "height": 546
+    "height": 546,
+    "duration": 15
   },
   "articles/building-simpl-77CAzym51p5a/screencast-from-2025-04-23-15-23-44.jpg": {
     "type": "image/jpeg",
@@ -807,7 +811,8 @@
     "type": "video/mp4",
     "bytes": 141013,
     "width": 850,
-    "height": 1510
+    "height": 1510,
+    "duration": 6
   },
   "articles/building-simpl-77CAzym51p5a/screencast-from-2025-04-23-15-35-32.jpg": {
     "type": "image/jpeg",
@@ -833,7 +838,8 @@
     "type": "video/mp4",
     "bytes": 389720,
     "width": 850,
-    "height": 1510
+    "height": 1510,
+    "duration": 8
   },
   "articles/building-simpl-77CAzym51p5a/screencast-from-2025-04-23-16-31-36.jpg": {
     "type": "image/jpeg",
@@ -858,7 +864,8 @@
     "type": "video/mp4",
     "bytes": 325272,
     "width": 658,
-    "height": 710
+    "height": 710,
+    "duration": 20
   },
   "articles/building-simpl-77CAzym51p5a/screencast-from-2025-04-23-17-30-35.jpg": {
     "type": "image/jpeg",
@@ -884,7 +891,8 @@
     "type": "video/mp4",
     "bytes": 1003237,
     "width": 850,
-    "height": 1512
+    "height": 1512,
+    "duration": 7
   },
   "articles/building-simpl-77CAzym51p5a/screencast-from-2025-04-23-18-34-33.jpg": {
     "type": "image/jpeg",
@@ -910,7 +918,8 @@
     "type": "video/mp4",
     "bytes": 85625,
     "width": 850,
-    "height": 1512
+    "height": 1512,
+    "duration": 5
   },
   "articles/building-simpl-77CAzym51p5a/screencast-from-2025-04-23-18-40-17.jpg": {
     "type": "image/jpeg",
@@ -936,7 +945,8 @@
     "type": "video/mp4",
     "bytes": 1730139,
     "width": 850,
-    "height": 1512
+    "height": 1512,
+    "duration": 68
   },
   "articles/building-simpl-77CAzym51p5a/simpliki_basic_circle.png": {
     "type": "image/png",
@@ -1130,7 +1140,8 @@
     "type": "video/mp4",
     "bytes": 1197152,
     "width": 1194,
-    "height": 984
+    "height": 984,
+    "duration": 38
   },
   "articles/building-twice-a-clone-of-once-gJKxLYCe26Ak/final_models.png": {
     "type": "image/png",
@@ -1220,7 +1231,8 @@
     "type": "video/mp4",
     "bytes": 97309,
     "width": 1892,
-    "height": 1012
+    "height": 1012,
+    "duration": 13
   },
   "articles/building-twice-a-clone-of-once-gJKxLYCe26Ak/twice_cli_download_demo.png": {
     "type": "image/png",
@@ -1266,7 +1278,8 @@
     "type": "video/mp4",
     "bytes": 452788,
     "width": 1892,
-    "height": 996
+    "height": 996,
+    "duration": 24
   },
   "articles/building-twice-a-clone-of-once-gJKxLYCe26Ak/twice_tui_demo.jpg": {
     "type": "image/jpeg",
@@ -1294,7 +1307,8 @@
     "type": "video/mp4",
     "bytes": 60461,
     "width": 1890,
-    "height": 1012
+    "height": 1012,
+    "duration": 9
   },
   "articles/clean-air-ai-AHcddmIf21lt/20250610_174929.jpg": {
     "type": "image/jpeg",
@@ -1512,7 +1526,8 @@
     "type": "video/mp4",
     "bytes": 1279909,
     "width": 880,
-    "height": 716
+    "height": 716,
+    "duration": 54
   },
   "articles/deconstructing-action-cable-DC7F33OsjGmK/00011-2829697632.png": {
     "type": "image/png",
@@ -3054,7 +3069,8 @@
     "type": "video/webm",
     "bytes": 3973997,
     "width": 1280,
-    "height": 720
+    "height": 720,
+    "duration": 5
   },
   "articles/tech-debt-for-non-techies-4rQhGJdxiMuY/factorio_blogpost_crafting.jpg": {
     "type": "image/jpeg",
@@ -3081,7 +3097,8 @@
     "type": "video/webm",
     "bytes": 15055963,
     "width": 1280,
-    "height": 720
+    "height": 720,
+    "duration": 29
   },
   "articles/tech-debt-for-non-techies-4rQhGJdxiMuY/factorio_blogpost_intro-2400.jpg": {
     "type": "image/jpeg",
@@ -3108,7 +3125,8 @@
     "type": "video/webm",
     "bytes": 23668720,
     "width": 1280,
-    "height": 720
+    "height": 720,
+    "duration": 33
   },
   "articles/tech-debt-for-non-techies-4rQhGJdxiMuY/untitled_1.png": {
     "type": "image/png",
@@ -3192,7 +3210,8 @@
     "type": "video/webm",
     "bytes": 6250511,
     "width": 1280,
-    "height": 720
+    "height": 720,
+    "duration": 6
   },
   "articles/the-judo-way-np6Ftd4sUGzK/lake_walkway.png": {
     "type": "image/png",
@@ -3235,7 +3254,8 @@
     "type": "video/mp4",
     "bytes": 698282,
     "width": 480,
-    "height": 270
+    "height": 270,
+    "duration": 15
   },
   "articles/tips-to-improve-your-tests-414733ecbc4-414733ecbc4/tsnyl5u5enqjg5xeeysmgg.jpeg": {
     "type": "image/jpeg",
@@ -3285,7 +3305,8 @@
     "type": "video/webm",
     "bytes": 347853,
     "width": 2049,
-    "height": 1080
+    "height": 1080,
+    "duration": 16
   },
   "articles/tracking-online-presence-with-actioncable-ukEi6sUZ98Bz/presence_app_offline_demo_av1.jpg": {
     "type": "image/jpeg",
@@ -3313,7 +3334,8 @@
     "type": "video/webm",
     "bytes": 3013770,
     "width": 1918,
-    "height": 1080
+    "height": 1080,
+    "duration": 36
   },
   "articles/tracking-online-presence-with-actioncable-ukEi6sUZ98Bz/presence_app_pong_monkeypatch.jpg": {
     "type": "image/jpeg",
@@ -3341,7 +3363,8 @@
     "type": "video/webm",
     "bytes": 2728812,
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "duration": 33
   },
   "articles/vanilla-rails-view-components-with-partials-41zctBGbN9ka/untitled.png": {
     "type": "image/png",
@@ -8793,13 +8816,7 @@
     "placeholder": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAAAQAgCdASoQAAcABABoJZgCdAEPS+h5q6wgAMtDNlOXr1mrk8O83sMrDbbhJZ47BoAuLJbsaPb0AA==",
     "color": "#687870"
   },
-  "snaps/robin-in-the-snow-PmdBY4grPtdX/1000060384.mp4": {
-    "type": "video/mp4",
-    "bytes": 38543734,
-    "width": 1080,
-    "height": 1920
-  },
-  "snaps/robin-in-the-snow-PmdBY4grPtdX/poster-1000060384.jpg": {
+  "snaps/robin-in-the-snow-PmdBY4grPtdX/1000060384.jpg": {
     "type": "image/jpeg",
     "bytes": 92327,
     "width": 1080,
@@ -8820,6 +8837,13 @@
     ],
     "placeholder": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACQAQCdASoJABAABABoJZwAAuUj84AA/t7xIU+bj71sSUGaiyi9srQJQnJFzf234mDxmGWrAAA=",
     "color": "#999594"
+  },
+  "snaps/robin-in-the-snow-PmdBY4grPtdX/1000060384.mp4": {
+    "type": "video/mp4",
+    "bytes": 38543734,
+    "width": 1080,
+    "height": 1920,
+    "duration": 16
   },
   "snaps/sheep-in-soca-vallye-YVSCGaaS3M1U/20260531_174104.jpg": {
     "type": "image/jpeg",
@@ -9397,7 +9421,7 @@
     "placeholder": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoPABAABABoJZwAAuXA7VkeAAD9lmUFhBndIZ0PALRB6P6k6IhtwNeWSIe0E24Mw+pSLAeTAqzYVgAA",
     "color": "#928a87"
   },
-  "talks/developing-a-safer-web-with-rust-DfhyvPw3yruT/poster.jpg": {
+  "talks/developing-a-safer-web-with-rust-DfhyvPw3yruT/talk.jpg": {
     "type": "image/jpeg",
     "bytes": 100363,
     "width": 1920,
@@ -9423,9 +9447,10 @@
     "type": "video/mp4",
     "bytes": 343253927,
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "duration": 1381
   },
-  "talks/do-you-really-need-websockets-huEURtr2Oclt/poster.jpg": {
+  "talks/do-you-really-need-websockets-huEURtr2Oclt/talk.jpg": {
     "type": "image/jpeg",
     "bytes": 115483,
     "width": 1920,
@@ -9451,9 +9476,10 @@
     "type": "video/mp4",
     "bytes": 195333536,
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "duration": 1372
   },
-  "talks/stubs-mocks-spies-MdyHowlg0PqN/poster.jpg": {
+  "talks/stubs-mocks-spies-MdyHowlg0PqN/talk.jpg": {
     "type": "image/jpeg",
     "bytes": 145091,
     "width": 1920,
@@ -9479,6 +9505,7 @@
     "type": "video/mp4",
     "bytes": 50902753,
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "duration": 557
   }
 }

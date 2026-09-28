@@ -15,6 +15,8 @@ export interface Media {
   squares?: number[]
   placeholder?: string
   color?: string
+  // A video's, in whole seconds
+  duration?: number
 }
 
 // The tiny image's longest side, as bin/media makes it, and how far it's blurred, in its pixels
@@ -22,6 +24,7 @@ const PLACEHOLDER_SIZE = 16
 const PLACEHOLDER_BLUR = 1
 
 const EXTENSIONS: Record<string, string> = { jpeg: "jpg", png: "png", webp: "webp" }
+const POSTER_EXTENSIONS = [ "jpg", "jpeg", "png", "webp" ]
 const MIME_TYPES: Record<string, string> = { jpeg: "image/jpeg", png: "image/png", webp: "image/webp" }
 const media = manifest as Record<string, Media>
 
@@ -50,6 +53,19 @@ export function findMedia(key: string) {
     return entry
   } else {
     throw new Error(`No media "${key}" in src/data/media.json. Put it in media/originals and run bin/media variants.`)
+  }
+}
+
+// A video's poster is the image beside it with the same name, "demo.jpg" for "demo.mp4",
+// which `bin/media variants` makes from a frame of the video when there isn't one
+export function posterFor(videoKey: string) {
+  const base = videoKey.replace(/\.[^./]+$/, "")
+  const key = POSTER_EXTENSIONS.map(extension => `${base}.${extension}`).find(candidate => media[candidate])
+
+  if (key) {
+    return key
+  } else {
+    throw new Error(`No poster for "${videoKey}" in src/data/media.json. Run bin/media variants to make one.`)
   }
 }
 

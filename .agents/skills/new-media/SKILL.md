@@ -49,20 +49,20 @@ folder, and need no import. In MDX:
 ```mdx
 <Figure media="img_8969.jpeg" caption="Zagreb from Sljeme" />
 
-<Video media="demo.mp4" poster="demo.jpg" type="video/mp4" caption="The demo" />
+<Video media="demo.mp4" caption="The demo" />
 ```
 
-A video needs a poster image beside it; grab a frame with
-`ffmpeg -i demo.mp4 -frames:v 1 demo.jpg`. A GIF goes in as an MP4 with `clip` on its
-`<Video>`, which drops the controls; `doc/images.md` has the ffmpeg command.
+A video's poster is the image beside it with the same name, `demo.jpg` for `demo.mp4`.
+When there isn't one, `bin/media variants` makes it from a frame a fifth of the way in, so
+don't make one by hand unless that frame is a bad one. Then put a better one there under
+the same name. The video's type and length come from the manifest, so `type`, `poster`,
+`videoType` and `duration` are all optional; leave them out. A GIF goes in as an MP4 with
+`clip` on its `<Video>`, which drops the controls; `doc/images.md` has the ffmpeg command.
 
-In a snap's frontmatter: `image: <file>`, or `video`, `videoType` and `poster` for a video
-snap.
+In a snap's frontmatter: `image: <file>`, or `video: <file>` for a video snap.
 
-A talk's recording goes in the talk's folder as `talk.mp4`, with `video: talk.mp4` and
-`poster: poster.jpg` in its frontmatter. Take the poster from a frame that shows the talk,
-not the black first one, e.g. `ffmpeg -ss 300 -i talk.mp4 -vf thumbnail=150 -frames:v 1
--q:v 3 poster.jpg`, and check the video's index is at the front so it streams
+A talk's recording goes in the talk's folder as `talk.mp4`, with `video: talk.mp4` in its
+frontmatter; its poster is `talk.jpg`. Check the video's index is at the front so it streams
 (`doc/images.md`).
 
 Another entry's media takes its full key, the path under `media/originals/`:

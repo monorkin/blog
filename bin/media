@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // Uploaded media lives outside git: originals in media/originals/, served from R2 in production.
 //
-//   bin/media variants          strip metadata from originals, make the responsive variants
-//                               and write src/data/media.json
+//   bin/media variants          make a poster for any video without one, strip metadata from
+//                               originals, make the responsive variants and write
+//                               src/data/media.json
 //   bin/media sync [--dry-run]  copy media/originals and media/variants to R2, refusing any
 //                               original that still has location data
 //   bin/media pull              fetch the originals from R2 into media/originals
@@ -39,6 +40,11 @@ const VIDEO_TYPES = { ".mp4": "video/mp4", ".webm": "video/webm", ".mov": "video
 const IMAGE_TYPES = { jpeg: "image/jpeg", png: "image/png", webp: "image/webp", gif: "image/gif", svg: "image/svg+xml" }
 const EXTENSIONS = { jpeg: "jpg", png: "png", webp: "webp" }
 const STRIPPABLE_IMAGES = new Set([ ".jpg", ".jpeg", ".png", ".webp" ])
+const POSTER_EXTENSIONS = [ ".jpg", ".jpeg", ".png", ".webp" ]
+// A poster comes from a fifth of the way in, past a black or title-card opening, as the best
+// of the next this many frames by ffmpeg's thumbnail filter
+const POSTER_POSITION = 0.2
+const POSTER_CANDIDATES = 150
 const ORIENTATION_KEY = "Exif.Image.Orientation"
 // Tags a remux writes itself, which say nothing about who made the video or where
 const HARMLESS_VIDEO_TAGS = new Set([ "major_brand", "minor_version", "compatible_brands", "handler_name", "vendor_id", "language", "DURATION" ])
@@ -73,6 +79,7 @@ if (commands[command]) {
 // Variants
 
 async function makeVariants() {
+  const posters = await makeMissingPosters()
   const files = await originals()
   const previous = await previousManifest()
   const manifest = {}
@@ -100,7 +107,28 @@ async function makeVariants() {
   await pruneVariants(new Set(Object.keys(manifest)))
   await writeFile(MANIFEST, JSON.stringify(sortedByKey(manifest), null, 2) + "\n")
 
-  console.log(`${files.length} originals, ${stripped} stripped of metadata, ${made} variants made, manifest in ${relative(ROOT, MANIFEST)}`)
+  console.log(`${files.length} originals, ${posters} posters made, ${stripped} stripped of metadata, ${made} variants made, manifest in ${relative(ROOT, MANIFEST)}`)
+}
+
+// A video's poster is the image beside it with the same name, "demo.jpg" for "demo.mp4"
+// (src/lib/media.ts), so a video without one gets a frame of itself
+async function makeMissingPosters() {
+  const videos = (await originals()).filter(file => VIDEO_TYPES[extname(file).toLowerCase()])
+  const missing = videos.filter(video => !POSTER_EXTENSIONS.some(extension => existsSync(withoutExtension(video) + extension)))
+
+  for (const video of missing) {
+    const poster = withoutExtension(video) + ".jpg"
+    const start = (videoDetails(video).duration ?? 0) * POSTER_POSITION
+
+    run("ffmpeg", [ "-v", "error", "-ss", String(start), "-i", video, "-vf", `thumbnail=${POSTER_CANDIDATES}`, "-frames:v", "1", "-q:v", "3", poster ])
+    console.log(`Made a poster for ${relative(ROOT, video)}: ${relative(ROOT, poster)}`)
+  }
+
+  return missing.length
+}
+
+function withoutExtension(file) {
+  return file.slice(0, -extname(file).length)
 }
 
 // Originals are public on R2, and a photo or video straight off a phone says where it was
@@ -192,7 +220,7 @@ async function describe(file) {
   const videoType = VIDEO_TYPES[extname(file).toLowerCase()]
 
   if (videoType) {
-    return { type: videoType, bytes, ...videoSize(file) }
+    return { type: videoType, bytes, ...videoDetails(file) }
   } else {
     const metadata = await sharp(file).metadata()
     const [ width, height ] = orientedSize(metadata)
@@ -209,19 +237,26 @@ async function describe(file) {
   }
 }
 
-// The size a video displays at, rotation included, so the page can make room for it
-function videoSize(file) {
-  const result = spawnSync("ffprobe", [ "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height,sample_aspect_ratio:stream_side_data=rotation", "-of", "json", file ], { encoding: "utf8" })
+// The size a video displays at, rotation included, so the page can make room for it, and
+// how long it runs, in whole seconds (some WebM files don't say, and get none)
+function videoDetails(file) {
+  const result = spawnSync("ffprobe", [ "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height,sample_aspect_ratio:stream_side_data=rotation:format=duration", "-of", "json", file ], { encoding: "utf8" })
 
   if (result.status === 0) {
-    const stream = JSON.parse(result.stdout).streams[0]
+    const probe = JSON.parse(result.stdout)
+    const stream = probe.streams[0]
     const rotation = Math.abs(stream.side_data_list?.find(data => "rotation" in data)?.rotation ?? 0)
     const [ width, height ] = displaySize(stream)
+    const seconds = Number(probe.format?.duration)
+    let duration
+    if (Number.isFinite(seconds)) {
+      duration = Math.round(seconds)
+    }
 
     if (rotation === 90 || rotation === 270) {
-      return { width: height, height: width }
+      return { width: height, height: width, duration }
     } else {
-      return { width, height }
+      return { width, height, duration }
     }
   } else {
     console.error(`ffprobe couldn't read ${relative(ROOT, file)}. Is ffmpeg installed? bin/setup installs it.`)

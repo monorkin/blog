@@ -6,6 +6,5 @@ tags: []
 video: 1000060384.mp4
 videoType: video/mp4
 duration: 15.89
-poster: poster-1000060384.jpg
 feedId: Snap/23
 ---

@@ -1,9 +1,11 @@
 ---
-import { findMedia, mediaFolderFor, originalUrl, placeholderStyle, resolveMediaKey, variantAtLeast } from "~/lib/media"
+import { findMedia, mediaFolderFor, originalUrl, placeholderStyle, posterFor, resolveMediaKey, variantAtLeast } from "~/lib/media"
 
 interface Props {
   media: string
-  type: string
+  // Both come from the video when left out: its type from the manifest, and its poster is
+  // the image beside it with the same name (posterFor)
+  type?: string
   poster?: string
   caption?: string
   // A short clip that plays like a GIF: no controls
@@ -12,19 +14,21 @@ interface Props {
 
 const POSTER_WIDTH = 1200
 
-const { type, caption = "", clip = false } = Astro.props
+const { caption = "", clip = false } = Astro.props
 const folder = mediaFolderFor(Astro)
 const media = resolveMediaKey(Astro.props.media, folder)
 const extension = media.split(".").pop()!.toLowerCase()
 const video = findMedia(media)
+const type = Astro.props.type ?? video.type
 
-let posterUrl
-let placeholder
+let posterKey
 if (Astro.props.poster) {
-  const posterKey = resolveMediaKey(Astro.props.poster, folder)
-  posterUrl = variantAtLeast(posterKey, POSTER_WIDTH)
-  placeholder = placeholderStyle(posterKey)
+  posterKey = resolveMediaKey(Astro.props.poster, folder)
+} else {
+  posterKey = posterFor(media)
 }
+const posterUrl = variantAtLeast(posterKey, POSTER_WIDTH)
+const placeholder = placeholderStyle(posterKey)
 ---
 
 <figure class={`attachment attachment--preview attachment--${extension}`}>

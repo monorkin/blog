@@ -80,11 +80,16 @@ bin/media pull              # fetch the originals from R2 into media/originals
 bin/media serve             # serve media/ on http://localhost:4322
 ```
 
-`variants` first strips each original's metadata in place (below), then reads
+`variants` first makes a poster for any video without one: the image beside it with the
+same name, e.g. `demo.jpg` for `demo.mp4`, which is where the site looks for a video's
+poster. It's taken a fifth of the way in, past a black or title-card opening, as the best of
+the next 150 frames by ffmpeg's `thumbnail` filter. A poster that's already there is left
+alone, so replacing a bad frame means putting a better image there under the same name.
+It then strips each original's metadata in place (below), then reads
 `media/originals/` with sharp, only makes variants that are missing or older than their
 original, removes variants whose original is gone, and rewrites the manifest from scratch. It makes each placeholder from the smallest variant and keeps the previous
-one while the original's size hasn't changed. Video sizes come from `ffprobe`, which
-`bin/setup` installs.
+one while the original's size hasn't changed. Video sizes and lengths (`duration`, in whole
+seconds) come from `ffprobe`, which `bin/setup` installs.
 
 | Media | Widths | Squares |
 |---|---|---|
@@ -189,7 +194,9 @@ screenshot, so clicking one opens it full size in a lightbox, with arrows to mov
 gallery (`src/scripts/gallery.ts`).
 
 `<Video>` renders an autoplaying, muted, looping video sized from the manifest the way an
-image is, with its poster's 1200px variant and the poster's placeholder. With `clip` it has no controls, for a short clip that stands in for a
+image is, with its poster's 1200px variant and the poster's placeholder. The poster is the
+image beside the video with the same name (`posterFor` in `src/lib/media.ts`), unless
+`poster` names another, and the type comes from the manifest unless `type` is given. With `clip` it has no controls, for a short clip that stands in for a
 GIF; convert GIFs to MP4 rather than adding them, since a GIF is many times bigger:
 
 ```bash

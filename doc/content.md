@@ -52,17 +52,36 @@ feedId: Article/46                  # migrated entries only, see below
 
 Talks add `event`, `kind`, `eventUrl`, `heldAt`, `video`, `poster` and `videoMirrorUrl`.
 `kind` is `conference` or `meetup`, and is required; the talks list and the talk's page
-label it. The rest are optional. `video` and `poster` are media keys, named by file like an
-entry's figures (`video: talk.mp4`, `poster: poster.jpg`): the recording we host, which the
-talk's page plays with a native player. `videoMirrorUrl` is a copy elsewhere, on YouTube:
+label it. The rest are optional. `video` is a media key, named by file like an entry's
+figures (`video: talk.mp4`): the recording we host, which the talk's page plays with a
+native player. Its poster is the image beside it with the same name, `talk.jpg`, which
+`bin/media variants` makes when it's missing; `poster` names a different one, which is
+rarely needed (`doc/images.md`). `videoMirrorUrl` is a copy elsewhere, on YouTube:
 with a `video` it's only the "View via mirror" link, without one its player is embedded. A
 talk with either is marked as having a video. The body is the talk's abstract.
 
-Snaps have no body. They add `caption`, then `image`, or `video`, `videoType`, `duration`
-and `poster`. The media are named by file, like `image: 1000054880.jpg` (see below).
+Snaps have no body. They add `caption`, then `image` or `video`. The media are named by
+file, like `image: 1000054880.jpg` (see below). A video snap's poster, type and length come
+from the video and the manifest; `poster`, `videoType` and `duration` override them, and
+are rarely needed.
 
 `feedId` is the Atom entry ID the Rails app gave the entry. Feed readers remember it, so it
-must never change. New entries leave it out and get `<Kind>/<folder name>`.
+must never change. New entries leave it out and get `<Kind>/<id>`, the ID at the end of the
+folder name, so it survives a rename.
+
+### Renaming
+
+```bash
+bin/rename article 8s17uw9GPHgD "A year at 37signals"
+bin/rename 8s17uw9GPHgD "A year at 37signals"   # the kind is optional
+```
+
+It sets the new title, and renames the entry's folder to the new slug with the same ID, and
+its media folders under `media/originals/` and `media/variants/` with it. It then rewrites
+the media's keys in `src/data/media.json` and in any entry that uses them by full key. The
+old URL keeps working, because the catch-all route redirects any slug with the right ID
+(`doc/routes.md`), and the feed ID doesn't change. After renaming an entry that has media,
+run `bin/media sync`: its files have new keys in R2.
 
 ### Publishing and scheduling
 
@@ -96,7 +115,7 @@ name, which is looked up in its media folder, `media/originals/<collection>/<fol
   <Figure media="after.jpeg" caption="After" inGallery />
 </Gallery>
 
-<Video media="demo.mp4" poster="demo.jpg" type="video/mp4" caption="The demo" />
+<Video media="demo.mp4" caption="The demo" />
 ```
 
 A key with a slash is a full key, for using another entry's media:

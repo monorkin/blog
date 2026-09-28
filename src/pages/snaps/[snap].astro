@@ -44,12 +44,14 @@ let video
 if (data.video) {
   const key = snap.mediaKey(data.video)
   const videoMedia = findMedia(key)
+  const posterKey = snap.posterKey()!
   video = {
     url: originalUrl(key),
+    type: data.videoType ?? videoMedia.type,
     width: videoMedia.width,
     height: videoMedia.height,
-    poster: data.poster && variantAtLeast(snap.mediaKey(data.poster), LIGHTBOX_FALLBACK_WIDTH),
-    placeholder: data.poster && placeholderStyle(snap.mediaKey(data.poster))
+    poster: variantAtLeast(posterKey, LIGHTBOX_FALLBACK_WIDTH),
+    placeholder: placeholderStyle(posterKey)
   }
   original = video.url
 }
@@ -85,7 +87,7 @@ if (data.video) {
       )}
       {video && (
         <video class:list={[ "lightbox__image", { placeholder: video.placeholder } ]} style={`${imageName}; ${video.placeholder || ""}`} controls poster={video.poster} width={video.width} height={video.height}>
-          <source src={video.url} type={data.videoType} />
+          <source src={video.url} type={video.type} />
         </video>
       )}
 

@@ -17,8 +17,9 @@ bin/generate snap "Soca Valley" ~/Pictures/soca.jpg   # the photo is optional
 
 It makes the folder, named `<slug>-<id>`: the slug from the title ("Clean air & AI" is
 `clean-air-ai`) and a fresh 12-character ID nothing else uses. The folder's name is the URL
-and never changes once published, so get the title right, or delete the folder and generate
-again. Never make up an ID by hand.
+and never changes once published, so get the title right. To change it later, use
+`bin/rename <id> "New title"`: it keeps the ID, so the old URL redirects and the feed ID
+stays (`doc/content.md`). Never make up an ID by hand.
 
 It also makes the entry's media folder, `media/originals/<collection>/<folder>/`, copies a
 snap's photo into it, and prints the file it wrote and the URL it will have.
@@ -50,8 +51,8 @@ tags: []
 - Tags are lowercase with dashes. A new tag needs nothing else.
 - A talk gets placeholder `event` and `heldAt` to replace, and `kind: meetup`; set it to
   `conference` for a conference. It optionally takes `eventUrl`; a recording goes in as
-  `video: talk.mp4` and `poster: poster.jpg` (the new-media skill), with the YouTube copy,
-  if any, as `videoMirrorUrl`. Either marks the talk as having a video.
+  `video: talk.mp4`, and `bin/media variants` makes its poster (the new-media skill), with
+  the YouTube copy, if any, as `videoMirrorUrl`. Either marks the talk as having a video.
 - A snap has `image: <file>` when you gave it a photo; run `bin/media variants` so the
   manifest knows it. It takes an optional `caption`, and has no body.
 - Keep the order: title, the dates, tags, what the kind adds, `draft` last.
@@ -75,8 +76,8 @@ never an `<img>` or a file in `public/`. Name them by file; the `new-media` skil
 <Figure media="view.jpeg" caption="Zagreb from Sljeme" />
 ```
 
-`<Gallery>` for images side by side (each `<Figure>` with `inGallery`), `<Video>` for a
-clip with a poster image. The first `<Figure>` is the article's Open Graph image, so lead
+`<Gallery>` for images side by side (each `<Figure>` with `inGallery`), `<Video media="demo.mp4" />` for a
+video, whose poster `bin/media variants` makes. The first `<Figure>` is the article's Open Graph image, so lead
 with a good one.
 
 ## 4. Check it

@@ -1,5 +1,4 @@
 ---
-import type { CollectionEntry } from "astro:content"
 import type { Entry } from "~/lib/entries"
 import { findMedia, placeholderStyle, squareUrl } from "~/lib/media"
 import { transitionStyles } from "~/lib/view-transitions"
@@ -12,11 +11,11 @@ const THUMBNAIL_SIZE = 400
 const THUMBNAIL_SIZES = "(width >= 600px) 300px, 33vw"
 
 const { snap } = Astro.props
-const data = snap.source.data as CollectionEntry<"snaps">["data"]
 const cover = snap.coverImage()!
 const squares = findMedia(cover).squares ?? []
 const srcset = squares.map(size => `${squareUrl(cover, size, "webp")} ${size}w`).join(", ")
 const placeholder = placeholderStyle(cover)
+const duration = snap.videoDuration()
 
 function formatDuration(totalSeconds: number) {
   const seconds = Math.round(totalSeconds)
@@ -38,7 +37,7 @@ function formatDuration(totalSeconds: number) {
       loading="lazy"
     />
   </a>
-  {data.video && data.duration && (
-    <span class="photos-grid__duration">{formatDuration(data.duration)}</span>
+  {duration && (
+    <span class="photos-grid__duration">{formatDuration(duration)}</span>
   )}
 </div>

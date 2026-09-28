@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# Puts what's committed and pushed on stanko.io: the media first, then the site that uses it.
+#
+#   1. Stops unless everything is committed and pushed, so what's live is what's in git.
+#   2. bin/media variants: posters, stripped metadata, variants and the manifest. Should that
+#      change anything, it stops again, since the manifest the build reads has to be in git.
+#   3. bin/media sync: makes R2 match media/, and asks before deleting anything there.
+#   4. Builds the site and deploys it with wrangler, which asks you to log in the first time.
+set -eo pipefail
+
+cd "$(dirname "$0")/.."
+
+PURPLE="#4f39f6"
+GREEN="#00a63e"
+RED="#e7000b"
+
+bin/setup --quiet
+eval "$(mise env -s bash)"
+
+step() {
+  gum style --foreground "$PURPLE" --background "" "▸ $1"
+}
+
+fail() {
+  gum style --foreground "$RED" --background "" "$1"
+  exit 1
+}
+
+require_clean_tree() {
+  if [ -n "$(git status --porcelain)" ]; then
+    git status --short
+    fail "$1"
+  fi
+}
+
+step "Checking that everything is committed and pushed"
+require_clean_tree "Commit or remove these first: a deploy is what's in git."
+
+git fetch --quiet
+if ! upstream=$(git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}" 2> /dev/null); then
+  fail "$(git branch --show-current) has no upstream. Push it with 'git push -u' first."
+fi
+
+ahead=$(git rev-list --count "$upstream..HEAD")
+behind=$(git rev-list --count "HEAD..$upstream")
+if [ "$ahead" -gt 0 ]; then
+  fail "$ahead commits aren't pushed to $upstream. Push them first."
+elif [ "$behind" -gt 0 ]; then
+  fail "$upstream has $behind commits you don't. Pull them first."
+fi
+echo "$(git branch --show-current) at $(git rev-parse --short HEAD), the same as $upstream"
+echo
+
+step "Making the media's variants"
+bin/media variants
+require_clean_tree "bin/media variants changed these. Commit and push them, then deploy again."
+echo
+
+step "Syncing the media to R2"
+bin/media sync
+echo
+
+step "Building the site"
+npm run build
+echo
+
+step "Deploying"
+npx wrangler deploy
+
+gum style --foreground "$GREEN" --background "" "✓ Deployed $(git rev-parse --short HEAD)"

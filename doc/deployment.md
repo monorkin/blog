@@ -1,7 +1,22 @@
 # Deployment
 
-The site runs on Cloudflare Workers with static assets. **It hasn't been deployed**, and
-nothing here deploys it: don't run `wrangler deploy` unless Stanko asks for exactly that.
+The site runs on Cloudflare Workers with static assets. **It hasn't been deployed.** Don't
+run `bin/deploy` or `wrangler deploy` unless Stanko asks for exactly that.
+
+## bin/deploy
+
+```bash
+bin/deploy
+```
+
+1. It stops unless the tree is clean and the branch matches its upstream, neither ahead nor
+   behind, so what goes live is what's in git.
+2. `bin/media variants`. If that changes anything, such as a new poster or the manifest, it
+   stops and asks for a commit, because the build reads the manifest from the repository.
+3. `bin/media sync`, which makes R2 match `media/`, and asks before deleting anything
+   there (`doc/images.md`). A no stops the deploy.
+4. `npm run build`, then `npx wrangler deploy`. Wrangler asks you to log in the first time,
+   or uses `CLOUDFLARE_API_TOKEN` when it's set.
 
 ## What a deploy is
 
@@ -17,8 +32,7 @@ nothing here deploys it: don't run `wrangler deploy` unless Stanko asks for exac
 `wrangler.jsonc` at the root is the source of that configuration: the Worker's name, its
 compatibility date, the `ASSETS` binding and how assets are served. Change it there.
 
-Deploying would be `npm run build && npx wrangler deploy`, with a Cloudflare account set up
-in wrangler.
+The deploy itself is `npm run build && npx wrangler deploy`, the last step of `bin/deploy`.
 
 ## Media
 

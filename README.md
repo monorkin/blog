@@ -29,9 +29,9 @@ Everything starts as a draft. To publish:
 1. Remove `draft: true`, and set `publishedAt` to when it goes out. A future date schedules it
    for the first build after then.
 2. `bin/media variants` if you added photos or videos, then commit, including
-   `src/data/media.json`.
-3. `bin/media sync` to upload the media to R2.
-4. Deploy. That isn't set up yet; it'll be `npm run build && npx wrangler deploy`.
+   `src/data/media.json`, and push.
+3. `bin/deploy`. It checks everything is committed and pushed, makes the variants, syncs
+   the media to R2 (asking before it deletes anything there), then builds and deploys.
 
 ### An article
 

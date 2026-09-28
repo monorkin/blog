@@ -74,8 +74,8 @@ transparent parts.
 
 ```bash
 bin/media variants          # make missing variants and rewrite src/data/media.json
-bin/media sync --dry-run    # what would be copied to R2
-bin/media sync              # copy media/originals and media/variants to R2
+bin/media sync --dry-run    # what would be copied to and deleted from R2
+bin/media sync              # make R2 match media/originals and media/variants
 bin/media pull              # fetch the originals from R2 into media/originals
 bin/media serve             # serve media/ on http://localhost:4322
 ```
@@ -106,9 +106,17 @@ presses play, and then the browser fetches it in ranges as it plays. A video mus
 index (the `moov` atom) at the front to start before it has all downloaded; ffmpeg's
 `-movflags +faststart` puts it there, and the remux that strips metadata keeps it there.
 
-`sync` only copies; it never deletes from the bucket, and uploads with a year-long
-`Cache-Control`, so a changed file needs a new name. It compares files by size and
-checksum, not modification time.
+`sync` makes the bucket's `originals/` and `variants/` match `media/`: it uploads what's new
+or changed, and deletes what's gone locally, such as a renamed entry's old keys or a
+removed image's variants. It compares files by size and checksum, not modification time,
+and uploads with a year-long `Cache-Control`, so a changed file needs a new name.
+
+A machine that hasn't pulled every original would empty the bucket that way, so `sync`
+lists the bucket first. When anything would be deleted, it shows as many of those files as
+fit on the screen, says how many there are in all, and deletes only after you type `yes`.
+Without a terminal to ask in, it refuses. `--max-delete` caps the deletions at the count it
+asked about. `sync --dry-run` shows the same list without asking. Under `op run` it passes
+`--no-masking`, so the question reaches the terminal.
 
 ### Metadata
 

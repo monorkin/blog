@@ -4,8 +4,9 @@
 //   bin/media variants          make a poster for any video without one, strip metadata from
 //                               originals, make the responsive variants and write
 //                               src/data/media.json
-//   bin/media sync [--dry-run]  copy media/originals and media/variants to R2, refusing any
-//                               original that still has location data
+//   bin/media sync [--dry-run]  make R2 match media/originals and media/variants, refusing any
+//                               original that still has location data, and asking before
+//                               deleting what's gone here
 //   bin/media pull              fetch the originals from R2 into media/originals
 //   bin/media serve [--port N]  serve media/ locally, as bin/preview does
 //
@@ -17,6 +18,7 @@
 import { existsSync } from "node:fs"
 import { mkdir, readdir, readFile, rename, rm, stat, utimes, writeFile } from "node:fs/promises"
 import { createServer } from "node:http"
+import { createInterface } from "node:readline/promises"
 import { dirname, extname, join, relative, sep } from "node:path"
 import { spawnSync } from "node:child_process"
 import { fileURLToPath } from "node:url"
@@ -54,6 +56,12 @@ const PLACEHOLDER_QUALITY = 30
 const CONCURRENCY = 4
 const SERVE_PORT = 4322
 const R2_CACHE_CONTROL = "public, max-age=31536000"
+const SYNCED_FOLDERS = [ "originals", "variants" ]
+// Listing what a sync would delete: at least this many, more when the terminal is taller, but
+// always leaving room for the lines around the list and the question
+const MIN_LISTED_DELETIONS = 5
+const DEFAULT_TERMINAL_ROWS = 24
+const DELETION_PROMPT_ROWS = 4
 const R2_KEYS = [ "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY" ]
 const ONE_PASSWORD_ENV_FILE = join(ROOT, ".env.1password")
 // Stanko's personal account; a work account is signed in beside it
@@ -390,18 +398,79 @@ async function pruneVariants(keys) {
 
 async function syncToR2(options) {
   const dryRun = options.includes("--dry-run")
-  // Stripping keeps a file's modification time, so compare sizes and checksums, not times
-  const copy = () => rclone([ "copy", MEDIA, `r2:${requireEnv("R2_BUCKET")}`, "--include", "/originals/**", "--include", "/variants/**",
-    "--checksum", "--header-upload", `Cache-Control: ${R2_CACHE_CONTROL}`, "--transfers", "8", ...flagsFor(dryRun) ])
 
   refuseLocatedOriginals(await originals())
 
-  if (dryRun && hasR2Keys()) {
-    copy()
-  } else if (dryRun) {
+  if (dryRun && !hasR2Keys()) {
     return describeUpload()
   } else {
-    withR2Keys(copy)
+    await withR2Keys(() => mirror(dryRun))
+  }
+}
+
+// The bucket mirrors media/: what's gone here is deleted there too. A machine that never
+// pulled every original would empty the bucket that way, so deleting anything takes a yes.
+async function mirror(dryRun) {
+  const deletions = await filesOnlyInR2()
+
+  if (deletions.length > 0) {
+    listDeletions(deletions)
+
+    if (!dryRun && !(await confirmDeletions(deletions.length))) {
+      console.error("Nothing synced.")
+      process.exit(1)
+    }
+  }
+
+  // Stripping keeps a file's modification time, so compare sizes and checksums, not times.
+  // --max-delete stops it should more have gone missing since the list above.
+  rclone([ "sync", MEDIA, `r2:${requireEnv("R2_BUCKET")}`, ...SYNCED_FOLDERS.flatMap(folder => [ "--include", `/${folder}/**` ]),
+    "--checksum", "--header-upload", `Cache-Control: ${R2_CACHE_CONTROL}`, "--transfers", "8",
+    "--max-delete", String(deletions.length), ...flagsFor(dryRun) ])
+}
+
+async function filesOnlyInR2() {
+  const local = new Set()
+  const remote = []
+
+  for (const folder of SYNCED_FOLDERS) {
+    const directory = join(MEDIA, folder)
+
+    if (existsSync(directory)) {
+      for (const file of await filesIn(directory)) {
+        local.add(relative(MEDIA, file).split(sep).join("/"))
+      }
+    }
+
+    for (const path of rcloneLines([ "lsf", "--recursive", "--files-only", `r2:${requireEnv("R2_BUCKET")}/${folder}` ])) {
+      remote.push(`${folder}/${path}`)
+    }
+  }
+
+  return remote.filter(key => !local.has(key))
+}
+
+// As many as fit on the screen with the question under them, and how many there are in all
+function listDeletions(deletions) {
+  const shown = Math.max(MIN_LISTED_DELETIONS, (process.stdout.rows ?? DEFAULT_TERMINAL_ROWS) - DELETION_PROMPT_ROWS)
+
+  console.log(`${deletions.length} files in R2 aren't in media/ any more, and the sync deletes them:`)
+  deletions.slice(0, shown).forEach(key => console.log(`  ${key}`))
+
+  if (deletions.length > shown) {
+    console.log(`  …and ${deletions.length - shown} more`)
+  }
+}
+
+async function confirmDeletions(count) {
+  if (process.stdin.isTTY) {
+    const prompt = createInterface({ input: process.stdin, output: process.stdout })
+    const answer = await prompt.question(`Delete these ${count} files from R2? Type yes to go on: `)
+    prompt.close()
+    return answer.trim() === "yes"
+  } else {
+    console.error("Not deleting anything without asking, and there's no terminal to ask in.")
+    return false
   }
 }
 
@@ -424,15 +493,15 @@ function refuseLocatedOriginals(files) {
   }
 }
 
-function pullFromR2() {
-  withR2Keys(() => rclone([ "copy", `r2:${requireEnv("R2_BUCKET")}/originals`, ORIGINALS, "--transfers", "8", ...flagsFor(false) ]))
+async function pullFromR2() {
+  await withR2Keys(() => rclone([ "copy", `r2:${requireEnv("R2_BUCKET")}/originals`, ORIGINALS, "--transfers", "8", ...flagsFor(false) ]))
 }
 
 // Runs `work` with the keys from the environment, or runs this command again under
 // `op run` to get them from 1Password
-function withR2Keys(work) {
+async function withR2Keys(work) {
   if (hasR2Keys()) {
-    work()
+    await work()
   } else if (process.env[UNDER_ONE_PASSWORD]) {
     console.error(`op run didn't provide ${R2_KEYS.join(" and ")}. Check the 1Password item that .env.1password names (doc/images.md).`)
     process.exit(1)
@@ -442,7 +511,9 @@ function withR2Keys(work) {
 }
 
 function runUnderOnePassword() {
-  const result = spawnSync("op", [ "run", "--account", ONE_PASSWORD_ACCOUNT, `--env-file=${ONE_PASSWORD_ENV_FILE}`, "--", process.execPath, ...process.argv.slice(1) ], {
+  // --no-masking hands the terminal straight through, so the sync can ask before deleting;
+  // nothing here prints the keys
+  const result = spawnSync("op", [ "run", "--account", ONE_PASSWORD_ACCOUNT, `--env-file=${ONE_PASSWORD_ENV_FILE}`, "--no-masking", "--", process.execPath, ...process.argv.slice(1) ], {
     stdio: "inherit",
     env: { ...process.env, [UNDER_ONE_PASSWORD]: "1" }
   })
@@ -492,7 +563,24 @@ function hasR2Keys() {
 }
 
 function rclone(args) {
-  const env = {
+  const result = spawnSync("rclone", args, { stdio: "inherit", env: rcloneEnv() })
+
+  process.exitCode = result.status ?? 1
+}
+
+function rcloneLines(args) {
+  const result = spawnSync("rclone", args, { stdio: [ "ignore", "pipe", "inherit" ], encoding: "utf8", env: rcloneEnv() })
+
+  if (result.status === 0) {
+    return result.stdout.split("\n").filter(Boolean)
+  } else {
+    console.error(`rclone ${args[0]} failed, so nothing was synced.`)
+    process.exit(1)
+  }
+}
+
+function rcloneEnv() {
+  return {
     ...process.env,
     RCLONE_CONFIG_R2_TYPE: "s3",
     RCLONE_CONFIG_R2_PROVIDER: "Cloudflare",
@@ -501,9 +589,6 @@ function rclone(args) {
     RCLONE_CONFIG_R2_ENDPOINT: `https://${requireEnv("R2_ACCOUNT_ID")}.r2.cloudflarestorage.com`,
     RCLONE_CONFIG_R2_NO_CHECK_BUCKET: "true"
   }
-  const result = spawnSync("rclone", args, { stdio: "inherit", env })
-
-  process.exitCode = result.status ?? 1
 }
 
 function requireEnv(name) {

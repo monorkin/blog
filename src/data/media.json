@@ -8845,6 +8845,28 @@
     "height": 1920,
     "duration": 16
   },
+  "snaps/robin-in-the-snow-PmdBY4grPtdX/poster-1000060384.jpg": {
+    "type": "image/jpeg",
+    "bytes": 92327,
+    "width": 1080,
+    "height": 1920,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1080
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACQAQCdASoJABAABABoJZwAAuUj84AA/t7xIU+bj71sSUGaiyi9srQJQnJFzf234mDxmGWrAAA=",
+    "color": "#999594"
+  },
   "snaps/sheep-in-soca-vallye-YVSCGaaS3M1U/20260531_174104.jpg": {
     "type": "image/jpeg",
     "bytes": 2111976,
@@ -9421,6 +9443,28 @@
     "placeholder": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoPABAABABoJZwAAuXA7VkeAAD9lmUFhBndIZ0PALRB6P6k6IhtwNeWSIe0E24Mw+pSLAeTAqzYVgAA",
     "color": "#928a87"
   },
+  "talks/developing-a-safer-web-with-rust-DfhyvPw3yruT/poster.jpg": {
+    "type": "image/jpeg",
+    "bytes": 100363,
+    "width": 1920,
+    "height": 1080,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "squares": [
+      512
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoQAAkABABoJZQCdAEQCeeO+KAA/ieqB5CCG5U4eeL6MwByEnQuGSFvx9bDhEcS+Z5YGhAv4oAAAA==",
+    "color": "#857687"
+  },
   "talks/developing-a-safer-web-with-rust-DfhyvPw3yruT/talk.jpg": {
     "type": "image/jpeg",
     "bytes": 100363,
@@ -9450,6 +9494,28 @@
     "height": 1080,
     "duration": 1381
   },
+  "talks/do-you-really-need-websockets-huEURtr2Oclt/poster.jpg": {
+    "type": "image/jpeg",
+    "bytes": 115483,
+    "width": 1920,
+    "height": 1080,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "squares": [
+      512
+    ],
+    "placeholder": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoQAAkABABoJbACdAEN1TP+D0AA/t4AB6xUBhfq8yUbbJx6RevI+Z5h7XDxgLz0t2srLXDnwVMk3TbD7HweEfpx23iTM/5CVxtjAAAA",
+    "color": "#2f4f76"
+  },
   "talks/do-you-really-need-websockets-huEURtr2Oclt/talk.jpg": {
     "type": "image/jpeg",
     "bytes": 115483,
@@ -9478,6 +9544,28 @@
     "width": 1920,
     "height": 1080,
     "duration": 1372
+  },
+  "talks/stubs-mocks-spies-MdyHowlg0PqN/poster.jpg": {
+    "type": "image/jpeg",
+    "bytes": 145091,
+    "width": 1920,
+    "height": 1080,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "squares": [
+      512
+    ],
+    "placeholder": "data:image/webp;base64,UklGRjIAAABXRUJQVlA4ICYAAADQAQCdASoQAAkABABoJaQAAp/ny9ZGAAD+9PAq+3DeRwuw4gAAAA==",
+    "color": "#f7f7f7"
   },
   "talks/stubs-mocks-spies-MdyHowlg0PqN/talk.jpg": {
     "type": "image/jpeg",

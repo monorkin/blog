@@ -1,46 +1,158 @@
 @layer components {
+  /* The card a link in an article shows on hover (src/scripts/link-previews.ts): a popover
+     in the top layer, placed by the script, so none of the UA's centered, scrolling box */
+  /* A white card on a near-white page, or the darkest surface on a black one, needs a clear
+     edge, or the arrow all but vanishes; in dark mode the card is a step lighter too */
   .link-preview {
-    display: flex;
-    flex-direction: column;
+    --link-preview-background: var(--color-surface);
+    --link-preview-border: var(--color-border);
   }
 
-  .link-preview__text {
-    color: oklch(44.6% 0.016 285.75);
-    padding: var(--space-4);
-    font-size: var(--text-sm);
-
-    & h6 {
-      font-size: var(--text-base);
-      margin-block-start: 0;
-      font-weight: 600;
-    }
-
-    & p {
-      margin-block: var(--space-1) 0;
-    }
-  }
-
-  .color-scheme.color-scheme--dark .link-preview__text {
-    color: oklch(87.81% 0.01 258.34);
+  .color-scheme.color-scheme--dark .link-preview {
+    --link-preview-background: oklch(21% 0.006 285.88);
+    --link-preview-border: oklch(37.14% 0.014 285.75);
   }
 
   @media (prefers-color-scheme: dark) {
-    .color-scheme:not(.color-scheme--light) .link-preview__text {
-      color: oklch(87.81% 0.01 258.34);
+    .color-scheme:not(.color-scheme--light) .link-preview {
+      --link-preview-background: oklch(21% 0.006 285.88);
+      --link-preview-border: oklch(37.14% 0.014 285.75);
     }
   }
 
-  /* Wide images fill the card; tall ones, like book covers, are shown whole */
-  .link-preview .link-preview__image {
+  .link-preview[popover] {
+    position: absolute;
+    inset: auto;
+    z-index: var(--z-popup);
+    inline-size: min(20rem, 100vw - 1rem);
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    border: 1px solid var(--link-preview-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--link-preview-background);
+    color: var(--color-ink);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    translate: 0 0.25rem;
+    transition: opacity 120ms ease-out, translate 120ms ease-out, display 120ms allow-discrete, overlay 120ms allow-discrete;
+  }
+
+  .link-preview[data-placement="top"] {
+    translate: 0 -0.25rem;
+  }
+
+  .link-preview:popover-open {
+    opacity: 1;
+    translate: 0 0;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .link-preview[popover] {
+      transition: none;
+      translate: none;
+    }
+  }
+
+  /* Most preview images are made for this shape; anything else is cropped from the top,
+     where a page's screenshot has its header */
+  .link-preview__image {
     display: block;
     inline-size: 100%;
     block-size: auto;
-    aspect-ratio: 2 / 1;
-    object-fit: contain;
+    aspect-ratio: 1.91 / 1;
+    object-fit: cover;
+    object-position: top;
+    border-block-end: 1px solid var(--link-preview-border);
+    border-start-start-radius: calc(var(--radius-lg) - 1px);
+    border-start-end-radius: calc(var(--radius-lg) - 1px);
+  }
+
+  /* Points at the link, from whichever side of the card faces it; the script sets how far
+     along. It's a square turned on its corner, bordered on the two sides that show. */
+  .link-preview__arrow {
+    position: absolute;
+    inset-inline-start: var(--arrow-left, 50%);
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    translate: -50%;
+    rotate: 45deg;
+    background-color: var(--link-preview-background);
+    border: 1px solid var(--link-preview-border);
+  }
+
+  /* Only the half outside the card, so it doesn't cover the edge of the image */
+  .link-preview[data-placement="bottom"] .link-preview__arrow {
+    inset-block-start: calc(-0.375rem - 1px);
+    border-block-end-color: transparent;
+    border-inline-end-color: transparent;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+  }
+
+  .link-preview[data-placement="top"] .link-preview__arrow {
+    inset-block-end: calc(-0.375rem - 1px);
+    border-block-start-color: transparent;
+    border-inline-start-color: transparent;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+
+  /* Over an image, the arrow is a triangle of that image (the script lines it up), reaching
+     over the card's border so nothing separates the two */
+  .link-preview[data-arrow="image"] .link-preview__arrow {
+    inset-block-start: calc(-0.5rem - 1px);
+    inline-size: 1rem;
+    block-size: calc(0.5rem + 1px);
+    rotate: none;
+    border: 0;
+    background: var(--arrow-image) var(--arrow-image-position) / var(--arrow-image-size) no-repeat;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+
+  /* Without room for the whole card on either side of the link, the image goes */
+  .link-preview[data-compact] .link-preview__image {
+    display: none;
+  }
+
+  .link-preview__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4) var(--space-4);
+  }
+
+  .link-preview__host {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .link-preview__title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .link-preview__description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
     margin: 0;
-    border-end-start-radius: var(--radius-lg);
-    border-end-end-radius: var(--radius-lg);
-    box-shadow: none;
-    background-size: contain;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: var(--color-ink-subtle);
   }
 }

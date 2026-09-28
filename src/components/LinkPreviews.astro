@@ -1,6 +1,7 @@
 ---
 import linkPreviews from "~/data/link-previews.json"
 import { findMedia, placeholderStyle, variantAtLeast } from "~/lib/media"
+import { SITE_URL } from "~/lib/site"
 
 interface Props {
   html: string
@@ -12,27 +13,52 @@ interface LinkPreview {
   image?: string
 }
 
-interface PreviewImage {
-  src: string
-  width?: number
-  height?: number
-  placeholder?: string
-}
-
 const PREVIEW_IMAGE_WIDTH = 768
+// Captured from an error page when the link was saved, so there's nothing worth showing
+const ERROR_PAGE_TITLE = /^(page )?not found$|^404\b/i
+// "GitHub - …", "… | MDN", "… - Stanko K.R.": the name of the site the link is on, which the
+// card shows as its host anyway
+const TITLE_SEPARATOR = /\s+[-|–—]\s+/
 
 const previews = linkPreviews as Record<string, LinkPreview>
 
 const { html } = Astro.props
 const hrefs = new Set([ ...html.matchAll(/<a [^>]*href="([^"]+)"/g) ].map(match => decodeEntities(match[1])))
 
-const previewsForPage: Record<string, { title?: string, description?: string, image?: PreviewImage }> = {}
+const previewsForPage: Record<string, { host: string, title?: string, description?: string, image?: ReturnType<typeof previewImage> }> = {}
 for (const href of hrefs) {
   const preview = previews[href]
 
-  if (preview) {
-    previewsForPage[href] = { title: preview.title, description: preview.description, image: previewImage(preview.image) }
+  if (preview && !ERROR_PAGE_TITLE.test(preview.title ?? "")) {
+    const host = hostOf(href)
+    previewsForPage[href] = { host, title: withoutSiteName(preview.title, host), description: preview.description, image: previewImage(preview.image) }
   }
+}
+
+function hostOf(href: string) {
+  return new URL(href, SITE_URL).hostname.replace(/^www\./, "")
+}
+
+// Drops the first or last part of a title when it names the host, like "Home | Shrine" on
+// shrinerb.com or "Download Claude | Claude" on claude.ai
+function withoutSiteName(title: string | undefined, host: string) {
+  if (title) {
+    const parts = title.split(TITLE_SEPARATOR)
+    const hostLabels = host.split(".").slice(0, -1).map(normalized)
+    const namesHost = (part: string) => hostLabels.some(label => label.startsWith(normalized(part)) || normalized(part).startsWith(label))
+
+    if (parts.length > 1 && namesHost(parts.at(-1)!)) {
+      return parts.slice(0, -1).join(" - ")
+    } else if (parts.length > 1 && namesHost(parts[0])) {
+      return parts.slice(1).join(" - ")
+    } else {
+      return title
+    }
+  }
+}
+
+function normalized(text: string) {
+  return text.toLowerCase().replace(/[^a-z0-9]/g, "")
 }
 
 // The size lets the card lay out before the image loads, so it doesn't grow under the pointer

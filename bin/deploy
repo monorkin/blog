@@ -6,6 +6,8 @@
 #      change anything, it stops again, since the manifest the build reads has to be in git.
 #   3. bin/media sync: makes R2 match media/, and asks before deleting anything there.
 #   4. Builds the site and deploys it with wrangler.
+#   5. Tells search engines which pages changed through IndexNow (bin/indexnow), comparing the
+#      build's sitemaps with the live ones before they're replaced.
 #
 # It checks you're logged in to Cloudflare before it touches anything, and offers to log you
 # in, so a deploy doesn't stop at the end with the media already synced.
@@ -83,9 +85,14 @@ echo
 
 step "Building the site"
 npm run build
+changed_urls=$(bin/indexnow changed)
 echo
 
 step "Deploying"
 npx wrangler deploy
 
 gum style --foreground "$GREEN" --background "" "✓ Deployed $(git rev-parse --short HEAD)"
+echo
+
+step "Telling search engines what changed"
+echo "$changed_urls" | bin/indexnow submit

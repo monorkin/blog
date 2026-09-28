@@ -19,6 +19,28 @@ bin/deploy
 4. `bin/media sync`, which makes R2 match `media/`, and asks before deleting anything
    there (`doc/images.md`). A no stops the deploy.
 5. `npm run build`, then `npx wrangler deploy`.
+6. It tells search engines what changed, through IndexNow (below).
+
+## IndexNow
+
+IndexNow lets Bing, Yandex and a few other search engines know a page changed, so they crawl
+it again without waiting for the sitemap. Google doesn't use it.
+
+```bash
+bin/indexnow changed                      # URLs whose sitemap entry differs from the live site's
+bin/indexnow all                          # every URL in the build's sitemaps
+bin/indexnow all | bin/indexnow submit    # submit them all, after a change to every page
+```
+
+`changed` compares the sitemaps in `dist/client/` with the live ones: new URLs, removed
+ones, and ones with a new `lastmod`. `bin/deploy` runs it after building but before
+deploying, since after that the live sitemaps are the new ones, and submits the result once
+the deploy is done. A change that doesn't move `lastmod`, like a new layout, isn't in it;
+submit everything by hand for that.
+
+The key is public by design: it's `public/<key>.txt`, holding the key itself, which proves
+the site is ours. `bin/indexnow` reads it from there; changing it means renaming the file and
+its contents together.
 
 ## What a deploy is
 

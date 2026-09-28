@@ -6,9 +6,9 @@ import EntryList from "~/components/EntryList.astro"
 import Paginated from "~/components/Paginated.astro"
 import TagBubble from "~/components/TagBubble.astro"
 import type { Entry } from "~/lib/entries"
-import { paginateIndex, type IndexPage } from "~/lib/pagination"
+import { pagePath, paginateIndex, type IndexPage } from "~/lib/pagination"
 import { allTags, relatedTags, type Tag } from "~/lib/tags"
-import { absoluteUrl, titleize } from "~/lib/site"
+import { absoluteUrl, SITE_NAME, titleize } from "~/lib/site"
 
 export const getStaticPaths = (async ({ paginate }) => {
   const tags = await allTags()
@@ -41,8 +41,8 @@ if (page.first) {
     <title>{titleize(tag.name)}</title>
     <SeoTags
       title={`#${tag.name}`}
-      description={`Content tagged with ${tag.name}`}
-      url={absoluteUrl(`/tags/${tag.name}`)}
+      description={`Articles, talks and snaps tagged #${tag.name} by ${SITE_NAME}, a programmer from Zagreb who builds products with Ruby on Rails and Hotwire.`}
+      url={absoluteUrl(pagePath(`/tags/${tag.name}`, page.number))}
     />
   </Fragment>
 

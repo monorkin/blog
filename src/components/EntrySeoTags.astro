@@ -3,7 +3,7 @@ import SeoTags from "~/components/SeoTags.astro"
 import type { Entry } from "~/lib/entries"
 import { markdownPath } from "~/lib/markdown"
 import { socialImagePath } from "~/lib/social-image"
-import { titleize } from "~/lib/site"
+import { formatDate, SITE_NAME, titleize } from "~/lib/site"
 
 interface Props {
   entry: Entry
@@ -12,6 +12,12 @@ interface Props {
 const DESCRIPTION_MAX_LENGTH = 160
 
 const { entry } = Astro.props
+
+// A snap's description is its caption, and most have none
+let description = await entry.excerpt(DESCRIPTION_MAX_LENGTH)
+if (!description && entry.kind === "snap") {
+  description = `${entry.title}, a snap by ${SITE_NAME} from ${formatDate(entry.publishedAt)}, one of the photos and videos from travels, hikes and everyday life on stanko.io.`
+}
 
 let generatedImage
 if (entry.usesGeneratedSocialImage) {
@@ -22,7 +28,7 @@ if (entry.usesGeneratedSocialImage) {
 <title>{titleize(entry.title)}</title>
 <SeoTags
   title={titleize(entry.title)}
-  description={await entry.excerpt(DESCRIPTION_MAX_LENGTH)}
+  description={description}
   url={entry.url}
   type="article"
   image={entry.socialImageKey}

@@ -97,4 +97,9 @@ Workers serves `/404.html` and the other error pages with a 307 to `/404` and so
 
 `/sitemap.xml` is an index of `/sitemap-pages.xml`, `-articles`, `-talks`, `-tags` and
 `-snaps`, each in `src/pages/`. A new kind of public page needs a place in one of them.
-`/robots.txt` is in `public/`.
+`/robots.txt` is in `public/`. `bin/indexnow` reads the sitemaps to find what a deploy
+changed (`doc/deployment.md`).
+
+Every page is its own canonical URL, the pages of a list after the first included, so
+search engines index `/articles/page/2` rather than folding it into `/articles`. `/search`
+is `noindex`, but its links are followed.

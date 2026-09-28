@@ -1,0 +1,123 @@
+#!/usr/bin/env node
+// Tells search engines that support IndexNow (Bing, Yandex, Seznam, Naver…) which pages changed,
+// so they crawl them again without waiting for the sitemap.
+//
+//   bin/indexnow changed   print the URLs whose sitemap entry differs between the build in
+//                          dist/client and the live site: new, removed, or with a new lastmod
+//   bin/indexnow all       print every URL in the build's sitemaps
+//   bin/indexnow submit    submit the URLs read from stdin, one per line
+//
+// bin/deploy runs `changed` before it deploys and `submit` after. The key is public by design:
+// it's public/<key>.txt, which search engines fetch to check it.
+import { readdir, readFile } from "node:fs/promises"
+import { dirname, join } from "node:path"
+import { fileURLToPath } from "node:url"
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
+const BUILD = join(ROOT, "dist/client")
+const SITE_URL = "https://stanko.io"
+const KEY_FILE = /^[0-9a-f]{32}\.txt$/
+const ENDPOINT = "https://api.indexnow.org/indexnow"
+const MAX_URLS = 10_000
+
+const commands = {
+  changed: printChanged,
+  all: printAll,
+  submit
+}
+
+const [ command ] = process.argv.slice(2)
+
+if (commands[command]) {
+  await commands[command]()
+} else {
+  console.error("Usage: bin/indexnow changed|all|submit")
+  process.exit(1)
+}
+
+async function printChanged() {
+  const built = await sitemapEntries(readBuilt)
+  const live = await sitemapEntries(fetchLive)
+  const urls = new Set([ ...built.keys(), ...live.keys() ])
+
+  for (const url of urls) {
+    if (built.get(url) !== live.get(url)) {
+      console.log(url)
+    }
+  }
+}
+
+async function printAll() {
+  for (const url of (await sitemapEntries(readBuilt)).keys()) {
+    console.log(url)
+  }
+}
+
+// Every page in a sitemap index and its sitemaps, as URL => lastmod
+async function sitemapEntries(read) {
+  const entries = new Map()
+  const index = await read(`${SITE_URL}/sitemap.xml`)
+
+  for (const sitemap of locs(index)) {
+    for (const url of (await read(sitemap)).match(/<url>[\s\S]*?<\/url>/g) ?? []) {
+      entries.set(locs(url)[0], url.match(/<lastmod>([^<]*)<\/lastmod>/)?.[1])
+    }
+  }
+
+  return entries
+}
+
+function locs(xml) {
+  return [ ...xml.matchAll(/<loc>([^<]*)<\/loc>/g) ].map(match => match[1])
+}
+
+function readBuilt(url) {
+  return readFile(join(BUILD, new URL(url).pathname), "utf8")
+}
+
+// Before the first deploy there's nothing live, so everything counts as changed
+async function fetchLive(url) {
+  const response = await fetch(url)
+
+  if (response.status === 404) {
+    return ""
+  } else if (response.ok) {
+    return response.text()
+  } else {
+    throw new Error(`${url} answered ${response.status}`)
+  }
+}
+
+async function submit() {
+  const urls = (await readFile(0, "utf8")).split("\n").map(line => line.trim()).filter(Boolean)
+
+  if (urls.length === 0) {
+    console.log("Nothing changed")
+  } else if (urls.length > MAX_URLS) {
+    throw new Error(`IndexNow takes up to ${MAX_URLS} URLs at once, and there are ${urls.length}`)
+  } else {
+    const key = await readKey()
+    const response = await fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify({ host: new URL(SITE_URL).host, key, keyLocation: `${SITE_URL}/${key}.txt`, urlList: urls })
+    })
+
+    if (response.ok) {
+      console.log(`Submitted ${urls.length} URLs`)
+    } else {
+      throw new Error(`IndexNow answered ${response.status}: ${await response.text()}`)
+    }
+  }
+}
+
+// The key is the name of the file that proves the site is ours, and its contents
+async function readKey() {
+  const file = (await readdir(join(ROOT, "public"))).find(name => KEY_FILE.test(name))
+
+  if (file) {
+    return file.replace(/\.txt$/, "")
+  } else {
+    throw new Error("No IndexNow key in public/: a file named <32 hex characters>.txt, holding them")
+  }
+}

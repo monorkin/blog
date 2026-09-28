@@ -5,7 +5,7 @@ import SeoTags from "~/components/SeoTags.astro"
 import Paginated from "~/components/Paginated.astro"
 import SnapGridItem from "~/components/SnapGridItem.astro"
 import { publishedEntries, type Entry } from "~/lib/entries"
-import { paginateIndex, type IndexPage } from "~/lib/pagination"
+import { pagePath, paginateIndex, type IndexPage } from "~/lib/pagination"
 import { absoluteUrl, titleize } from "~/lib/site"
 
 export const getStaticPaths = (async ({ paginate }) => {
@@ -20,8 +20,8 @@ const { page } = Astro.props as { page: IndexPage<Entry> }
     <title>{titleize("Snaps")}</title>
     <SeoTags
       title="Snaps"
-      description="Photo galleries and photography"
-      url={absoluteUrl("/snaps")}
+      description="Photos and videos by Stanko K.R. from travels, hikes and everyday life, from Zagreb to Venice, Amsterdam and the Soča valley."
+      url={absoluteUrl(pagePath("/snaps", page.number))}
     />
   </Fragment>
 

@@ -35,9 +35,9 @@ Read what matches what you're editing, not all of it.
 4. **Media stays out of git.** Photos, screenshots and videos go in `media/originals/` and R2,
    and entries refer to them by key; only `src/data/media.json` is committed (`new-media`
    skill). Git holds site assets only: favicons, the portrait, logos.
-5. **Never deploy.** No `bin/deploy`, no `wrangler deploy`, no `bin/media sync`, no changes to Cloudflare, R2
-   or DNS, unless Stanko asks for exactly that. `bin/dev` and `bin/preview` are the ways to
-   run it.
+5. **Never deploy.** No `bin/deploy`, no `wrangler deploy`, no `bin/media sync`, no
+   `bin/indexnow submit`, no changes to Cloudflare, R2 or DNS, unless Stanko asks for exactly
+   that. `bin/dev` and `bin/preview` are the ways to run it.
 6. **No framework in the browser.** Astro components and small scripts in `src/scripts/`.
    Keep the look: the CSS in `src/styles/` came from the Rails app and is the reference.
 

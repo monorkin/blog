@@ -125,6 +125,10 @@ from a square thumbnail to the whole photo. The rest of the page fades, and the 
 named `site-header`, stays still. Every animation takes 50ms with an ease-out curve
 (`src/styles/components/view-transitions.css`). Keep them that quick.
 
+The home page shows the big portrait instead of the header's avatar (`<Layout home>`), and a
+placeholder holds the avatar's place so the links don't move. Both are named `site-avatar`,
+so leaving the home page shrinks the portrait into the header, and coming back grows it.
+
 On `/snaps` a click opens the snap in the lightbox instead of navigating, so nothing morphs
 there; the lightbox drops the names from its copy of the snap, since the thumbnail has them.
 

@@ -6,6 +6,7 @@ import { PROJECTS_ENABLED } from "~/lib/site"
 
 interface Props {
   section?: string
+  home?: boolean
 }
 
 const NAV_ITEMS = [
@@ -15,7 +16,7 @@ const NAV_ITEMS = [
   { section: "projects", href: "/projects", label: "Projects" }
 ].filter(item => item.section !== "projects" || PROJECTS_ENABLED)
 
-const { section } = Astro.props
+const { section, home = false } = Astro.props
 
 function currentFor(item: { section: string }) {
   if (item.section === section) {
@@ -25,9 +26,12 @@ function currentFor(item: { section: string }) {
 ---
 
 <nav class="header" aria-label="Main">
-  <a class="header__home" href="/" aria-label="About">
-    <img class="header__profile-img profile-img" alt="Stanko K.R." src={portrait.src} />
-  </a>
+  {home && <span class="header__home header__home--placeholder" aria-hidden="true"></span>}
+  {!home && (
+    <a class="header__home" href="/" aria-label="About">
+      <img class="header__profile-img profile-img" alt="Stanko K.R." src={portrait.src} style="view-transition-name: site-avatar" />
+    </a>
+  )}
 
   <ul class="header__links">
     {NAV_ITEMS.map(item => (

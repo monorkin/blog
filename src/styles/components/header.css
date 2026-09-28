@@ -32,6 +32,12 @@
     border-radius: var(--radius-full);
   }
 
+  /* Holds the avatar's place on the home page, so the links don't move between pages */
+  .header__home--placeholder {
+    block-size: 2rem;
+    inline-size: 2rem;
+  }
+
   .header__profile-img {
     block-size: 2rem;
     inline-size: 2rem;

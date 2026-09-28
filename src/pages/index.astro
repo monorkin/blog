@@ -31,7 +31,7 @@ const snaps = (await publishedEntries("snap")).slice(0, SNAP_COUNT)
 const portraitSrcset = `${portraitSmall.src} 512w, ${portraitMedium.src} 1024w`
 ---
 
-<Layout transitions>
+<Layout home transitions>
   <Fragment slot="head">
     <title>{titleize("Blog")}</title>
     <SeoTags
@@ -51,6 +51,7 @@ const portraitSrcset = `${portraitSmall.src} 512w, ${portraitMedium.src} 1024w`
         width={portraitSmall.width}
         height={portraitSmall.height}
         alt="Stanko K.R."
+        style="view-transition-name: site-avatar"
       />
 
       <div class="home__bio">

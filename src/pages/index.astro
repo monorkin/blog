@@ -2,12 +2,11 @@
 import Layout from "~/layouts/Layout.astro"
 import SeoTags from "~/components/SeoTags.astro"
 import EntryList from "~/components/EntryList.astro"
-import Icon from "~/components/Icon.astro"
-import { publishedEntries } from "~/lib/entries"
+import SnapGridItem from "~/components/SnapGridItem.astro"
+import { publishedEntries, publishedTalks } from "~/lib/entries"
 import { absoluteUrl, titleize } from "~/lib/site"
 import portraitSmall from "~/assets/images/portrait/small.jpg"
 import portraitMedium from "~/assets/images/portrait/medium.jpg"
-import portraitLarge from "~/assets/images/portrait/large.jpg"
 import heyLogo from "~/assets/images/others_logos/hey.svg"
 import githubLogo from "~/assets/images/others_logos/github.svg"
 import mastodonLogo from "~/assets/images/others_logos/mastodon.svg"
@@ -22,8 +21,14 @@ const CONTACTS = [
   { title: "LinkedIn", logo: linkedinLogo, href: "https://www.linkedin.com/in/stanko-krtalic/", target: "_blank" }
 ]
 
-const latestArticles = (await publishedEntries("article")).slice(0, 3)
-const portraitSrcset = `${portraitSmall.src} 512w, ${portraitMedium.src} 1024w, ${portraitLarge.src} 2048w`
+const ARTICLE_COUNT = 5
+const SNAP_COUNT = 4
+const TALK_COUNT = 3
+
+const articles = (await publishedEntries("article")).slice(0, ARTICLE_COUNT)
+const talks = (await publishedTalks()).slice(0, TALK_COUNT)
+const snaps = (await publishedEntries("snap")).slice(0, SNAP_COUNT)
+const portraitSrcset = `${portraitSmall.src} 512w, ${portraitMedium.src} 1024w`
 ---
 
 <Layout transitions>
@@ -36,52 +41,75 @@ const portraitSrcset = `${portraitSmall.src} 512w, ${portraitMedium.src} 1024w, 
     />
   </Fragment>
 
-  <div class="flex flex-col gap-y-8">
-    <section class="about__hero">
-      <div class="about__portrait">
-        <img srcset={portraitSrcset} alt="Stanko K.R." class=" profile-img " src={portraitMedium.src} width={portraitMedium.width} height={portraitMedium.height} />
-      </div>
-      <div class="about__bio">
-        <h1 class="txt-3xl font-bold">
-          Hi, I'm Stanko
-        </h1>
+  <div class="home">
+    <section class="home__intro">
+      <img
+        class="home__portrait profile-img"
+        srcset={portraitSrcset}
+        sizes="(width >= 600px) 9rem, 6rem"
+        src={portraitSmall.src}
+        width={portraitSmall.width}
+        height={portraitSmall.height}
+        alt="Stanko K.R."
+      />
+
+      <div class="home__bio">
+        <h1 class="home__name">Hi, I'm Stanko</h1>
         <p>
           I'm a programmer from Zagreb making products with
           <a target="_blank" href="https://rubyonrails.org/">Ruby on Rails</a>,
           <a target="_blank" href="https://hotwired.dev/">Hotwired</a> and
           <a target="_blank" href="https://tailwindcss.com/">Tailwind</a>.
         </p>
+
+        <ul class="home__contacts">
+          {CONTACTS.map(contact => (
+            <li>
+              <a class="home__contact" href={contact.href} target={contact.target}>
+                <img class="home__contact-icon" alt="" src={contact.logo.src} width="20" height="20" />
+                {contact.title}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
 
-    <section class="pad-inline-2">
-      <div class="about__contacts">
-        {CONTACTS.map(contact => (
-          <a href={contact.href} target={contact.target}>
-            <div class="about__contact">
-              <div class="about__contact-glow"></div>
-              <div class="about__contact-inner">
-                <img class="about__contact-icon" alt={contact.title} src={contact.logo.src} />
-                <div class="about__contact-label">{contact.title}</div>
-              </div>
-            </div>
-          </a>
-        ))}
+    <section class="home__section">
+      <div class="home__section-head">
+        <h2 class="home__section-title">Articles</h2>
+        <a class="home__more" href="/articles">All articles</a>
+      </div>
+
+      <EntryList entries={articles} class="entry-list home__articles" />
+    </section>
+
+    <section class="home__section">
+      <div class="home__section-head">
+        <h2 class="home__section-title">Snaps</h2>
+        <a class="home__more" href="/snaps">All snaps</a>
+      </div>
+
+      <div class="home__snaps">
+        {snaps.map(snap => <SnapGridItem snap={snap} />)}
       </div>
     </section>
 
-    <section class="article flex flex-col gap-y-4">
-      <h2 class="txt-2xl font-bold">
-        Latest Articles
-      </h2>
-
-      <EntryList entries={latestArticles} />
-
-      <div>
-        <a href="/articles" class="txt-lg txt-link">
-          <span class="inline-flex flex-row items-center gap-x-2 ">See all<Icon name="arrow-long-right" /></span>
-        </a>
+    <section class="home__section">
+      <div class="home__section-head">
+        <h2 class="home__section-title">Talks</h2>
+        <a class="home__more" href="/talks">All talks</a>
       </div>
+
+      <EntryList entries={talks} class="flex flex-col timeline--first timeline--last" />
     </section>
   </div>
+
+  <dialog id="snap-lightbox" class="lightbox" aria-label="snap_lightbox">
+    <div class="dialog__frame"></div>
+  </dialog>
+
+  <script>
+    import "~/scripts/snaps"
+  </script>
 </Layout>

@@ -4,6 +4,7 @@ min_version = "2026.9.1"
 node = "26.10.0" # Astro 7 needs 22.12 or later; wrangler, Astro, sharp and Pagefind come from package.json
 "aqua:charmbracelet/gum" = "2.0.0" # bin/setup speaks with it
 "aqua:rclone/rclone" = "1.75.1" # bin/media syncs the media with R2 through its S3 API
+"aqua:gitleaks/gitleaks" = "8.30.1" # the pre-commit hook scans staged changes for secrets
 # Not the 1Password CLI: on Linux the desktop app only talks to the packaged, setgid `op`,
 # so a copy from mise can't unlock anything. bin/setup checks that it's installed.
 

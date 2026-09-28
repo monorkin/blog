@@ -76,7 +76,10 @@ else
 fi
 # Named, so only this project's tools are installed and not everything in the global config;
 # the versions still come from .mise.toml.
-step "Installing Node, gum and rclone" mise install --yes node aqua:charmbracelet/gum aqua:rclone/rclone
+step "Installing Node, gum, rclone and gitleaks" mise install --yes node aqua:charmbracelet/gum aqua:rclone/rclone aqua:gitleaks/gitleaks
+
+# The repository is public, so every commit is checked for secrets first (.githooks/pre-commit)
+step "Turning on the secret check before commits" git config core.hooksPath .githooks
 
 # bin/media sync and pull read the R2 keys with the 1Password CLI. It has to be the one from
 # 1Password's own package: the desktop app only unlocks for that binary, so mise can't

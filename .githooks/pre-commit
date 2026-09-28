@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Stops a commit that would put a secret in this public repository. gitleaks scans only
+# what's staged, with the rules and exceptions in .gitleaks.toml, and never prints the secret.
+# bin/setup points git at this folder; `git commit --no-verify` skips it for a false positive,
+# which then belongs in .gitleaks.toml.
+set -eo pipefail
+
+cd "$(git rev-parse --show-toplevel)"
+
+exec mise exec -- gitleaks git --pre-commit --staged --redact --no-banner --verbose

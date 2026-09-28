@@ -1,0 +1,7 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Ahrefs' analytics site key, which is public: it's in the HTML of every page"
+regexTarget = "line"
+regexes = ['''analytics\.ahrefs\.com/analytics\.js''']

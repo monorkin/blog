@@ -14,7 +14,7 @@ bin/generate article "Title"   # a new draft article, talk, snap or project (doc
 
 ## bin/setup
 
-Installs what `.mise.toml` pins: Node, gum and rclone, and ffmpeg and exiv2 as system
+Installs what `.mise.toml` pins: Node, gum, rclone and gitleaks, and ffmpeg and exiv2 as system
 packages (`[bootstrap.packages]`, for reading video sizes and stripping metadata from
 originals), then the npm packages. Astro, wrangler, sharp and
 Pagefind are npm packages, so their versions are in `package.json` and `package-lock.json`,
@@ -25,6 +25,12 @@ run as often as you like.
 It needs [mise](https://mise.jdx.dev). Installing ffmpeg may ask for your password. It also
 checks for the 1Password CLI, which `bin/media sync` and `pull` need and which has to come
 from 1Password's own package, not mise (`doc/images.md` says why).
+
+It also points git at `.githooks/`, whose pre-commit hook runs gitleaks over the staged
+changes. The repository is public, so a commit with a secret in it stops there. gitleaks
+never prints the secret, only the rule and the file. A false positive goes in
+`.gitleaks.toml`, like the Ahrefs site key already there. To scan the whole history:
+`mise exec -- gitleaks git --log-opts="--all" --redact`.
 
 `bin/setup --quiet` prints nothing when all is well and the full output of a failed step
 when it isn't. `bin/dev` and `bin/preview` run it that way every time. Either way it warns

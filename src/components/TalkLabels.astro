@@ -5,6 +5,7 @@ import Icon from "~/components/Icon.astro"
 
 interface Props {
   talk: Entry
+  style?: string
 }
 
 const KIND_LABELS = { conference: "Conference", meetup: "Meetup" }
@@ -13,7 +14,7 @@ const data = Astro.props.talk.source.data as CollectionEntry<"talks">["data"]
 const hasVideo = Boolean(data.video || data.videoMirrorUrl)
 ---
 
-<span class="talk-labels">
+<span class="talk-labels" style={Astro.props.style}>
   <span class={`talk-label talk-label--${data.kind}`}>{KIND_LABELS[data.kind]}</span>
   {hasVideo && (
     <span class="talk-label talk-label--video"><Icon name="play" class="talk-label__icon" />Video</span>

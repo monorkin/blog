@@ -2,6 +2,7 @@
 import type { CollectionEntry } from "astro:content"
 import type { Entry } from "~/lib/entries"
 import { findMedia, placeholderStyle, squareUrl } from "~/lib/media"
+import { transitionStyles } from "~/lib/view-transitions"
 
 interface Props {
   snap: Entry
@@ -33,6 +34,7 @@ function formatDuration(totalSeconds: number) {
       height={THUMBNAIL_SIZE}
       alt={snap.title}
       class="photos-grid__image"
+      style={transitionStyles(snap).image}
       loading="lazy"
     />
   </a>

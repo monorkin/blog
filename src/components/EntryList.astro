@@ -25,8 +25,6 @@ const items = await Promise.all(entries.map(async entry => {
     if (entry.kind === "article") {
       return (
         <li class="entry-list__item">
-          <a href={entry.path} aria-label={entry.title}></a>
-
           <div class="entry-list__meta" style={transitionStyles(entry).meta}>
             <time datetime={isoTimestamp(entry.publishedAt)}>Published on {formatDate(entry.publishedAt)}</time>
             {readingTime && (
@@ -38,7 +36,7 @@ const items = await Promise.all(entries.map(async entry => {
           </div>
 
           <div class="entry-list__title" style={transitionStyles(entry).title}>
-            {entry.title}
+            <a class="entry-list__link" href={entry.path}>{entry.title}</a>
           </div>
 
           <div class="entry-list__excerpt">
@@ -53,20 +51,20 @@ const items = await Promise.all(entries.map(async entry => {
             <a href={entry.path} class="timeline__link" aria-label={entry.title}></a>
 
             <div class="timeline__content">
-              <div class="timeline__title">
+              <div class="timeline__title" style={transitionStyles(entry).title}>
                 {entry.title}
               </div>
 
               <div class="timeline__meta">
-                <div class="timeline__meta-event">
+                <div class="timeline__meta-event" style={transitionStyles(entry).event}>
                   {entry.source.data.event}
                 </div>
-                <div>
+                <div style={transitionStyles(entry).date}>
                   {formatDate(entry.source.data.heldAt)}
                 </div>
               </div>
 
-              <TalkLabels talk={entry} />
+              <TalkLabels talk={entry} style={transitionStyles(entry).labels} />
             </div>
 
             <div class="timeline__dot"></div>

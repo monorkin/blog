@@ -1,12 +1,44 @@
-/* Navigations between the article lists (the home page, /articles, tag pages) and an article
-   animate, when both pages turn them on (Layout's `transitions`). An article's title and date
-   carry the same view-transition-name in the list and on its page, so they move from one to
-   the other; the rest of the page fades. Everything is quick, at most 100ms. */
+/* Navigations between the lists (the home page, /articles, tag pages, /talks, /snaps) and an
+   entry animate, when both pages turn them on (Layout's `transitions`). An entry's title,
+   date and so on carry the same view-transition-name in the list and on its page
+   (src/lib/view-transitions.ts), so they move from one to the other; the rest of the page
+   fades. Everything is quick, at most 50ms. */
 ::view-transition-group(*),
 ::view-transition-old(*),
 ::view-transition-new(*) {
-  animation-duration: 100ms;
+  animation-duration: 50ms;
   animation-timing-function: ease-out;
+}
+
+/* An article's body isn't on the lists, so it has nothing to move from: it fades in from
+   the top down instead, a gradient mask sliding over it */
+.article__body {
+  view-transition-name: article-body;
+}
+
+::view-transition-new(article-body) {
+  mask-image: linear-gradient(to bottom, black 33%, transparent 66%);
+  mask-size: 100% 300%;
+  animation: article-body-reveal 50ms ease-out both;
+}
+
+@keyframes article-body-reveal {
+  from { mask-position: 0 100%; }
+  to { mask-position: 0 0; }
+}
+
+/* A snap's picture goes from a square thumbnail to the whole photo, or back: both are cropped
+   to the moving box as it changes shape, instead of being stretched to it */
+::view-transition-old(*.snap-image),
+::view-transition-new(*.snap-image) {
+  block-size: 100%;
+  inline-size: 100%;
+  object-fit: cover;
+}
+
+::view-transition-image-pair(*.snap-image) {
+  overflow: clip;
+  border-radius: var(--radius-lg);
 }
 
 /* The header is the same on both pages, so it stays still */

@@ -67,7 +67,7 @@ const html = await article.html()
       {article.tags.map(tag => <span hidden data-pagefind-filter="tag" data-pagefind-ignore>{tag}</span>)}
     </div>
 
-    <div data-link-previews>
+    <div class="article__body" data-link-previews>
       <div class="lexxy-content" set:html={html} />
     </div>
   </article>

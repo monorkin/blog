@@ -7,6 +7,7 @@ import Icon from "~/components/Icon.astro"
 import { publishedEntries, type Entry } from "~/lib/entries"
 import { findMedia, originalUrl, placeholderStyle, sources, variantAtLeast } from "~/lib/media"
 import { isoTimestamp } from "~/lib/site"
+import { transitionStyles } from "~/lib/view-transitions"
 
 export const getStaticPaths = (async () => {
   const snaps = await publishedEntries("snap")
@@ -28,6 +29,7 @@ const LIGHTBOX_FALLBACK_WIDTH = 1600
 
 const { snap, previousSnap, nextSnap } = Astro.props
 const data = snap.source.data as CollectionEntry<"snaps">["data"]
+const imageName = transitionStyles(snap).image
 
 let image
 let original
@@ -53,7 +55,7 @@ if (data.video) {
 }
 ---
 
-<Layout section="snaps">
+<Layout section="snaps" transitions>
   <EntrySeoTags slot="head" entry={snap} />
 
   <div id="snap_lightbox" class="snap-page">
@@ -77,12 +79,12 @@ if (data.video) {
             height={image.entry.height}
             alt={snap.title}
             class:list={[ "lightbox__image", { placeholder: image.placeholder } ]}
-            style={image.placeholder}
+            style={`${imageName}; ${image.placeholder ?? ""}`}
           />
         </picture>
       )}
       {video && (
-        <video class:list={[ "lightbox__image", { placeholder: video.placeholder } ]} style={video.placeholder || undefined} controls poster={video.poster} width={video.width} height={video.height}>
+        <video class:list={[ "lightbox__image", { placeholder: video.placeholder } ]} style={`${imageName}; ${video.placeholder || ""}`} controls poster={video.poster} width={video.width} height={video.height}>
           <source src={video.url} type={data.videoType} />
         </video>
       )}

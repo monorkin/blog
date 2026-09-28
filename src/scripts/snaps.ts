@@ -62,6 +62,15 @@ async function openInLightbox(url: string) {
   const response = await fetch(url)
   const page = new DOMParser().parseFromString(await response.text(), "text/html")
   frame.replaceChildren(...page.getElementById("snap_lightbox")!.childNodes)
+  dropTransitionNames(frame)
+}
+
+// The snap's page names its picture like the thumbnail in the grid, so a navigation morphs
+// one into the other; in the lightbox both are on one page, and a name must be unique
+function dropTransitionNames(element: Element) {
+  for (const named of element.querySelectorAll<HTMLElement>("[style*='view-transition-name']")) {
+    named.style.viewTransitionName = "none"
+  }
 }
 
 function loadingIndicator() {

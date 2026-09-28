@@ -19,11 +19,28 @@
     padding-block: var(--space-4);
     padding-inline: var(--space-2);
     position: relative;
+  }
 
-    & > a:first-child {
-      position: absolute;
-      inset: 0;
-    }
+  /* The title's link covers the whole row, so the date and excerpt are clickable too. Any
+     other link in a row needs `position: relative` and a z-index to sit above it. */
+  .entry-list__link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+  }
+
+  .entry-list__link:focus-visible {
+    outline: none;
+  }
+
+  .entry-list__link:focus-visible::after {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  .entry-list__item:hover .entry-list__link {
+    color: var(--color-accent);
   }
 
   @media (width >= 768px) {

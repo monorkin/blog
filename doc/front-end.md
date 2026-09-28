@@ -110,17 +110,23 @@ says so instead of searching.
 
 ## View transitions
 
-Going from an article list (the home page, `/articles` and its pages, a tag page) to an
-article, and back, animates with the browser's cross-document view transitions; no script
-takes over the navigation. A page opts in with `<Layout transitions>`, which adds
+Going from a list (the home page, `/articles` and its pages, a tag page, `/talks`, `/snaps`)
+to an entry, and back, animates with the browser's cross-document view transitions; no
+script takes over the navigation. A page opts in with `<Layout transitions>`, which adds
 `@view-transition { navigation: auto; }`, and a navigation animates only when both pages
-did, so talks, snaps and everything else just navigate. With reduced motion, or in a browser
-without them, nothing animates.
+did; the search page, `/settings` and the error pages just navigate. With reduced motion,
+or in a browser without them, nothing animates.
 
-An article's title and date are named `title-<id>` and `meta-<id>` in the list and on its
-page (`src/lib/view-transitions.ts`), so they move from one to the other; the rest of the
-page fades, and the header, named `site-header`, stays still. Every animation takes 100ms
-with an ease-out curve (`src/styles/components/view-transitions.css`). Keep them that quick.
+An entry's parts carry the same name in the list and on its page
+(`src/lib/view-transitions.ts`), so they move from one to the other: an article's title and
+date (`title-<id>`, `meta-<id>`), a talk's title, event, date and labels, and a snap's
+picture (`image-<id>`), which is cropped to the moving box rather than stretched as it goes
+from a square thumbnail to the whole photo. The rest of the page fades, and the header,
+named `site-header`, stays still. Every animation takes 50ms with an ease-out curve
+(`src/styles/components/view-transitions.css`). Keep them that quick.
+
+On `/snaps` a click opens the snap in the lightbox instead of navigating, so nothing morphs
+there; the lightbox drops the names from its copy of the snap, since the thumbnail has them.
 
 ## Layout shift
 

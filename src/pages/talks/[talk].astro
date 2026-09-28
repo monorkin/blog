@@ -7,6 +7,7 @@ import TalkVideo from "~/components/TalkVideo.astro"
 import TalkLabels from "~/components/TalkLabels.astro"
 import { publishedEntries, type Entry } from "~/lib/entries"
 import { formatDate, isoTimestamp } from "~/lib/site"
+import { transitionStyles } from "~/lib/view-transitions"
 
 export const getStaticPaths = (async () => {
   const talks = await publishedEntries("talk")
@@ -20,27 +21,28 @@ interface Props {
 const { talk } = Astro.props
 const data = talk.source.data as CollectionEntry<"talks">["data"]
 const html = await talk.html()
+const names = transitionStyles(talk)
 ---
 
-<Layout section="talks">
+<Layout section="talks" transitions>
   <EntrySeoTags slot="head" entry={talk} />
 
   <div class="article flex flex-col gap-y-4" data-pagefind-body data-pagefind-meta="type:Talk">
     <div class="flex flex-col gap-y-4">
-      <h1 class="txt-2xl font-semibold" data-pagefind-meta="title">
+      <h1 class="txt-2xl font-semibold" style={names.title} data-pagefind-meta="title">
         {talk.title}
       </h1>
 
       <div class="flex flex-col gap-y-1 txt-muted">
-        <h2 class="font-semibold">
+        <h2 class="font-semibold" style={names.event}>
           {data.eventUrl && <a target="_blank" href={data.eventUrl}>{data.event}</a>}
           {!data.eventUrl && data.event}
         </h2>
-        <time datetime={isoTimestamp(data.heldAt)} data-pagefind-meta="date[datetime]">{formatDate(data.heldAt)}</time>
+        <time style={names.date} datetime={isoTimestamp(data.heldAt)} data-pagefind-meta="date[datetime]">{formatDate(data.heldAt)}</time>
       </div>
 
       <div data-pagefind-ignore>
-        <TalkLabels talk={talk} />
+        <TalkLabels talk={talk} style={names.labels} />
       </div>
       {talk.tags.map(tag => <span hidden data-pagefind-filter="tag" data-pagefind-ignore>{tag}</span>)}
     </div>

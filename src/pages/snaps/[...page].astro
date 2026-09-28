@@ -15,7 +15,7 @@ export const getStaticPaths = (async ({ paginate }) => {
 const { page } = Astro.props as { page: IndexPage<Entry> }
 ---
 
-<Layout section="snaps">
+<Layout section="snaps" transitions>
   <Fragment slot="head">
     <title>{titleize("Snaps")}</title>
     <SeoTags

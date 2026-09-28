@@ -9,7 +9,7 @@ import { absoluteUrl, titleize } from "~/lib/site"
 const talks = await publishedTalks()
 ---
 
-<Layout section="talks">
+<Layout section="talks" transitions>
   <Fragment slot="head">
     <title>{titleize("Talks")}</title>
     <SeoTags

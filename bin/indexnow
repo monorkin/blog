@@ -10,6 +10,7 @@
 // bin/deploy runs `changed` before it deploys and `submit` after. The key is public by design:
 // it's public/<key>.txt, which search engines fetch to check it.
 import { readdir, readFile } from "node:fs/promises"
+import { text } from "node:stream/consumers"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -89,7 +90,7 @@ async function fetchLive(url) {
 }
 
 async function submit() {
-  const urls = (await readFile(0, "utf8")).split("\n").map(line => line.trim()).filter(Boolean)
+  const urls = (await text(process.stdin)).split("\n").map(line => line.trim()).filter(Boolean)
 
   if (urls.length === 0) {
     console.log("Nothing changed")

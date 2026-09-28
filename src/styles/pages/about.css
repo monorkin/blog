@@ -90,6 +90,57 @@
     opacity: 0.7;
   }
 
+  /* A phone's bio column is too narrow for the contacts, so they leave it for a row of their
+     own under the portrait, as buttons big enough to read and tap */
+  @media (width < 600px) {
+    .home__intro {
+      grid-template-areas:
+        "portrait name"
+        "portrait text"
+        "contacts contacts";
+      row-gap: var(--space-3);
+    }
+
+    .home__portrait {
+      grid-area: portrait;
+    }
+
+    .home__bio {
+      display: contents;
+    }
+
+    .home__name {
+      grid-area: name;
+    }
+
+    .home__bio > p {
+      grid-area: text;
+    }
+
+    .home__contacts {
+      grid-area: contacts;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+      gap: var(--space-2);
+      margin-block-start: var(--space-2);
+    }
+
+    .home__contact {
+      justify-content: center;
+      inline-size: 100%;
+      min-block-size: 2.75rem;
+      padding-inline: var(--space-3);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm);
+      color: var(--color-ink);
+    }
+
+    .home__contact-icon {
+      opacity: 1;
+    }
+  }
+
   .home__contact:hover .home__contact-icon {
     filter: none;
     opacity: 1;

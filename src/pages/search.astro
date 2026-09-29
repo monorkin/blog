@@ -1,12 +1,14 @@
 ---
 import Layout from "~/layouts/Layout.astro"
 import SearchPanel from "~/components/SearchPanel.astro"
-import { titleize } from "~/lib/site"
+import SeoTags from "~/components/SeoTags.astro"
+import { SITE_NAME, absoluteUrl, titleize } from "~/lib/site"
 ---
 
 <Layout>
   <Fragment slot="head">
     <title>{titleize("Search")}</title>
+    <SeoTags title="Search" description={`Search the articles, talks and snaps by ${SITE_NAME}`} url={absoluteUrl("/search")} />
     <meta name="robots" content="noindex" />
   </Fragment>
 

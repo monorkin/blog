@@ -1783,11 +1783,28 @@
     "placeholder": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAwAgCdASoQAAsABABoJQBOgMXSxGb1c+HeAAD+qrhk20WAoEJzl+JW6haJ+7ShDqoyP/q2w1Vr+TEzx+R92/85HHS890Oj+N78CLUUw2wo7+cmefMkJTvaICWy3EyI3crQAA==",
     "color": "#716b61"
   },
-  "articles/hacking-privacy-into-facebook-s-messenger-in-24-hours-3da239baf6c5/wcsuebt71hobqp90dnldha.gif": {
-    "type": "image/gif",
-    "bytes": 3346613,
+  "articles/hacking-privacy-into-facebook-s-messenger-in-24-hours-3da239baf6c5/wcsuebt71hobqp90dnldha.jpg": {
+    "type": "image/jpeg",
+    "bytes": 6616,
     "width": 366,
-    "height": 206
+    "height": 206,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      366
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAACwAQCdASoQAAkABABoJYwCdACovDQAAP7w7K0s9rJqw86T9pJG/5Wx7ITCAjpCQAA=",
+    "color": "#64564c"
+  },
+  "articles/hacking-privacy-into-facebook-s-messenger-in-24-hours-3da239baf6c5/wcsuebt71hobqp90dnldha.mp4": {
+    "type": "video/mp4",
+    "bytes": 130202,
+    "width": 366,
+    "height": 206,
+    "duration": 5
   },
   "articles/having-a-monolith-is-a-single-point-of-failure-3cYdY3KZ7qHW/example_1.gif": {
     "type": "image/gif",
@@ -1821,11 +1838,28 @@
     "placeholder": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAAAQAgCdASoNABAABABoJbACdAEU9HhoRlZAAP7pTJ4mncNpkhXTWndrB37N8SUND/LDIzUwLH9uWi8F/1qQXEYNKX1dAiHW9fnEzokbTPoLeousRZ0DarR3d4hSBlSFeAA=",
     "color": "#707faa"
   },
-  "articles/how-i-stumbled-upon-strada-while-forwarding-an-email-3W8mbS5KSKXs/strada_demo.gif": {
-    "type": "image/gif",
-    "bytes": 3277647,
+  "articles/how-i-stumbled-upon-strada-while-forwarding-an-email-3W8mbS5KSKXs/strada_demo.jpg": {
+    "type": "image/jpeg",
+    "bytes": 76539,
     "width": 450,
-    "height": 800
+    "height": 800,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      450
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoJABAABABoJQApgAeExZvwAP7yO/jcXIhKwTWNM3VZ0GYCgG2TpnKM4nfvgYIcmbXCK5eCUQWAAA==",
+    "color": "#dde0e8"
+  },
+  "articles/how-i-stumbled-upon-strada-while-forwarding-an-email-3W8mbS5KSKXs/strada_demo.mp4": {
+    "type": "video/mp4",
+    "bytes": 1976195,
+    "width": 450,
+    "height": 813,
+    "duration": 13
   },
   "articles/licensing-software-b13d043e2a93/a4mjwc-vb9ekcwvyd_kvmq.png": {
     "type": "image/png",
@@ -2258,23 +2292,90 @@
     "placeholder": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADQAQCdASoQAA0ABABoJaQAAudsj0fdsAD+8+1jiu0VWmA2AjR5HiQ7L3ZCdCYKaJTHx3o6QAA=",
     "color": "#f0f0f0"
   },
-  "articles/new-coat-of-paint-3tgme2PMzsya/backlinks_and_analytics.gif": {
-    "type": "image/gif",
-    "bytes": 2843572,
+  "articles/new-coat-of-paint-3tgme2PMzsya/backlinks_and_analytics.jpg": {
+    "type": "image/jpeg",
+    "bytes": 54395,
     "width": 2442,
-    "height": 750
+    "height": 750,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      512
+    ],
+    "placeholder": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAADwAQCdASoQAAUABABoJZQC7AEDYuk1GAAA/vTf1VKZJl0+bsy2QbQuQCwAAA==",
+    "color": "#eff0e9"
   },
-  "articles/new-coat-of-paint-3tgme2PMzsya/link_previews.gif": {
-    "type": "image/gif",
-    "bytes": 960201,
-    "width": 1252,
-    "height": 787
+  "articles/new-coat-of-paint-3tgme2PMzsya/backlinks_and_analytics.mp4": {
+    "type": "video/mp4",
+    "bytes": 1726486,
+    "width": 2442,
+    "height": 750,
+    "duration": 15
   },
-  "articles/new-coat-of-paint-3tgme2PMzsya/new_design.gif": {
-    "type": "image/gif",
-    "bytes": 3261996,
+  "articles/new-coat-of-paint-3tgme2PMzsya/link_previews.jpg": {
+    "type": "image/jpeg",
+    "bytes": 125178,
     "width": 1252,
-    "height": 787
+    "height": 786,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1252
+    ],
+    "squares": [
+      512
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAACwAQCdASoQAAoABABoJYwCdAEMQ1WAAP7ooMLdnmycm79vBWKrjU1fHas90eZuBr37oO25BwEo6ZcQhvnGAAAA",
+    "color": "#d3d7cf"
+  },
+  "articles/new-coat-of-paint-3tgme2PMzsya/link_previews.mp4": {
+    "type": "video/mp4",
+    "bytes": 536787,
+    "width": 1252,
+    "height": 787,
+    "duration": 10
+  },
+  "articles/new-coat-of-paint-3tgme2PMzsya/new_design.jpg": {
+    "type": "image/jpeg",
+    "bytes": 94768,
+    "width": 1252,
+    "height": 786,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1252
+    ],
+    "squares": [
+      512
+    ],
+    "placeholder": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADwAQCdASoQAAoABABoJYwCdAEQMqPHyIAA/vPId/E2F/csYwdsM8WgozMx7DFHWXYfbRHveNvbazslsmDevKuAQk69iyDxPHI8AA==",
+    "color": "#cdd2ce"
+  },
+  "articles/new-coat-of-paint-3tgme2PMzsya/new_design.mp4": {
+    "type": "video/mp4",
+    "bytes": 930706,
+    "width": 1252,
+    "height": 787,
+    "duration": 13
   },
   "articles/new-coat-of-paint-3tgme2PMzsya/paint.png": {
     "type": "image/png",

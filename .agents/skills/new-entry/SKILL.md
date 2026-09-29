@@ -54,7 +54,8 @@ tags: []
   `video: talk.mp4`, and `bin/media variants` makes its poster (the new-media skill), with
   the YouTube copy, if any, as `videoMirrorUrl`. Either marks the talk as having a video.
 - A snap has `image: <file>` when you gave it a photo; run `bin/media variants` so the
-  manifest knows it. It takes an optional `caption`, and has no body.
+  manifest knows it. It has no body, so give it a `caption` of a sentence or two
+  saying what's in the photo; without one the page is too thin for search engines.
 - Keep the order: title, the dates, tags, what the kind adds, `draft` last.
 
 Set `updatedAt` again whenever you change a published entry; the sitemap reports it.

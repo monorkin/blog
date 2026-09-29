@@ -61,7 +61,10 @@ rarely needed (`doc/images.md`). `videoMirrorUrl` is a copy elsewhere, on YouTub
 with a `video` it's only the "View via mirror" link, without one its player is embedded. A
 talk with either is marked as having a video. The body is the talk's abstract.
 
-Snaps have no body. They add `caption`, then `image` or `video`. The media are named by
+Snaps have no body. They add `caption`, then `image` or `video`. Give every snap a caption
+of a sentence or two saying what's in it: it's the only text on the page besides the
+title, and it's also the meta description, the feed entry and the Markdown version's alt
+text. Without one, crawlers report the page as thin. The media are named by
 file, like `image: 1000054880.jpg` (see below). A video snap's poster, type and length come
 from the video and the manifest; `poster`, `videoType` and `duration` override them, and
 are rarely needed.

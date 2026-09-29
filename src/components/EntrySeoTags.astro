@@ -13,7 +13,7 @@ const DESCRIPTION_MAX_LENGTH = 160
 
 const { entry } = Astro.props
 
-// A snap's description is its caption, and most have none
+// A snap's description is its caption, and a snap without one gets this
 let description = await entry.excerpt(DESCRIPTION_MAX_LENGTH)
 if (!description && entry.kind === "snap") {
   description = `${entry.title}, a snap by ${SITE_NAME} from ${formatDate(entry.publishedAt)}, one of the photos and videos from travels, hikes and everyday life on stanko.io.`

@@ -28,6 +28,10 @@ const { page } = Astro.props as { page: IndexPage<Entry> }
   <div class="photos-section">
     <div class="article margin-block-end-4">
       <h1 class="txt-4xl font-semibold">Snaps</h1>
+      <p class="txt-muted">
+        Photos and videos I've taken on travels, hikes and around the house, from the Soča valley
+        in Slovenia to the canals of Amsterdam and Venice.
+      </p>
     </div>
 
     {page.data.length > 0 && (

@@ -20,7 +20,7 @@ const { page } = Astro.props as { page: IndexPage<Entry> }
     <title>{titleize("Snaps")}</title>
     <SeoTags
       title="Snaps"
-      description="Photos and videos by Stanko K.R. from travels, hikes and everyday life, from Zagreb to Venice, Amsterdam and the Soča valley."
+      description="Photos and videos by Stanko from travels, hikes and everyday life: landscapes, cities and whatever caught my eye along the way."
       url={absoluteUrl(pagePath("/snaps", page.number))}
     />
   </Fragment>
@@ -29,8 +29,7 @@ const { page } = Astro.props as { page: IndexPage<Entry> }
     <div class="article margin-block-end-4">
       <h1 class="txt-4xl font-semibold">Snaps</h1>
       <p class="txt-muted">
-        Photos and videos I've taken on travels, hikes and around the house, from the Soča valley
-        in Slovenia to the canals of Amsterdam and Venice.
+        Photos and videos I've taken on travels, hikes and everyday life.
       </p>
     </div>
 

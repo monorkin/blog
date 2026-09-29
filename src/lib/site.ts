@@ -1,5 +1,5 @@
 export const SITE_URL = "https://stanko.io"
-export const SITE_NAME = "Stanko K.R."
+export const SITE_NAME = "Stanko"
 export const AUTHOR_NAME = "Stanko Krtalic Rusendic"
 export const AUTHOR_EMAIL = "hey@stanko.io"
 

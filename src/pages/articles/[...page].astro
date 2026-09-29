@@ -20,7 +20,7 @@ const { page } = Astro.props as { page: IndexPage<Entry> }
     <title>{titleize("Articles")}</title>
     <SeoTags
       title="Articles"
-      description="Collection of articles about Ruby, Rails, and software development"
+      description="Articles by Stanko K.R. about Ruby, Rails and software development, with the odd piece on meditation, travel and self-hosting in between."
       url={absoluteUrl(pagePath("/articles", page.number))}
     />
   </Fragment>

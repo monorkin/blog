@@ -191,6 +191,12 @@ partial did, with a `<picture>`: WebP variants first, the original's format as t
 the size and `--attachment-width`/`--attachment-height` from the manifest, so nothing shifts
 as images load.
 
+The `<img>`'s plain `src`, and any single image URL a page uses (`variantAtLeast`), is a
+WebP variant whatever the original's format. Browsers pick from the `srcset`, but crawlers
+like Ahrefs judge a page by its `src`, and a PNG screenshot at 1200px can be over 2 MB where
+the WebP is 300 KB. For the same reason a snap's `src` is its 1200px variant, the largest
+that stays under a megabyte.
+
 - From 600px up, an image is as wide as the column, or its own width if that's smaller, at
   its own aspect ratio, however tall that makes it.
 - Below 600px, a portrait image (`attachment--expandable`) is capped at 32rem tall, and
@@ -214,8 +220,10 @@ ffmpeg -i clip.mp4 -frames:v 1 -q:v 3 clip.jpg
 ```
 
 Snaps get square thumbnails for the grid, the width variants in the lightbox, and a link to
-the original for download. That link is `rel="nofollow"`, so crawlers don't fetch originals
-of up to 26 MB and report them as oversized images. An entry's Open Graph image is its `ogImage`'s 512px square, a
+the original for download. That link is `rel="nofollow"`, though Ahrefs follows it anyway
+and reports originals of up to 26 MB as oversized images; its Site Audit project excludes
+`media.stanko.io/originals/` from the crawl for that. The Rails app never saw this because
+its images lived on Scaleway's domain, which Ahrefs counted as external. An entry's Open Graph image is its `ogImage`'s 512px square, a
 snap's photo, or a generated preview card (`doc/content.md`). Pages that aren't entries use
 `src/assets/images/default_seo_image.jpg`.
 

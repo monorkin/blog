@@ -25,7 +25,9 @@ interface Props {
 }
 
 const LIGHTBOX_SIZES = "100vw"
-const LIGHTBOX_FALLBACK_WIDTH = 1600
+// The srcset serves big screens; the plain src, which crawlers weigh, stays under a megabyte
+const LIGHTBOX_FALLBACK_WIDTH = 1200
+const LIGHTBOX_POSTER_WIDTH = 1600
 
 const { snap, previousSnap, nextSnap } = Astro.props
 const data = snap.source.data as CollectionEntry<"snaps">["data"]
@@ -50,7 +52,7 @@ if (data.video) {
     type: data.videoType ?? videoMedia.type,
     width: videoMedia.width,
     height: videoMedia.height,
-    poster: variantAtLeast(posterKey, LIGHTBOX_FALLBACK_WIDTH),
+    poster: variantAtLeast(posterKey, LIGHTBOX_POSTER_WIDTH),
     placeholder: placeholderStyle(posterKey)
   }
   original = video.url

@@ -89,13 +89,14 @@ export function sources(key: string) {
   }))
 }
 
-// The variant in the original's format that's at least `width` wide, or the largest there is
+// The WebP variant that's at least `width` wide, or the largest there is. Every browser shows
+// WebP, and crawlers judge a page by its images' `src`, where a PNG or JPEG can be megabytes.
 export function variantAtLeast(key: string, width: number) {
   const entry = findMedia(key)
 
   if (isResizable(entry)) {
     const chosen = entry.widths!.find(candidate => candidate >= width) ?? entry.widths!.at(-1)!
-    return variantUrl(key, `${chosen}w`, entry.formats!.at(-1)!)
+    return variantUrl(key, `${chosen}w`, "webp")
   } else {
     return originalUrl(key)
   }

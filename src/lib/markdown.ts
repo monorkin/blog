@@ -1,5 +1,6 @@
 import type { CollectionEntry } from "astro:content"
 import type { Entry } from "~/lib/entries"
+import { readingOf, romajiToKana } from "~/lib/kana"
 import { originalUrl, variantAtLeast } from "~/lib/media"
 import { AUTHOR_NAME, SITE_URL } from "~/lib/site"
 
@@ -10,6 +11,7 @@ import { AUTHOR_NAME, SITE_URL } from "~/lib/site"
 const IMAGE_WIDTH = 1600
 const COMPONENT = /<(Figure|Video)\b([\s\S]*?)\/>/g
 const GALLERY_TAG = /^[ \t]*<\/?Gallery>[ \t]*\n?/gm
+const JAPANESE = /<Japanese>([\s\S]*?)<\/Japanese>/g
 const ATTRIBUTE = /(\w+)="([^"]*)"/g
 const ROOT_RELATIVE_LINK = /\]\(\/(?!\/)/g
 
@@ -94,9 +96,9 @@ function snapBody(entry: Entry) {
 }
 
 // A figure becomes an image, with its caption as the alt text, a video a link to the file,
-// and a gallery just its figures
+// a gallery just its figures, and romaji in <Japanese> its kana followed by the reading
 function withoutComponents(source: string, entry: Entry) {
-  return source.replace(GALLERY_TAG, "").replace(COMPONENT, (_, name: string, attributeText: string) => {
+  return source.replace(GALLERY_TAG, "").replace(JAPANESE, (_, romaji: string) => japanese(romaji)).replace(COMPONENT, (_, name: string, attributeText: string) => {
     const attributes = Object.fromEntries([ ...attributeText.matchAll(ATTRIBUTE) ].map(([ , key, value ]) => [ key, value ]))
     const key = entry.mediaKey(attributes.media)
 
@@ -106,6 +108,11 @@ function withoutComponents(source: string, entry: Entry) {
       return `[${videoLabel(attributes.caption)}](${originalUrl(key)})`
     }
   })
+}
+
+function japanese(romaji: string) {
+  const kana = romajiToKana(romaji)
+  return `${kana} (${readingOf(kana)})`
 }
 
 function videoLabel(caption?: string) {

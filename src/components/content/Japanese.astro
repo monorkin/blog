@@ -1,0 +1,11 @@
+---
+import { parse } from "node-html-parser"
+import { annotateKana, romajiToKana } from "~/lib/kana"
+
+// Romaji written between the tags, like <Japanese>konnichiha</Japanese>, shows as kana
+// with each syllable's reading above it; uppercase romaji becomes katakana
+const romaji = parse(await Astro.slots.render("default")).text
+const segments = annotateKana(romajiToKana(romaji))
+---
+
+<span lang="ja">{segments.map(({ text, reading }) => <Fragment>{reading === undefined && text}{reading !== undefined && <ruby>{text}<rt>{reading}</rt></ruby>}</Fragment>)}</span>

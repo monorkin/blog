@@ -117,8 +117,9 @@ The Open Graph and Twitter image is, in order:
 
 ## MDX components
 
-Articles and talks are MDX. Images and videos use `<Figure>`, `<Gallery>` and `<Video>`
-from `src/components/content/`, which every entry gets without importing them
+Articles and talks are MDX. Images and videos use `<Figure>`, `<Gallery>` and `<Video>`,
+and Japanese `<Japanese>`, all from `src/components/content/`, which every entry gets
+without importing them
 (`src/lib/rendering.ts` hands them to the content). An entry names its own media by file
 name, which is looked up in its media folder, `media/originals/<collection>/<folder>/`
 (`new-media` skill):
@@ -141,6 +142,14 @@ A key with a slash is a full key, for using another entry's media:
 caption. `<Figure src="https://…" width={480} height={270} />` shows an image from another
 site; no entry does that any more. A GIF becomes a short MP4 shown with `<Video … clip />`,
 which plays like a GIF, without controls. `doc/images.md` has what each component renders.
+
+`<Japanese>` turns romaji into kana, with each syllable's Hepburn reading above it in a
+`<ruby>`, at build time: `<Japanese>konnichiha</Japanese>` is こんにちは. Uppercase is
+katakana (`KO-HI-` is コーヒー), `-` is ー, `.` `,` `!` `?` are 。、！？, and `n'`
+separates ん from a following vowel (`kon'ya`). Kana and kanji between
+the tags pass through; kana get readings, kanji don't. `src/lib/kana.ts` does the
+conversion. Excerpts and descriptions leave the readings out, and the Markdown version
+has the kana followed by the whole reading: こんにちは (konnichiha).
 
 The source reads like any Markdown: prose wrapped at 80 columns (list items and quotes
 indented under their marker), blank lines between blocks, `**bold**`, `*italic*`,

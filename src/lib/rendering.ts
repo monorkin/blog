@@ -4,12 +4,13 @@ import { getContainerRenderer } from "@astrojs/mdx/container-renderer"
 import { render, type CollectionEntry } from "astro:content"
 import Figure from "~/components/content/Figure.astro"
 import Gallery from "~/components/content/Gallery.astro"
+import Japanese from "~/components/content/Japanese.astro"
 import Video from "~/components/content/Video.astro"
 
 type RenderableEntry = CollectionEntry<"articles"> | CollectionEntry<"talks">
 
 // Every entry can use these without importing them
-const CONTENT_COMPONENTS = { Figure, Gallery, Video }
+const CONTENT_COMPONENTS = { Figure, Gallery, Japanese, Video }
 
 let container: Promise<AstroContainer> | undefined
 const renderedHtml = new Map<string, Promise<string>>()

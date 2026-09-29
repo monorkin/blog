@@ -18,6 +18,18 @@
   /* An image in a box fades in over it, when there's a script to say it has loaded
      (src/scripts/placeholders.ts). Should the script never run, the image shows anyway. */
   @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    /* A band of light sweeps across the placeholder, so it reads as loading rather than as a
+       blurry picture. It's a background layer, not a pseudo-element, because the placeholder
+       can be on the <img> itself. The band is half as wide as the box, and the layer
+       two and a half times as wide, so it starts and ends outside the box. */
+    .placeholder {
+      background:
+        linear-gradient(100deg, transparent 40%, var(--placeholder-shimmer) 50%, transparent 60%) 0 0 / 250% 100% no-repeat,
+        var(--placeholder) center / cover no-repeat,
+        var(--placeholder-color);
+      animation: placeholder-shimmer var(--placeholder-shimmer-duration) ease-in-out infinite;
+    }
+
     .placeholder > img {
       transition: opacity var(--placeholder-fade) ease-out;
     }
@@ -26,6 +38,11 @@
       opacity: 0;
       animation: placeholder-reveal 0s 4s forwards;
     }
+  }
+
+  @keyframes placeholder-shimmer {
+    from { background-position: 140% 0, center; }
+    to { background-position: -40% 0, center; }
   }
 
   @keyframes placeholder-clear {
@@ -39,4 +56,6 @@
 
 :root {
   --placeholder-fade: 0.2s;
+  --placeholder-shimmer: rgb(255 255 255 / 0.4);
+  --placeholder-shimmer-duration: 1.6s;
 }

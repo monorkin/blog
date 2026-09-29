@@ -66,8 +66,12 @@ background. Give the class and the style to the element whose box is the image's
 - the image or video itself, like a snap in the lightbox or a video's poster: the image
   just covers it
 
-Without JavaScript, or with reduced motion, there's no fade; the image covers the
-placeholder as it loads. Once loaded, the placeholder goes, so nothing shows through
+Until then a band of light sweeps across the placeholder every 1.6s, so it reads as loading
+rather than as a blurry picture. It's a third background layer rather than a spinner or a
+pseudo-element, because the placeholder can be on the `<img>` itself, which can't have one.
+
+Without JavaScript, or with reduced motion, there's no fade and no sweep; the image covers
+the placeholder as it loads. Once loaded, the placeholder goes, so nothing shows through
 transparent parts.
 
 ## bin/media

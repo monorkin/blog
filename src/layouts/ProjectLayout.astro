@@ -8,7 +8,6 @@ interface Props {
   frontmatter: {
     title: string
     description: string
-    draft?: boolean
   }
 }
 
@@ -18,9 +17,7 @@ const { frontmatter } = Astro.props
 <Layout section="projects">
   <Fragment slot="head">
     <title>{titleize(frontmatter.title)}</title>
-    <SeoTags title={frontmatter.title} description={frontmatter.description} url={absoluteUrl(Astro.url.pathname)} />
-    {frontmatter.draft && <meta name="robots" content="noindex, nofollow" />}
-  </Fragment>
+    <SeoTags title={frontmatter.title} description={frontmatter.description} url={absoluteUrl(Astro.url.pathname)} />  </Fragment>
 
   <article class="article">
     <div class="flex flex-row gap-x-4">

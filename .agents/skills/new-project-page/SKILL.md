@@ -1,6 +1,6 @@
 ---
 name: new-project-page
-description: Adding a page about a project under /projects — generating an MDX page with bin/generate, drafts, or a freeform Astro page — and replacing the placeholder. Use when asked to add, write up or showcase a project.
+description: Adding a page about a project under /projects — generating an MDX page with bin/generate, or a freeform Astro page — and replacing the placeholder. Use when asked to add, write up or showcase a project.
 ---
 
 # A new project page
@@ -28,7 +28,6 @@ URL) and makes its media folder, `media/originals/projects/air-quality-box/`. Fi
 layout: ~/layouts/ProjectLayout.astro
 title: "Air Quality Box"
 description: A small box that measures the air in a room and shows it on its screen.
-draft: true
 ---
 
 import Figure from "~/components/content/Figure.astro"
@@ -42,9 +41,8 @@ Text as in any article.
 so there is nothing to register. `ProjectLayout` gives it the SEO tags, the back link and
 the article typography.
 
-`draft: true` works differently from entries: every page in `src/pages` is built, so a draft
-project is at its URL, but it isn't listed on `/projects` or in the sitemap and asks search
-engines not to index it. Remove it when the page is ready.
+There are no drafts: the page is listed as soon as it exists, and stays unpublished only for
+as long as it isn't committed.
 
 Photos and screenshots of a project are media, in `media/originals/projects/<page name>/`,
 and the page names them by file, like an entry does; the `new-media` skill is how to add
@@ -71,5 +69,5 @@ npm run check
 bin/preview
 ```
 
-Open `/projects` and the page, at 390px wide as well. Once it isn't a draft, it's in
-`/sitemap-pages.xml` without doing anything.
+Open `/projects` and the page, at 390px wide as well. It's in `/sitemap-pages.xml` without
+doing anything.

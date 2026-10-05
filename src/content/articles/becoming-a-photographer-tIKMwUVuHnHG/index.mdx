@@ -1,0 +1,149 @@
+---
+title: Becoming a photographer
+publishedAt: 2026-10-03T06:14:02Z
+updatedAt: 2026-10-03T06:14:02Z
+tags: [work,ai]
+ogImage: cover.png
+---
+
+Last week the topic on everyone's mind seemed to be the future of programming.
+All my friends were talking about it, people I follow were talking about it, and I was
+thinking about it as well. Then David's (DHH's) [Rails World keynote](https://www.youtube.com/watch?v=vDjW_dRyKXY)
+turbocharged the conversation.
+
+His talk didn't come as a surprise to me. I was a week into rewriting HEY in Rust
+during Rails World. [And "Pencils down" only codified how we'd been working for months at
+that point.](https://www.jorgemanrubia.com/2026/08/23/oh-my-craft/)
+
+**David is right.** Like it or not, we programmers, like painters before us, are slowly
+going to disappear. AI, like the camera, completely changed the game. You can sulk about
+it, or you can pick up a camera, start learning, and become a photographer.
+
+<Figure
+  media="20260601_191028.jpg"
+  caption="My favorite photo this year, taken one evening in the Soča Valley"
+/>
+
+### The perfect blend
+
+I was skeptical of AI and vibe coding. [My initial dabbling with it didn't
+turn out that well](https://stanko.io/clean-air-ai-AHcddmIf21lt). The agents needed a lot of hand-holding
+to produce a decent result. But the models improved at an incredible pace, and I got better at employing
+them, learned their limitations, and learned how to express what I wanted.
+
+For me, the first real test for this new way of working was [HEY CLI](https://github.com/basecamp/hey-cli).
+
+[Rob](https://www.zolkos.com/) and I built it - the [CLI, TUI](https://www.hey.com/agents/), and the
+supporting API, [SDK](https://github.com/basecamp/hey-sdk), and
+[ActionCable client](https://github.com/basecamp/actioncable-client) - over the span of a week while
+he was traveling, and while I was shipping and polishing a major pricing change for Basecamp. It's
+completely vibe-coded. No human has seen any of the machinations in the code beyond the initial
+project setup - and it worked out!
+
+Something clicked for me on that project. **I suddenly realized that my only limit now was my
+imagination.**
+
+[Jason](https://jasonzimdars.com/) joined us late in the week to turn our programmer art
+into something delightful. He did wonders in just a day - in a completely foreign medium (ASCII art),
+in a programming language he doesn't know, in a codebase no human has ever read.
+
+<Gallery>
+  <Figure media="hey-tui-email-initial.png" caption="Initial version of the email TUI" inGallery />
+  <Figure media="hey-tui-email-final.png" caption="Final version of the email TUI" inGallery />
+</Gallery>
+
+That got me thinking: *"Maybe I could design the calendar?"*
+
+I had a vision for what the finished calendar TUI could look like, so I gave it a go.
+
+<Gallery>
+  <Figure media="hey-tui-calendar-initial.png" caption="Initial version of the calendar TUI" inGallery />
+  <Figure media="hey-tui-calendar-final.png" caption="Final version of the calendar TUI" inGallery />
+</Gallery>
+
+Designing the calendar was challenging. There were dead ends and abandoned ideas, but I got it done,
+I'm very happy with it, and I leveled up as a designer.
+
+My programming skills helped me along the way. I caught things that wouldn't work and
+guided the agents towards better solutions. I didn't need to write the code myself, but knowing
+how software works still made me better at getting the result I wanted. And the same was true for
+design. The more I learned about typography, layout, and terminal interfaces, the more
+things I could imagine trying.
+
+**AI removed the speed limit, but it didn't remove the limits of my imagination.** The more you
+know, the more you can imagine.
+
+Walls between previously strictly defined roles have broken down: programmer, ops, designer, QA,
+mobile, web. This doesn't mean expertise is useless. Quite the opposite. A lot of what I learned
+over the years carries over and helps me see possibilities, problems, and tradeoffs
+I otherwise wouldn't. [Merlin Rebovic gave a great talk about that](https://www.youtube.com/watch?v=mb45bFqiILk).
+
+But knowing a bit of everything gets you much further today than being excellent at one or two things.
+Every new skill gives you another way of thinking, another set of things you know to look for,
+and, most importantly, more things you can imagine. **The future needs a more even blend of skills.**
+
+### Eventual excellence
+
+What if I told you that the photo above is the third shot out of five? Would that take away from the photo?
+Is it somehow tarnished by not being perfect on the first try? By the two photos before and after it?
+
+Of course it isn't. Nobody looks at a photograph and asks: "Yes, but how many bad exposures did you take?"
+
+Misfires, variations, and riffing are part of the process. It takes taste to pick out the best one and
+to polish it up.
+
+It's the same when working with agents.
+
+We used to turn an idea into code, then meticulously polish that code to excellence, and ship it.
+Every idea had to prove its place; every line of code had to be worth the time it took to write and
+think about it. **Writing code used to be expensive, but it isn't anymore!**
+
+Now I can turn an idea into something real in minutes, play around with it, get a feel for it, and then
+iterate on it or throw it away. The first attempt will probably be rubbish. That's okay. Every attempt
+and iteration teaches me something about where I want to go next.
+
+There will be false starts, rabbit holes, and bugs. There will be things that fall through the cracks.
+**Excellence doesn't have to happen on the first try. It can be eventual.**
+
+I can try five ideas in the time it previously took me to prove just one. Four might not work out. But,
+just like the four photos you never saw, that doesn't diminish the one that worked.
+
+**The goal is still excellence. We just don't need it at every step of the way anymore.**
+
+### Do civil engineers do engineering?
+
+If I'm no longer writing the code, what exactly am I doing? If you ponder that question, let me
+ask you another one: Do civil engineers do engineering?
+
+My mom is a civil engineer. I have tons of memories of her at her giant drawing table with rice paper,
+rulers, pens, and razor blades, designing people's homes. With her pen she dug trenches, laid rebar,
+set walls, and picked the type of concrete to use without ever picking up a shovel. She was doing
+engineering. She was solving hard problems with hard constraints. The fact that someone else picked
+up a shovel, cut the rebar, set up molds, and poured the concrete doesn't take that away from her.
+
+**So don't conflate writing code with engineering.**
+
+With the agents pouring concrete, we can now focus on the thing as a whole. Not just how to
+implement it, but how to design it, test it, deploy it, make it accessible, bring it to other
+platforms, announce it, promote it, and charge for it. Instead of designing walls, we'll design
+homes.
+
+Programmers will disappear, but engineering software won't. It will morph into something broader,
+something that's a little bit of everything. **We have to become makers.**
+
+### Closing thoughts
+
+Picking up a camera won't instantly make you a photographer. Most of us walk around with a
+great camera in our pockets, yet few of us are actually good at using it.
+
+If you take a single picture, compare it to the subject, and
+conclude "this is rubbish," that doesn't necessarily mean the camera is bad.
+You have to learn how to use it. Learn its limitations and how to work around them.
+
+Photography is also a skill. It has to be practiced, explored, and honed.
+
+Like painters in the 19th century, we are in uncharted territory. Nobody really knows what
+they're doing or what being good at photography even means. We're all exploring this new
+space and trying to figure things out, some with more success than others.
+
+There's only one way to find out where this goes: **pick up the camera.**

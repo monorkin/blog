@@ -95,6 +95,10 @@ original, removes variants whose original is gone, and rewrites the manifest fro
 one while the original's size hasn't changed. Video sizes and lengths (`duration`, in whole
 seconds) come from `ffprobe`, which `bin/setup` installs.
 
+`bin/dev` runs `variants` itself whenever something in `media/originals/` is added, changed
+or removed, a second after the last change, so a new photo shows on the next reload. Its
+output goes to the dev server's log. `bin/preview` and the build don't; run it by hand there.
+
 | Media | Widths | Squares |
 |---|---|---|
 | `link-previews/` | 400, 768 | |

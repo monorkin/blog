@@ -11,12 +11,12 @@ from it once, and the URLs, markup and CSS were kept as they were.
 
 | Subject | Read |
 |---|---|
-| The collections, the frontmatter, MDX components, drafts and scheduling, the one-off export from Rails | `doc/content.md` |
+| The collections, the frontmatter, MDX components, publishing, the one-off export from Rails | `doc/content.md` |
 | Every URL the site answers, pagination, redirects, the slug lookup, sitemaps | `doc/routes.md` |
 | The Atom feeds, the old feed URLs and the stylesheet | `doc/feed.md` |
 | Images and videos: media keys, the manifest, `bin/media`, R2, link previews | `doc/images.md` |
 | The layout, CSS, scripts, color scheme, search and the dialogs | `doc/front-end.md` |
-| Cloudflare, wrangler, R2 and the scheduled rebuild | `doc/deployment.md` |
+| Cloudflare, wrangler, R2 and deploying | `doc/deployment.md` |
 | Setting up, `bin/dev`, `bin/preview`, and checking your work | `doc/development.md` |
 | Style: any code | `STYLE.md` (below) |
 | Skills: `new-entry`, `new-project-page`, `new-media` | `.agents/skills/` |

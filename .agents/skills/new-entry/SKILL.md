@@ -1,6 +1,6 @@
 ---
 name: new-entry
-description: Adding a new article, talk or snap to the blog — generating it with bin/generate, the frontmatter, images and videos through the MDX components, drafts and scheduling, and checking it before handing back. Use when asked to write, add, import or schedule a post, talk or photo.
+description: Adding a new article, talk or snap to the blog — generating it with bin/generate, the frontmatter, images and videos through the MDX components, and checking it before handing back. Use when asked to write, add or import a post, talk or photo.
 ---
 
 # A new entry
@@ -39,14 +39,14 @@ What it writes:
 title: "Clean air & AI"
 publishedAt: '2026-10-01T07:00:00Z'
 updatedAt: '2026-10-01T07:00:00Z'
-draft: true
 tags: []
 ---
 ```
 
-- `draft: true` keeps it out of the build entirely. Remove it when it's ready.
-- `publishedAt` is when it was generated. Set it to when it goes out: a future one schedules
-  it, and it appears with the first build after that time.
+- There are no drafts or scheduling: every entry is built, and an entry stays unpublished
+  only for as long as it isn't committed. Don't commit one unless Stanko asks.
+- `publishedAt` is when it was generated. Set it to when it goes out, just before it's
+  committed. A future date doesn't schedule anything; it only shows that date.
 - Leave `feedId` out. Only migrated entries have one.
 - Tags are lowercase with dashes. A new tag needs nothing else.
 - A talk gets placeholder `event` and `heldAt` to replace, and `kind: meetup`; set it to
@@ -56,7 +56,7 @@ tags: []
 - A snap has `image: <file>` when you gave it a photo; run `bin/media variants` so the
   manifest knows it. It has no body, so give it a `caption` of a sentence or two
   saying what's in the photo; without one the page is too thin for search engines.
-- Keep the order: title, the dates, tags, what the kind adds, `draft` last.
+- Keep the order: title, the dates, tags, what the kind adds.
 
 Set `updatedAt` again whenever you change a published entry; the sitemap reports it.
 
@@ -90,5 +90,3 @@ bin/preview
 ```
 
 Open the entry, the index it's listed on, and `/feed`, and look at it at 390px wide as well.
-A draft or a scheduled entry doesn't show up in any of them; set `draft: false` and a past
-date temporarily if you need to see it.

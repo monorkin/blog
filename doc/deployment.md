@@ -74,14 +74,6 @@ account (`my.1password.eu`), vault `Infrastructure`, item `stanko.io`, section
 reads them with `op run` only when it syncs or pulls (`doc/images.md` has the details). A CI job sets `R2_ACCESS_KEY_ID` and
 `R2_SECRET_ACCESS_KEY` itself and 1Password isn't involved.
 
-## Scheduled posts
-
-An entry with a future `publishedAt` is left out of the build until then
-(`doc/content.md`), so something has to build and deploy once a day for scheduled posts to
-appear. That job isn't set up yet. It needs to check out the repository, run
-`npm ci && npm run build && npx wrangler deploy` with a Cloudflare API token. It doesn't need
-the media: the build reads only the manifest.
-
 ## The domain
 
 stanko.io is in Cloudflare, proxied to the server that ran the Rails app. The Worker takes

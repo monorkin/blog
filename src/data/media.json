@@ -607,6 +607,134 @@
     "height": 664,
     "duration": 37
   },
+  "articles/becoming-a-photographer-tIKMwUVuHnHG/20260601_191028.jpg": {
+    "type": "image/jpeg",
+    "bytes": 2177177,
+    "width": 4000,
+    "height": 1848,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      512
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADQAQCdASoQAAcABABoJQBOgBtrVcWwAAD+xRRsMqtiljVzwB2qlav4B+MdudvLc1LjYKHZSg6tu6PAAAA=",
+    "color": "#74858c"
+  },
+  "articles/becoming-a-photographer-tIKMwUVuHnHG/cover.png": {
+    "type": "image/png",
+    "bytes": 2347511,
+    "width": 1672,
+    "height": 941,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1672
+    ],
+    "squares": [
+      512
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoQAAkABABoJYgCdADhNtnRgAD+1cTlrobYPgQkQ6KLbbfWzYAhx42jKmeT9ex0+6SMAX1CZoBPOYAA",
+    "color": "#6d8187"
+  },
+  "articles/becoming-a-photographer-tIKMwUVuHnHG/hey-tui-calendar-final.png": {
+    "type": "image/png",
+    "bytes": 72826,
+    "width": 1267,
+    "height": 1048,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1267
+    ],
+    "squares": [
+      512
+    ],
+    "placeholder": "data:image/webp;base64,UklGRjIAAABXRUJQVlA4ICYAAAAwAQCdASoQAA0ABABoJZQAA3AA/vHIIpN4DokFJybfgDkIrsgAAA==",
+    "color": "#f9faef"
+  },
+  "articles/becoming-a-photographer-tIKMwUVuHnHG/hey-tui-calendar-initial.png": {
+    "type": "image/png",
+    "bytes": 49181,
+    "width": 1267,
+    "height": 1048,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1267
+    ],
+    "squares": [
+      512
+    ],
+    "placeholder": "data:image/webp;base64,UklGRigAAABXRUJQVlA4IBwAAABQAQCdASoQAA0ABABoJZwABDOAAP7ySvjvFwAA",
+    "color": "#fefef2"
+  },
+  "articles/becoming-a-photographer-tIKMwUVuHnHG/hey-tui-email-final.png": {
+    "type": "image/png",
+    "bytes": 201178,
+    "width": 1271,
+    "height": 1048,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1271
+    ],
+    "squares": [
+      512
+    ],
+    "placeholder": "data:image/webp;base64,UklGRiwAAABXRUJQVlA4ICAAAACwAQCdASoQAA0ABABoJZwAAxf+5/AAAP7zklEW2cCAAA==",
+    "color": "#f5f6ef"
+  },
+  "articles/becoming-a-photographer-tIKMwUVuHnHG/hey-tui-email-initial.png": {
+    "type": "image/png",
+    "bytes": 252088,
+    "width": 1267,
+    "height": 1048,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1267
+    ],
+    "squares": [
+      512
+    ],
+    "placeholder": "data:image/webp;base64,UklGRioAAABXRUJQVlA4IB4AAABQAQCdASoQAA0ABABoJZwABDOAAP7xh4Ci70vFwAA=",
+    "color": "#f8f8ed"
+  },
   "articles/best-image-uploader-for-rails-revisited-3b3b7618cc4c/ruby.jpeg": {
     "type": "image/jpeg",
     "bytes": 90694,

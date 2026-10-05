@@ -9,7 +9,7 @@ bin/media variants         # and their variants
 bin/dev                    # astro dev at http://localhost:4321, reloading as you save
 bin/preview                # npm run build, then wrangler dev at http://localhost:8787
 bin/preview --skip-build   # serve the last build again
-bin/generate article "Title"   # a new draft article, talk, snap or project (doc/content.md)
+bin/generate article "Title"   # a new article, talk, snap or project (doc/content.md)
 ```
 
 ## bin/setup
@@ -50,7 +50,8 @@ network while you work.
 ## bin/dev
 
 `astro dev` with hot reload, with `MEDIA_URL=/media`: an integration in `astro.config.mjs`
-serves `media/` there. Arguments go to `astro dev`, e.g. `bin/dev --port 3000`.
+serves `media/` there and runs `bin/media variants` when `media/originals/` changes
+(`doc/images.md`). Arguments go to `astro dev`, e.g. `bin/dev --port 3000`.
 
 The Cloudflare adapter runs the dev server inside workerd, so the on-demand routes work
 here: `/feed` with its filters, `/articles/rss`, and the slug redirects. Content, styles and

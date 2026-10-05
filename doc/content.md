@@ -30,7 +30,7 @@ bin/generate project "Title"
 
 `bin/generate` makes the slug from the title the way Rails' `parameterize` did (accents and
 apostrophes dropped, every other run of non-alphanumerics one dash), picks a fresh ID no
-entry uses, and writes the file with `draft: true`, `publishedAt` and `updatedAt` set to now,
+entry uses, and writes the file with `publishedAt` and `updatedAt` set to now,
 and `tags: []`. Talks get placeholder `event` and `heldAt`, and `kind: meetup`. It also makes the entry's media
 folder, and for a snap copies the photo there and sets `image`. It prints the file and the
 URL the entry will have. Don't make IDs by hand.
@@ -38,7 +38,7 @@ URL the entry will have. Don't make IDs by hand.
 ### Frontmatter
 
 All three share these, always in this order: title, the dates and tags first, anything the
-kind adds after them, `draft` and `feedId` last. Dates are bare YAML timestamps, tags an
+kind adds after them, `feedId` last. Dates are bare YAML timestamps, tags an
 inline list, and strings are quoted only when YAML needs it.
 
 ```yaml
@@ -47,7 +47,6 @@ publishedAt: 2025-06-12T14:00:00Z   # when it's shown as published, and the sort
 updatedAt: 2026-03-11T13:32:32Z     # the sitemap's lastmod
 tags: [ai, go]                      # lowercase, dashes for spaces
 ogImage: img_8969.jpeg              # optional; the image shown when it's shared (below)
-draft: true                         # optional; drafts aren't built
 feedId: Article/46                  # migrated entries only, see below
 ```
 
@@ -87,13 +86,13 @@ old URL keeps working, because the catch-all route redirects any slug with the r
 (`doc/routes.md`), and the feed ID doesn't change. After renaming an entry that has media,
 run `bin/media sync`: its files have new keys in R2.
 
-### Publishing and scheduling
+### Publishing
 
-An entry is built when it isn't a `draft` and its `publishedAt` is in the past at build time.
-So a post is scheduled by giving it a future `publishedAt`: it appears with the first build
-after that moment. A scheduled rebuild once a day publishes them (`doc/deployment.md`).
-
-Drafts are left out completely, including from the feed, the sitemaps and the tag pages.
+There are no drafts and no scheduling. The repository is public, so a draft would be
+readable on GitHub anyway, and nothing builds the site on its own to publish a post at a
+later date. Every entry in `src/content` is built, and `bin/deploy` only deploys what's
+committed and pushed, so an entry is a draft for as long as it's out of git. Set
+`publishedAt` to when it goes out before committing it.
 
 ### Excerpts and reading time
 
@@ -181,9 +180,6 @@ with no ID; `bin/generate project "Title"` writes one. An `.mdx` file with
 `layout: ~/layouts/ProjectLayout.astro`, a `title` and a `description` shows up on
 `/projects` by itself; an `.astro` page can be anything, but isn't listed unless it is
 added to `src/lib/projects.ts`. `blog.mdx` is a placeholder.
-
-A project with `draft: true` is still built, because every page in `src/pages` is, but it
-isn't listed on `/projects` or in the sitemap, and it's marked `noindex`.
 
 ## The export from Rails
 

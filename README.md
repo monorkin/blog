@@ -24,10 +24,9 @@ its media under `media/originals/`, and prints the file to edit and the URL it'l
 > [!IMPORTANT]
 > The folder name is the URL
 
-Everything starts as a draft. To publish:
+There are no drafts: it stays unpublished for as long as it isn't committed. To publish:
 
-1. Remove `draft: true`, and set `publishedAt` to when it goes out. A future date schedules it
-   for the first build after then.
+1. Set `publishedAt` to now.
 2. `bin/media variants` if you added photos or videos, then commit, including
    `src/data/media.json`, and push.
 3. `bin/deploy`. It checks everything is committed and pushed, makes the variants, syncs
@@ -47,7 +46,6 @@ title: "Clean air & AI"
 publishedAt: '2026-10-01T07:00:00Z'
 updatedAt: '2026-10-01T07:00:00Z'
 tags: [ruby, rails]
-draft: true
 ---
 ```
 

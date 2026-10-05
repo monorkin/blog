@@ -32,6 +32,9 @@ No size limit applies here; a 40 MB video is fine.
 bin/media variants
 ```
 
+`bin/dev` does this on its own when a file lands in `media/originals/`, so while it's running
+you can skip this step; otherwise run it.
+
 It first strips the original's metadata in place: GPS and location, camera and serial
 numbers, dates, maker notes, comments, everything but the orientation (and an image's colour
 profile). Originals are public on R2, and a phone photo says where it was taken. Then it adds

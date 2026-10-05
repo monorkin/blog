@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Creates a new entry or project page as a draft, so nobody has to make up an ID.
+// Creates a new entry or project page, so nobody has to make up an ID.
 //
 //   bin/generate article "Title"
 //   bin/generate talk "Title"
@@ -8,8 +8,8 @@
 //
 // Articles, talks and snaps get a folder named <slug>-<id> with a fresh 12-character ID, and a
 // folder of the same name under media/originals/ for their images. Projects are pages named
-// after the slug alone. Everything starts as a draft: drafts aren't built (projects aren't
-// listed), so remove `draft: true` when it's ready.
+// after the slug alone. There are no drafts: what's committed goes out with the next deploy,
+// so keep an entry out of git until it's ready.
 import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs"
 import { randomInt } from "node:crypto"
 import { basename, dirname, extname, join, relative } from "node:path"
@@ -84,11 +84,11 @@ function generateProject(title) {
   if (existsSync(path)) {
     fail(`${relative(ROOT, path)} already exists.`)
   } else {
-    const fields = [ "layout: ~/layouts/ProjectLayout.astro", `title: ${yamlString(title)}`, "description: One sentence about the project.", "draft: true" ]
+    const fields = [ "layout: ~/layouts/ProjectLayout.astro", `title: ${yamlString(title)}`, "description: One sentence about the project." ]
     writeFileSync(path, `---\n${fields.join("\n")}\n---\n\nWrite about the project here.\n`)
     console.log(`Created ${relative(ROOT, path)}`)
     console.log(`Media goes in ${relative(ROOT, mediaFolder("projects", slug))}/`)
-    console.log(`It's at ${DEV_URL}/projects/${slug} in bin/dev, unlisted until draft: true is removed.`)
+    console.log(`It's at ${DEV_URL}/projects/${slug} in bin/dev.`)
   }
 }
 
@@ -156,8 +156,7 @@ function frontmatter(title, extraFields = []) {
     `publishedAt: ${NOW}`,
     `updatedAt: ${NOW}`,
     "tags: []",
-    ...extraFields,
-    "draft: true"
+    ...extraFields
   ]
 }
 
@@ -176,7 +175,7 @@ function writeEntry(collection, folder, file, fields, body) {
 function announce(path, urlPath, media) {
   console.log(`Created ${relative(ROOT, path)}`)
   console.log(`Media goes in ${relative(ROOT, media)}/`)
-  console.log(`Once draft: true is removed, it's at ${DEV_URL}${urlPath} in bin/dev.`)
+  console.log(`It's at ${DEV_URL}${urlPath} in bin/dev.`)
 }
 
 function usage() {

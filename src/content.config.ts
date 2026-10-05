@@ -6,7 +6,6 @@ const entryFields = {
   title: z.string(),
   publishedAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
-  draft: z.boolean().default(false),
   tags: z.array(z.string()).default([]),
   // The image a link to the entry shows when shared, a media key; without one it gets a
   // generated preview card (src/lib/social-image.ts), and a snap its photo

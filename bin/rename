@@ -10,6 +10,7 @@
 // (src/pages/[...path].ts), and the feed ID is made from the ID alone.
 import { existsSync, readFileSync, readdirSync, renameSync, writeFileSync } from "node:fs"
 import { dirname, join, relative } from "node:path"
+import { spawnSync } from "node:child_process"
 import { fileURLToPath } from "node:url"
 import { slugFor, yamlString } from "./lib/names.mjs"
 
@@ -66,7 +67,9 @@ function findEntry(kind, id) {
 function rename(entry, title) {
   const id = entry.folder.split("-").at(-1)
   const newFolder = `${slugFor(title)}-${id}`
-  const draft = setTitle(entry, title)
+  const committed = isCommitted(entry)
+
+  setTitle(entry, title)
 
   if (newFolder === entry.folder) {
     console.log(`Set the title of ${entry.folder}; its URL stays the same.`)
@@ -75,18 +78,22 @@ function rename(entry, title) {
     const movedKeys = moveMediaKeys(entry, newFolder)
     const updatedEntries = updateMediaReferences(entry, newFolder)
 
-    announce(entry, newFolder, { draft, movedKeys, updatedEntries })
+    announce(entry, newFolder, { committed, movedKeys, updatedEntries })
   }
 }
 
-// Replaces the title line of the frontmatter, and says whether the entry is a draft
+// An entry that's committed is out, or will be with the next deploy, so its old URL matters
+function isCommitted(entry) {
+  const path = relative(ROOT, entryFile(entry.collection, entry.folder))
+  return spawnSync("git", [ "cat-file", "-e", `HEAD:${path}` ], { cwd: ROOT }).status === 0
+}
+
 function setTitle(entry, title) {
   const path = entryFile(entry.collection, entry.folder)
   const [ , frontmatter, body ] = readFileSync(path, "utf8").match(/^---\n([\s\S]*?\n)---\n([\s\S]*)$/)
 
   if (/^title: .*$/m.test(frontmatter)) {
     writeFileSync(path, `---\n${frontmatter.replace(/^title: .*$/m, `title: ${yamlString(title)}`)}---\n${body}`)
-    return /^draft: true$/m.test(frontmatter)
   } else {
     fail(`${relative(ROOT, path)} has no title line in its frontmatter.`)
   }
@@ -172,13 +179,13 @@ function updateMediaReferences(entry, newFolder) {
 
 // Output
 
-function announce(entry, newFolder, { draft, movedKeys, updatedEntries }) {
+function announce(entry, newFolder, { committed, movedKeys, updatedEntries }) {
   const { urlPrefix } = COLLECTIONS[entry.kind]
 
   console.log(`Renamed ${entry.collection}/${entry.folder} to ${entry.collection}/${newFolder}`)
   console.log(`It's at ${DEV_URL}${urlPrefix}${newFolder} in bin/dev.`)
 
-  if (!draft) {
+  if (committed) {
     console.log(`${urlPrefix}${entry.folder} redirects there once deployed.`)
   }
 

@@ -9,7 +9,6 @@ export type Kind = "article" | "talk" | "snap"
 
 const KINDS: Record<Source["collection"], Kind> = { articles: "article", talks: "talk", snaps: "snap" }
 const WORDS_PER_MINUTE = 225
-const BUILD_TIME = new Date()
 
 
 export class Entry {
@@ -41,10 +40,6 @@ export class Entry {
 
   get tags() {
     return [ ...this.source.data.tags ].sort()
-  }
-
-  get published() {
-    return !this.source.data.draft && this.publishedAt <= BUILD_TIME
   }
 
   get path() {
@@ -151,7 +146,6 @@ export async function publishedEntries(kind?: Kind) {
 
   return sources
     .map(source => new Entry(source))
-    .filter(entry => entry.published)
     .sort(byRecency)
 }
 

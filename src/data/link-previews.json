@@ -42,6 +42,11 @@
     "description": "The Euruko 2022 recordings",
     "image": "link-previews/1520-social-video.jpg"
   },
+  "https://37signals.com/": {
+    "title": "37signals",
+    "description": "A catalog of ideas — signals — that drive us.",
+    "image": "link-previews/4850924f-opengraph.png"
+  },
   "https://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file": {
     "title": "ActionController::DataStreaming",
     "description": "Action Controller Data Streaming¶ ↑  Methods for sending arbitrary data and for streaming files to the browser, instead of rendering."
@@ -103,6 +108,16 @@
   "https://aws.amazon.com/solutions/implementations/serverless-image-handler/": {
     "title": "Dynamic Image Transformation for Amazon CloudFront",
     "description": "Dynamic Image Transformation for Amazon CloudFront (formerly Serverless Image Handler) enables real-time image processing through the global content delivery network (CDN) of Amazon CloudFront."
+  },
+  "https://basecamp.com/shapeup": {
+    "title": "Shape Up: Stop Running in Circles and Ship Work that Matters",
+    "description": "Shape Up will help you break free of “best practices” that aren’t really working, think deeper about the right problems, and start shipping meaningful projects your team can celebrate.",
+    "image": "link-previews/ce9b926b-shape-up.png"
+  },
+  "https://basecamp.com/shapeup/webbook": {
+    "title": "Shape Up: Stop Running in Circles and Ship Work that Matters",
+    "description": "Shape Up will help you break free of “best practices” that aren’t really working, think deeper about the right problems, and start shipping meaningful projects your team can celebrate.",
+    "image": "link-previews/47c14901-shape-up.png"
   },
   "https://blog.codinghorror.com/pick-a-license-any-license/": {
     "title": "Pick a License, Any License",
@@ -209,6 +224,11 @@
   "https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html#apigateway-execution-service-websocket-limits-table": {
     "title": "Amazon API Gateway quotas - Amazon API Gateway"
   },
+  "https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/#enabling-sendfile": {
+    "title": "Serve Static Content | NGINX Documentation",
+    "description": "Configure NGINX and F5 NGINX Plus to serve static content, with type-specific root directories, checks for file existence, and performance optimizations.",
+    "image": "link-previews/988fba24-nginx-documentation-500x300.png"
+  },
   "https://en.wikipedia.org/wiki/.su": {
     "title": ".su",
     "description": ".su is an Internet country code top-level domain (ccTLD) that was designated for the Soviet Union on 19 September 1990. Even though the Soviet Union itself was dissolved 15 months later, the .su top-level domain remains in use to the present day. It is administered by the Russian Institute for Public Networks.",
@@ -257,6 +277,9 @@
     "title": "Domain-driven_design",
     "description": "Domain-driven design (DDD) is a software design approach that focuses on modeling software to match a domain according to input from that domain's experts. DDD is against the idea of having a single unified model; instead it divides a large system into bounded contexts, each of which have their own model."
   },
+  "https://en.wikipedia.org/wiki/Duplex_%28telecommunications%29#Full_duplex": {
+    "title": "Duplex (telecommunications) - Wikipedia"
+  },
   "https://en.wikipedia.org/wiki/Duplex_(telecommunications)#Full_duplex": {
     "title": "Duplex_(telecommunications)",
     "description": "A duplex communication system is a point-to-point system composed of two or more connected parties or devices that can communicate with one another in both directions. Duplex systems are employed in many communications networks, either to allow for simultaneous communication in both directions between two connected parties or to provide a reverse path for the monitoring and remote adjustment of equipment in the field. There are two types of duplex communication systems: full-duplex (FDX) and half-duplex (HDX)."
@@ -277,6 +300,9 @@
     "title": "Free_software",
     "description": "Free software, libre software, libreware sometimes known as freedom-respecting software is computer software distributed under terms that allow users to run the software for any purpose as well as to study, change, and distribute it and any adapted versions. Free software is a matter of liberty, not price; all users are legally free to do what they want with their copies of free software regardless of how much is paid to obtain the program. Computer programs are deemed \"free\" if they give end-users ultimate control over the software and, subsequently, over their devices.",
     "image": "link-previews/1431-330px-example_of_gnu_guix-27s_desktop_environment.png"
+  },
+  "https://en.wikipedia.org/wiki/Function_composition_%28computer_science%29": {
+    "title": "Function composition (computer science) - Wikipedia"
   },
   "https://en.wikipedia.org/wiki/Function_composition_(computer_science)": {
     "title": "Function_composition_(computer_science)",
@@ -364,6 +390,9 @@
     "title": "Pareto_principle",
     "description": "The Pareto principle states that, for many outcomes, roughly 80% of consequences come from 20% of causes.",
     "image": "link-previews/1493-330px-pareto_principle.png"
+  },
+  "https://en.wikipedia.org/wiki/Polling_%28computer_science%29": {
+    "title": "Polling (computer science) - Wikipedia"
   },
   "https://en.wikipedia.org/wiki/Polling_(computer_science)": {
     "title": "Polling_(computer_science)",
@@ -519,6 +548,11 @@
     "description": "The official AWS SDK for Ruby. Contribute to aws/aws-sdk-ruby development by creating an account on GitHub.",
     "image": "link-previews/1455-aws-sdk-ruby.png"
   },
+  "https://github.com/basecamp/actioncable-client": {
+    "title": "GitHub - basecamp/actioncable-client: Action Cable clients for Ruby, Rust, Go, Kotlin, Swift & TypeScript",
+    "description": "Action Cable clients for Ruby, Rust, Go, Kotlin, Swift & TypeScript - basecamp/actioncable-client",
+    "image": "link-previews/a05c05c3-actioncable-client.png"
+  },
   "https://github.com/basecamp/activerecord-tenanted": {
     "title": "GitHub - basecamp/activerecord-tenanted: Enable a Rails application to have separate databases for each tenant.",
     "description": "Enable a Rails application to have separate databases for each tenant. - basecamp/activerecord-tenanted",
@@ -533,6 +567,15 @@
     "title": "Fizzy Ask by monorkin · Pull Request #857 · basecamp/fizzy",
     "description": "Fizzy Ask is an interactive way to  explore your Fizzy cards and comments through a conversation.\n\n  \n    \n    \n\n    output.mp4\n    \n  \n\n  \n\n  \n\n\nHow the chat works\nThe LLM can access your Fizzy ca...",
     "image": "link-previews/1796-857.png"
+  },
+  "https://github.com/basecamp/hey-cli": {
+    "title": "GitHub - basecamp/hey-cli: HEY CLI and Agent Skills",
+    "description": "HEY CLI and Agent Skills. Contribute to basecamp/hey-cli development by creating an account on GitHub.",
+    "image": "link-previews/cceaf3dd-hey-cli.png"
+  },
+  "https://github.com/basecamp/hey-sdk": {
+    "title": "GitHub - basecamp/hey-sdk: HEY software dev kit",
+    "description": "HEY software dev kit. Contribute to basecamp/hey-sdk development by creating an account on GitHub."
   },
   "https://github.com/basecamp/kamal-proxy": {
     "title": "GitHub - basecamp/kamal-proxy: Lightweight proxy server for Kamal",
@@ -1086,6 +1129,11 @@
     "description": "Motivation / Background\nFor one-time codes that are meant to be typed in by hand, we want to generate codes that are easy to read, easy to say out loud, and hard to confuse.\nCrockford&#39;s Base32 ...",
     "image": "link-previews/1801-56288.png"
   },
+  "https://github.com/rails/rails/pull/57100": {
+    "title": "Passkeys by monorkin · Pull Request #57100 · rails/rails",
+    "description": "Motivation / Background\nPasskeys are a modern authentication method built on the WebAuthn standard that uses public-key cryptography instead of shared secrets — this makes them resistant to phishin...",
+    "image": "link-previews/36c78976-57100.png"
+  },
   "https://github.com/rails/rails/tree/master/activerecord": {
     "title": "rails/activerecord at main · rails/rails",
     "description": "Ruby on Rails. Contribute to rails/rails development by creating an account on GitHub.",
@@ -1130,6 +1178,50 @@
     "title": "GitHub - rubysherpas/paranoia: acts_as_paranoid for Rails 5, 6 and 7",
     "description": "acts_as_paranoid for Rails 5, 6 and 7. Contribute to rubysherpas/paranoia development by creating an account on GitHub.",
     "image": "link-previews/1514-paranoia.png"
+  },
+  "https://github.com/rubyzg/slides/blob/master/2015-03-31/ruby_extensions.pdf": {
+    "title": "slides/2015-03-31/ruby_extensions.pdf at master · rubyzg/slides",
+    "description": "Slides from Ruby Zagreb meetups. Contribute to rubyzg/slides development by creating an account on GitHub.",
+    "image": "link-previews/8d2464c9-slides.png"
+  },
+  "https://github.com/rubyzg/slides/blob/master/2016-02-25/docker_for_ruby_devs.pdf": {
+    "title": "slides/2016-02-25/docker_for_ruby_devs.pdf at master · rubyzg/slides",
+    "description": "Slides from Ruby Zagreb meetups. Contribute to rubyzg/slides development by creating an account on GitHub.",
+    "image": "link-previews/4c80c8df-slides.png"
+  },
+  "https://github.com/rubyzg/slides/blob/master/2016-04-28/stubs_mocks_spies.pdf": {
+    "title": "slides/2016-04-28/stubs_mocks_spies.pdf at master · rubyzg/slides",
+    "description": "Slides from Ruby Zagreb meetups. Contribute to rubyzg/slides development by creating an account on GitHub.",
+    "image": "link-previews/8822b3d0-slides.png"
+  },
+  "https://github.com/rubyzg/slides/blob/master/2016-10-25/steganography.pdf": {
+    "title": "slides/2016-10-25/steganography.pdf at master · rubyzg/slides",
+    "description": "Slides from Ruby Zagreb meetups. Contribute to rubyzg/slides development by creating an account on GitHub.",
+    "image": "link-previews/0045d730-slides.png"
+  },
+  "https://github.com/rubyzg/slides/blob/master/2017-03-28/graphql.pdf": {
+    "title": "slides/2017-03-28/graphql.pdf at master · rubyzg/slides",
+    "description": "Slides from Ruby Zagreb meetups. Contribute to rubyzg/slides development by creating an account on GitHub.",
+    "image": "link-previews/6bbf15c0-slides.png"
+  },
+  "https://github.com/rubyzg/slides/blob/master/2017-11-28/helix.pdf": {
+    "title": "slides/2017-11-28/helix.pdf at master · rubyzg/slides",
+    "description": "Slides from Ruby Zagreb meetups. Contribute to rubyzg/slides development by creating an account on GitHub.",
+    "image": "link-previews/38e432e7-slides.png"
+  },
+  "https://github.com/rubyzg/slides/blob/master/2018-02-28/rabbitmq_is_more_than_a_sidekiq_replacement.pdf": {
+    "title": "slides/2018-02-28/rabbitmq_is_more_than_a_sidekiq_replacement.pdf at master · rubyzg/slides",
+    "description": "Slides from Ruby Zagreb meetups. Contribute to rubyzg/slides development by creating an account on GitHub.",
+    "image": "link-previews/95a79d2f-slides.png"
+  },
+  "https://github.com/rubyzg/slides/blob/master/2022-06-15/rubyzg_hotwired.pdf": {
+    "title": "slides/2022-06-15/rubyzg_hotwired.pdf at master · rubyzg/slides",
+    "description": "Slides from Ruby Zagreb meetups. Contribute to rubyzg/slides development by creating an account on GitHub.",
+    "image": "link-previews/44cab183-slides.png"
+  },
+  "https://github.com/rubyzg/slides/blob/master/2024-01-24/Deconstructing_Action_Cable.pdf": {
+    "title": "slides/2024-01-24/Deconstructing_Action_Cable.pdf at master · rubyzg/slides",
+    "description": "Slides from Ruby Zagreb meetups. Contribute to rubyzg/slides development by creating an account on GitHub."
   },
   "https://github.com/rust-lang/rust/blob/c57deb923e56e04634b7e4b3fdc0f84ea0d41ed4/COPYRIGHT": {
     "title": "rust/COPYRIGHT at c57deb923e56e04634b7e4b3fdc0f84ea0d41ed4 · rust-lang/rust",
@@ -1321,6 +1413,9 @@
     "title": "The plugin system of Sequel and Roda",
     "description": "When developing gems, often one of the difficult problems to solve is creating a good ratio between simplicity, convenience and flexibility."
   },
+  "https://jasonzimdars.com/": {
+    "title": "Jason Zimdars"
+  },
   "https://kamal-deploy.org/": {
     "title": "Deploy web apps anywhere",
     "description": "From bare metal to cloud VMs using Docker, deploy web apps anywhere with zero downtime.",
@@ -1363,6 +1458,14 @@
     "title": "Oh My Zsh - a delightful & open source framework for Zsh",
     "description": "Oh My Zsh is a popular open-source Zsh configuration framework loved by developers worldwide. It includes 300+ plugins, themes, and tweaks to supercharge your terminal experience.",
     "image": "link-previews/1566-omzlogo_opengraph.jpg"
+  },
+  "https://old.reddit.com/r/Eldenring/comments/vgvy7y/best_item_description/": {
+    "title": "Welcome to Reddit",
+    "description": "Log in or sign up to personalize your feed, join conversations, vote, and explore communities."
+  },
+  "https://old.reddit.com/r/aws/comments/bv70k8/aurora_postgres_disastrous_experience/": {
+    "title": "Welcome to Reddit",
+    "description": "Log in or sign up to personalize your feed, join conversations, vote, and explore communities."
   },
   "https://opensource.org/licenses/Apache-2.0": {
     "title": "Apache License, Version 2.0",
@@ -1472,6 +1575,11 @@
     "description": "I am creating some suspended connections to an HTTP server (comet, reverse AJAX, etc). It works ok, but I see the browser only allows two suspended connections to a given domain simultaneously. So ...",
     "image": "link-previews/1385-apple-touch-icon-2.png"
   },
+  "https://stanko.io/adversarial-web-services-Vjfkr3DF9LfG": {
+    "title": "Adversarial Web Services - Stanko",
+    "description": "My first job was at a digital agency. In addition to app development we also hosted the apps that we'd develop for our clients. This allowed us to avoid...",
+    "image": "link-previews/acb27c18-adversarial-web-services-vjfkr3df9lfg.png"
+  },
   "https://stanko.io/building-simpl-77CAzym51p5a": {
     "title": "Building Simplæ¯ - Stanko K.R.",
     "description": "This week I went for a coffee with a friend. As we talked the topic of hobbies came up. I mentioned that I was having a lot of fun working on a toy project...",
@@ -1482,10 +1590,25 @@
     "description": "When Campfire - the first Once product - came out, a few of us at Ruby Zagreb pitched in to buy a copy.\n\nPrometheus had brought fire from Mount Olympus, and...",
     "image": "link-previews/1794-once_overview.png"
   },
+  "https://stanko.io/clean-air-ai-AHcddmIf21lt": {
+    "title": "Clean air & AI - Stanko",
+    "description": "One of my favorite activities is hiking. I'm fortunate to live close to a mountain where I can go for a hike any time I want - often early in the morning,...",
+    "image": "link-previews/28d3a742-512sq.jpg"
+  },
+  "https://stanko.io/corporate-newspeak-v2E1RTcmIUfi": {
+    "title": "Corporate newspeak - Stanko",
+    "description": "“If thought corrupts language, language can also corrupt thought\n\n- George Orwell”\n\nOne thing that annoyed me anywhere I worked was that people limit...",
+    "image": "link-previews/c7109216-corporate-newspeak-v2e1rtcmiufi.png"
+  },
   "https://stanko.io/deconstructing-action-cable-DC7F33OsjGmK": {
     "title": "Deconstructing Action Cable | Stanko K.R.",
     "description": "I knew what Action Cable was about and roughly how it worked since it was released. But lately I've developed a much deeper understanding of it because I had...",
     "image": "link-previews/1667-00011-2829697632.png"
+  },
+  "https://stanko.io/do-you-really-need-websockets-343aed40aa9b": {
+    "title": "Do you really need WebSockets? - Stanko",
+    "description": "Over the years I've had this conversation a couple of times. This post will explain why we use WebSockets, how they can be used, what alternatives exist and...",
+    "image": "link-previews/f81755b5-512sq.png"
   },
   "https://stanko.io/fight-perfection-roooUsSEfduw": {
     "title": "Fight perfection | Stanko K.R.",
@@ -1501,14 +1624,29 @@
     "description": "I wanted to forward an email one evening, so I opened up the Hey app on my phone, found the email, tapped on the âMoreâ button, and just before I hit...",
     "image": "link-previews/1727-strada_demo.gif"
   },
+  "https://stanko.io/misguided-mark-misrepresents-micro-services-a-story-about-paradigms-XBMbcWf6RRkz": {
+    "title": "Misguided Mark misrepresents Micro-services: A... - Stanko",
+    "description": "Tom was brewing tea in preparation for a 5 o'clock meeting he knew little about. The agenda was so vague it might as well have been left out - it read “Mark...",
+    "image": "link-previews/d4bc11ed-misguided-mark-misrepresents-micro-services-a-story-about-paradigms-xbmbcwf6rrkz.png"
+  },
   "https://stanko.io/monitoring-actioncable-GdeaeHfIU4Yk": {
     "title": "Monitoring ActionCable | Stanko K.R.",
     "description": "A few weeks ago I was woken up with the following message \"Hey, devices are randomly disconnecting from WebSockets can you come online and help?\".\nUsually,...",
     "image": "link-previews/1684-xzanf4cblu763otbgio0n8touz58.png"
   },
+  "https://stanko.io/rabbitmq-is-more-than-a-sidekiq-replacement-b730d8176fb": {
+    "title": "RabbitMQ is more than a Sidekiq replacement - Stanko",
+    "description": "I've had gripes with Sidekiq because of which I switched to RabbitMQ. Here are my thoughts and experiences after a year of using it in production.\n\nI got...",
+    "image": "link-previews/b2adaac2-512sq.png"
+  },
   "https://stanko.io/running-campfire-behind-traefik-LrGQM0GE0FVd": {
     "title": "Running Campfire behind traefik | Stanko K.R.",
     "description": "I rent a bare metal server from Scaleway where I host all my apps. For me, that's much more economical than running multiple small VPS boxes. 50â¬ a month..."
+  },
+  "https://stanko.io/scrum-is-for-time-estimates-not-projects-23ULmuBVSMqo": {
+    "title": "Scrum is for time estimates, not projects - Stanko",
+    "description": "From my experience Scrum is the prevalent project management framework in software development. Most of the teams I was part of used it to develop, deliver...",
+    "image": "link-previews/a3b2a23c-scrum-is-for-time-estimates-not-projects-23ulmubvsmqo.png"
   },
   "https://stanko.io/tracking-online-presence-with-actioncable-ukEi6sUZ98Bz": {
     "title": "Tracking online presence with ActionCable | Stanko K.R.",
@@ -1598,6 +1736,10 @@
     "description": "“Any AI-powered feature we add will either be amazing or it won’t. Let’s explore.” I’ve lived this 37signals stance on AI from the inside, as a programmer. Putting this into practice is harder than it looks. Half-baked AI features that don’t solve any problem are everywhere. Sometimes, it’s just so a company can slap an AI label on its...",
     "image": "link-previews/1798-avatar-d08cb3ee63ecbd49736f76ee2caffa4c99a1c0fd.png"
   },
+  "https://www.amazon.com/Are-Your-Lights-Figure-Problem/dp/0932633161": {
+    "title": "Are Your Lights On?: How to Figure Out What the Problem Really Is: Gause, Donald C., Weinberg, Gerald M.: 9780932633163: Amazon.com: Books",
+    "description": "Are Your Lights On?: How to Figure Out What the Problem Really Is [Gause, Donald C., Weinberg, Gerald M.] on Amazon.com. *FREE* shipping on qualifying offers. Are Your Lights On?: How to Figure Out What the Problem Really Is"
+  },
   "https://www.backblaze.com/cloud-storage": {
     "title": "Low Cost, High Performance S3 Compatible Object Storage",
     "description": "Backblaze B2 provides unlimited data storage in the cloud at 1/5th the cost of Amazon S3, Microsoft Azure, and Google Cloud.",
@@ -1618,6 +1760,11 @@
     "description": "Cloudflare R2 is an S3-compatible, zero egress-fee, object storage. Move data freely and build the multi-cloud architecture you desire.",
     "image": "link-previews/1691-cloudflare-og-image.png"
   },
+  "https://www.consul.io/": {
+    "title": "Consul | HashiCorp Developer",
+    "description": "Explore Consul product documentation, tutorials, and examples.",
+    "image": "link-previews/2d1bd153-consul.jpg"
+  },
   "https://www.digitalocean.com/": {
     "title": "DigitalOcean: AI-Powered Unified Inference Cloud Infrastructure",
     "description": "Build on DigitalOcean's unified agentic AI cloud infrastructure. AI-powered development, instant deployment, easy management. Simple and affordable.",
@@ -1636,6 +1783,11 @@
   "https://www.facebook.com/notes/protect-the-graph/securing-email-communications-from-facebook/1611941762379302/": {
     "title": "Se connecter à Facebook"
   },
+  "https://www.feltpresence.com/srl/": {
+    "title": "Ryan Singer",
+    "description": "Author of Shape Up, Fractional CPO, 20+ Years in Design, Code, Management, prev: Head of Strategy at 37signals",
+    "image": "link-previews/fbd06480-screenshot-2025-04-17-at-9-36-08-pm-1.png"
+  },
   "https://www.fizzy.do/": {
     "title": "Kanban as it should be. Not as it has been.",
     "description": "A refreshing take on cards, columns, and kanban.",
@@ -1650,6 +1802,11 @@
   },
   "https://www.gnu.org/licenses/why-not-lgpl.html": {
     "title": "Why you shouldn't use the Lesser GPL for your next library\n- GNU Project - Free Software Foundation"
+  },
+  "https://www.hackjunction.com/": {
+    "title": "Hackjunction",
+    "description": "Junction is Europe's leading hackathon, bringing together the world's brightest minds to build the future.",
+    "image": "link-previews/7d5b99bf-junction-banner.png"
   },
   "https://www.headspace.com/": {
     "title": "Mental Health App for Meditation & Sleep - Headspace",
@@ -1672,10 +1829,20 @@
     "description": "Gmail, Outlook, and Apple got complacent and took their eye off the ball. Then along came HEY.",
     "image": "link-previews/1530-opengraph.png"
   },
+  "https://www.hey.com/agents/": {
+    "title": "HEY CLI and TUI",
+    "description": "Read and send emails, manage boxes, calendars, todos, habits, time tracking, and journal entries — all from your terminal.",
+    "image": "link-previews/b220106c-agents.png"
+  },
   "https://www.ifixit.com/products/macbook-air-original-mid-2009-replacement-battery?variant=39371742150759": {
     "title": "MacBook Air (Original-Mid 2009) Battery",
     "description": "Replace the 5560 mAh battery compatible with MacBook Air (Original-Mid 2009). 40 Watt Hours (Wh), 7.2 Volts (V).",
     "image": "link-previews/1527-g1z2elhs2i3rmrfa.jpg"
+  },
+  "https://www.jorgemanrubia.com/2026/08/23/oh-my-craft/": {
+    "title": "Oh my craft!",
+    "description": "Personal page of Jorge Manrubia",
+    "image": "link-previews/df16abd1-oh-my-craft.png"
   },
   "https://www.man7.org/linux/man-pages/man1/strings.1.html": {
     "title": "strings(1) - Linux manual page"
@@ -1852,10 +2019,25 @@
     "description": "SQLite is an increasingly popular choice for powering Rails applications. It's fast, simple to use, and has an impressive feature set. But without a conventi...",
     "image": "link-previews/1800-maxresdefault.jpg"
   },
+  "https://www.youtube.com/watch?v=mb45bFqiILk": {
+    "title": "Merlin Rebrović - The top work skills you need in the 21st century  - WebCamp Zagreb 2019 [Keynote]",
+    "description": "Learn foundational work skills that cross industries and can last for decades.https://2019.webcampzg.org/talks/the-top-work-skills-you-need-in-the-21st-century/",
+    "image": "link-previews/d2054ee9-maxresdefault.jpg"
+  },
   "https://www.youtube.com/watch?v=qObzgUfCl28": {
     "title": "Kaiser Chiefs - Ruby (Official Video)",
     "description": "Kaiser Chiefs - Ruby (Official Video)Our new album DUCK is out in the wild.Grab it here â https://kaiserchiefs.lnk.to/DuckID Follow https://www.instagram.com...",
     "image": "link-previews/1778-maxresdefault.jpg"
+  },
+  "https://www.youtube.com/watch?v=vDjW_dRyKXY": {
+    "title": "Rails World 2026 Opening Keynote - DHH",
+    "description": "DHH opens Rails World 2026 in Austin with a keynote on the age of AI agents: why 37signals has gone \"pencils down\" on handwritten code, why Rails' convention...",
+    "image": "link-previews/e3434c25-maxresdefault.jpg"
+  },
+  "https://www.zolkos.com/": {
+    "title": "Rob Zolkos",
+    "description": "I design and build software systems that help companies automate their manual processes, enhance their workflows and improve their efficiencies.",
+    "image": "link-previews/3cd083e2-avatar.jpg"
   },
   "https://x.com/noahflk/status/1795758603577545035?s=46": {
     "title": "Noah Falk (@noahflk) on X",

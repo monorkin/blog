@@ -1,0 +1,143 @@
+#!/usr/bin/env node
+// Fetches the hover cards for links in entries that don't have one yet: the title, the
+// description and the Open Graph image of the page a link points to.
+//
+//   bin/link-previews
+//
+// It writes src/data/link-previews.json and puts the images in media/originals/link-previews/,
+// so run bin/media variants after it and commit both. A page that can't be fetched gets no
+// card, and is tried again the next time.
+import { createHash } from "node:crypto"
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs"
+import { basename, dirname, extname, join } from "node:path"
+import { fileURLToPath } from "node:url"
+import { parse } from "node-html-parser"
+import { slugFor } from "./lib/names.mjs"
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
+const CONTENT = join(ROOT, "src/content")
+const COLLECTIONS = [ "articles", "talks", "snaps" ]
+const ENTRY_FILES = [ "index.md", "index.mdx" ]
+const PREVIEWS = join(ROOT, "src/data/link-previews.json")
+const IMAGES = join(ROOT, "media/originals/link-previews")
+const MARKDOWN_LINK = /\]\((https?:\/\/[^)\s]+)/g
+// The cards need an image's size from the media manifest, which bin/media only reads from these
+const IMAGE_EXTENSIONS = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" }
+const HASH_LENGTH = 8
+const TIMEOUT = 15000
+const USER_AGENT = "Mozilla/5.0 (compatible; stanko.io link previews; +https://stanko.io)"
+
+const previews = JSON.parse(readFileSync(PREVIEWS, "utf8"))
+const missing = linksInEntries().filter(url => !previews[url])
+
+if (missing.length === 0) {
+  console.log("Every link already has a preview.")
+} else {
+  let added = 0
+
+  for (const url of missing) {
+    const preview = await fetchPreview(url)
+
+    if (preview) {
+      previews[url] = preview
+      added += 1
+      console.log(`Added ${url}`)
+    } else {
+      console.log(`No preview for ${url}`)
+    }
+  }
+
+  if (added > 0) {
+    writeFileSync(PREVIEWS, JSON.stringify(sortedByKey(previews), null, 2) + "\n")
+    console.log(`${added} of ${missing.length} links got a preview. Run bin/media variants for their images, then commit.`)
+  } else {
+    console.log(`None of the ${missing.length} links without a preview got one.`)
+  }
+}
+
+function linksInEntries() {
+  const links = COLLECTIONS.flatMap(collection => {
+    return readdirSync(join(CONTENT, collection)).flatMap(folder => {
+      return ENTRY_FILES.map(file => join(CONTENT, collection, folder, file)).filter(path => existsSync(path))
+    })
+  }).flatMap(path => [ ...readFileSync(path, "utf8").matchAll(MARKDOWN_LINK) ].map(([ , url ]) => url))
+
+  return [ ...new Set(links) ]
+}
+
+async function fetchPreview(url) {
+  try {
+    const response = await fetchWithTimeout(url, "text/html")
+
+    if (response.ok && response.headers.get("content-type")?.includes("text/html")) {
+      const page = parse(await response.text())
+      const title = metaContent(page, "og:title", "twitter:title") ?? page.querySelector("title")?.text.trim()
+
+      if (title) {
+        return withoutBlanks({
+          title,
+          description: metaContent(page, "og:description", "twitter:description", "description"),
+          image: await saveImage(url, imageUrlOf(page, response.url))
+        })
+      }
+    }
+  } catch (error) {
+    console.error(`${url}: ${error.message}`)
+  }
+}
+
+function fetchWithTimeout(url, accept) {
+  return fetch(url, { headers: { "User-Agent": USER_AGENT, "Accept": accept }, signal: AbortSignal.timeout(TIMEOUT) })
+}
+
+function imageUrlOf(page, pageUrl) {
+  const image = metaContent(page, "og:image", "og:image:url", "twitter:image")
+
+  if (image) {
+    return new URL(image, pageUrl).href
+  }
+}
+
+function metaContent(page, ...names) {
+  return names
+    .map(name => page.querySelector(`meta[property="${name}"], meta[name="${name}"]`)?.getAttribute("content")?.trim())
+    .find(Boolean)
+}
+
+// An image that won't download leaves the card without one, not the link without a card
+async function saveImage(pageUrl, imageUrl) {
+  if (imageUrl) {
+    try {
+      const response = await fetchWithTimeout(imageUrl, "image/*")
+      const extension = IMAGE_EXTENSIONS[response.headers.get("content-type")?.split(";")[0].trim()]
+
+      if (response.ok && extension) {
+        const name = `${hashOf(pageUrl)}-${imageNameOf(imageUrl)}.${extension}`
+
+        mkdirSync(IMAGES, { recursive: true })
+        writeFileSync(join(IMAGES, name), Buffer.from(await response.arrayBuffer()))
+
+        return `link-previews/${name}`
+      }
+    } catch (error) {
+      console.error(`${imageUrl}: ${error.message}`)
+    }
+  }
+}
+
+function hashOf(text) {
+  return createHash("sha256").update(text).digest("hex").slice(0, HASH_LENGTH)
+}
+
+function imageNameOf(imageUrl) {
+  const path = new URL(imageUrl).pathname
+  return slugFor(basename(path, extname(path))) || "image"
+}
+
+function withoutBlanks(preview) {
+  return Object.fromEntries(Object.entries(preview).filter(([ , value ]) => value))
+}
+
+function sortedByKey(object) {
+  return Object.fromEntries(Object.keys(object).sort().map(key => [ key, object[key] ]))
+}

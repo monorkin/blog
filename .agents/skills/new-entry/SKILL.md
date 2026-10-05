@@ -85,8 +85,14 @@ generated preview card; `ogImage: <file>` in the frontmatter shows that image in
 ## 4. Check it
 
 ```bash
+bin/link-previews
+bin/media variants
 npm run check
 bin/preview
 ```
+
+`bin/link-previews` fetches the hover cards for any links the entry added; without it they
+have none. It changes `src/data/link-previews.json` and adds `link-previews/` media, which
+`bin/media variants` then puts in the manifest.
 
 Open the entry, the index it's listed on, and `/feed`, and look at it at 390px wide as well.

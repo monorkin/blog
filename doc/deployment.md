@@ -9,13 +9,14 @@ The site runs on Cloudflare Workers with static assets, as the Worker `blog`. Do
 bin/deploy
 ```
 
-1. It stops unless the tree is clean and the branch matches its upstream, neither ahead nor
-   behind, so what goes live is what's in git.
-2. It checks wrangler is logged in to Cloudflare, with `wrangler whoami`, and offers to run
+1. `bin/link-previews`, for the hover cards of links that don't have one, and
+   `bin/media variants`, for new posters, variants and the manifest (`doc/images.md`).
+2. It stops unless the tree is clean and the branch matches its upstream, neither ahead nor
+   behind, so what goes live is what's in git. New cards or a changed manifest from step 1
+   stop it here too: the build reads both from the repository, so they're committed first.
+3. It checks wrangler is logged in to Cloudflare, with `wrangler whoami`, and offers to run
    `wrangler login` when it isn't. That way a deploy doesn't fail at the end with the media
    already synced. A `CLOUDFLARE_API_TOKEN` in the environment skips the check.
-3. `bin/media variants`. If that changes anything, such as a new poster or the manifest, it
-   stops and asks for a commit, because the build reads the manifest from the repository.
 4. `bin/media sync`, which makes R2 match `media/`, and asks before deleting anything
    there (`doc/images.md`). A no stops the deploy.
 5. `npm run build`, then `npx wrangler deploy`.

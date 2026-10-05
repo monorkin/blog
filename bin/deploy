@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Puts what's committed and pushed on stanko.io: the media first, then the site that uses it.
 #
-#   1. Stops unless everything is committed and pushed, so what's live is what's in git.
-#   2. bin/media variants: posters, stripped metadata, variants and the manifest. Should that
-#      change anything, it stops again, since the manifest the build reads has to be in git.
+#   1. bin/link-previews fetches the hover cards of links that don't have one, and
+#      bin/media variants makes posters, strips metadata, and writes variants and the manifest.
+#   2. Stops unless everything is committed and pushed, so what's live is what's in git. New
+#      cards or a changed manifest stop it here, to be committed first.
 #   3. bin/media sync: makes R2 match media/, and asks before deleting anything there.
 #   4. Builds the site and deploys it with wrangler.
 #   5. Tells search engines which pages changed through IndexNow (bin/indexnow), comparing the
@@ -37,6 +38,14 @@ require_clean_tree() {
     fail "$1"
   fi
 }
+
+step "Fetching the hover cards of new links"
+bin/link-previews
+echo
+
+step "Making the media's variants"
+bin/media variants
+echo
 
 step "Checking that everything is committed and pushed"
 require_clean_tree "Commit or remove these first: a deploy is what's in git."
@@ -72,11 +81,6 @@ if [ -z "$CLOUDFLARE_API_TOKEN" ] && npx wrangler whoami 2>&1 | grep -q "You are
   fi
 fi
 echo "Logged in"
-echo
-
-step "Making the media's variants"
-bin/media variants
-require_clean_tree "bin/media variants changed these. Commit and push them, then deploy again."
 echo
 
 step "Syncing the media to R2"

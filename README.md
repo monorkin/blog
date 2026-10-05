@@ -27,10 +27,11 @@ its media under `media/originals/`, and prints the file to edit and the URL it'l
 There are no drafts: it stays unpublished for as long as it isn't committed. To publish:
 
 1. Set `publishedAt` to now.
-2. `bin/media variants` if you added photos or videos, then commit, including
-   `src/data/media.json`, and push.
-3. `bin/deploy`. It checks everything is committed and pushed, makes the variants, syncs
-   the media to R2 (asking before it deletes anything there), then builds and deploys.
+2. `bin/link-previews` for the hover cards of its links, and `bin/media variants`, then
+   commit, including `src/data/link-previews.json` and `src/data/media.json`, and push.
+3. `bin/deploy`. It fetches any missing hover cards and makes the variants first, then
+   checks everything is committed and pushed, so a forgotten step 2 stops it there. Then it
+   syncs the media to R2 (asking before it deletes anything there), builds and deploys.
 
 ### An article
 

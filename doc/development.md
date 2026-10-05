@@ -10,6 +10,7 @@ bin/dev                    # astro dev at http://localhost:4321, reloading as yo
 bin/preview                # npm run build, then wrangler dev at http://localhost:8787
 bin/preview --skip-build   # serve the last build again
 bin/generate article "Title"   # a new article, talk, snap or project (doc/content.md)
+bin/link-previews          # hover cards for links that don't have one (doc/images.md)
 ```
 
 ## bin/setup

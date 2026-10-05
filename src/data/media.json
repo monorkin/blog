@@ -631,9 +631,9 @@
   },
   "articles/becoming-a-photographer-tIKMwUVuHnHG/cover.png": {
     "type": "image/png",
-    "bytes": 2347511,
-    "width": 1672,
-    "height": 941,
+    "bytes": 2542372,
+    "width": 1254,
+    "height": 1254,
     "formats": [
       "webp",
       "png"
@@ -642,14 +642,13 @@
       480,
       800,
       1200,
-      1600,
-      1672
+      1254
     ],
     "squares": [
       512
     ],
-    "placeholder": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoQAAkABABoJYgCdADhNtnRgAD+1cTlrobYPgQkQ6KLbbfWzYAhx42jKmeT9ex0+6SMAX1CZoBPOYAA",
-    "color": "#6d8187"
+    "placeholder": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADwAQCdASoQABAABABoJaACdAEfS1kQ7AAA/tbYR7d24wJGdMjMvSzjsdH/44cArpoP0v21J0rdRuXiGqYP9KvuTDc8lBbXBTpEzzWhunu32U70Vv+fOslRh6I8rV+yw8xK0oAA",
+    "color": "#6d868e"
   },
   "articles/becoming-a-photographer-tIKMwUVuHnHG/hey-tui-calendar-final.png": {
     "type": "image/png",
@@ -3711,6 +3710,23 @@
     ],
     "placeholder": "data:image/webp;base64,UklGRiYAAABXRUJQVlA4IBoAAAAwAQCdASoQAAkABABoJaQAA3AA/vJXOwAAAA==",
     "color": "#fcfcfc"
+  },
+  "link-previews/0045d730-slides.png": {
+    "type": "image/png",
+    "bytes": 50546,
+    "width": 1200,
+    "height": 600,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACQAQCdASoQAAgABABoJZQAAtqZlQAA/vPDy+QzndxgRq8HCKWLWANj4+4FBBr2i+AAAA==",
+    "color": "#efebeb"
   },
   "link-previews/1348-7xjmm2fq5xh.png": {
     "type": "image/png",
@@ -8756,6 +8772,498 @@
     "squares": [],
     "placeholder": "data:image/webp;base64,UklGRi4AAABXRUJQVlA4ICIAAAAwAQCdASoQAAgABABoJaQAA3AA/vEt1MkoSf3aiR2ZzAAA",
     "color": "#f5f5f5"
+  },
+  "link-previews/28d3a742-512sq.jpg": {
+    "type": "image/jpeg",
+    "bytes": 51119,
+    "width": 512,
+    "height": 512,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      400,
+      512
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoQABAABABoJbACdADWfnf+hADdkwQDOx3lD4cO/S9SfoECDwKnXkq2h+8l73ukLGxrJsej6wLc77kBlZ1iMqK68nyYAA==",
+    "color": "#47676a"
+  },
+  "link-previews/2d1bd153-consul.jpg": {
+    "type": "image/jpeg",
+    "bytes": 122159,
+    "width": 3200,
+    "height": 1800,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAABwAQCdASoQAAkABABoJZwAAk4YAAD+8eMkeAfUPt8VOL+V8PYgdZ8T2JcMVtCjJqAFAAAA",
+    "color": "#e4e3e4"
+  },
+  "link-previews/36c78976-57100.png": {
+    "type": "image/png",
+    "bytes": 58524,
+    "width": 1200,
+    "height": 600,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAACwAQCdASoQAAgABABoJZQAAtz9BkAAAP702/5IEfxOgQgcBSmbGA7E2MuAN+wDwAA=",
+    "color": "#f1efef"
+  },
+  "link-previews/38e432e7-slides.png": {
+    "type": "image/png",
+    "bytes": 50546,
+    "width": 1200,
+    "height": 600,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACQAQCdASoQAAgABABoJZQAAtqZlQAA/vPDy+QzndxgRq8HCKWLWANj4+4FBBr2i+AAAA==",
+    "color": "#efebeb"
+  },
+  "link-previews/3cd083e2-avatar.jpg": {
+    "type": "image/jpeg",
+    "bytes": 10049,
+    "width": 400,
+    "height": 400,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      400
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAwAgCdASoQABAABABoJYgCdH8AFxJF5BwkTAD+9hMpJw4hC2+GMhJpQfUahE1SKb8hJFusUDUt+UekrqxGHZKihlvgff7y8lwzB69becI3v78f4wIXa5wOgA1WTaq4oqkSXVgA",
+    "color": "#bfaea8"
+  },
+  "link-previews/44cab183-slides.png": {
+    "type": "image/png",
+    "bytes": 50546,
+    "width": 1200,
+    "height": 600,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACQAQCdASoQAAgABABoJZQAAtqZlQAA/vPDy+QzndxgRq8HCKWLWANj4+4FBBr2i+AAAA==",
+    "color": "#efebeb"
+  },
+  "link-previews/47c14901-shape-up.png": {
+    "type": "image/png",
+    "bytes": 664759,
+    "width": 2400,
+    "height": 1260,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAADQAQCdASoQAAgABABoJZwAAt2eM8G2QAD+8DnWIuOBI9k+ufa27DLm2X+ZQCqmSsfExiNtkI3rOmfqcNDwp9tn+AA=",
+    "color": "#b0b7b5"
+  },
+  "link-previews/4850924f-opengraph.png": {
+    "type": "image/png",
+    "bytes": 8879,
+    "width": 2400,
+    "height": 1260,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoQAAgABABoJaQAD4AOL02qVIAA/veAT75OD6wUM/QbiUXL2AsOnEtnHYLkWUAyAAAAAA==",
+    "color": "#131313"
+  },
+  "link-previews/4c80c8df-slides.png": {
+    "type": "image/png",
+    "bytes": 50546,
+    "width": 1200,
+    "height": 600,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACQAQCdASoQAAgABABoJZQAAtqZlQAA/vPDy+QzndxgRq8HCKWLWANj4+4FBBr2i+AAAA==",
+    "color": "#efebeb"
+  },
+  "link-previews/6bbf15c0-slides.png": {
+    "type": "image/png",
+    "bytes": 50546,
+    "width": 1200,
+    "height": 600,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACQAQCdASoQAAgABABoJZQAAtqZlQAA/vPDy+QzndxgRq8HCKWLWANj4+4FBBr2i+AAAA==",
+    "color": "#efebeb"
+  },
+  "link-previews/7d5b99bf-junction-banner.png": {
+    "type": "image/png",
+    "bytes": 2672828,
+    "width": 3600,
+    "height": 899,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoQAAQABABoJaQAAwZhhXYAAP7pAU29XxEGY5YGMu/6Xnf68V5xzdWs5x/OY+QAAAA=",
+    "color": "#464646"
+  },
+  "link-previews/8822b3d0-slides.png": {
+    "type": "image/png",
+    "bytes": 50546,
+    "width": 1200,
+    "height": 600,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACQAQCdASoQAAgABABoJZQAAtqZlQAA/vPDy+QzndxgRq8HCKWLWANj4+4FBBr2i+AAAA==",
+    "color": "#efebeb"
+  },
+  "link-previews/8d2464c9-slides.png": {
+    "type": "image/png",
+    "bytes": 50546,
+    "width": 1200,
+    "height": 600,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACQAQCdASoQAAgABABoJZQAAtqZlQAA/vPDy+QzndxgRq8HCKWLWANj4+4FBBr2i+AAAA==",
+    "color": "#efebeb"
+  },
+  "link-previews/95a79d2f-slides.png": {
+    "type": "image/png",
+    "bytes": 50546,
+    "width": 1200,
+    "height": 600,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACQAQCdASoQAAgABABoJZQAAtqZlQAA/vPDy+QzndxgRq8HCKWLWANj4+4FBBr2i+AAAA==",
+    "color": "#efebeb"
+  },
+  "link-previews/988fba24-nginx-documentation-500x300.png": {
+    "type": "image/png",
+    "bytes": 65990,
+    "width": 500,
+    "height": 300,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      500
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADQAQCdASoQAAoABABoJbACdADb7wl0AAD+cWN7RhiWKjnLH1Pt6sMp0kBSJCV14j5P0vfu/LuhmRaQAAA=",
+    "color": "#2a8850"
+  },
+  "link-previews/a05c05c3-actioncable-client.png": {
+    "type": "image/png",
+    "bytes": 49557,
+    "width": 1200,
+    "height": 600,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADQAQCdASoQAAgABABoJZQAAuK3xZn9gAD+88P1eWwYf9L0mvEUqc6lW0dGbghkXZzObdcEUFKeLAFEBAA=",
+    "color": "#e8e6e8"
+  },
+  "link-previews/a3b2a23c-scrum-is-for-time-estimates-not-projects-23ulmubvsmqo.png": {
+    "type": "image/png",
+    "bytes": 85330,
+    "width": 1200,
+    "height": 630,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAgABABoJZQAAvcaYcgAAP7u88g/JRcucgjOUiNrPCo8AM4NgOOpUa3EQ4AA",
+    "color": "#151513"
+  },
+  "link-previews/acb27c18-adversarial-web-services-vjfkr3df9lfg.png": {
+    "type": "image/png",
+    "bytes": 82520,
+    "width": 1200,
+    "height": 630,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACwAQCdASoQAAgABABoJZQAAuat3lAAAP7u85cbuZHyoG3Gw0rhdptkrss9UwncRDgAAA==",
+    "color": "#141412"
+  },
+  "link-previews/b220106c-agents.png": {
+    "type": "image/png",
+    "bytes": 513365,
+    "width": 2400,
+    "height": 1260,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAAAQAgCdASoQAAgABABoJbACdAEPdjSIzhMgAP4ZyOIktmL2TwF1vIduAp0vWCyVV224ggF/8SKmn6uNn/YeOZ9Wz3IeOMQAAAA=",
+    "color": "#8d33e2"
+  },
+  "link-previews/b2adaac2-512sq.png": {
+    "type": "image/png",
+    "bytes": 72910,
+    "width": 512,
+    "height": 512,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      512
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAACQAQCdASoQABAABABoJbACdADXdwAA/uqnUtbWQBprkIc1hrxg/MwYA9Dj2TYWygT3Hn+lMzNEdkjBtQFktp051cGZWIuPn7uXoPnfMCf5+xyywD3BMY103yXva00W2I4hKAAA",
+    "color": "#f4bf78"
+  },
+  "link-previews/c7109216-corporate-newspeak-v2e1rtcmiufi.png": {
+    "type": "image/png",
+    "bytes": 74877,
+    "width": 1200,
+    "height": 630,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAACQAQCdASoQAAgABABoJZQAAuK3HXAA/u7zlxu5kfKgbc57aPuMtiX+aRswPcRDgAA=",
+    "color": "#121110"
+  },
+  "link-previews/cceaf3dd-hey-cli.png": {
+    "type": "image/png",
+    "bytes": 43438,
+    "width": 1200,
+    "height": 600,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACwAQCdASoQAAgABABoJQBdgCG7vWA4AP7zw+nUNHHoc6FOpVtHRm4GlcMCEqFexoQAAA==",
+    "color": "#e2e7e7"
+  },
+  "link-previews/ce9b926b-shape-up.png": {
+    "type": "image/png",
+    "bytes": 664759,
+    "width": 2400,
+    "height": 1260,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAADQAQCdASoQAAgABABoJZwAAt2eM8G2QAD+8DnWIuOBI9k+ufa27DLm2X+ZQCqmSsfExiNtkI3rOmfqcNDwp9tn+AA=",
+    "color": "#b0b7b5"
+  },
+  "link-previews/d2054ee9-maxresdefault.jpg": {
+    "type": "image/jpeg",
+    "bytes": 100682,
+    "width": 1280,
+    "height": 720,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoQAAkABABoJQBdgB6Rn+W6eqAA/vDkmTpEOPBuj5b9YyHT0GenW+O/eSn42zHFAGLpguPmvQPcTn7NotWYOrfHvqJ6EaQxWpVwAA==",
+    "color": "#7e8375"
+  },
+  "link-previews/d4bc11ed-misguided-mark-misrepresents-micro-services-a-story-about-paradigms-xbmbcwf6rrkz.png": {
+    "type": "image/png",
+    "bytes": 93691,
+    "width": 1200,
+    "height": 630,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACQAQCdASoQAAgABABoJZQAAucHhQAA/u9q1qquF5oGlDyXcgP372ygibMcRFl2S4ynxQAA",
+    "color": "#191816"
+  },
+  "link-previews/df16abd1-oh-my-craft.png": {
+    "type": "image/png",
+    "bytes": 727716,
+    "width": 1200,
+    "height": 630,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADwAQCdASoQAAgABABoJaQAAscAFEKEwQAA/vI4njx5GJpUOK97N4Zz5eWQQbGNVFKnu1EtR92XqAAA",
+    "color": "#e7e7e7"
+  },
+  "link-previews/e3434c25-maxresdefault.jpg": {
+    "type": "image/jpeg",
+    "bytes": 173813,
+    "width": 1280,
+    "height": 720,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoQAAkABABoJYgCdAEPh89flegA/u7m3ul9rmxt4PbpK8fc4zIJzISgTFu/4r2fd6hhYpSKKMV/vm0VPpnjxtUwK6P1hXKrgAMAAA==",
+    "color": "#291d31"
+  },
+  "link-previews/f81755b5-512sq.png": {
+    "type": "image/png",
+    "bytes": 17473,
+    "width": 512,
+    "height": 512,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      512
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoQABAABABoJQBOj+AC+7ZAywAA/t7fE/n6t3hd56WLAo6NPDsR++u8wQP3xssOIDZQAA==",
+    "color": "#d7e9f0"
+  },
+  "link-previews/fbd06480-screenshot-2025-04-17-at-9-36-08-pm-1.png": {
+    "type": "image/png",
+    "bytes": 733658,
+    "width": 1200,
+    "height": 746,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAACwAQCdASoQAAoABABoJZQCdADXCyRAAM4CRBCCNST95lBwG0qoRjMDnryvR9Rpfcd98YV2r6fDwBTVgyJUAIIZEqeGOgAA",
+    "color": "#4d4c4e"
   },
   "snaps/amsterdam-5hjfLmGYrdBW/1000053068.jpg": {
     "type": "image/jpeg",

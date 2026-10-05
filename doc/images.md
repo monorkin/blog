@@ -237,11 +237,18 @@ snap's photo, or a generated preview card (`doc/content.md`). Pages that aren't 
 
 ## Link previews
 
-Hovering a link in an article shows a preview of the page it points to. The previews were
-fetched by the Rails app and exported to `src/data/link-previews.json`, keyed by URL, with
-their images as `link-previews/` media. Each article page embeds the previews for its own
-links as JSON, and `src/scripts/link-previews.ts` shows them. Nothing is fetched at build
-time.
+Hovering a link in an article shows a preview of the page it points to. The previews are in
+`src/data/link-previews.json`, keyed by URL, with their images as `link-previews/` media.
+Each article page embeds the previews for its own links as JSON, and
+`src/scripts/link-previews.ts` shows them. Nothing is fetched at build time.
+
+The Rails app fetched the first ones. `bin/link-previews` fetches the rest: for every link in
+an entry's Markdown without a preview, it reads the page's title, description and Open Graph
+image, and saves the image as `link-previews/<hash of the URL>-<image name>`. Only JPEG,
+PNG and WebP images are kept, since a card needs the image's size from the manifest. A page
+that won't load, or has no title, gets no card and is tried again on the next run; a few
+sites, like Medium and Forbes, refuse it every time. Run `bin/media variants` after it, and
+commit the JSON with the manifest.
 
 ## Size limits
 

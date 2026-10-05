@@ -21,8 +21,8 @@ cp ~/Downloads/IMG_8969.jpeg media/originals/articles/clean-air-ai-AHcddmIf21lt/
 Name files in lowercase with dashes. The key is the path under `media/originals/`:
 `articles/clean-air-ai-AHcddmIf21lt/img_8969.jpeg`.
 
-Replacing a file? Give it a new name. R2 serves media with a year-long cache, so the old
-file would linger in browsers under the old name.
+Replacing a file? Overwrite it under the same name. `bin/media sync` purges the old version
+from Cloudflare's cache when it uploads the new one.
 
 No size limit applies here; a 40 MB video is fine.
 

@@ -6,18 +6,21 @@
 //                               src/data/media.json
 //   bin/media sync [--dry-run]  make R2 match media/originals and media/variants, refusing any
 //                               original that still has location data, and asking before
-//                               deleting what's gone here
+//                               deleting what's gone here; then purge what it replaced or
+//                               deleted from Cloudflare's cache
 //   bin/media pull              fetch the originals from R2 into media/originals
 //   bin/media serve [--port N]  serve media/ locally, as bin/preview does
 //
 // sync and pull talk to R2 through rclone and its S3 API. R2_ACCOUNT_ID and R2_BUCKET come
-// from .mise.toml. The keys, R2_ACCESS_KEY_ID and R2_SECRET_ACCESS_KEY, are used from the
-// environment when they're set, as in CI; otherwise these two commands run themselves again
-// under `op run`, which reads them from 1Password through .env.1password. Nothing else here
-// touches 1Password, sync --dry-run included.
+// from .mise.toml. The keys, R2_ACCESS_KEY_ID and R2_SECRET_ACCESS_KEY, and for sync the
+// Cloudflare API token CLOUDFLARE_CACHE_PURGE_TOKEN, are used from the environment when
+// they're set, as in CI; otherwise these two commands run themselves again under `op run`,
+// which reads them from 1Password through .env.1password. Nothing else here touches
+// 1Password, sync --dry-run included.
 import { existsSync } from "node:fs"
-import { mkdir, readdir, readFile, rename, rm, stat, utimes, writeFile } from "node:fs/promises"
+import { mkdir, mkdtemp, readdir, readFile, rename, rm, stat, utimes, writeFile } from "node:fs/promises"
 import { createServer } from "node:http"
+import { tmpdir } from "node:os"
 import { createInterface } from "node:readline/promises"
 import { dirname, extname, join, relative, sep } from "node:path"
 import { spawnSync } from "node:child_process"
@@ -63,6 +66,14 @@ const MIN_LISTED_DELETIONS = 5
 const DEFAULT_TERMINAL_ROWS = 24
 const DELETION_PROMPT_ROWS = 4
 const R2_KEYS = [ "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY" ]
+const PURGE_TOKEN = "CLOUDFLARE_CACHE_PURGE_TOKEN"
+const SYNC_KEYS = [ ...R2_KEYS, PURGE_TOKEN ]
+// Where the bucket is served, MEDIA_URL's default in astro.config.mjs, and the zone it's in
+const PUBLIC_MEDIA_URL = "https://media.stanko.io"
+const CLOUDFLARE_ZONE = "stanko.io"
+const CLOUDFLARE_API = "https://api.cloudflare.com/client/v4"
+// The most URLs Cloudflare takes in one purge
+const PURGE_BATCH_SIZE = 30
 const ONE_PASSWORD_ENV_FILE = join(ROOT, ".env.1password")
 // Stanko's personal account; a work account is signed in beside it
 const ONE_PASSWORD_ACCOUNT = "my.1password.eu"
@@ -401,10 +412,12 @@ async function syncToR2(options) {
 
   refuseLocatedOriginals(await originals())
 
-  if (dryRun && !hasR2Keys()) {
-    return describeUpload()
+  if (dryRun && hasKeys(R2_KEYS)) {
+    await mirror(true)
+  } else if (dryRun) {
+    await describeUpload()
   } else {
-    await withR2Keys(() => mirror(dryRun))
+    await withKeys(SYNC_KEYS, () => mirror(false))
   }
 }
 
@@ -424,9 +437,69 @@ async function mirror(dryRun) {
 
   // Stripping keeps a file's modification time, so compare sizes and checksums, not times.
   // --max-delete stops it should more have gone missing since the list above.
-  rclone([ "sync", MEDIA, `r2:${requireEnv("R2_BUCKET")}`, ...SYNCED_FOLDERS.flatMap(folder => [ "--include", `/${folder}/**` ]),
+  const report = join(await mkdtemp(join(tmpdir(), "bin-media-")), "changes.txt")
+  const status = rclone([ "sync", MEDIA, `r2:${requireEnv("R2_BUCKET")}`, ...SYNCED_FOLDERS.flatMap(folder => [ "--include", `/${folder}/**` ]),
     "--checksum", "--header-upload", `Cache-Control: ${R2_CACHE_CONTROL}`, "--transfers", "8",
-    "--max-delete", String(deletions.length), ...flagsFor(dryRun) ])
+    "--max-delete", String(deletions.length), "--combined", report, ...flagsFor(dryRun) ])
+
+  if (status === 0) {
+    await purgeFromCache(replacedOrDeleted(await readFile(report, "utf8")), dryRun)
+  }
+}
+
+// rclone's report marks a file that differed from the bucket's with "*", and one that was
+// only in the bucket, so the sync deleted it, with "-"
+function replacedOrDeleted(report) {
+  return report.split("\n").filter(line => /^[*-] /.test(line)).map(line => line.slice(2))
+}
+
+// Media is cached for a year (R2_CACHE_CONTROL), so a replaced or deleted file would go on
+// being served from Cloudflare's cache under its old URL
+async function purgeFromCache(paths, dryRun) {
+  const urls = paths.map(path => `${PUBLIC_MEDIA_URL}/${path.split("/").map(encodeURIComponent).join("/")}`)
+
+  if (urls.length > 0 && dryRun) {
+    console.log(`Would purge ${urls.length} replaced or deleted files from Cloudflare's cache:`)
+    urls.forEach(url => console.log(`  ${url}`))
+  } else if (urls.length > 0) {
+    const zone = await zoneId()
+
+    for (let start = 0; start < urls.length; start += PURGE_BATCH_SIZE) {
+      const batch = urls.slice(start, start + PURGE_BATCH_SIZE)
+      await cloudflare(`zones/${zone}/purge_cache`, { method: "POST", body: JSON.stringify({ files: batch }) }, urls.slice(start))
+    }
+
+    console.log(`Purged ${urls.length} replaced or deleted files from Cloudflare's cache.`)
+  }
+}
+
+async function zoneId() {
+  const [ zone ] = await cloudflare(`zones?name=${CLOUDFLARE_ZONE}`)
+
+  if (zone) {
+    return zone.id
+  } else {
+    console.error(`The Cloudflare token can't see the ${CLOUDFLARE_ZONE} zone. It needs Zone Read and Cache Purge on it (doc/images.md).`)
+    process.exit(1)
+  }
+}
+
+// `unpurged` are the URLs still to purge, named should this fail, since the next sync won't
+// see them as changed any more
+async function cloudflare(path, options = {}, unpurged = []) {
+  const response = await fetch(`${CLOUDFLARE_API}/${path}`, {
+    ...options,
+    headers: { "Authorization": `Bearer ${process.env[PURGE_TOKEN]}`, "Content-Type": "application/json" }
+  })
+  const body = await response.json()
+
+  if (body.success) {
+    return body.result
+  } else {
+    console.error(`Cloudflare refused ${path}: ${body.errors.map(error => error.message).join(", ")}`)
+    unpurged.forEach(url => console.error(`  still cached: ${url}`))
+    process.exit(1)
+  }
 }
 
 async function filesOnlyInR2() {
@@ -494,23 +567,23 @@ function refuseLocatedOriginals(files) {
 }
 
 async function pullFromR2() {
-  await withR2Keys(() => rclone([ "copy", `r2:${requireEnv("R2_BUCKET")}/originals`, ORIGINALS, "--transfers", "8", ...flagsFor(false) ]))
+  await withKeys(R2_KEYS, () => rclone([ "copy", `r2:${requireEnv("R2_BUCKET")}/originals`, ORIGINALS, "--transfers", "8", ...flagsFor(false) ]))
 }
 
 // Runs `work` with the keys from the environment, or runs this command again under
 // `op run` to get them from 1Password
-async function withR2Keys(work) {
-  if (hasR2Keys()) {
+async function withKeys(names, work) {
+  if (hasKeys(names)) {
     await work()
   } else if (process.env[UNDER_ONE_PASSWORD]) {
-    console.error(`op run didn't provide ${R2_KEYS.join(" and ")}. Check the 1Password item that .env.1password names (doc/images.md).`)
+    console.error(`op run didn't provide ${names.join(", ")}. Check the 1Password item that .env.1password names (doc/images.md).`)
     process.exit(1)
   } else {
-    runUnderOnePassword()
+    runUnderOnePassword(names)
   }
 }
 
-function runUnderOnePassword() {
+function runUnderOnePassword(names) {
   // --no-masking hands the terminal straight through, so the sync can ask before deleting;
   // nothing here prints the keys
   const result = spawnSync("op", [ "run", "--account", ONE_PASSWORD_ACCOUNT, `--env-file=${ONE_PASSWORD_ENV_FILE}`, "--no-masking", "--", process.execPath, ...process.argv.slice(1) ], {
@@ -519,7 +592,7 @@ function runUnderOnePassword() {
   })
 
   if (result.error) {
-    console.error(`Couldn't run the 1Password CLI (${result.error.message}). bin/setup installs it; sign in with 'op signin', or set ${R2_KEYS.join(" and ")} yourself.`)
+    console.error(`Couldn't run the 1Password CLI (${result.error.message}). bin/setup installs it; sign in with 'op signin', or set ${names.join(", ")} yourself.`)
     process.exitCode = 1
   } else {
     process.exitCode = result.status ?? 1
@@ -558,14 +631,15 @@ async function describeUpload() {
   console.log(`rclone would copy: op run --account ${ONE_PASSWORD_ACCOUNT} --env-file=.env.1password -- bin/media sync --dry-run`)
 }
 
-function hasR2Keys() {
-  return R2_KEYS.every(name => process.env[name])
+function hasKeys(names) {
+  return names.every(name => process.env[name])
 }
 
 function rclone(args) {
   const result = spawnSync("rclone", args, { stdio: "inherit", env: rcloneEnv() })
 
   process.exitCode = result.status ?? 1
+  return process.exitCode
 }
 
 function rcloneLines(args) {

@@ -117,7 +117,14 @@ index (the `moov` atom) at the front to start before it has all downloaded; ffmp
 `sync` makes the bucket's `originals/` and `variants/` match `media/`: it uploads what's new
 or changed, and deletes what's gone locally, such as a renamed entry's old keys or a
 removed image's variants. It compares files by size and checksum, not modification time,
-and uploads with a year-long `Cache-Control`, so a changed file needs a new name.
+and uploads with a year-long `Cache-Control`.
+
+So Cloudflare doesn't go on serving the old version of a file for that year, `sync` then
+purges from its cache the URL of every file it replaced or deleted: rclone's `--combined`
+report names them, and `sync` sends them to Cloudflare's purge API, 30 at a time. Should
+the purge fail, it prints the URLs it didn't purge, because the next sync won't see those
+files as changed. `sync --dry-run` lists the URLs it would purge. Browsers that already
+have a file keep their copy until it expires.
 
 A machine that hasn't pulled every original would empty the bucket that way, so `sync`
 lists the bucket first. When anything would be deleted, it shows as many of those files as
@@ -158,7 +165,10 @@ or location data, naming it. Run `bin/media variants`, then sync again.
 | `R2_ACCESS_KEY_ID` | 1Password, through `.env.1password` |
 | `R2_SECRET_ACCESS_KEY` | 1Password, through `.env.1password` |
 
-When the two keys are already in the environment, as in CI, `sync` and `pull` use them.
+`sync` also needs `CLOUDFLARE_CACHE_PURGE_TOKEN`, from 1Password the same way, to purge
+Cloudflare's cache.
+
+When the keys are already in the environment, as in CI, `sync` and `pull` use them.
 Otherwise they run themselves again under
 `op run --account my.1password.eu --env-file=.env.1password`, which resolves
 the `op://` references in that file (it holds references only, never secrets) and passes the
@@ -181,14 +191,16 @@ The 1Password item the references point at:
 | Vault | `Infrastructure` |
 | Item | `stanko.io` |
 | Section | `media.stanko.io` |
-| Fields | `Access Key ID` and `Secret Access Key` (the section's `url` and `token` aren't used) |
+| Fields | `Access Key ID`, `Secret Access Key` and `Cache Purge Token` (the section's `url` and `token` aren't used) |
 
 A reference is `op://Infrastructure/stanko.io/media.stanko.io/Access Key ID`. The item's
 other sections hold the old Rails app's production secrets; `.env.1password` names only the
-two R2 fields.
+three fields `bin/media` uses.
 
-Create the token in Cloudflare under R2 → Manage API tokens, with Object Read & Write on the
-`stanko-io` bucket.
+Create the R2 keys in Cloudflare under R2 → Manage API tokens, with Object Read & Write on
+the `stanko-io` bucket. Create the purge token under My Profile → API Tokens, as a custom
+token with Zone → Zone → Read and Zone → Cache Purge → Purge, for the `stanko.io` zone
+only. `sync` finds the zone's ID with it by name.
 
 At the migration: 554 originals (480 MiB) and 3,064 variants (366 MiB).
 

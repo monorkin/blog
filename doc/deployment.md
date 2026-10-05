@@ -18,7 +18,8 @@ bin/deploy
    `wrangler login` when it isn't. That way a deploy doesn't fail at the end with the media
    already synced. A `CLOUDFLARE_API_TOKEN` in the environment skips the check.
 4. `bin/media sync`, which makes R2 match `media/`, and asks before deleting anything
-   there (`doc/images.md`). A no stops the deploy.
+   there (`doc/images.md`). A no stops the deploy. It purges whatever it replaced or deleted
+   from Cloudflare's cache.
 5. `npm run build`, then `npx wrangler deploy`.
 6. It tells search engines what changed, through IndexNow (below).
 
@@ -72,8 +73,8 @@ environment variable.
 The account and bucket are in `.mise.toml`. The R2 keys are in Stanko's personal 1Password
 account (`my.1password.eu`), vault `Infrastructure`, item `stanko.io`, section
 `media.stanko.io`, and `bin/media`
-reads them with `op run` only when it syncs or pulls (`doc/images.md` has the details). A CI job sets `R2_ACCESS_KEY_ID` and
-`R2_SECRET_ACCESS_KEY` itself and 1Password isn't involved.
+reads them with `op run` only when it syncs or pulls (`doc/images.md` has the details). A CI job sets `R2_ACCESS_KEY_ID`,
+`R2_SECRET_ACCESS_KEY` and `CLOUDFLARE_CACHE_PURGE_TOKEN` itself and 1Password isn't involved.
 
 ## The domain
 

@@ -1,9 +1,16 @@
 @layer components {
+  .feed-links {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
   .feed-link {
+    --feed-link-color: var(--color-subscribe-icon);
+
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: var(--space-1-5);
-    flex-shrink: 0;
     padding: var(--space-1-5) var(--space-3) var(--space-1-5) var(--space-2);
     border: 1px solid var(--color-border-subtle);
     border-radius: var(--radius-full);
@@ -14,12 +21,28 @@
     transition: border-color 50ms, color 50ms;
 
     &:hover {
-      border-color: var(--color-subscribe-icon);
+      z-index: 1;
+      border-color: var(--feed-link-color);
       color: var(--color-ink);
+    }
+
+    &:not(:last-child) {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+
+    & + & {
+      margin-inline-start: -1px;
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
     }
   }
 
+  .feed-link--newsletter {
+    --feed-link-color: var(--color-subscribe-accent);
+  }
+
   .feed-link__icon {
-    color: var(--color-subscribe-icon);
+    color: var(--feed-link-color);
   }
 }

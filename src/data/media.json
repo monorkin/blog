@@ -8773,6 +8773,23 @@
     "placeholder": "data:image/webp;base64,UklGRi4AAABXRUJQVlA4ICIAAAAwAQCdASoQAAgABABoJaQAA3AA/vEt1MkoSf3aiR2ZzAAA",
     "color": "#f5f5f5"
   },
+  "link-previews/206cc24a-167cff2a3d17ac1e64d0762539978f2d54c0058886e8b3c8a03a725a83012ec0.jpg": {
+    "type": "image/jpeg",
+    "bytes": 349423,
+    "width": 2400,
+    "height": 1260,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADQAQCdASoQAAgABABoJQBOgB4Or/vVKAD+t65CvNPd23zOPYdo0RJyOHChfIep8OusI/RARFtkYNeD5ntUtSy3RZth/wExErtAAAAA",
+    "color": "#c0d9c2"
+  },
   "link-previews/28d3a742-512sq.jpg": {
     "type": "image/jpeg",
     "bytes": 51119,
@@ -8806,6 +8823,23 @@
     "squares": [],
     "placeholder": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAABwAQCdASoQAAkABABoJZwAAk4YAAD+8eMkeAfUPt8VOL+V8PYgdZ8T2JcMVtCjJqAFAAAA",
     "color": "#e4e3e4"
+  },
+  "link-previews/30d69c4c-ap22308611332503-wide-0dbe07f9f67de47d661dd6dd10cd97c9f8348734.jpg": {
+    "type": "image/jpeg",
+    "bytes": 145073,
+    "width": 1400,
+    "height": 787,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoQAAkABABoJaACdAERHy31zkAAzfN0yJBYwnO6LSjZW5LIqBHtQDmQO+sKtxNZ3dNdp6iTHkAAAA==",
+    "color": "#35435f"
   },
   "link-previews/36c78976-57100.png": {
     "type": "image/png",
@@ -8924,6 +8958,40 @@
     "squares": [],
     "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACQAQCdASoQAAgABABoJZQAAtqZlQAA/vPDy+QzndxgRq8HCKWLWANj4+4FBBr2i+AAAA==",
     "color": "#efebeb"
+  },
+  "link-previews/4d732969-sidekiq.png": {
+    "type": "image/png",
+    "bytes": 80189,
+    "width": 1150,
+    "height": 1170,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAAAQAgCdASoQABAABABoJagAD4YMEYAeO3agAP72E9X30VXvHu/ZEyFZlpCzSaOH2RW8oI4VJYdosmPmEnVYobRV3Rhz9dIp0OxaCUseydOrL6Nreq8G+UX2Tp1ZpGv302kyOLJo1NMPr2RfQlgkP/6qugnqw6SAAAA=",
+    "color": "#cb9eae"
+  },
+  "link-previews/57a87263-what-is-the-warn-act.jpg": {
+    "type": "image/jpeg",
+    "bytes": 73016,
+    "width": 960,
+    "height": 540,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAACwAQCdASoQAAkABABoJZQC7ACeYsigAMssJFbGIYrzsH416JvSXvo+Yn8XOUi3d4+0hYEn/lvbBK8mYM9FnPmqdslpFbD2dOQdNsvuDGhI/fMIJUBhAAAA",
+    "color": "#737367"
   },
   "link-previews/6bbf15c0-slides.png": {
     "type": "image/png",
@@ -9197,6 +9265,23 @@
     "placeholder": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACQAQCdASoQAAgABABoJZQAAucHhQAA/u9q1qquF5oGlDyXcgP372ygibMcRFl2S4ynxQAA",
     "color": "#191816"
   },
+  "link-previews/ddc6a11b-og-home.png": {
+    "type": "image/png",
+    "bytes": 292630,
+    "width": 1080,
+    "height": 567,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4WAoAAAAQAAAADwAABwAAQUxQSCYAAAABD9D/iAioCQBCMlpFMSkhhwIKGN8mAlyvSxPR//CntkkhH+GaGFZQOCAiAAAAUAEAnQEqEAAIAAQAaCWcAAQAAAD+8FxQbVd6ZPEbgIAAAA==",
+    "color": "#1f202b"
+  },
   "link-previews/df16abd1-oh-my-craft.png": {
     "type": "image/png",
     "bytes": 727716,
@@ -9230,6 +9315,40 @@
     "squares": [],
     "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoQAAkABABoJYgCdAEPh89flegA/u7m3ul9rmxt4PbpK8fc4zIJzISgTFu/4r2fd6hhYpSKKMV/vm0VPpnjxtUwK6P1hXKrgAMAAA==",
     "color": "#291d31"
+  },
+  "link-previews/e702f200-1-9rjt-f36sjk4pm1bh6dkmg.png": {
+    "type": "image/png",
+    "bytes": 228059,
+    "width": 1200,
+    "height": 632,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAADwAQCdASoQAAgABABoJZwAAuso75tmTQAA/vPD/D+47FMGx2EyX9n3CoNgAA==",
+    "color": "#efefef"
+  },
+  "link-previews/f6a194fc-338e4905a2684ca96e08c7780fc68412.png": {
+    "type": "image/png",
+    "bytes": 1759,
+    "width": 1200,
+    "height": 630,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoQAAgABABoJbACdLoAAjbM96AA/uNORL4qbx2I+pEB76OGmi3Q2KcYxysRVSmR9Zz+nVJE5dTB9/8dd2kpV7P2VzyNP7LeEAAAAA==",
+    "color": "#d22627"
   },
   "link-previews/f81755b5-512sq.png": {
     "type": "image/png",

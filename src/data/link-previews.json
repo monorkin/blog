@@ -1450,6 +1450,16 @@
     "description": "The original server operated by the Mastodon gGmbH non-profit",
     "image": "link-previews/1412-57c12f441d083cde.png"
   },
+  "https://medium.com/": {
+    "title": "Medium: Read and write stories.",
+    "description": "On Medium, anyone can share insightful perspectives, useful knowledge, and life wisdom with the world.",
+    "image": "link-previews/206cc24a-167cff2a3d17ac1e64d0762539978f2d54c0058886e8b3c8a03a725a83012ec0.jpg"
+  },
+  "https://medium.com/netflix-techblog/fault-tolerance-in-a-high-volume-distributed-system-91ab4faae74a": {
+    "title": "Fault Tolerance in a High Volume, Distributed System",
+    "description": "How our API and other systems isolate failure, shed load and remain resilient to failures",
+    "image": "link-previews/e702f200-1-9rjt-f36sjk4pm1bh6dkmg.png"
+  },
   "https://modelcontextprotocol.io/introduction": {
     "title": "What is the Model Context Protocol (MCP)? - Model Context Protocol",
     "image": "link-previews/1732-og-image.png"
@@ -1508,6 +1518,11 @@
   "https://psegina.com/": {
     "title": "Petar Šegina"
   },
+  "https://react.dev/": {
+    "title": "React",
+    "description": "React is the library for web and native user interfaces. Build user interfaces out of individual pieces called components written in JavaScript. React is designed to let you seamlessly combine components written by independent people, teams, and organizations.",
+    "image": "link-previews/ddc6a11b-og-home.png"
+  },
   "https://redis.io/": {
     "title": "Redis - The Real-time Data Platform",
     "description": "Developers love Redis. Unlock the full potential of the Redis database with Redis Enterprise and start building blazing fast apps.",
@@ -1552,6 +1567,11 @@
   },
   "https://shrinerb.com/rdoc/files/doc/processing_md.html#label-On-the-fly+processing": {
     "title": "processing.md"
+  },
+  "https://sidekiq.org/products/pro/": {
+    "title": "Simple, efficient background jobs for Ruby",
+    "description": "Sidekiq is a simple, efficient framework for background jobs in Ruby",
+    "image": "link-previews/4d732969-sidekiq.png"
   },
   "https://simpliki.app/": {
     "title": "Simpliki"
@@ -1706,6 +1726,10 @@
   "https://web.archive.org/web/20171013094615/http://api.rubyonrails.org/classes/ActionDispatch/Http/UploadedFile.html": {
     "title": "ActionDispatch::Http::UploadedFile"
   },
+  "https://web.archive.org/web/20180625152721/https://luka.strizic.info/": {
+    "title": "Undefined Reference",
+    "description": "Technical blog about stuff I probably couldn't find elsewhere on the internet or about stuff I find fun to write about."
+  },
   "https://wiki.archlinux.org/title/D-Bus": {
     "title": "D-Bus - ArchWiki"
   },
@@ -1797,6 +1821,11 @@
     "title": "Rails license - DHH's translation",
     "description": "DHH's translation of the Rails license. He doesn't mind a bit of swearing."
   },
+  "https://www.forbes.com/advisor/personal-finance/what-is-the-warn-act/": {
+    "title": "What's The WARN Act And Why Is Twitter Being Sued For Violating It?",
+    "description": "The WARN Act is designed to prevent financial fallout during layoffs, but tech companies like Twitter might be ignoring the rules.",
+    "image": "link-previews/57a87263-what-is-the-warn-act.jpg"
+  },
   "https://www.gnu.org/licenses/rms-why-gplv3.html": {
     "title": "Why Upgrade to GPLv3\n- GNU Project - Free Software Foundation"
   },
@@ -1869,6 +1898,16 @@
   "https://www.nginx.com/blog/websocket-nginx/": {
     "title": "F5 NGINX Products",
     "image": "link-previews/1382-50491ec88aefbf2b237e9bae8ce66ac8fac75c3d-1200x675.png"
+  },
+  "https://www.npmjs.com/package/@rails/actioncable": {
+    "title": "@rails/actioncable",
+    "description": "WebSocket framework for Ruby on Rails.",
+    "image": "link-previews/f6a194fc-338e4905a2684ca96e08c7780fc68412.png"
+  },
+  "https://www.npr.org/2022/11/17/1137265843/elon-musk-fires-employee-by-tweet": {
+    "title": "Fired by tweet: Elon Musk's latest actions are jeopardizing Twitter, experts say",
+    "description": "Firing an employee by social media, giving others an ultimatum, and battling possible bankruptcy: the latest actions by Musk are hurting business, a labor lawyer and tech PR specialist tell NPR.",
+    "image": "link-previews/30d69c4c-ap22308611332503-wide-0dbe07f9f67de47d661dd6dd10cd97c9f8348734.jpg"
   },
   "https://www.ovhcloud.com/en-gb/": {
     "title": "OVHcloud customer"
@@ -1950,6 +1989,9 @@
     "title": "AMQP 0-9-1 Model Explained | RabbitMQ",
     "description": "<!--",
     "image": "link-previews/1404-rabbitmq-social-media-card.svg"
+  },
+  "https://www.researchgate.net/publication/361518671_Finding_the_Center_Christopher_Alexander's_Concept_of_Centers": {
+    "title": "Finding the Center: Christopher Alexander's Concept of Centers"
   },
   "https://www.rust-lang.org/": {
     "title": "Rust Programming Language",

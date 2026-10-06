@@ -1,7 +1,7 @@
 ---
 title: Monitoring ActionCable
 publishedAt: 2025-01-27T10:26:00Z
-updatedAt: 2026-02-15T09:37:07Z
+updatedAt: 2026-10-06T07:58:01Z
 tags: [ruby]
 ogImage: pubsub_latency.png
 feedId: Article/40
@@ -395,7 +395,7 @@ Without that module I'd probably setup a periodic task like so
 module ApplicationCable
   class Channel < ActionCable::Channel::Base
     periodically every: 1.minute do
-	  connection_count = ActionCable.server.connections.length
+      connection_count = ActionCable.server.connections.length
       Rails.logger.debug "Connection count: #{connection_count}"
     end
   end
@@ -651,8 +651,8 @@ module ActionCable
         pub_sub_latency = [0, Time.now.to_f - payload.fetch("sent_at", -Float::INFINITY)].max
         Yabeda.action_cable.pub_sub_latency.measure({}, pub_sub_latency)
 
-		connection_count = ActionCable.server.connections.length
-		Yabeda.action_cable.connection_count.set({}, connection_count)
+        connection_count = ActionCable.server.connections.length
+        Yabeda.action_cable.connection_count.set({}, connection_count)
       end
     end
   end

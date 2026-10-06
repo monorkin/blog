@@ -1,7 +1,7 @@
 ---
 title: Building Simpl息
 publishedAt: 2025-04-24T06:00:00Z
-updatedAt: 2026-03-12T12:11:10Z
+updatedAt: 2026-10-06T07:58:01Z
 tags: [ruby, today-i-learned]
 ogImage: image.png
 feedId: Article/42
@@ -205,8 +205,8 @@ nice way to show where the app's name comes from.
 <h1 id="logo" class="font-serif">
   <span class="mt-4">Simpl</span>
   <ruby>
-	  息
-	  <rt class="text-gray-500">iki</rt>
+    息
+    <rt class="text-gray-500">iki</rt>
   </ruby>
 </h1>
 ```
@@ -256,15 +256,15 @@ const RADIUS = 100
 
 function generatePoints(time) {
   const circlePoints = []
-	
+
   for (let index = 0; index < NUM_POINTS; i++) {
     // Calculate at what angle the point is supposed to be
     const angle = (point.index / NUM_POINTS) * Math.PI * 2
-	
+
     // Convert the angle to coordinates
     const x = RADIUS * Math.cos(angle)
     const y = RADIUS * Math.sin(angle)
-	
+
     circlePoints.push([x, y])
   }
 
@@ -292,7 +292,7 @@ const circlePoints = []
 
 function generatePoints(time) {
   const circlePoints = []
-	
+
   for (let index = 0; index < NUM_POINTS; i++) {
     // Calculate at what angle the point is supposed to be
     const angle = (point.index / NUM_POINTS) * Math.PI * 2
@@ -304,11 +304,11 @@ function generatePoints(time) {
     const rippleY = Math.sin(time * RIPPLE_FREQ + angle)
     const rippleX = Math.cos(time * RIPPLE_FREQ * 0.7 + angle * 1.3)
     const ripple = (rippleY * 0.6 + rippleX * 0.4) * RIPPLE_AMPLITUDE
-	
+
     // Convert the angle to coordinates
     const x = RADIUS * Math.cos(angle) + (ripple * Math.cos(angle))
     const y = RADIUS * Math.sin(angle) + (ripple * Math.sin(angle))
-	
+
     circlePoints.push([x, y])
   }
   
@@ -733,7 +733,7 @@ Then all I had to do was append the children from the new document to the
 current one
 
 ```js
-	const doc = await this.#fetchNextPageDocument()
+    const doc = await this.#fetchNextPageDocument()
 
     const newList = doc.querySelector(`[data-${this.identifier}-target="list"]`)
 

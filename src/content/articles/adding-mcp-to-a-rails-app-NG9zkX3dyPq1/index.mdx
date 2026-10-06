@@ -1,7 +1,7 @@
 ---
 title: Adding MCP to a Rails app
 publishedAt: 2025-05-06T09:00:00Z
-updatedAt: 2026-03-09T09:32:25Z
+updatedAt: 2026-10-06T07:58:01Z
 tags: [ai, ruby]
 ogImage: quick-sheets-page-33.png
 feedId: Article/43
@@ -368,9 +368,9 @@ module MCP
       end
 
       buildings
-	    .limit(50)
-	    .order(name: :desc)
-	    .to_json(only: [:id, :name, :handle, :address])
+        .limit(50)
+        .order(name: :desc)
+        .to_json(only: [:id, :name, :handle, :address])
     end
   end
 end
@@ -407,19 +407,19 @@ module MCP
         return "Building not found"
       end
 
-	  building
-	    .access_logs
-	    .search({ query: query })
-	    .order(logged_at: :desc)
-	    .limit(25)
-	    .to_json(only: [
-	      :id, 
-	      :logged_at, 
-	      :grantor, 
-	      :description,
-	      :access_point_id,
-	      :status
-	    ])
+      building
+        .access_logs
+        .search({ query: query })
+        .order(logged_at: :desc)
+        .limit(25)
+        .to_json(only: [
+          :id,
+          :logged_at,
+          :grantor,
+          :description,
+          :access_point_id,
+          :status
+        ])
     end
   end
 end
@@ -503,8 +503,8 @@ module MCP
         .maybe(:string)
         .description("The search query which can contain any part of the grantors name, id of the record, id of the access point, or part of the description; any other input will be ignored")
       optional(:status)
-	    .maybe(:string)
-	    .description("Comma-separated list of statuses - valid statuses are open, closed, left_ajar, denied; any other statuses will be ignored")
+        .maybe(:string)
+        .description("Comma-separated list of statuses - valid statuses are open, closed, left_ajar, denied; any other statuses will be ignored")
     end
 
     def call(**args)

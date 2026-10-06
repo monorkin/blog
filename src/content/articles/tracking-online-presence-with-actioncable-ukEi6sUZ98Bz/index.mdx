@@ -1,7 +1,7 @@
 ---
 title: Tracking online presence with ActionCable
 publishedAt: 2023-11-14T05:17:00Z
-updatedAt: 2026-03-09T08:42:16Z
+updatedAt: 2026-10-06T07:58:01Z
 tags: [ruby]
 feedId: Article/35
 ---
@@ -50,8 +50,8 @@ class Device < ApplicationRecord
   end
 
   def went_offline
-	update!(online: false)
-	online_status_changes.create!(status: :offline) 
+    update!(online: false)
+    online_status_changes.create!(status: :offline)
   end
 end
 ```
@@ -305,20 +305,20 @@ class Device < ApplicationRecord
   
   def came_online
     with_lock do
-     old_count = reload.connection_count
-     update!(connection_count: old_count + 1)
+      old_count = reload.connection_count
+      update!(connection_count: old_count + 1)
     end
     
     online_status_changes.create!(status: :online) if old_count.zero?
   end
 
   def went_offline
-	with_lock do
-     old_count = reload.connection_count
-     update!(connection_count: old_count - 1)
+    with_lock do
+      old_count = reload.connection_count
+      update!(connection_count: old_count - 1)
     end
     
-	online_status_changes.create!(status: :offline) if connection_count.zero?
+    online_status_changes.create!(status: :offline) if connection_count.zero?
   end
 end
 ```

@@ -1,7 +1,7 @@
 ---
 title: Deconstructing Action Cable
 publishedAt: 2024-02-05T13:00:00Z
-updatedAt: 2026-02-15T09:37:07Z
+updatedAt: 2026-10-06T07:58:01Z
 tags: [deep-dive, ruby]
 ogImage: 00011-2829697632.png
 feedId: Article/36
@@ -106,24 +106,24 @@ module ApplicationCable
     attr_accessor :current_person
     
     def connect
-	  Rails.logger.debug "Someone wants to connect via WebSocket!"
-	  set_current_person
-	  
-	  unless current_person
-	    Rails.logger.debug "I don't know who this is. Closing the WebSocket."
-	    reject_unauthorized_connection
-	  end
-	  
-	  Rails.logger.debug "It's, #{current_person.name}"
+      Rails.logger.debug "Someone wants to connect via WebSocket!"
+      set_current_person
+
+      unless current_person
+        Rails.logger.debug "I don't know who this is. Closing the WebSocket."
+        reject_unauthorized_connection
+      end
+
+      Rails.logger.debug "It's, #{current_person.name}"
     end
 
     private
 
     def set_current_person
       person = 
-	    # We can access the param of the HTTP request
-	    Person.find_by(token: request.params[:token]) ||
-	    # We can access the session of the HTTP request
+        # We can access the param of the HTTP request
+        Person.find_by(token: request.params[:token]) ||
+        # We can access the session of the HTTP request
         Person.find_by(token: request.session[:person_id])
         
       unless person
@@ -131,8 +131,8 @@ module ApplicationCable
         session = Session.find_by(id: cookies.encrypted[:session_id])
         person = session&.person
       end
-	  
-	  self.current_person = person
+
+      self.current_person = person
     end
   end
 end
@@ -151,10 +151,10 @@ module ApplicationCable
     attr_accessor :current_person
     
     def connect
-	  set_current_person
-	  reject_unauthorized_connection unless current_person
+      set_current_person
+      reject_unauthorized_connection unless current_person
 
-	  current_person.increment!(:connection_count)
+      current_person.increment!(:connection_count)
     end
 
     def disconnect
@@ -181,8 +181,8 @@ module ApplicationCable
     identified_by :current_person # TO THIS
     
     def connect
-	  set_current_person
-	  reject_unauthorized_connection unless current_person
+      set_current_person
+      reject_unauthorized_connection unless current_person
     end
 
     private
@@ -332,10 +332,10 @@ message to it.
 ```ruby
 class ChatChannel < ApplicationCable::Channel
   def post_message(data)
-	  Chat::Message.create(
-	    content: data[:content], 
-	    poster: current_person
-	  )
+    Chat::Message.create(
+      content: data[:content],
+      poster: current_person
+    )
   end
 end
 ```
@@ -370,11 +370,11 @@ These params can be used however you'd like. E.g.
 ```ruby
 class ChatChannel < ApplicationCable::Channel
   def post_message(data)
-	  current_person
-	    .chat_rooms
-	    .find_by(name: params[:room_name]) # PARAMS FROM THE SUBSCRIBE MESSAGE
-	    &.messages
-	    &.create(content: data[:content])
+    current_person
+      .chat_rooms
+      .find_by(name: params[:room_name]) # PARAMS FROM THE SUBSCRIBE MESSAGE
+      &.messages
+      &.create(content: data[:content])
   end
 end
 ```
@@ -388,14 +388,14 @@ that a person isn't a member of, you could do something like this
 class ChatChannel < ApplicationCable::Channel
   def subscribed
     @chat_room = current_person
-	  .chat_rooms
-	  .find_by(name: params[:room_name])
-	  
-	reject unless @chat_room
+      .chat_rooms
+      .find_by(name: params[:room_name])
+
+    reject unless @chat_room
   end
   
   def post_message(data)
-	@chat_room.messages.create(content: data[:content])
+    @chat_room.messages.create(content: data[:content])
   end
 end
 ```
@@ -527,10 +527,10 @@ with it.
 class ChatChannel < ApplicationCable::Channel
   def subscribed
     @chat_room = current_person
-	  .chat_rooms
-	  .find_by(name: params[:room_name])
-	  
-	reject unless @chat_room
+      .chat_rooms
+      .find_by(name: params[:room_name])
+
+    reject unless @chat_room
 
     # creates a PubSub channel to which we can publish messages to from anywhere
     stream_for @chat_room
@@ -568,10 +568,10 @@ method](https://github.com/rails/rails/blob/3d132b855541c35236e93b3a676a3ee80d02
 class ChatChannel < ApplicationCable::Channel
   def subscribed
     @chat_room = current_person
-	  .chat_rooms
-	  .find_by(name: params[:room_name])
-	  
-	reject unless @chat_room
+      .chat_rooms
+      .find_by(name: params[:room_name])
+
+    reject unless @chat_room
 
     transmit "Welcome back, #{current_person.first_name}!"
   end
@@ -712,18 +712,18 @@ const subscription = consumer.subscriptions.create(
   { channel: "ChatChannel", room_name: "Ruby Zagreb" },
   {
     received(message) {
-	  this.appendMessage(message)
+      this.appendMessage(message)
     }
     
     appendMessage(message) {
-	  this.messageContainer()?.insertAdjacentHTML(
-		"beforeend", 
-		`<div>${message}</div>`
-	  )
+      this.messageContainer()?.insertAdjacentHTML(
+        "beforeend",
+        `<div>${message}</div>`
+      )
     }
     
     messageContainer() {
-	  document.querySelector("#messages")
+      document.querySelector("#messages")
     }
   }
 )
@@ -757,27 +757,27 @@ const subscription = consumer.subscriptions.create(
     }
 
     // Called if the subscription was rejected by the server
-	rejected() {
-	  console.log(`The server rejected the subscription to ${this.identifier}`)
-	}
+    rejected() {
+      console.log(`The server rejected the subscription to ${this.identifier}`)
+    }
 
     // Called when the subscription gets confirmed by the server
     connected(data) {
-	  // The data object has a single property `reconnected`
-	  // which indicates if this was a resubscribe after a disconnect
+      // The data object has a single property `reconnected`
+      // which indicates if this was a resubscribe after a disconnect
       console.log(`The server confirmed the subscription to ${this.identifier}! Reconnected: ${data.reconnected}`)
     }
 
     // Called when the WebSocket closes
-	disconnected(data) {
-	  // The data object has a single propert `willAttemptReconnect`
-	  // which indicates if a reconnect attempt will be made or not
-	  console.log(`WebSocket to ${this.consumer.url} closed! Will attempt reconnect: ${data.willAttemptReconnect}`)
-	}
+    disconnected(data) {
+      // The data object has a single propert `willAttemptReconnect`
+      // which indicates if a reconnect attempt will be made or not
+      console.log(`WebSocket to ${this.consumer.url} closed! Will attempt reconnect: ${data.willAttemptReconnect}`)
+    }
 
     // Called when a message is sent from the server
     received(message) {
-	  console.log(`Received message: ${message}`)
+      console.log(`Received message: ${message}`)
     }
   }
 )
@@ -991,8 +991,8 @@ class StockTickerChannel < ApplicationCable::Channel
   
   def subscribed
     @stock = Stock.find_by(symbol: params[:symbol])
-	  
-	reject unless @stock
+
+    reject unless @stock
   end
 end
 ```
@@ -1023,7 +1023,7 @@ attributes](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
     around_command do
-	  Current.set(person: current_person) { yield }
+      Current.set(person: current_person) { yield }
     end
 
     # ...
@@ -1043,12 +1043,12 @@ module AppearanceTrackable
   extend ActiveSupport::Concern
 
   included do
-	after_subscribe unless: :subscription_rejected? do
-	  Current.person.came_online!
-	end
-	
-	after_unsubscribe do
-	  Current.person.went_offline!
+    after_subscribe unless: :subscription_rejected? do
+      Current.person.came_online!
+    end
+
+    after_unsubscribe do
+      Current.person.went_offline!
     end
   end
 end
@@ -1058,10 +1058,10 @@ class ChatChannel < ApplicationCable::Channel
   
   def subscribed
     @chat_room = current_person
-	  .chat_rooms
-	  .find_by(name: params[:room_name])
-	  
-	reject unless @chat_room
+      .chat_rooms
+      .find_by(name: params[:room_name])
+
+    reject unless @chat_room
 
     stream_for @chat_room
   end

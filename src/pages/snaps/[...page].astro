@@ -4,6 +4,7 @@ import Layout from "~/layouts/Layout.astro"
 import SeoTags from "~/components/SeoTags.astro"
 import Paginated from "~/components/Paginated.astro"
 import SnapGridItem from "~/components/SnapGridItem.astro"
+import FeedLink from "~/components/FeedLink.astro"
 import { publishedEntries, type Entry } from "~/lib/entries"
 import { pagePath, paginateIndex, type IndexPage } from "~/lib/pagination"
 import { absoluteUrl, titleize } from "~/lib/site"
@@ -27,7 +28,10 @@ const { page } = Astro.props as { page: IndexPage<Entry> }
 
   <div class="photos-section">
     <div class="article margin-block-end-4">
-      <h1 class="txt-4xl font-semibold">Snaps</h1>
+      <div class="flex justify-between items-center gap-2">
+        <h1 class="txt-4xl font-semibold">Snaps</h1>
+        <FeedLink kind="snap" />
+      </div>
       <p class="txt-muted">
         Photos and videos I've taken on travels, hikes and everyday life.
       </p>

@@ -1,0 +1,25 @@
+@layer components {
+  .feed-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1-5);
+    flex-shrink: 0;
+    padding: var(--space-1-5) var(--space-3) var(--space-1-5) var(--space-2);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-full);
+    color: var(--color-ink-subtle);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 50ms, color 50ms;
+
+    &:hover {
+      border-color: var(--color-subscribe-icon);
+      color: var(--color-ink);
+    }
+  }
+
+  .feed-link__icon {
+    color: var(--color-subscribe-icon);
+  }
+}

@@ -3,6 +3,7 @@ import type { GetStaticPaths } from "astro"
 import Layout from "~/layouts/Layout.astro"
 import SeoTags from "~/components/SeoTags.astro"
 import EntryList from "~/components/EntryList.astro"
+import FeedLink from "~/components/FeedLink.astro"
 import Paginated from "~/components/Paginated.astro"
 import { publishedEntries, type Entry } from "~/lib/entries"
 import { pagePath, paginateIndex, type IndexPage } from "~/lib/pagination"
@@ -26,7 +27,10 @@ const { page } = Astro.props as { page: IndexPage<Entry> }
   </Fragment>
 
   <section class="article margin-block-end-4">
-    <h1 class="txt-4xl font-semibold">Articles</h1>
+    <div class="flex justify-between items-center gap-2">
+      <h1 class="txt-4xl font-semibold">Articles</h1>
+      <FeedLink kind="article" />
+    </div>
   </section>
 
   <section>

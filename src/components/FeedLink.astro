@@ -1,0 +1,15 @@
+---
+import Icon from "~/components/Icon.astro"
+import { KIND_FEED_PATHS } from "~/lib/feed-paths"
+
+interface Props {
+  kind: "article" | "talk" | "snap"
+}
+
+const { kind } = Astro.props
+---
+
+<a href={KIND_FEED_PATHS[kind]} target="_blank" class="feed-link" title={`Subscribe to ${kind}s via RSS`}>
+  <Icon name="rss" class="icon-sm feed-link__icon" />
+  Subscribe
+</a>

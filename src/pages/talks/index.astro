@@ -2,6 +2,7 @@
 import Layout from "~/layouts/Layout.astro"
 import SeoTags from "~/components/SeoTags.astro"
 import EntryList from "~/components/EntryList.astro"
+import FeedLink from "~/components/FeedLink.astro"
 import { publishedTalks } from "~/lib/entries"
 import { absoluteUrl, titleize } from "~/lib/site"
 
@@ -21,7 +22,10 @@ const talks = await publishedTalks()
 
   <div class="flex flex-col gap-y-6">
     <section class="article margin-block-end-4">
-      <h1 class="txt-4xl font-semibold">Talks</h1>
+      <div class="flex justify-between items-center gap-2">
+        <h1 class="txt-4xl font-semibold">Talks</h1>
+        <FeedLink kind="talk" />
+      </div>
     </section>
 
     <EntryList entries={talks} class="flex flex-col timeline--first timeline--last" />

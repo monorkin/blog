@@ -13,12 +13,14 @@ const { kind, newsletter = false } = Astro.props
 <div class="feed-links">
   <a href={KIND_FEED_PATHS[kind]} target="_blank" class="feed-link" title={`Subscribe to ${kind}s via RSS`}>
     <Icon name="rss" class="icon-sm feed-link__icon" />
-    Subscribe
+    <span class="feed-link__label--long">Subscribe</span>
+    <span class="feed-link__label--short">RSS</span>
   </a>
   {newsletter && (
     <a href="https://buttondown.email/monorkin" target="_blank" class="feed-link feed-link--newsletter" title={`Get new ${kind}s by email`}>
       <Icon name="mail" class="icon-sm feed-link__icon" />
-      Newsletter
+      <span class="feed-link__label--long">Newsletter</span>
+      <span class="feed-link__label--short">Email</span>
     </a>
   )}
 </div>

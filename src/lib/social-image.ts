@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs"
+import { readdirSync, readFileSync } from "node:fs"
 import type { CollectionEntry } from "astro:content"
 import satori from "satori"
 import sharp from "sharp"
@@ -17,12 +17,18 @@ const LONG_TITLE_LENGTH = 50
 const PORTRAIT_SIZE = 136
 const COLORS = { canvas: "#000000", ink: "#e4e4e7", subtle: "#a1a1aa", muted: "#71717a", accent: "#efb100", border: "#27272a" }
 
-const fonts = [ 400, 700, 800 ].map(weight => ({
-  name: "Inter",
-  weight: weight as 400 | 700 | 800,
-  style: "normal" as const,
-  data: readFileSync(`node_modules/@fontsource/inter/files/inter-latin-${weight}-normal.woff`)
-}))
+const FONT_WEIGHTS = [ 400, 700, 800 ] as const
+// Inter has no Japanese, so Satori falls back to Noto Sans JP. Fontsource splits it into
+// numbered subsets, and each needs its own name, or Satori keeps only one per weight
+const JAPANESE_SUBSETS = readdirSync("node_modules/@fontsource/noto-sans-jp/files")
+  .map(file => file.match(/^noto-sans-jp-(\d+)-400-normal\.woff$/)?.[1])
+  .filter(subset => subset !== undefined)
+
+const fonts = FONT_WEIGHTS.flatMap(weight => [
+  font("Inter", weight, `node_modules/@fontsource/inter/files/inter-latin-${weight}-normal.woff`),
+  ...JAPANESE_SUBSETS.map(subset =>
+    font(`Noto Sans JP ${subset}`, weight, `node_modules/@fontsource/noto-sans-jp/files/noto-sans-jp-${subset}-${weight}-normal.woff`))
+])
 // Black and white, as the site shows it in dark mode
 const portrait = sharp(readFileSync("src/assets/images/portrait/small.jpg")).grayscale().jpeg().toBuffer()
   .then(image => `data:image/jpeg;base64,${image.toString("base64")}`)
@@ -76,6 +82,10 @@ function title(text: string) {
   }
 
   return element("div", { display: "block", fontSize, fontWeight: 800, lineHeight: 1.1, color: COLORS.ink, lineClamp: 3 }, text)
+}
+
+function font(name: string, weight: typeof FONT_WEIGHTS[number], path: string) {
+  return { name, weight, style: "normal" as const, data: readFileSync(path) }
 }
 
 // Satori takes the objects JSX would make

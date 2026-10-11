@@ -112,7 +112,8 @@ The Open Graph and Twitter image is, in order:
    dark colors: my portrait in black and white beside the title, the excerpt under them,
    and the date, or for a talk its event and date, across the top. It's at
    `/og/<the entry's path>.png`. `src/lib/social-image.ts` draws it with satori, in Inter
-   from `@fontsource/inter`, and sharp makes it a PNG.
+   from `@fontsource/inter`, with Noto Sans JP from `@fontsource/noto-sans-jp` for Japanese,
+   and sharp makes it a PNG.
 
 ## MDX components
 

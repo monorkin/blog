@@ -1,0 +1,98 @@
+---
+title: Katami
+publishedAt: 2026-10-11T08:01:12Z
+updatedAt: 2026-10-11T08:01:12Z
+tags: [ai]
+---
+
+Over the last few months I've built a couple of tools to help me work with our
+new AI friends. My favorite one so far is [katami](https://github.com/monorkin/katami)
+*(Japanese <Japanese>katami</Japanese> for "keepsake")*.
+
+The best way to explain what katami does is with an example:
+
+```bash
+$ mkdir hey2
+$ cd hey2
+$ cargo init
+$ katami claude
+> Can you set this project up for me?
+> It will be a server with a CLI connected to MySQL, Redis
+> and Elasticsearch
+
+I'll set this project up with a hey2-core crate for logic and a hey2 crate
+for the CLI using usage-rs, configure AGENTS.md with a CLAUDE.md shim,
+.agents/skills and a docs folder, add a .mise.toml file and set up mbx
+just like in your other projects.
+...
+```
+
+**Didn't catch that?** Claude, *without being prompted*, in a brand-new
+project, knew how I want the project structured, what tools and libraries I use,
+and how I like them configured.
+
+The kicker: I didn't tell it to remember how to set up projects, and it's not
+in my global CLAUDE.md file either. **Claude, through katami, learned what I
+like and remembered it.**
+
+I built it so that I wouldn't have to repeat myself in every Claude session I
+started.
+
+Katami brings Hermes-like memory extraction and recall to Claude Code, Codex, pi,
+and OpenCode. *You can switch harnesses and machines and keep the same
+memories.*
+
+**Katami hooks into your harness.** It sets up a few temporary hooks which allow
+it to intercept your messages, the agent's responses, and tool calls.
+
+It extracts memories by checking the transcript for things you revealed about
+yourself. Every dozen or so messages, it spawns a small agent and asks it to comb
+through those messages and extract memories. The memories it finds are then
+categorized in a few ways and stored in a local database.
+
+```bash
+$ katami memory list
+id        updated     kind          uses  last used   title
+cwfbzcq2  2026-09-02  card           188  2026-10-06  /home/stanko/Work/basecamp/hey2
+kfz0scd8  2026-09-02  card           143  2026-09-30  Stanko
+dje5yqzr  2026-09-08  observation     91  2026-10-06  Uses HEY email CLI
+hhe3cghc  2026-09-13  observation     63  2026-10-06  Codex review workflow
+rxtsz6tx  2026-09-24  status          14  2026-09-30  Current state of /home/stanko/Work/monorkin/katami
+```
+
+It doesn't blindly stuff memories into your agent's context. Using fast local AI
+models that run on the CPU, it searches for and selects the most relevant memories
+for the conversation and injects them as extra context for your agent when it's
+about to respond.
+
+Katami also periodically curates its memories: drops unused ones, combines related
+ones, and builds fact cards.
+
+This is what a memory looks like:
+
+```bash
+$ katami memory show kfz0scd8
+# Stanko (card)
+entity: person:Stanko
+updated: 2026-09-30T08:05:13Z
+
+## Preferences
+
+### Communication
+- Use plain language: avoid vague umbrella terms like "gate" for CI checks or scope validation; use specific plain words for what each thing is
+- Be explicit about outcomes: say "tests ran and reported failures" not "passing" — lead with the result first, analysis after
+- Preserve full output for accountability: don't truncate failure lists or logs for readability (e.g., avoid `tail -150`) — there should be no guessing about what happened
+
+### Git operations
+- Require explicit permission before force-push; use `--force-with-lease` when approved
+```
+
+Recently we started using agent sheds at work. A shed is a mini-PC that's on
+24/7 and hosts an agent that you give tasks to. So I extended katami to
+work across multiple machines. It uses a mesh, so there's no server to manage.
+Any extracted memories are shared across all machines.
+
+That's it. I love this tool. It makes any old agent feel more human.
+It allows them to learn and adapt. Every new session feels like
+another conversation with a digital friend, rather than meeting an
+intelligence that's just been spawned into existence.

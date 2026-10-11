@@ -9044,6 +9044,23 @@
     "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACQAQCdASoQAAgABABoJZQAAtqZlQAA/vPDy+QzndxgRq8HCKWLWANj4+4FBBr2i+AAAA==",
     "color": "#efebeb"
   },
+  "link-previews/8aa8c818-katami.png": {
+    "type": "image/png",
+    "bytes": 68241,
+    "width": 1200,
+    "height": 600,
+    "formats": [
+      "webp",
+      "png"
+    ],
+    "widths": [
+      400,
+      768
+    ],
+    "squares": [],
+    "placeholder": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAAAwAQCdASoQAAgABABoJZwAA3AA/vDQtvgNrJNP9mTKcaXesx0Qj+sl+WAAAA==",
+    "color": "#f3f2f1"
+  },
   "link-previews/8d2464c9-slides.png": {
     "type": "image/png",
     "bytes": 50546,

@@ -1,6 +1,9 @@
 import { justify, layout } from "~/scripts/justified-rows"
 
 const MAX_ROTATION = 8
+const TILT_REFERENCE_SIZE = 320
+const MIN_PERSPECTIVE = 600
+const PERSPECTIVE_PER_SIZE = 2
 const TILT_TRANSITION = "transform 0.15s ease-out"
 const RESET_TRANSITION = "transform 0.3s ease-out"
 const COPIED_CLASS = "lightbox__actions--copied"
@@ -114,11 +117,18 @@ function tilt(item: HTMLElement, { clientX, clientY }: MouseEvent) {
   const rect = item.getBoundingClientRect()
   const x = (clientX - rect.left) / rect.width
   const y = (clientY - rect.top) / rect.height
-  const rotateY = (x - 0.5) * MAX_ROTATION * 2
-  const rotateX = (0.5 - y) * MAX_ROTATION * 2
+  const rotateY = (x - 0.5) * maxRotationAcross(rect.width) * 2
+  const rotateX = (0.5 - y) * maxRotationAcross(rect.height) * 2
+  const perspective = Math.max(MIN_PERSPECTIVE, PERSPECTIVE_PER_SIZE * Math.max(rect.width, rect.height))
 
-  item.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+  item.style.transform = `perspective(${perspective}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
   item.style.transition = TILT_TRANSITION
+}
+
+// Larger tiles tilt less, so their edges move no further than a small tile's and stay out of
+// their neighbours
+function maxRotationAcross(size: number) {
+  return MAX_ROTATION * Math.min(1, TILT_REFERENCE_SIZE / size)
 }
 
 export {}

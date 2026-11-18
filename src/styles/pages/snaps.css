@@ -59,6 +59,10 @@
     overflow: hidden;
     transform-style: preserve-3d;
     will-change: transform;
+
+    &:hover {
+      z-index: 1;
+    }
   }
 
   /* Rows of one height with every photo uncropped. Each item starts at the row height and

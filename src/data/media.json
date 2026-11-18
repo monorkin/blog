@@ -9401,6 +9401,54 @@
     "placeholder": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAACwAQCdASoQAAoABABoJZQCdADXCyRAAM4CRBCCNST95lBwG0qoRjMDnryvR9Rpfcd98YV2r6fDwBTVgyJUAIIZEqeGOgAA",
     "color": "#4d4c4e"
   },
+  "snaps/above-the-clouds-oECWbdj7eTYT/img-2114.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 929206,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAACwAQCdASoMABAABABoJbACdADyUzS8AP4zwmaK3c8pQ7JLKfziijzmCrkGJHr65HM1MIpPjfmMMm3g7H9fTlVwpHYAAA==",
+    "color": "#446ca4"
+  },
+  "snaps/adriatic-16xSXWaBfyVq/img-7345.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 1874829,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoMABAABABoJagCdAEO5mciDYAA/qGcKHn14jPxh152gBREJj7MJisgvj6iewiAcuF84d2SAD7gAA==",
+    "color": "#4c7fb6"
+  },
   "snaps/amsterdam-5hjfLmGYrdBW/1000053068.jpg": {
     "type": "image/jpeg",
     "bytes": 2356685,
@@ -9569,6 +9617,126 @@
     "placeholder": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAABQAgCdASoQAAcABABoJYgCdGuAt/8DhGG9moAA/Gdm/aGBxixnKzQGVTnMNLibrIpMfUibsRa1MwoqQNUR0nsnI+ZHEjUvpwAAAA==",
     "color": "#546b80"
   },
+  "snaps/bled-ASZNdHysEFUD/img-3141.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 2608011,
+    "width": 3897,
+    "height": 2923,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoQAAwABABoJZACdACxt9fyAAD+VEucsnp6a54sEpWr4QEfcfRF01V0BlcCSX734vAFMXFLfFhoKZAA",
+    "color": "#6a7889"
+  },
+  "snaps/blue-sky-xZcAOpOX4J63/img-0974.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 965324,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAAAQAgCdASoMABAABABoJagCdLoAArpzWnMAAPzavYILlR+vekI9hkrJ1XePKJX+2zCDR53zZ7jwCAAA",
+    "color": "#2a67b2"
+  },
+  "snaps/cloud-4oQ8HMxWKMpU/img-9137.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 1063445,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAQAgCdASoMABAABABoJbACdLoAAwi67OhwAP7o1vHBVor8rnUHedg8Wzs+Y5inEiGyhsAPYLQXxGR9v9tdfVgwj2ACL93n1k72IgAA",
+    "color": "#1f5b9d"
+  },
+  "snaps/crescent-moon-oJrxhKMEVx6N/img-6856.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 1623362,
+    "width": 2268,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2268
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADQAQCdASoJABAABABoJagCdADyhxbhQADFc+eiJi/7ElbHHe3Q4U9tFEbUiyJDHZ8bW6s7EzK8zCgRRYAAAA==",
+    "color": "#946c67"
+  },
+  "snaps/first-snow-qgJU28EDRfzt/img-5405.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 7333769,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAACQAQCdASoMABAABABoJYwAAltTEmAA/kbyfh952rvYewCoOl4/TaanKbI/zztdxAmMzmArOXprM90pa1GY6SIwEJmGAEox6ewhwAAA",
+    "color": "#686659"
+  },
   "snaps/fog-creeping-in-on-the-hillside-KFl9vCOBsl5T/20260602_062438.jpg": {
     "type": "image/jpeg",
     "bytes": 2141297,
@@ -9617,6 +9785,54 @@
     "placeholder": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoHABAABABoJYwCdAD0LxY0wAD+jf0/lvN/OkzzxKiF8vCwfy5jtHzKFdMFavzEaDTYanJKa8osAAAA",
     "color": "#767a7b"
   },
+  "snaps/fog-UQxtybxAP6TV/img-2772.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 4708870,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoMABAABABoJQAAQ7//KgHgAP5n2RC3RYc7ToX70ew04M7CXlhdos5c5PIqNuot4P9O6f6O2AAAAA==",
+    "color": "#8f867a"
+  },
+  "snaps/golden-hour-iplXFO9ou9dx/img-0153.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 1632922,
+    "width": 2268,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2268
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADwAQCdASoJABAABABoJZgCdADz4O3Q0AAA/qI2eIJiG+SdX62UMy1Isx/lJnN0grD6BMW0voH6iZEJ8BrrwAAA",
+    "color": "#4b5a65"
+  },
   "snaps/halloween-2rDZGjPjjybU/1000053348.jpg": {
     "type": "image/jpeg",
     "bytes": 1069215,
@@ -9640,6 +9856,54 @@
     ],
     "placeholder": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAADwAQCdASoQABAABABoJaAAAus/7Pr1ViAA/szmn69r6qV4448x0sx70L5Z4aUQGHRU/J7emnCjXcSZrcgIywKGtwJsFL7B1ZNQP8yAUR7dtjJLAAA=",
     "color": "#5d5647"
+  },
+  "snaps/hedge-rhjBZcwYkFZL/img-5232.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 2649954,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAQCdASoMABAABABoJQAAS4jKkYbAAAD2af/ul2NyaaDpTz/3zk8u50zKQ8padQECnoW2jDUc35KMrORT15pf/zdccS/3UajstdO7AAA=",
+    "color": "#4f5f5c"
+  },
+  "snaps/helsinki-central-station-jFW9ZVcM4khQ/img-2130.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 4386259,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAACwAQCdASoMABAABABoJagCdACvzkTIANyhmLf1f7rB2UgSkbSxWr5XnObiIleB8pySYxzNZ+CzlqMBR5A5P/9CGSLRCCL21hJ/R5UvI13Ot44rLCQAAA==",
+    "color": "#80745f"
   },
   "snaps/lamb-in-soca-valley-JkXLyOAQlXEb/20260531_174227.jpg": {
     "type": "image/jpeg",
@@ -9665,6 +9929,78 @@
     "placeholder": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADQAQCdASoHABAABABoJaACdAEO5XdeYAD+hAhB/8iCcQV3zuCORMUNXtrXXWZu7z7OGhAA",
     "color": "#5f7639"
   },
+  "snaps/medvedgrad-Q9Yd2o0ZB7WP/img-1618.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 3163495,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoMABAABABoJQAAXOFRLS6gAP7fUCwgCSPYY1hzlpxs+KG0quuK6IfuUmIPAAAA",
+    "color": "#878277"
+  },
+  "snaps/melting-snow-bqJ4m3ogYhVZ/img-0721.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 5729348,
+    "width": 2268,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2268
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAAAQAgCdASoJABAABABoJYgCw7Ddk6X/odaAAOFA3RXEy2mEOKn6LZnEEoJzw4E9ls4/i+2K/C4ViOAAAAA=",
+    "color": "#58616e"
+  },
+  "snaps/mirogoj-7oLwISdF6wcq/img-0843.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 6233630,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADwAQCdASoMABAABABoJQBdgCBqMRVOZAAA/ZT4eWdOCCuk9w9FOc0k2UmCefxmvuA0OssL7tFj9CQhPxkABTJ2ztd1pGcWJqAAAA==",
+    "color": "#727265"
+  },
   "snaps/mountain-plains-in-soca-valley-SjMJuSWvQpiI/20260602_072401.jpg": {
     "type": "image/jpeg",
     "bytes": 2333206,
@@ -9688,6 +10024,54 @@
     ],
     "placeholder": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAAAQAgCdASoQAAcABABoJZgCdAEPS+h5q6wgAMtDNlOXr1mrk8O83sMrDbbhJZ47BoAuLJbsaPb0AA==",
     "color": "#687870"
+  },
+  "snaps/rastoke-tKzwzJpAAN4H/img-7138.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 5201197,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAwAgCdASoMABAABABoJZQCdAYwTvrto9elAAD+lQ9XNGWkkC+ndcd7r5i3/VXbeyURXeDCotXuJeJwwpwWd5PjF09OpRkz1tGVTU/KS1bG1RPA5Y2qTS2h9CRf2XAA",
+    "color": "#6b786b"
+  },
+  "snaps/rest-stop-ogdKKEzZ7Crc/img-1084.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 6717792,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAQAgCdASoMABAABABoJQBOgMXr3CySV3jAAPpF9vfff9uh93++2Jjud1XsZ+CJ6WDiMRKy15dD56H6r4JSvwZ4EPHpOxiB55/ILE97rDxGDg1pEs7DbXQAAAA=",
+    "color": "#555a3d"
   },
   "snaps/robin-in-the-snow-PmdBY4grPtdX/1000060384.jpg": {
     "type": "image/jpeg",
@@ -9739,6 +10123,30 @@
     ],
     "placeholder": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACQAQCdASoJABAABABoJZwAAuUj84AA/t7xIU+bj71sSUGaiyi9srQJQnJFzf234mDxmGWrAAA=",
     "color": "#999594"
+  },
+  "snaps/sea-of-fog-MXkLlcRj1soU/img-8339.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 1899936,
+    "width": 3024,
+    "height": 4032,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAACQAQCdASoMABAABABoJZQAAlGjDTAA/mVJxplLgHFdc3O79o5jwf3Bz8k8gjq57/1DNY96VR5isAAA",
+    "color": "#828280"
   },
   "snaps/sheep-in-soca-vallye-YVSCGaaS3M1U/20260531_174104.jpg": {
     "type": "image/jpeg",
@@ -10147,6 +10555,78 @@
     ],
     "placeholder": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAADwAQCdASoHABAABABoJQBOgCHf/H7UGgAA/uA5EI1pDUYwtWNvjybNyobC0+wzbgAAAA==",
     "color": "#899a93"
+  },
+  "snaps/sunset-over-the-fog-Cu7Rh2qf7W6C/img-0276.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 1680574,
+    "width": 4032,
+    "height": 2268,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADwAQCdASoQAAkABABoJYgCdEf/gegCdNAA291OZRNKwMHdenxXobataDhafOI9Yg/UYx5bjPh2nz4AAAA=",
+    "color": "#6b4a3e"
+  },
+  "snaps/suomenlinna-CEn1xflWqB2U/img-2305.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 3990930,
+    "width": 2950,
+    "height": 3934,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADQAQCdASoMABAABABoJbACdAECoB9ngAD2RjYI64O8FcJW0BP6toERq1F7GrJKKp3D5fc37ggRW5IHA2861DuaLdwv8m2KtI+5eUP5ydCfQpesk0xNSCOkbAA=",
+    "color": "#91805c"
+  },
+  "snaps/suomenlinna-IHSkAwwuyI9n/img-2396.jpeg": {
+    "type": "image/jpeg",
+    "bytes": 5066928,
+    "width": 3797,
+    "height": 3024,
+    "formats": [
+      "webp",
+      "jpeg"
+    ],
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "squares": [
+      400,
+      512,
+      800
+    ],
+    "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoQAA0ABABoJQBOgBu1zgJtGJgA3hH1tOWnSRS2lCgf5ptG41+YnHDxUUis+vFz4aX52xPxSu3bdqaaOp/WA4vdE9y8FIAA",
+    "color": "#818988"
   },
   "snaps/venice-6Q7N3UsKMi0j/1000054895.jpg": {
     "type": "image/jpeg",

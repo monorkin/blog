@@ -14,6 +14,32 @@ export const getStaticPaths = (async ({ paginate }) => {
 }) satisfies GetStaticPaths
 
 const { page } = Astro.props as { page: IndexPage<Entry> }
+const snaps = await publishedEntries("snap")
+
+function yearOf(snap: Entry) {
+  return snap.publishedAt.getUTCFullYear()
+}
+
+function startsYear(snap: Entry) {
+  const previous = snaps[snaps.findIndex(candidate => candidate.path === snap.path) - 1]
+  return !previous || yearOf(previous) !== yearOf(snap)
+}
+
+// A section per year. A page that starts partway through a year continues the last page's
+// section, without a heading, and src/scripts/snaps.ts joins the two when it loads that page.
+function sectionsOf(pageSnaps: Entry[]) {
+  const sections: { year: number, snaps: Entry[], continued: boolean }[] = []
+
+  for (const snap of pageSnaps) {
+    if (startsYear(snap) || sections.length === 0) {
+      sections.push({ year: yearOf(snap), snaps: [ snap ], continued: !startsYear(snap) })
+    } else {
+      sections.at(-1)!.snaps.push(snap)
+    }
+  }
+
+  return sections
+}
 ---
 
 <Layout section="snaps" transitions>
@@ -39,9 +65,14 @@ const { page } = Astro.props as { page: IndexPage<Entry> }
 
     {page.data.length > 0 && (
       <Paginated page={page}>
-        <div class="photos-grid">
-          {page.data.map(snap => <SnapGridItem snap={snap} />)}
-        </div>
+        {sectionsOf(page.data).map(section => (
+          <section class:list={[ "snap-year", { "snap-year--continued": section.continued } ]}>
+            {!section.continued && <h2 class="snap-year__title">{section.year}</h2>}
+            <div class="photos-grid photos-grid--justified">
+              {section.snaps.map(snap => <SnapGridItem snap={snap} />)}
+            </div>
+          </section>
+        ))}
       </Paginated>
     )}
     {page.data.length === 0 && (

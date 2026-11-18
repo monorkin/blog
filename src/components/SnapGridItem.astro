@@ -1,19 +1,21 @@
 ---
 import type { Entry } from "~/lib/entries"
-import { findMedia, placeholderStyle, squareUrl } from "~/lib/media"
+import { findMedia, placeholderStyle, sources, variantAtLeast } from "~/lib/media"
 import { transitionStyles } from "~/lib/view-transitions"
 
 interface Props {
   snap: Entry
 }
 
-const THUMBNAIL_SIZE = 400
+const THUMBNAIL_WIDTH = 480
 const THUMBNAIL_SIZES = "(width >= 600px) 300px, 33vw"
 
 const { snap } = Astro.props
 const cover = snap.coverImage()!
-const squares = findMedia(cover).squares ?? []
-const srcset = squares.map(size => `${squareUrl(cover, size, "webp")} ${size}w`).join(", ")
+const { width = 1, height = 1 } = findMedia(cover)
+const thumbnailHeight = Math.round(THUMBNAIL_WIDTH * height / width)
+const aspectRatio = (width / height).toFixed(4)
+const srcset = sources(cover).find(source => source.format === "webp")!.srcset
 const placeholder = placeholderStyle(cover)
 const duration = snap.videoDuration()
 
@@ -23,14 +25,14 @@ function formatDuration(totalSeconds: number) {
 }
 ---
 
-<div class="photos-grid__item" data-snap-tilt>
+<div class="photos-grid__item" style={`--aspect-ratio: ${aspectRatio}`} data-snap-tilt>
   <a href={snap.path} class:list={[ "photos-grid__button", { placeholder } ]} style={placeholder} data-snap-lightbox>
     <img
-      src={squareUrl(cover, THUMBNAIL_SIZE, "webp")}
+      src={variantAtLeast(cover, THUMBNAIL_WIDTH)}
       srcset={srcset}
       sizes={THUMBNAIL_SIZES}
-      width={THUMBNAIL_SIZE}
-      height={THUMBNAIL_SIZE}
+      width={THUMBNAIL_WIDTH}
+      height={thumbnailHeight}
       alt={snap.title}
       class="photos-grid__image"
       style={transitionStyles(snap).image}

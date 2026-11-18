@@ -61,6 +61,57 @@
     will-change: transform;
   }
 
+  /* Rows of one height with every photo uncropped. Each item starts at the row height and
+     grows in proportion to its aspect ratio, so all of a row's items grow to the same
+     height; the filler at the end takes the last row's spare room instead. */
+  .photos-grid--justified {
+    --row-height: 160px;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+
+    &::after {
+      content: "";
+      flex-grow: 1000000;
+    }
+
+    & > * {
+      flex: var(--aspect-ratio) 1 calc(var(--aspect-ratio) * var(--row-height));
+      aspect-ratio: var(--aspect-ratio);
+      min-inline-size: 0;
+    }
+
+    & .photos-grid__item {
+      border-radius: var(--radius);
+    }
+  }
+
+  @media (width >= 600px) {
+    .photos-grid--justified {
+      --row-height: 320px;
+
+      gap: var(--space-1-5);
+    }
+  }
+
+  /* Each year's snaps under the year, its last row left short where the year ends */
+  .snap-year {
+    margin-block-start: var(--space-8);
+  }
+
+  .snap-year__title {
+    margin: 0 0 var(--space-3);
+    padding-inline: var(--main-padding-inline);
+    max-width: 1200px;
+    margin-inline: auto;
+    color: var(--color-ink);
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
   .photos-grid__button {
     display: block;
     width: 100%;

@@ -1,3 +1,5 @@
+import { justify, layout } from "~/scripts/justified-rows"
+
 const MAX_ROTATION = 8
 const TILT_TRANSITION = "transform 0.15s ease-out"
 const RESET_TRANSITION = "transform 0.3s ease-out"
@@ -5,6 +7,25 @@ const COPIED_CLASS = "lightbox__actions--copied"
 const COPIED_DURATION = 1500
 
 const lightbox = document.getElementById("snap-lightbox") as HTMLDialogElement | null
+const JUSTIFIED_GRID = ".photos-grid--justified"
+
+document.querySelectorAll<HTMLElement>(JUSTIFIED_GRID).forEach(justify)
+
+// A page that starts partway through a year adds its snaps to that year's rows
+document.addEventListener("pagination:load", (event) => {
+  const page = (event as CustomEvent<{ element: HTMLElement }>).detail.element
+  const continued = page.querySelector(".snap-year--continued")
+  const grids = [ ...document.querySelectorAll<HTMLElement>(JUSTIFIED_GRID) ]
+
+  if (continued) {
+    const yearGrid = grids[grids.indexOf(continued.querySelector(JUSTIFIED_GRID)!) - 1]
+    yearGrid.append(...continued.querySelectorAll(`${JUSTIFIED_GRID} > *`))
+    continued.remove()
+    layout(yearGrid)
+  }
+
+  page.querySelectorAll<HTMLElement>(JUSTIFIED_GRID).forEach(justify)
+})
 
 document.addEventListener("click", (event) => {
   const target = event.target as HTMLElement

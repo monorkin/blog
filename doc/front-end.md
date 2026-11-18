@@ -81,12 +81,28 @@ elements through `data-*` attributes, so they also work on content added later.
 | `gallery.ts` | Opens a gallery's images full size in a lightbox, with arrow keys |
 | `pagination.ts` | Loads the next page when "Load more" comes near, and puts its content in place of the link |
 | `link-previews.ts` | The link preview cards in articles: after a short hover, a popover in the top layer, so it never moves the text around the link. It shows the image, the host, the title and the description; it goes below the link, or above it, and without room on either side it drops the image. An arrow points at the link; when the image is next to it, the arrow is cut from the image, drawn at the same size and offset, so the picture runs into the point. `LinkPreviews.astro` leaves out previews captured from error pages, and drops a title's site name when it names the host |
-| `snaps.ts` | The snap lightbox, its arrow keys, copying a link, the tilt on the grid |
+| `snaps.ts` | The snap lightbox, its arrow keys, copying a link, the tilt on the grid, and joining a loaded page's snaps to the year they continue |
+| `justified-rows.ts` | Picks where the rows of a justified grid break (below) |
 
 ## Snaps
 
-`/snaps` is a grid of square thumbnails up to 1200px wide, wider than the reading column,
-three across on a phone and a tablet, four where 250px thumbnails fit. Clicking one opens
+`/snaps` is up to 1200px wide, wider than the reading column, with a section per year: the
+year as a heading, then that year's snaps in justified rows, every photo uncropped and every
+row the same height. `--row-height` in `src/styles/pages/snaps.css` is the height rows aim for,
+320px, or 160px on a phone. A page that starts partway through a year continues that year's
+section without a heading, and `snaps.ts` moves its snaps into the year's rows when "Load
+more" brings it in.
+
+The CSS lays the rows out alone: each item starts at the row height and grows in proportion
+to its aspect ratio (`--aspect-ratio`, which `SnapGridItem.astro` sets), so a row's items stay
+the same height, and a filler after the last one keeps the last row from stretching. That
+breaks a row only once the next photo doesn't fit, so `justified-rows.ts` chooses the breaks
+instead, all of a year's at once, like a paragraph's line breaks: a row costs more the further
+its height is from the target, twice as much when it's shorter, and the last row costs a
+little for what it leaves empty. It sets each item's `flex-basis` and lays the rows out again
+when the grid's width changes. The home page's snaps use the same component but stay squares.
+
+Clicking one opens
 the snap in a lightbox without leaving the page; the snap's own page, `/snaps/:slug-:id`, is the same lightbox as a
 dark band between the header and the footer, so its white controls stay visible.
 

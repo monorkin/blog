@@ -32,7 +32,7 @@ The bucket, and `media/`, hold:
 |---|---|
 | `originals/<key>` | The file as uploaded, for download and for anything without variants |
 | `variants/<key>/<width>w.webp`, `.jpg`/`.png` | Resized to that width, in WebP and in the original's format |
-| `variants/<key>/<size>sq.webp`, `.jpg`/`.png` | Cropped square: snap thumbnails (400, 800) and Open Graph images (512) |
+| `variants/<key>/<size>sq.webp`, `.jpg`/`.png` | Cropped square: Open Graph images (512); nothing uses the 400 and 800 since the snap grid stopped cropping |
 
 The bucket is `stanko-io` on account `968c9cb19aac8b4e00f9f3b62f75de4e`, served at
 `https://media.stanko.io`.
@@ -239,7 +239,7 @@ ffmpeg -i clip.gif -an -c:v libx264 -crf 23 -preset slow -pix_fmt yuv420p \
 ffmpeg -i clip.mp4 -frames:v 1 -q:v 3 clip.jpg
 ```
 
-Snaps get square thumbnails for the grid, the width variants in the lightbox, and a link to
+Snaps get the width variants in the grid and in the lightbox, and a link to
 the original for download. That link is `rel="nofollow"`, though Ahrefs follows it anyway
 and reports originals of up to 26 MB as oversized images; its Site Audit project excludes
 `media.stanko.io/originals/` from the crawl for that. The Rails app never saw this because
